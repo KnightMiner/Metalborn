@@ -1,6 +1,7 @@
 package knightminer.metalborn;
 
 import knightminer.metalborn.core.MetalbornNetwork;
+import knightminer.metalborn.metal.MetalManager;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceLocation;
@@ -19,6 +20,7 @@ public class Metalborn {
 
   public Metalborn() {
     MetalbornNetwork.setup();
+    MetalManager.INSTANCE.init();
     IEventBus bus = FMLJavaModLoadingContext.get().getModEventBus();
     bus.addListener(this::gatherData);
   }
