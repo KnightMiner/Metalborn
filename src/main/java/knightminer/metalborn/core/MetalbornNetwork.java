@@ -1,0 +1,30 @@
+package knightminer.metalborn.core;
+
+import knightminer.metalborn.Metalborn;
+import org.jetbrains.annotations.ApiStatus.Internal;
+import slimeknights.mantle.network.NetworkWrapper;
+
+/** Network instance for Metalborn */
+public class MetalbornNetwork extends NetworkWrapper {
+  private static MetalbornNetwork instance = null;
+  private MetalbornNetwork() {
+    super(Metalborn.resource("network"));
+  }
+
+  /** Gets the instance of the network */
+  public static MetalbornNetwork getInstance() {
+    if (instance == null) {
+      throw new IllegalStateException("Attempt to call network getInstance before network is setup");
+    }
+    return instance;
+  }
+
+  /** Called during mod construction to setup the network */
+  @Internal
+  public static void setup() {
+    if (instance != null) {
+      return;
+    }
+    instance = new MetalbornNetwork();
+  }
+}
