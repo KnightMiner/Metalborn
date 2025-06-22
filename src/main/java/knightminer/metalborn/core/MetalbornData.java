@@ -9,7 +9,13 @@ import org.jetbrains.annotations.ApiStatus.NonExtendable;
 @NonExtendable
 public interface MetalbornData extends INBTSerializable<CompoundTag> {
   /** Sets the ferring metal type */
-  void setFerring(MetalId metalId);
+  void setFerringType(MetalId metalId);
+
+  /**
+   * Gets the type of ferring for the player.
+   * Note if the goal is to check whether this metal is usable, {@link #canUse(MetalId)} is a better choice.
+   */
+  MetalId getFerringType();
 
   /** Checks if the given metal can be used */
   boolean canUse(MetalId metal);
@@ -20,7 +26,12 @@ public interface MetalbornData extends INBTSerializable<CompoundTag> {
   /** Empty instance for defaulting data related methods */
   MetalbornData EMPTY = new MetalbornData() {
     @Override
-    public void setFerring(MetalId metalId) {}
+    public void setFerringType(MetalId metalId) {}
+
+    @Override
+    public MetalId getFerringType() {
+      return MetalId.NONE;
+    }
 
     @Override
     public boolean canUse(MetalId metal) {

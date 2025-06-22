@@ -15,7 +15,7 @@ public class LerasiumAlloyNuggetItem extends ConsumableItem implements MetalItem
   protected void onEat(ItemStack stack, LivingEntity entity) {
     MetalId metal = getMetal(stack);
     if (metal != MetalId.NONE) {
-      MetalbornCapability.getData(entity).setFerring(metal);
+      MetalbornCapability.getData(entity).setFerringType(metal);
       // TODO: play a message here?
       // TODO: clear hemalurgic effects for this metal
     }

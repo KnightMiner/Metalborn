@@ -56,12 +56,12 @@ public class MetalbornCapability implements ICapabilitySerializable<CompoundTag>
   }
 
   @Override
-  public void setFerring(MetalId metalId) {
+  public void setFerringType(MetalId metalId) {
     ferringType = metalId;
     // TODO: sync selection?
   }
 
-  /** Gets the type of ferring for the player */
+  @Override
   public MetalId getFerringType() {
     if (ferringType == null) {
       ferringType = MetalManager.INSTANCE.getRandomFerring(player.getRandom()).id();

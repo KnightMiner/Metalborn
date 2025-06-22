@@ -1,5 +1,6 @@
 package knightminer.metalborn;
 
+import knightminer.metalborn.command.MetalbornCommand;
 import knightminer.metalborn.core.MetalbornCapability;
 import knightminer.metalborn.core.Registration;
 import knightminer.metalborn.data.DamageTypeTagProvider;
@@ -37,6 +38,7 @@ public class Metalborn {
     MetalbornNetwork.setup();
     MetalManager.INSTANCE.init();
     Registration.init();
+    MetalbornCommand.init();
     IEventBus bus = FMLJavaModLoadingContext.get().getModEventBus();
     bus.addListener(this::commonSetup);
     bus.addListener(this::gatherData);
@@ -98,5 +100,16 @@ public class Metalborn {
    */
   public static MutableComponent component(String group, String name) {
     return Component.translatable(key(group, name));
+  }
+
+  /**
+   * Forms a translation component with the following details
+   * @param group Language key group
+   * @param name Name within group
+   * @param args Additional format arguments
+   * @return Language key
+   */
+  public static MutableComponent component(String group, String name, Object... args) {
+    return Component.translatable(key(group, name), args);
   }
 }

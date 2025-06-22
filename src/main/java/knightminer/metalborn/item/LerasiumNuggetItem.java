@@ -13,7 +13,7 @@ public class LerasiumNuggetItem extends ConsumableItem {
 
   @Override
   protected void onEat(ItemStack stack, LivingEntity entity) {
-    MetalbornCapability.getData(entity).setFerring(MetalManager.INSTANCE.getRandomFerring(entity.getRandom()).id());
+    MetalbornCapability.getData(entity).setFerringType(MetalManager.INSTANCE.getRandomFerring(entity.getRandom()).id());
     // TODO: remove all heamlurgic effects
   }
 }

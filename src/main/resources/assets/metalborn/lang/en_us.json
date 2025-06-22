@@ -1,4 +1,5 @@
 {
+  "metal_power.metalborn.none": "None",
   "metal_power.metalborn.iron": "Iron",
   "metal_power.metalborn.steel": "Steel",
   "metal_power.metalborn.tin": "Tin",
@@ -23,5 +24,11 @@
   "metal_effect.metalborn.health.harm": "Drains 1 health every %s seconds",
 
   "metal_effect.metalborn.xp.gain": "Restores %s XP per second",
-  "metal_effect.metalborn.xp.store": "Drains %s XP per second"
+  "metal_effect.metalborn.xp.store": "Drains %s XP per second",
+
+  "command.metalborn.ferring.get": "%s is a %s ferring (ID %s)",
+  "command.metalborn.ferring.set.single": "Set ferring type for %s to %s (ID %s)",
+  "command.metalborn.ferring.set.multiple": "Set ferring type on %s players to %s (ID %s)",
+  "command.metalborn.ferring.random.single": "Randomized ferring type for %s",
+  "command.metalborn.ferring.random.multiple": "Randomized ferring type on %s players"
 }
