@@ -1,0 +1,9 @@
+// 1.20.1	2025-06-21T22:24:47.4540354	Tags for minecraft:entity_type mod id metalborn
+82053daa300f581865ee639d7c5b293aa4a14e96 data/metalborn/tags/entity_types/bronze.json
+0958a192333a95009361b706cd3836093a760177 data/metalborn/tags/entity_types/copper.json
+13663c3a2cec55d46fe29a2ee9e9d52f6ec600ad data/metalborn/tags/entity_types/gold.json
+f1235a579151ad252395dba3380844b3ec3c51e2 data/metalborn/tags/entity_types/iron.json
+da9ec5f7ed64a0d225e00ee60b8e6d6408b431fb data/metalborn/tags/entity_types/pewter.json
+5e2d6dbd339cdc162f1bd13fa83d0ece1b6014d8 data/metalborn/tags/entity_types/rose_gold.json
+9047c80c99c20b1b1628e0607ebb961e5d274d39 data/metalborn/tags/entity_types/steel.json
+52c5dc3bb3cd7549415d3f88963c61fcecbe268d data/metalborn/tags/entity_types/tin.json
