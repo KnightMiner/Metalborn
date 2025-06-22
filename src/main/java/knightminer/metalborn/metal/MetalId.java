@@ -1,6 +1,8 @@
 package knightminer.metalborn.metal;
 
 import knightminer.metalborn.Metalborn;
+import net.minecraft.Util;
+import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import org.jetbrains.annotations.Nullable;
 import slimeknights.mantle.data.loadable.Loadables;
@@ -31,6 +33,16 @@ public class MetalId extends ResourceLocation {
   /** Copy constructor from a resource location */
   public MetalId(ResourceLocation location) {
     super(location.getNamespace(), location.getPath(), null);
+  }
+
+  /** Gets the translation key for this metal */
+  public String getTranslationKey() {
+    return Util.makeDescriptionId("metal_power", this);
+  }
+
+  /** Gets the display name for this ID */
+  public Component getName() {
+    return Component.translatable(this.getTranslationKey());
   }
 
 

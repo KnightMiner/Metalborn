@@ -1,4 +1,13 @@
 {
+  "metal_power.metalborn.iron": "Iron",
+  "metal_power.metalborn.steel": "Steel",
+  "metal_power.metalborn.tin": "Tin",
+  "metal_power.metalborn.pewter": "Pewter",
+  "metal_power.metalborn.copper": "Copper",
+  "metal_power.metalborn.bronze": "Bronze",
+  "metal_power.metalborn.gold": "Gold",
+  "metal_power.metalborn.rose_gold": "Rose Gold",
+
   "death.attack.metalborn.metal_hurt": "%1$s stored too much health",
   "death.attack.metalborn.metal_hurt.player": "%1$s stored too much health whilst fighting %2$s",
   "metal_effect.metalborn.health.heal": "Heals 1 health every %s seconds",
