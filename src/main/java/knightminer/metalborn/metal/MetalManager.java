@@ -10,6 +10,8 @@ import net.minecraft.server.packs.resources.SimpleJsonResourceReloadListener;
 import net.minecraft.util.GsonHelper;
 import net.minecraft.util.RandomSource;
 import net.minecraft.util.profiling.ProfilerFiller;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.level.ItemLike;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.crafting.CraftingHelper;
 import net.minecraftforge.common.crafting.conditions.ICondition.IContext;
@@ -27,6 +29,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.function.Function;
 
 public class MetalManager extends SimpleJsonResourceReloadListener {
   /** Location of dynamic modifiers */
@@ -40,6 +43,17 @@ public class MetalManager extends SimpleJsonResourceReloadListener {
   private List<MetalPower> sortedPowers = List.of();
   /** All powers that can be used by a ferring */
   private List<MetalPower> ferrings = List.of();
+  /** Cache of the metal power for each item type */
+  private final Map<Item,MetalPower> itemCache = new HashMap<>();
+  /** Cache resolver for getting a power from an item */
+  private final Function<Item,MetalPower> itemGetter = item -> {
+    for (MetalPower power : sortedPowers) {
+      if (power.matches(item)) {
+        return power;
+      }
+    }
+    return MetalPower.DEFAULT;
+  };
 
   /** Condition context for loading */
   private IContext conditionContext = IContext.EMPTY;
@@ -128,6 +142,11 @@ public class MetalManager extends SimpleJsonResourceReloadListener {
     } else {
       return metals.get(random.nextInt(metals.size()));
     }
+  }
+
+  /** Gets the metal power for the given ingot or nugget */
+  public MetalPower fromIngotOrNugget(ItemLike item) {
+    return itemCache.computeIfAbsent(item.asItem(), itemGetter);
   }
 
   // TODO: lookup by ingot

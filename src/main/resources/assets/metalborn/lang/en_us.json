@@ -14,6 +14,9 @@
   "item.metalborn.metalmind.owner.none": "Unsealed",
   "item.metalborn.metalmind.owner.unknown": "Unknown",
 
+  "item.metalborn.ferring.matches": "You feel this metal attempting to take something from you, perhaps in a different shape...",
+  "item.metalborn.ferring.mismatches": "You do not feel anything from this metal.",
+
   "death.attack.metalborn.metal_hurt": "%1$s stored too much health",
   "death.attack.metalborn.metal_hurt.player": "%1$s stored too much health whilst fighting %2$s",
   "metal_effect.metalborn.health.heal": "Heals 1 health every %s seconds",

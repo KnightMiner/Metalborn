@@ -9,13 +9,13 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.Item;
-import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.ApiStatus.Internal;
 import slimeknights.mantle.Mantle;
 import slimeknights.mantle.data.loadable.field.ContextKey;
 import slimeknights.mantle.data.loadable.primitive.IntLoadable;
 import slimeknights.mantle.data.loadable.primitive.StringLoadable;
 import slimeknights.mantle.data.loadable.record.RecordLoadable;
+import slimeknights.mantle.util.RegistryHelper;
 
 import java.util.List;
 
@@ -87,18 +87,18 @@ public record MetalPower(
   /* Resource matching */
 
   /** {@return true if this stack is a valid ingot for this power} */
-  public boolean matchesIngot(ItemStack stack) {
-    return stack.is(ingot);
+  public boolean matchesIngot(Item item) {
+    return RegistryHelper.contains(ingot, item);
   }
 
   /** {@return true if this stack is a valid nugget for this power} */
-  public boolean matchesNugget(ItemStack stack) {
-    return stack.is(nugget);
+  public boolean matchesNugget(Item item) {
+    return RegistryHelper.contains(nugget, item);
   }
 
   /** {@return true if this stack is a valid ingot or nugget for this power} */
-  public boolean matches(ItemStack stack) {
-    return stack.is(ingot) || stack.is(nugget);
+  public boolean matches(Item item) {
+    return matchesIngot(item) || matchesNugget(item);
   }
 
   /** {@return true if this entity matches the metal} */
