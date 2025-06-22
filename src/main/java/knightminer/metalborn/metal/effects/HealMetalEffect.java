@@ -1,0 +1,64 @@
+package knightminer.metalborn.metal.effects;
+
+import knightminer.metalborn.Metalborn;
+import knightminer.metalborn.core.Registration;
+import knightminer.metalborn.metal.MetalPower;
+import net.minecraft.ChatFormatting;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.network.chat.Component;
+import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.entity.LivingEntity;
+import slimeknights.mantle.data.loadable.primitive.IntLoadable;
+import slimeknights.mantle.data.loadable.record.RecordLoadable;
+import slimeknights.mantle.util.TranslationHelper;
+
+import java.util.List;
+
+/**
+ * Metal effect which heals or damages the target over time
+ * @param delay  Time in ticks between each heart healed
+ */
+public record HealMetalEffect(int delay) implements MetalEffect {
+  private static final String KEY_HEAL = Metalborn.key("metal_effect", "health.heal");
+  private static final String KEY_HARM = Metalborn.key("metal_effect", "health.harm");
+  public static final RecordLoadable<HealMetalEffect> LOADER = RecordLoadable.create(
+    IntLoadable.FROM_ONE.requiredField("delay", HealMetalEffect::delay),
+    HealMetalEffect::new);
+
+  @Override
+  public RecordLoadable<HealMetalEffect> getLoader() {
+    return LOADER;
+  }
+
+  @Override
+  public int onTick(MetalPower power, LivingEntity entity, int level) {
+    int frequency = delay / Math.abs(level);
+    if (frequency == 0 || entity.tickCount % frequency == 1) {
+      if (level > 0) {
+        if (entity.getHealth() < entity.getMaxHealth()) {
+          entity.heal(1);
+          return 1;
+        }
+        return 0;
+      } else {
+        entity.hurt(new DamageSource(entity.level().registryAccess().registryOrThrow(Registries.DAMAGE_TYPE).getHolderOrThrow(Registration.METAL_HURT)), 1);
+        return -1;
+      }
+    }
+    return 0;
+  }
+
+  @Override
+  public void getTooltip(MetalPower power, LivingEntity entity, int level, List<Component> tooltip) {
+    int frequency = delay / Math.abs(level);
+    if (frequency == 0) {
+      frequency = 1;
+    }
+    String value = TranslationHelper.COMMA_FORMAT.format(frequency / 20f);
+    if (level > 0) {
+      tooltip.add(Component.translatable(KEY_HEAL, value).withStyle(ChatFormatting.BLUE));
+    } else {
+      tooltip.add(Component.translatable(KEY_HARM, value).withStyle(ChatFormatting.RED));
+    }
+  }
+}

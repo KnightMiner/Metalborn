@@ -1,0 +1,9 @@
+{
+  "death.attack.metalborn.metal_hurt": "%1$s stored too much health",
+  "death.attack.metalborn.metal_hurt.player": "%1$s stored too much health whilst fighting %2$s",
+  "metal_effect.metalborn.health.heal": "Heals 1 health every %s seconds",
+  "metal_effect.metalborn.health.harm": "Drains 1 health every %s seconds",
+
+  "metal_effect.metalborn.xp.gain": "Restores %s XP per second",
+  "metal_effect.metalborn.xp.store": "Drains %s XP per second"
+}

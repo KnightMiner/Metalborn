@@ -1,16 +1,27 @@
 package knightminer.metalborn;
 
 import knightminer.metalborn.core.MetalbornNetwork;
+import knightminer.metalborn.core.Registration;
+import knightminer.metalborn.data.DamageTypeTagProvider;
+import knightminer.metalborn.data.RegistryProvider;
 import knightminer.metalborn.metal.MetalManager;
+import net.minecraft.core.HolderLookup.Provider;
+import net.minecraft.data.DataGenerator;
+import net.minecraft.data.PackOutput;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraftforge.common.data.DatapackBuiltinEntriesProvider;
+import net.minecraftforge.common.data.ExistingFileHelper;
 import net.minecraftforge.data.event.GatherDataEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+
+import java.util.Locale;
+import java.util.concurrent.CompletableFuture;
 
 /** Base mod class, communicating with the modloader. */
 @Mod(Metalborn.MOD_ID)
@@ -21,11 +32,21 @@ public class Metalborn {
   public Metalborn() {
     MetalbornNetwork.setup();
     MetalManager.INSTANCE.init();
+    Registration.init();
     IEventBus bus = FMLJavaModLoadingContext.get().getModEventBus();
     bus.addListener(this::gatherData);
   }
 
   private void gatherData(GatherDataEvent event) {
+    DataGenerator generator = event.getGenerator();
+    PackOutput packOutput = generator.getPackOutput();
+    ExistingFileHelper existingFileHelper = event.getExistingFileHelper();
+    CompletableFuture<Provider> lookupProvider = event.getLookupProvider();
+    boolean server = event.includeServer();
+
+    DatapackBuiltinEntriesProvider datapackRegistry = RegistryProvider.prepare(packOutput, lookupProvider);
+    generator.addProvider(server, datapackRegistry);
+    generator.addProvider(server, new DamageTypeTagProvider(packOutput, datapackRegistry.getRegistryProvider(), existingFileHelper));
   }
 
 
@@ -41,13 +62,21 @@ public class Metalborn {
   }
 
   /**
+   * Prefixes the given unlocalized name with tinkers prefix. Use this when passing unlocalized names for a uniform
+   * namespace.
+   */
+  public static String prefix(String name) {
+    return MOD_ID + "." + name.toLowerCase(Locale.US);
+  }
+
+  /**
    * Forms the mod ID into a language key
    * @param group Language key group
    * @param name Name within group
    * @return Language key
    */
   public static String key(String group, String name) {
-    return String.format("%s.%s.%s", group, MOD_ID, name);
+    return group + '.' + MOD_ID + '.' + name;
   }
 
   /**
