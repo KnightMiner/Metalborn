@@ -3,7 +3,6 @@ package knightminer.metalborn.core;
 import knightminer.metalborn.Metalborn;
 import knightminer.metalborn.metal.MetalId;
 import knightminer.metalborn.metal.MetalManager;
-import knightminer.metalborn.metal.MetalPower;
 import knightminer.metalborn.network.MetalbornNetwork;
 import knightminer.metalborn.network.SyncMetalbornDataPacket;
 import net.minecraft.core.Direction;
@@ -11,6 +10,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.capabilities.Capability;
@@ -25,8 +25,6 @@ import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-
-import java.util.List;
 
 /** Capability containing all data related to metalborn status. Includes ferring type, tapping/storing, metalminds, spikes, and alike. */
 public class MetalbornCapability implements ICapabilitySerializable<CompoundTag>, MetalbornData, Runnable {
@@ -57,15 +55,16 @@ public class MetalbornCapability implements ICapabilitySerializable<CompoundTag>
     return getFerringType().equals(metal);
   }
 
+  @Override
+  public void setFerring(MetalId metalId) {
+    ferringType = metalId;
+    // TODO: sync selection?
+  }
+
   /** Gets the type of ferring for the player */
   public MetalId getFerringType() {
     if (ferringType == null) {
-      List<MetalPower> metals = MetalManager.INSTANCE.getFerrings();
-      if (metals.isEmpty()) {
-        ferringType = MetalId.NONE;
-      } else {
-        ferringType = metals.get(player.getRandom().nextInt(metals.size())).id();
-      }
+      ferringType = MetalManager.INSTANCE.getRandomFerring(player.getRandom()).id();
       // TODO: sync selection?
     }
     return ferringType;
@@ -149,7 +148,7 @@ public class MetalbornCapability implements ICapabilitySerializable<CompoundTag>
   }
 
   /** Gets the data for the given player */
-  public static MetalbornData getData(Player player) {
+  public static MetalbornData getData(LivingEntity player) {
     return player.getCapability(CAPABILITY).orElse(MetalbornData.EMPTY);
   }
 

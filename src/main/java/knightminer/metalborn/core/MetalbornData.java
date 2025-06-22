@@ -8,6 +8,9 @@ import org.jetbrains.annotations.ApiStatus.NonExtendable;
 /** Base interface for metalborn capability. Allows having a read only empty instance and a writable player instance */
 @NonExtendable
 public interface MetalbornData extends INBTSerializable<CompoundTag> {
+  /** Sets the ferring metal type */
+  void setFerring(MetalId metalId);
+
   /** Checks if the given metal can be used */
   boolean canUse(MetalId metal);
 
@@ -16,6 +19,9 @@ public interface MetalbornData extends INBTSerializable<CompoundTag> {
 
   /** Empty instance for defaulting data related methods */
   MetalbornData EMPTY = new MetalbornData() {
+    @Override
+    public void setFerring(MetalId metalId) {}
+
     @Override
     public boolean canUse(MetalId metal) {
       return false;

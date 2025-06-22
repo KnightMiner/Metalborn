@@ -22,15 +22,13 @@ import java.util.List;
 import java.util.UUID;
 
 /** Base class for a metalmind */
-public class MetalmindItem extends Item implements Metalmind {
+public class MetalmindItem extends Item implements MetalItem, Metalmind {
   // translation keys
-  private static final String KEY_METAL_ID = Metalborn.key("item", "metalmind.metal_id");
   private static final String KEY_AMOUNT = Metalborn.key("item", "metalmind.amount");
   private static final String KEY_OWNER = Metalborn.key("item", "metalmind.owner");
   private static final Component UNKNOWN_OWNER = Component.translatable(KEY_OWNER, Metalborn.component("item", "metalmind.owner.unknown").withStyle(ChatFormatting.RED)).withStyle(ChatFormatting.GRAY);
   private static final Component UNSEALED = Component.translatable(KEY_OWNER, Metalborn.component("item", "metalmind.owner.none").withStyle(ChatFormatting.ITALIC)).withStyle(ChatFormatting.GRAY);
   // NBT keys
-  private static final String TAG_METAL = "metal";
   private static final String TAG_AMOUNT = "amount";
   private static final String TAG_OWNER = "owner";
   private static final String TAG_OWNER_NAME = "owner_name";
@@ -53,14 +51,7 @@ public class MetalmindItem extends Item implements Metalmind {
 
   @Override
   public MetalId getMetal(ItemStack stack) {
-    CompoundTag tag = stack.getTag();
-    if (tag != null && tag.contains(TAG_METAL, Tag.TAG_STRING)) {
-      MetalId id = MetalId.tryParse(tag.getString(TAG_METAL));
-      if (id != null) {
-        return id;
-      }
-    }
-    return MetalId.NONE;
+    return MetalItem.super.getMetal(stack);
   }
 
   @Override
@@ -214,10 +205,7 @@ public class MetalmindItem extends Item implements Metalmind {
   @Override
   public void appendHoverText(ItemStack stack, @Nullable Level pLevel, List<Component> tooltip, TooltipFlag flag) {
     if (flag.isAdvanced()) {
-      MetalId metal = getMetal(stack);
-      if (metal != MetalId.NONE) {
-        tooltip.add(Component.translatable(KEY_METAL_ID, metal.toString()).withStyle(ChatFormatting.DARK_GRAY));
-      }
+      appendMetalId(stack, tooltip);
     }
     // owner name
     int amount = getAmount(stack);

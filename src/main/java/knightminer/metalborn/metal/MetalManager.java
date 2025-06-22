@@ -8,6 +8,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.server.packs.resources.SimpleJsonResourceReloadListener;
 import net.minecraft.util.GsonHelper;
+import net.minecraft.util.RandomSource;
 import net.minecraft.util.profiling.ProfilerFiller;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.crafting.CraftingHelper;
@@ -117,6 +118,16 @@ public class MetalManager extends SimpleJsonResourceReloadListener {
   /** Gets a list of all ferrings */
   public List<MetalPower> getFerrings() {
     return ferrings;
+  }
+
+  /** Gets a random ferring from all metals available to ferrings by default */
+  public MetalPower getRandomFerring(RandomSource random) {
+    List<MetalPower> metals = getFerrings();
+    if (metals.isEmpty()) {
+      return MetalPower.DEFAULT;
+    } else {
+      return metals.get(random.nextInt(metals.size()));
+    }
   }
 
   // TODO: lookup by ingot
