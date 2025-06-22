@@ -8,6 +8,12 @@
   "metal_power.metalborn.gold": "Gold",
   "metal_power.metalborn.rose_gold": "Rose Gold",
 
+  "item.metalborn.metalmind.metal_id": "Metal ID: %s",
+  "item.metalborn.metalmind.amount": "Stored: %s / %s",
+  "item.metalborn.metalmind.owner": "Owner: %s",
+  "item.metalborn.metalmind.owner.none": "Unsealed",
+  "item.metalborn.metalmind.owner.unknown": "Unknown",
+
   "death.attack.metalborn.metal_hurt": "%1$s stored too much health",
   "death.attack.metalborn.metal_hurt.player": "%1$s stored too much health whilst fighting %2$s",
   "metal_effect.metalborn.health.heal": "Heals 1 health every %s seconds",
