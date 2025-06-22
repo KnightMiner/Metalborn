@@ -21,6 +21,7 @@ public class MetalPowerBuilder {
   private String name;
   private int index;
   private int capacity = 20 * 5 * 60; // 5 minutes
+  private boolean ferring = true;
   private final List<MetalEffect> feruchemy = new ArrayList<>();
   private final List<MetalEffect> hemalurgy = new ArrayList<>();
   private final List<ICondition> conditions = new ArrayList<>();
@@ -65,6 +66,12 @@ public class MetalPowerBuilder {
 
   /* Effects */
 
+  /** Disallows ferrings to spawn with this metal. Not relevant */
+  public MetalPowerBuilder disallowFerring() {
+    this.ferring = false;
+    return this;
+  }
+
   /** Adds a new feruchemy effect */
   public MetalPowerBuilder feruchemy(MetalEffect effect) {
     this.feruchemy.add(effect);
@@ -94,7 +101,7 @@ public class MetalPowerBuilder {
   /** Builds the instance with fewer checks */
   @CheckReturnValue
   private MetalPower buildInternal() {
-    return new MetalPower(id, name, index, feruchemy, feruchemy.isEmpty() ? 0 : capacity, hemalurgy);
+    return new MetalPower(id, name, index, ferring, feruchemy, feruchemy.isEmpty() ? 0 : capacity, hemalurgy);
   }
 
   /** Builds the final power */

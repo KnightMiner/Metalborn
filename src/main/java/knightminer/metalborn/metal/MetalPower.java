@@ -27,6 +27,7 @@ import java.util.List;
  * @param nugget     Nugget tag for this metal, used in recipes.
  * @param entity     Entity tag of entities that can provide this metal through hemalurgy.
  * @param index      Sort order for this metal.
+ * @param ferring    If true, this power can be randomly granted.
  * @param feruchemy  List of feruchemical effects to perform
  * @param capacity   Capacity of the base size metalmind.
  * @param hemalurgy  List of hemalurgic effects to perform.
@@ -38,6 +39,7 @@ public record MetalPower(
   TagKey<Item> nugget,
   TagKey<EntityType<?>> entity,
   int index,
+  boolean ferring,
   List<MetalEffect> feruchemy,
   int capacity,
   List<MetalEffect> hemalurgy
@@ -47,13 +49,14 @@ public record MetalPower(
     ContextKey.ID.mappedField((id, error) -> new MetalId(id)),
     StringLoadable.DEFAULT.requiredField("name", MetalPower::name),
     IntLoadable.FROM_ZERO.requiredField("index", MetalPower::index),
+    new AllowFerringField("allow_ferring", "feruchemy"),
     MetalEffect.LIST_LOADABLE.defaultField("feruchemy", List.of(), MetalPower::feruchemy),
     IntLoadable.FROM_ZERO.defaultField("capacity", 0, MetalPower::capacity),
     MetalEffect.LIST_LOADABLE.defaultField("hemalurgy", List.of(), MetalPower::hemalurgy),
     MetalPower::new);
 
   /** Default instance for when a metal does not exist */
-  public static final MetalPower DEFAULT = new MetalPower(MetalId.NONE, "none", -1, List.of(), 0, List.of());
+  public static final MetalPower DEFAULT = new MetalPower(MetalId.NONE, "none", -1, false, List.of(), 0, List.of());
 
   /** @apiNote Use {@link MetalPowerBuilder} */
   @Internal
@@ -63,13 +66,13 @@ public record MetalPower(
    * Constructor that automatically creates the tag names
    * @apiNote Use {@link MetalPowerBuilder}
    */
-  MetalPower(MetalId id, String name, int index, List<MetalEffect> feruchemy, int capacity, List<MetalEffect> hemalurgy) {
+  MetalPower(MetalId id, String name, int index, boolean ferring, List<MetalEffect> feruchemy, int capacity, List<MetalEffect> hemalurgy) {
     this(
       id, name,
       ItemTags.create(Mantle.commonResource("ingots/" + name)),
       ItemTags.create(Mantle.commonResource("nuggets/" + name)),
       TagKey.create(Registries.ENTITY_TYPE, id),
-      index, feruchemy, capacity, hemalurgy
+      index, ferring, feruchemy, capacity, hemalurgy
     );
   }
 

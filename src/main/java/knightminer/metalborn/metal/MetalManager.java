@@ -37,6 +37,8 @@ public class MetalManager extends SimpleJsonResourceReloadListener {
   private Map<MetalId,MetalPower> powers = Map.of();
   /** All powers in sorted order for display */
   private List<MetalPower> sortedPowers = List.of();
+  /** All powers that can be used by a ferring */
+  private List<MetalPower> ferrings = List.of();
 
   /** Condition context for loading */
   private IContext conditionContext = IContext.EMPTY;
@@ -64,6 +66,7 @@ public class MetalManager extends SimpleJsonResourceReloadListener {
   void updateMetalPowers(Map<MetalId,MetalPower> powers) {
     this.powers = powers;
     this.sortedPowers = powers.values().stream().sorted(Comparator.comparing(MetalPower::index)).toList();
+    this.ferrings = sortedPowers.stream().filter(power -> power.ferring() && !power.feruchemy().isEmpty()).toList();
   }
 
 
@@ -104,6 +107,16 @@ public class MetalManager extends SimpleJsonResourceReloadListener {
   /** Gets the power with the given ID */
   public MetalPower get(MetalId id) {
     return powers.getOrDefault(id, MetalPower.DEFAULT);
+  }
+
+  /** Gets a list of all powers in sorted order */
+  public List<MetalPower> getSortedPowers() {
+    return sortedPowers;
+  }
+
+  /** Gets a list of all ferrings */
+  public List<MetalPower> getFerrings() {
+    return ferrings;
   }
 
   // TODO: lookup by ingot

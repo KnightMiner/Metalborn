@@ -1,5 +1,6 @@
 package knightminer.metalborn;
 
+import knightminer.metalborn.core.MetalbornCapability;
 import knightminer.metalborn.core.MetalbornNetwork;
 import knightminer.metalborn.core.Registration;
 import knightminer.metalborn.data.DamageTypeTagProvider;
@@ -18,6 +19,7 @@ import net.minecraftforge.common.data.ExistingFileHelper;
 import net.minecraftforge.data.event.GatherDataEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -36,7 +38,12 @@ public class Metalborn {
     MetalManager.INSTANCE.init();
     Registration.init();
     IEventBus bus = FMLJavaModLoadingContext.get().getModEventBus();
+    bus.addListener(this::commonSetup);
     bus.addListener(this::gatherData);
+  }
+
+  private void commonSetup(FMLCommonSetupEvent event) {
+    MetalbornCapability.register();
   }
 
   private void gatherData(GatherDataEvent event) {

@@ -31,5 +31,6 @@ public class MetalbornNetwork extends NetworkWrapper {
 
     // datapacks
     instance.registerPacket(UpdateMetalPowerPacket.class, UpdateMetalPowerPacket::decode, NetworkDirection.PLAY_TO_CLIENT);
+    instance.registerPacket(SyncMetalbornDataPacket.class, SyncMetalbornDataPacket::decode, NetworkDirection.PLAY_TO_CLIENT);
   }
 }
