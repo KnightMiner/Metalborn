@@ -1,0 +1,11 @@
+{
+  "capacity": 40,
+  "feruchemy": [
+    {
+      "type": "metalborn:heal",
+      "delay": 100
+    }
+  ],
+  "index": 7,
+  "name": "gold"
+}

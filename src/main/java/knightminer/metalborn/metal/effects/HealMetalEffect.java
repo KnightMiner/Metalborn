@@ -37,11 +37,13 @@ public record HealMetalEffect(int delay) implements MetalEffect {
       if (level > 0) {
         if (entity.getHealth() < entity.getMaxHealth()) {
           entity.heal(1);
-          return 1;
+          // on tapping, higher speeds also reduce how much you get
+          return level;
         }
         return 0;
       } else {
         entity.hurt(new DamageSource(entity.level().registryAccess().registryOrThrow(Registries.DAMAGE_TYPE).getHolderOrThrow(Registration.METAL_HURT)), 1);
+        // on storing, you have to actually lose health to gain something
         return -1;
       }
     }

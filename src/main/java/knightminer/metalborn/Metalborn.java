@@ -3,6 +3,7 @@ package knightminer.metalborn;
 import knightminer.metalborn.core.MetalbornNetwork;
 import knightminer.metalborn.core.Registration;
 import knightminer.metalborn.data.DamageTypeTagProvider;
+import knightminer.metalborn.data.MetalPowerProvider;
 import knightminer.metalborn.data.RegistryProvider;
 import knightminer.metalborn.metal.MetalManager;
 import net.minecraft.core.HolderLookup.Provider;
@@ -47,6 +48,7 @@ public class Metalborn {
     DatapackBuiltinEntriesProvider datapackRegistry = RegistryProvider.prepare(packOutput, lookupProvider);
     generator.addProvider(server, datapackRegistry);
     generator.addProvider(server, new DamageTypeTagProvider(packOutput, datapackRegistry.getRegistryProvider(), existingFileHelper));
+    generator.addProvider(server, new MetalPowerProvider(packOutput));
   }
 
 

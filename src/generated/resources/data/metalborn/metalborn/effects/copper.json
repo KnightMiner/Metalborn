@@ -1,0 +1,11 @@
+{
+  "capacity": 100,
+  "feruchemy": [
+    {
+      "type": "metalborn:experience",
+      "multiplier": 1
+    }
+  ],
+  "index": 5,
+  "name": "copper"
+}

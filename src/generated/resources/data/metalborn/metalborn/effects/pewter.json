@@ -1,0 +1,33 @@
+{
+  "capacity": 6000,
+  "feruchemy": [
+    {
+      "type": "metalborn:attribute",
+      "attribute": "minecraft:generic.attack_damage",
+      "multiplier": 1.0,
+      "operation": "addition"
+    },
+    {
+      "type": "metalborn:attribute",
+      "attribute": "minecraft:generic.armor_toughness",
+      "multiplier": 0.5,
+      "operation": "addition"
+    }
+  ],
+  "hemalurgy": [
+    {
+      "type": "metalborn:attribute",
+      "attribute": "minecraft:generic.attack_damage",
+      "multiplier": 1.0,
+      "operation": "addition"
+    },
+    {
+      "type": "metalborn:attribute",
+      "attribute": "minecraft:generic.armor_toughness",
+      "multiplier": 0.5,
+      "operation": "addition"
+    }
+  ],
+  "index": 4,
+  "name": "pewter"
+}

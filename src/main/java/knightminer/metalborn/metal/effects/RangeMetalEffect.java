@@ -15,12 +15,22 @@ import java.util.List;
  * @param min     Min level to run effect.
  * @param max     Max level to run effect.
  */
-public record RangeMetalEffect(MetalEffect effect, int min, int max) implements MetalEffect {
+public record RangeMetalEffect(int min, int max, MetalEffect effect) implements MetalEffect {
   public static final RecordLoadable<RangeMetalEffect> LOADER = RecordLoadable.create(
-    MetalEffect.REGISTRY.directField("effect_type", RangeMetalEffect::effect),
     IntLoadable.ANY_SHORT.defaultField("min_level", (int)Short.MIN_VALUE, RangeMetalEffect::min),
     IntLoadable.ANY_SHORT.defaultField("max_level", (int)Short.MAX_VALUE, RangeMetalEffect::max),
+    MetalEffect.REGISTRY.directField("effect_type", RangeMetalEffect::effect),
     RangeMetalEffect::new);
+
+  /** Adds an effect only when storing (i.e. a negative effect) */
+  public static RangeMetalEffect storing(MetalEffect effect) {
+    return new RangeMetalEffect(Short.MIN_VALUE, 0, effect);
+  }
+
+  /** Adds an effect only when storing (i.e. a positive effect) */
+  public static RangeMetalEffect tapping(MetalEffect effect) {
+    return new RangeMetalEffect(0, Short.MAX_VALUE, effect);
+  }
 
   @Override
   public RecordLoadable<? extends IHaveLoader> getLoader() {

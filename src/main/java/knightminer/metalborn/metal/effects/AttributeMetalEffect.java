@@ -34,8 +34,14 @@ public record AttributeMetalEffect(String unique, UUID uuid, Attribute attribute
   @Internal
   public AttributeMetalEffect {}
 
+  /** Constructor if you need to set the unique key. Only needed if you add multiple effects for the same attribute */
   public AttributeMetalEffect(String unique, Attribute attribute, Operation operation, float base, float multiplier) {
     this(unique, UUID.nameUUIDFromBytes(unique.getBytes()), attribute, operation, base, multiplier);
+  }
+
+  /** Constructor for datagen */
+  public AttributeMetalEffect(Attribute attribute, Operation operation, float base, float multiplier) {
+    this("", UUID.randomUUID(), attribute, operation, base, multiplier);
   }
 
   @Override
