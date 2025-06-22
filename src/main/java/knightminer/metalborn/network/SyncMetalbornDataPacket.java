@@ -1,5 +1,7 @@
-package knightminer.metalborn.core;
+package knightminer.metalborn.network;
 
+import knightminer.metalborn.core.MetalbornCapability;
+import knightminer.metalborn.core.MetalbornData;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.entity.player.Player;

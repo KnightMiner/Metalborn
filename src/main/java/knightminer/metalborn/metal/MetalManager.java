@@ -3,7 +3,7 @@ package knightminer.metalborn.metal;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import knightminer.metalborn.Metalborn;
-import knightminer.metalborn.core.MetalbornNetwork;
+import knightminer.metalborn.network.MetalbornNetwork;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.server.packs.resources.SimpleJsonResourceReloadListener;

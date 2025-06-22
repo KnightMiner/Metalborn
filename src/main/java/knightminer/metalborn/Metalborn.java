@@ -1,13 +1,13 @@
 package knightminer.metalborn;
 
 import knightminer.metalborn.core.MetalbornCapability;
-import knightminer.metalborn.core.MetalbornNetwork;
 import knightminer.metalborn.core.Registration;
 import knightminer.metalborn.data.DamageTypeTagProvider;
 import knightminer.metalborn.data.EntityTagProvider;
 import knightminer.metalborn.data.MetalPowerProvider;
 import knightminer.metalborn.data.RegistryProvider;
 import knightminer.metalborn.metal.MetalManager;
+import knightminer.metalborn.network.MetalbornNetwork;
 import net.minecraft.core.HolderLookup.Provider;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.PackOutput;

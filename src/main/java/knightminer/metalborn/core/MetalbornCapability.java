@@ -4,6 +4,8 @@ import knightminer.metalborn.Metalborn;
 import knightminer.metalborn.metal.MetalId;
 import knightminer.metalborn.metal.MetalManager;
 import knightminer.metalborn.metal.MetalPower;
+import knightminer.metalborn.network.MetalbornNetwork;
+import knightminer.metalborn.network.SyncMetalbornDataPacket;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;

@@ -1,4 +1,4 @@
-package knightminer.metalborn.core;
+package knightminer.metalborn.network;
 
 import knightminer.metalborn.Metalborn;
 import knightminer.metalborn.metal.UpdateMetalPowerPacket;
