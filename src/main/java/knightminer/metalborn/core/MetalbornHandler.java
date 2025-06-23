@@ -13,7 +13,7 @@ import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus;
 
 /** Event handlers for metalborn */
-@EventBusSubscriber(bus = Bus.FORGE)
+@EventBusSubscriber(modid = Metalborn.MOD_ID, bus = Bus.FORGE)
 public class MetalbornHandler {
   /* Identifying ferring type */
   private static final Component CORRECT_METAL = Metalborn.component("item", "ferring.matches");

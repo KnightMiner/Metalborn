@@ -1,5 +1,6 @@
 package knightminer.metalborn;
 
+import knightminer.metalborn.client.MetalbornClient;
 import knightminer.metalborn.command.MetalbornCommand;
 import knightminer.metalborn.core.MetalbornCapability;
 import knightminer.metalborn.core.Registration;
@@ -15,10 +16,12 @@ import net.minecraft.data.PackOutput;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.common.data.DatapackBuiltinEntriesProvider;
 import net.minecraftforge.common.data.ExistingFileHelper;
 import net.minecraftforge.data.event.GatherDataEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
+import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
@@ -42,6 +45,9 @@ public class Metalborn {
     IEventBus bus = FMLJavaModLoadingContext.get().getModEventBus();
     bus.addListener(this::commonSetup);
     bus.addListener(this::gatherData);
+
+    // client setup
+    DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> MetalbornClient::onConstruct);
   }
 
   private void commonSetup(FMLCommonSetupEvent event) {
