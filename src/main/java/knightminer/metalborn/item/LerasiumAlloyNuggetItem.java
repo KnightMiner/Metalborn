@@ -19,7 +19,7 @@ public class LerasiumAlloyNuggetItem extends ConsumableItem implements MetalItem
 
   @Override
   protected void onEat(ItemStack stack, LivingEntity entity) {
-    MetalId metal = getMetal(stack);
+    MetalId metal = MetalItem.getMetal(stack);
     if (metal != MetalId.NONE) {
       MetalbornCapability.getData(entity).setFerringType(metal);
       // TODO: play a message here?
@@ -32,18 +32,18 @@ public class LerasiumAlloyNuggetItem extends ConsumableItem implements MetalItem
 
   @Override
   public Component getName(ItemStack stack) {
-    return MetalItem.getMetalName(this, stack);
+    return MetalItem.getMetalName(stack);
   }
 
   @Override
   public void appendHoverText(ItemStack stack, @Nullable Level pLevel, List<Component> tooltip, TooltipFlag flag) {
     if (flag.isAdvanced()) {
-      MetalItem. appendMetalId(this, stack, tooltip);
+      MetalItem. appendMetalId(stack, tooltip);
     }
   }
 
   @Override
   public String getCreatorModId(ItemStack stack) {
-    return MetalItem.getCreatorModId(this, stack);
+    return MetalItem.getCreatorModId(stack);
   }
 }

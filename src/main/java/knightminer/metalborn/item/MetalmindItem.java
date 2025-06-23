@@ -50,7 +50,7 @@ public class MetalmindItem extends Item implements MetalItem, Metalmind {
 
   @Override
   public MetalId getMetal(ItemStack stack) {
-    return MetalItem.super.getMetal(stack);
+    return MetalItem.getMetal(stack);
   }
 
   @Override
@@ -194,13 +194,13 @@ public class MetalmindItem extends Item implements MetalItem, Metalmind {
 
   @Override
   public Component getName(ItemStack stack) {
-    return MetalItem.getMetalName(this, stack);
+    return MetalItem.getMetalName(stack);
   }
 
   @Override
   public void appendHoverText(ItemStack stack, @Nullable Level pLevel, List<Component> tooltip, TooltipFlag flag) {
     if (flag.isAdvanced()) {
-      MetalItem.appendMetalId(this, stack, tooltip);
+      MetalItem.appendMetalId(stack, tooltip);
     }
     // owner name
     int amount = getAmount(stack);
@@ -221,6 +221,6 @@ public class MetalmindItem extends Item implements MetalItem, Metalmind {
 
   @Override
   public String getCreatorModId(ItemStack stack) {
-    return MetalItem.getCreatorModId(this, stack);
+    return MetalItem.getCreatorModId(stack);
   }
 }
