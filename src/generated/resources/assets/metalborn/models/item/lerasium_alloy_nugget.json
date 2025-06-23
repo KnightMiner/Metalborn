@@ -1,0 +1,15 @@
+{
+  "parent": "forge:item/default",
+  "loader": "metalborn:paletted",
+  "palette": [
+    {},
+    {
+      "key": "metal",
+      "list": "metalborn:feruchemy_metals"
+    }
+  ],
+  "textures": {
+    "layer0": "metalborn:item/materials/lerasium_nugget",
+    "layer1": "metalborn:item/materials/lerasium_nugget_overlay"
+  }
+}

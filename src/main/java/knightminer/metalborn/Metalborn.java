@@ -6,8 +6,10 @@ import knightminer.metalborn.core.MetalbornCapability;
 import knightminer.metalborn.core.Registration;
 import knightminer.metalborn.data.DamageTypeTagProvider;
 import knightminer.metalborn.data.EntityTagProvider;
+import knightminer.metalborn.data.ItemModelProvider;
 import knightminer.metalborn.data.MetalPowerProvider;
 import knightminer.metalborn.data.RegistryProvider;
+import knightminer.metalborn.data.SpriteSourceProvider;
 import knightminer.metalborn.metal.MetalManager;
 import knightminer.metalborn.network.MetalbornNetwork;
 import net.minecraft.core.HolderLookup.Provider;
@@ -44,7 +46,7 @@ public class Metalborn {
     MetalbornCommand.init();
     IEventBus bus = FMLJavaModLoadingContext.get().getModEventBus();
     bus.addListener(this::commonSetup);
-    bus.addListener(this::gatherData);
+    bus.addListener(Metalborn::gatherData);
 
     // client setup
     DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> MetalbornClient::onConstruct);
@@ -54,18 +56,24 @@ public class Metalborn {
     MetalbornCapability.register();
   }
 
-  private void gatherData(GatherDataEvent event) {
+  private static void gatherData(GatherDataEvent event) {
     DataGenerator generator = event.getGenerator();
     PackOutput packOutput = generator.getPackOutput();
     ExistingFileHelper existingFileHelper = event.getExistingFileHelper();
     CompletableFuture<Provider> lookupProvider = event.getLookupProvider();
     boolean server = event.includeServer();
+    boolean client = event.includeClient();
 
+    // server
     DatapackBuiltinEntriesProvider datapackRegistry = RegistryProvider.prepare(packOutput, lookupProvider);
     generator.addProvider(server, datapackRegistry);
     generator.addProvider(server, new DamageTypeTagProvider(packOutput, datapackRegistry.getRegistryProvider(), existingFileHelper));
     generator.addProvider(server, new EntityTagProvider(packOutput, lookupProvider, existingFileHelper));
     generator.addProvider(server, new MetalPowerProvider(packOutput));
+    // client
+    generator.addProvider(client, new ItemModelProvider(packOutput, existingFileHelper));
+    generator.addProvider(client, new SpriteSourceProvider(packOutput, existingFileHelper));
+
   }
 
 

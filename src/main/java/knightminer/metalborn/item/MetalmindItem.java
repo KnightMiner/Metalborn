@@ -16,7 +16,6 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.Nullable;
-import slimeknights.mantle.data.loadable.Loadables;
 
 import java.util.List;
 import java.util.UUID;
@@ -195,17 +194,13 @@ public class MetalmindItem extends Item implements MetalItem, Metalmind {
 
   @Override
   public Component getName(ItemStack stack) {
-    MetalId metal = getMetal(stack);
-    if (metal == MetalId.NONE) {
-      return super.getName(stack);
-    }
-    return Component.translatable(getDescriptionId(stack) + ".format", metal.getName());
+    return MetalItem.getMetalName(this, stack);
   }
 
   @Override
   public void appendHoverText(ItemStack stack, @Nullable Level pLevel, List<Component> tooltip, TooltipFlag flag) {
     if (flag.isAdvanced()) {
-      appendMetalId(stack, tooltip);
+      MetalItem.appendMetalId(this, stack, tooltip);
     }
     // owner name
     int amount = getAmount(stack);
@@ -224,18 +219,8 @@ public class MetalmindItem extends Item implements MetalItem, Metalmind {
     tooltip.add(Component.translatable(KEY_AMOUNT, amount, getCapacity(stack)).withStyle(ChatFormatting.GRAY));
   }
 
-  @Nullable
   @Override
   public String getCreatorModId(ItemStack stack) {
-    // show metal namespace if present
-    MetalId metal = getMetal(stack);
-    if (metal != MetalId.NONE) {
-      String namespace = metal.getNamespace();
-      // skip if it's our namespace, on the chance an addon registers
-      if (!Metalborn.MOD_ID.equals(namespace)) {
-        return namespace;
-      }
-    }
-    return Loadables.ITEM.getKey(stack.getItem()).getNamespace();
+    return MetalItem.getCreatorModId(this, stack);
   }
 }

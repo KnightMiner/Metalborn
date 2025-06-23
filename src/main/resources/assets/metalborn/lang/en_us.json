@@ -1,4 +1,6 @@
 {
+  "creative_tab.metalborn": "Metalborn",
+
   "metal_power.metalborn.none": "None",
   "metal_power.metalborn.iron": "Iron",
   "metal_power.metalborn.steel": "Steel",
@@ -8,6 +10,10 @@
   "metal_power.metalborn.bronze": "Bronze",
   "metal_power.metalborn.gold": "Gold",
   "metal_power.metalborn.rose_gold": "Rose Gold",
+
+  "item.metalborn.lerasium_nugget": "Lerasium Nugget",
+  "item.metalborn.lerasium_alloy_nugget": "Lerasium Nugget",
+  "item.metalborn.lerasium_alloy_nugget.format": "Lerasium-%s Nugget",
 
   "item.metalborn.metalmind.metal_id": "Metal ID: %s",
   "item.metalborn.metalmind.amount": "Stored: %s / %s",

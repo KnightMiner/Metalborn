@@ -10,7 +10,7 @@ import net.minecraft.nbt.Tag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.ItemLike;
-import org.jetbrains.annotations.ApiStatus.NonExtendable;
+import slimeknights.mantle.data.loadable.Loadables;
 
 import java.util.List;
 import java.util.function.Consumer;
@@ -41,14 +41,43 @@ public interface MetalItem extends ItemLike {
     return stack;
   }
 
+
+  /* Tooltips */
+
+  /** Gets the name with the metal */
+  static Component getMetalName(MetalItem item, ItemStack stack) {
+    String descriptionId = stack.getDescriptionId();
+    MetalId metal = item.getMetal(stack);
+    if (metal == MetalId.NONE) {
+      return Component.translatable(descriptionId);
+    }
+    return Component.translatable(descriptionId + ".format", metal.getName());
+  }
+
   /** Adds metal information to the tooltip. Should only be called in advanced tooltips */
-  @NonExtendable
-  default void appendMetalId(ItemStack stack, List<Component> tooltip) {
-    MetalId metal = getMetal(stack);
+  static void appendMetalId(MetalItem item, ItemStack stack, List<Component> tooltip) {
+    MetalId metal = item.getMetal(stack);
     if (metal != MetalId.NONE) {
       tooltip.add(Component.translatable(KEY_METAL_ID, metal.toString()).withStyle(ChatFormatting.DARK_GRAY));
     }
   }
+
+  /** Gets the creator mod ID to show */
+  static String getCreatorModId(MetalItem item, ItemStack stack) {
+    // show metal namespace if present
+    MetalId metal = item.getMetal(stack);
+    if (metal != MetalId.NONE) {
+      String namespace = metal.getNamespace();
+      // skip if it's our namespace, on the chance an addon registers
+      if (!Metalborn.MOD_ID.equals(namespace)) {
+        return namespace;
+      }
+    }
+    return Loadables.ITEM.getKey(stack.getItem()).getNamespace();
+  }
+
+
+  /* Creative */
 
   /** Adds all metal variants to the consumer */
   default void addVariants(Consumer<ItemStack> consumer) {
