@@ -40,7 +40,7 @@ public class ExtendablePalettedPermutations extends PalettedPermutations {
     // now we have a list of variants, construct the map
     permutations.clear();
     for (ResourceLocation value : values) {
-      String asString = value.getNamespace() + '_' + value.getPath();
+      String asString = PalettedItemModel.toSuffix(value);
       permutations.put(asString, paletteFolder.withSuffix('/' + asString));
     }
 

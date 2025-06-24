@@ -10,6 +10,6 @@
   ],
   "textures": {
     "layer0": "metalborn:item/materials/lerasium_nugget",
-    "layer1": "metalborn:item/materials/lerasium_nugget_overlay"
+    "layer1": "metalborn:metal/item/lerasium_nugget_overlay"
   }
 }

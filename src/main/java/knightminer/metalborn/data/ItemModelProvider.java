@@ -28,12 +28,12 @@ public class ItemModelProvider extends net.minecraftforge.client.model.generator
     // lerasium alloy wants to have a mixture of the two colors so it's not mistaken for a normal nugget, so part is untinted
     customModel(Registration.LERASIUM_ALLOY_NUGGET, false)
       .texture("layer0", "item/materials/lerasium_nugget")
-      .texture("layer1", "item/materials/lerasium_nugget_overlay")
+      .texture("layer1", "metal/item/lerasium_nugget_overlay")
       .customLoader(PalettedModelBuilder::new)
       .normal()
       .paletted(FERUCHEMY_METALS, MetalItem.TAG_METAL);
-    metal(Registration.BRACER, "metalmind/bracer", true);
-    metal(Registration.RING, "metalmind/ring", false);
+    metal(Registration.BRACER, "metal/item/bracer", true);
+    metal(Registration.RING, "metal/item/ring", false);
   }
 
 
@@ -52,7 +52,7 @@ public class ItemModelProvider extends net.minecraftforge.client.model.generator
   @SuppressWarnings("UnusedReturnValue")
   private PalettedModelBuilder<ItemModelBuilder> metal(ItemObject<?> item, String texture, boolean tool) {
     return customModel(item, tool)
-      .texture("layer0", resource("item/" + texture))
+      .texture("layer0", resource(texture))
       .customLoader(PalettedModelBuilder::new)
       .paletted(FERUCHEMY_METALS, MetalItem.TAG_METAL);
   }

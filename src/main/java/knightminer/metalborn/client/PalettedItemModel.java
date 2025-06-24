@@ -67,12 +67,23 @@ public class PalettedItemModel implements IUnbakedGeometry<PalettedItemModel> {
     return permutatedOverrides.bake(permutatedOverrides, List.of());
   }
 
+  /** Converts the given location to a path, discarding the minecraft namespace. */
+  public static String toSuffix(ResourceLocation location) {
+    String namespace = location.getNamespace();
+    String path = location.getPath();
+    if ("minecraft".equals(namespace)) {
+      return path;
+    }
+    return namespace + '_' + path;
+  }
+
   /**
    * Data for the permuted textures
    * @param list     List of all value textures, for caching
    * @param key  Key in item NBT containing the key for textures
    */
   public record PermutationData(@Nullable ResourceLocation list, String key) {
+    private static final ResourceLocation UNKNOWN = new ResourceLocation("unknown");
     public static final PermutationData EMPTY = new PermutationData(null, "");
     public static final RecordLoadable<PermutationData> LOADABLE = RecordLoadable.create(
       Loadables.RESOURCE_LOCATION.nullableField("list", PermutationData::list),
@@ -80,19 +91,23 @@ public class PalettedItemModel implements IUnbakedGeometry<PalettedItemModel> {
       PermutationData::new);
     public static final Loadable<List<PermutationData>> LIST_LOADABLE = LOADABLE.list(ArrayLoadable.COMPACT);
 
+    /** Appends the given location to the texture name */
+    private static Material append(Material material, ResourceLocation variant) {
+      return new Material(material.atlasLocation(), material.texture().withSuffix('_' + toSuffix(variant)));
+    }
+
     /** Fetches all permutation data for the baked model */
     private BakedPermutationData bake(ResourceManager manager, Material material, Function<Material, TextureAtlasSprite> spriteGetter) {
       // if this texture is not permuted, just cache the sprite
-      TextureAtlasSprite sprite = spriteGetter.apply(material);
       if (list == null || key.isEmpty()) {
-        return new BakedPermutationData("", sprite, Map.of());
+        return new BakedPermutationData("", spriteGetter.apply(material), Map.of());
       }
       List<ResourceLocation> permutationList = PaletteListManager.INSTANCE.getPermutationList(manager, list);
       Map<String,TextureAtlasSprite> textures = new HashMap<>();
       for (ResourceLocation variant : permutationList) {
-        textures.put(variant.toString(), spriteGetter.apply(new Material(material.atlasLocation(), material.texture().withSuffix('_' + variant.getNamespace() + '_' + variant.getPath()))));
+        textures.put(variant.toString(), spriteGetter.apply(append(material, variant)));
       }
-      return new BakedPermutationData(key, sprite, Map.copyOf(textures));
+      return new BakedPermutationData(key, spriteGetter.apply(append(material, UNKNOWN)), Map.copyOf(textures));
     }
   }
 

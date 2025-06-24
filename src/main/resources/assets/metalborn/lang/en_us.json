@@ -39,7 +39,7 @@
 
   "item.metalborn.lerasium_nugget": "Lerasium Nugget",
   "item.metalborn.lerasium_nugget.on_consume": "Eat to become a random ferring",
-  "item.metalborn.lerasium_alloy_nugget": "Lerasium Nugget",
+  "item.metalborn.lerasium_alloy_nugget": "Lerasium Alloy Nugget",
   "item.metalborn.lerasium_alloy_nugget.format": "Lerasium-%s Nugget",
   "item.metalborn.lerasium_alloy_nugget.on_consume": "Eat to become a %s ferring",
 

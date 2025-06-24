@@ -6,6 +6,6 @@
     "list": "metalborn:feruchemy_metals"
   },
   "textures": {
-    "layer0": "metalborn:item/metalmind/ring"
+    "layer0": "metalborn:metal/item/ring"
   }
 }

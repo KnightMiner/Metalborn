@@ -2,12 +2,12 @@
   "sources": [
     {
       "type": "metalborn:extendable_palette",
-      "palette_folder": "metalborn:metal_palettes",
+      "palette_folder": "metalborn:metal/palettes",
       "permutation_list": "metalborn:feruchemy_metals",
       "textures": [
-        "metalborn:item/materials/lerasium_nugget_overlay",
-        "metalborn:item/metalmind/bracer",
-        "metalborn:item/metalmind/ring"
+        "metalborn:metal/item/lerasium_nugget_overlay",
+        "metalborn:metal/item/bracer",
+        "metalborn:metal/item/ring"
       ]
     }
   ]
