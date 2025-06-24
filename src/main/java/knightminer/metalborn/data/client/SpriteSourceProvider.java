@@ -1,4 +1,4 @@
-package knightminer.metalborn.data;
+package knightminer.metalborn.data.client;
 
 import knightminer.metalborn.Metalborn;
 import knightminer.metalborn.client.ExtendablePalettedPermutations;
@@ -20,12 +20,22 @@ public class SpriteSourceProvider extends net.minecraftforge.common.data.SpriteS
     atlas(BLOCKS_ATLAS)
       .addSource(new ExtendablePalettedPermutations(
         List.of(
-          resource("metal/item/lerasium_nugget_overlay"),
+          resource("metal/item/nugget_overlay"),
           resource("metal/item/bracer"),
           resource("metal/item/ring")
         ),
         resource("metal/palettes"),
         ItemModelProvider.FERUCHEMY_METALS
+      ))
+      .addSource(new ExtendablePalettedPermutations(
+        List.of(resource("metal/item/nugget")),
+        resource("metal/palettes"),
+        Metalborn.resource("metals/nuggets")
+      ))
+      .addSource(new ExtendablePalettedPermutations(
+        List.of(resource("metal/item/ingot")),
+        resource("metal/palettes"),
+        Metalborn.resource("metals/ingots")
       ));
   }
 }

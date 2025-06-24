@@ -1,0 +1,10 @@
+{
+  "values": [
+    "#forge:nuggets/tin",
+    "#forge:nuggets/pewter",
+    "#forge:nuggets/steel",
+    "#forge:nuggets/bronze",
+    "#forge:nuggets/rose_gold",
+    "#forge:nuggets/copper"
+  ]
+}

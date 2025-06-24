@@ -1,0 +1,14 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "group": "metalborn:tin_nugget",
+  "ingredients": [
+    {
+      "item": "metalborn:tin_ingot"
+    }
+  ],
+  "result": {
+    "count": 9,
+    "item": "metalborn:tin_nugget"
+  }
+}

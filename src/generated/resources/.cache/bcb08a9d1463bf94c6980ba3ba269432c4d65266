@@ -1,0 +1,16 @@
+// 1.20.1	2025-06-24T02:21:06.350684	Block States: metalborn
+369f18d967167825f66ddd27de24aaf6e15392ae assets/metalborn/blockstates/bronze_block.json
+8c151a8beb3f12466029abeeb89f41feb47e68e6 assets/metalborn/blockstates/pewter_block.json
+651278860f36f218331ec38d22b43035acdbd4ca assets/metalborn/blockstates/rose_gold_block.json
+b224836415a1b66329bb5121b5db6932413b5c31 assets/metalborn/blockstates/steel_block.json
+f9d8208318e1a648237c9db1aeb818bcc5e5df34 assets/metalborn/blockstates/tin_block.json
+f8cbf1996bbb6337a1e45bcfb02708586839da17 assets/metalborn/models/block/bronze.json
+b0f2524a3bcf973343d282c51c331961374c9663 assets/metalborn/models/block/pewter.json
+73ea839815e64d89dc225e6eeeca40f2f6bc3a98 assets/metalborn/models/block/rose_gold.json
+c4b57cb04fb7c51b10e764ff27ba4a3116e96309 assets/metalborn/models/block/steel.json
+50d2c328feefe4bced7b178621804c513e9a4c2a assets/metalborn/models/block/tin.json
+8ca7a77d576e2fa33c50b5790210b781231434ce assets/metalborn/models/item/bronze_block.json
+72169692f3a1d9d6be042838b846c8a66d6bcb6e assets/metalborn/models/item/pewter_block.json
+4f3015b1bb4c2f70af4804148e2788c77861fc39 assets/metalborn/models/item/rose_gold_block.json
+a654f84646a3d3b10be24931a034cff29ca4dde7 assets/metalborn/models/item/steel_block.json
+867b9dc17e0fba1d67c2c35fbd0f2959ff56deae assets/metalborn/models/item/tin_block.json

@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "group": "metalborn:pewter_block",
+  "key": {
+    "#": {
+      "tag": "forge:ingots/pewter"
+    },
+    "*": {
+      "item": "metalborn:pewter_ingot"
+    }
+  },
+  "pattern": [
+    "###",
+    "#*#",
+    "###"
+  ],
+  "result": {
+    "item": "metalborn:pewter_block"
+  },
+  "show_notification": true
+}

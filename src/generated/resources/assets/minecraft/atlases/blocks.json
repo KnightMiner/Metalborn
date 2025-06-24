@@ -3,11 +3,27 @@
     {
       "type": "metalborn:extendable_palette",
       "palette_folder": "metalborn:metal/palettes",
-      "permutation_list": "metalborn:feruchemy_metals",
+      "permutation_list": "metalborn:metals/feruchemy",
       "textures": [
-        "metalborn:metal/item/lerasium_nugget_overlay",
+        "metalborn:metal/item/nugget_overlay",
         "metalborn:metal/item/bracer",
         "metalborn:metal/item/ring"
+      ]
+    },
+    {
+      "type": "metalborn:extendable_palette",
+      "palette_folder": "metalborn:metal/palettes",
+      "permutation_list": "metalborn:metals/nuggets",
+      "textures": [
+        "metalborn:metal/item/nugget"
+      ]
+    },
+    {
+      "type": "metalborn:extendable_palette",
+      "palette_folder": "metalborn:metal/palettes",
+      "permutation_list": "metalborn:metals/ingots",
+      "textures": [
+        "metalborn:metal/item/ingot"
       ]
     }
   ]

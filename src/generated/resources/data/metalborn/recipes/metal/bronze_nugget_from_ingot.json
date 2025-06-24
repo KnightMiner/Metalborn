@@ -1,0 +1,14 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "group": "metalborn:bronze_nugget",
+  "ingredients": [
+    {
+      "item": "metalborn:bronze_ingot"
+    }
+  ],
+  "result": {
+    "count": 9,
+    "item": "metalborn:bronze_nugget"
+  }
+}

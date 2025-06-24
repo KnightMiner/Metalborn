@@ -1,6 +1,7 @@
-package knightminer.metalborn.data;
+package knightminer.metalborn.data.tag;
 
 import knightminer.metalborn.Metalborn;
+import knightminer.metalborn.data.MetalIds;
 import knightminer.metalborn.metal.MetalId;
 import net.minecraft.core.HolderLookup.Provider;
 import net.minecraft.core.registries.Registries;

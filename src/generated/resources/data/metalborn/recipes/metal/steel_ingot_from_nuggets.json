@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "group": "metalborn:steel_ingot",
+  "key": {
+    "#": {
+      "tag": "forge:nuggets/steel"
+    },
+    "*": {
+      "item": "metalborn:steel_nugget"
+    }
+  },
+  "pattern": [
+    "###",
+    "#*#",
+    "###"
+  ],
+  "result": {
+    "item": "metalborn:steel_ingot"
+  },
+  "show_notification": true
+}

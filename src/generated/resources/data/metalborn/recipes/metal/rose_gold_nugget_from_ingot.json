@@ -1,0 +1,14 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "group": "metalborn:rose_gold_nugget",
+  "ingredients": [
+    {
+      "item": "metalborn:rose_gold_ingot"
+    }
+  ],
+  "result": {
+    "count": 9,
+    "item": "metalborn:rose_gold_nugget"
+  }
+}

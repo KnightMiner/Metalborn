@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "group": "metalborn:rose_gold_block",
+  "key": {
+    "#": {
+      "tag": "forge:ingots/rose_gold"
+    },
+    "*": {
+      "item": "metalborn:rose_gold_ingot"
+    }
+  },
+  "pattern": [
+    "###",
+    "#*#",
+    "###"
+  ],
+  "result": {
+    "item": "metalborn:rose_gold_block"
+  },
+  "show_notification": true
+}

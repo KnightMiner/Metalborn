@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "group": "metalborn:tin_ingot",
+  "key": {
+    "#": {
+      "tag": "forge:nuggets/tin"
+    },
+    "*": {
+      "item": "metalborn:tin_nugget"
+    }
+  },
+  "pattern": [
+    "###",
+    "#*#",
+    "###"
+  ],
+  "result": {
+    "item": "metalborn:tin_ingot"
+  },
+  "show_notification": true
+}

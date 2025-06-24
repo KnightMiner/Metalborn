@@ -3,7 +3,7 @@
   "loader": "metalborn:paletted",
   "palette": {
     "key": "metal",
-    "list": "metalborn:feruchemy_metals"
+    "list": "metalborn:metals/feruchemy"
   },
   "textures": {
     "layer0": "metalborn:metal/item/bracer"

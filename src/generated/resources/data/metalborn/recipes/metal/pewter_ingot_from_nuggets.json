@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "group": "metalborn:pewter_ingot",
+  "key": {
+    "#": {
+      "tag": "forge:nuggets/pewter"
+    },
+    "*": {
+      "item": "metalborn:pewter_nugget"
+    }
+  },
+  "pattern": [
+    "###",
+    "#*#",
+    "###"
+  ],
+  "result": {
+    "item": "metalborn:pewter_ingot"
+  },
+  "show_notification": true
+}

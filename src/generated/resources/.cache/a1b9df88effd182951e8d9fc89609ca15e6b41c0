@@ -1,5 +1,16 @@
-// 1.20.1	2025-06-24T01:15:10.1071061	Item Models: metalborn
-08230b0b5ee72465227fe6e8dfe64271c2b12d17 assets/metalborn/models/item/bracer.json
-db832a9854512c0e4aa11e5a08da0cafa3d15d8f assets/metalborn/models/item/lerasium_alloy_nugget.json
-ee1e894d83d10d03a6abdaaf547664123b552f05 assets/metalborn/models/item/lerasium_nugget.json
-92ae866de7b920c67b1f59efac066b212d050ccf assets/metalborn/models/item/ring.json
+// 1.20.1	2025-06-24T02:41:24.9861915	Item Models: metalborn
+4dc7437e56be8a51858b985325aa1570e1f93125 assets/metalborn/models/item/bracer.json
+6cafe065b45e6f11f06b6fa72ae7ff33b5822c87 assets/metalborn/models/item/bronze_ingot.json
+57256b75590c4b4f2b4ec572a1338e13b49b2bb8 assets/metalborn/models/item/bronze_nugget.json
+eed68e86ae8578312b813454b280a9d33497dd8d assets/metalborn/models/item/copper_nugget.json
+236b438bd353971ec4847103692a02aa83e38847 assets/metalborn/models/item/lerasium_alloy_nugget.json
+73146e3412c7354aeef3be8648ead24b62261d9b assets/metalborn/models/item/lerasium_nugget.json
+8cf49690a049273a0b24ba8a4587d21e655b6f04 assets/metalborn/models/item/pewter_ingot.json
+2fc554d9f323521354de9473b8bb15ff33ea3afe assets/metalborn/models/item/pewter_nugget.json
+e51595d8b73d1c0867cc919972f7b9e7b9c92a6b assets/metalborn/models/item/ring.json
+4a1be52dbbbcbc96f6b775e470f6741ac57c879c assets/metalborn/models/item/rose_gold_ingot.json
+855e5ecc9900899d52c02601845872cd4619db1a assets/metalborn/models/item/rose_gold_nugget.json
+d03592631d065af98197f4d43e454f36602bce8d assets/metalborn/models/item/steel_ingot.json
+78472a9b46ada1a987f796464dcf03bfb80a77cb assets/metalborn/models/item/steel_nugget.json
+c482b24b8f5b3735c308d736d83cc9c87f560b26 assets/metalborn/models/item/tin_ingot.json
+4c0b7832011d7431c97b96655e0667f55fb129cb assets/metalborn/models/item/tin_nugget.json

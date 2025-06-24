@@ -1,0 +1,14 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "group": "metalborn:pewter_nugget",
+  "ingredients": [
+    {
+      "item": "metalborn:pewter_ingot"
+    }
+  ],
+  "result": {
+    "count": 9,
+    "item": "metalborn:pewter_nugget"
+  }
+}

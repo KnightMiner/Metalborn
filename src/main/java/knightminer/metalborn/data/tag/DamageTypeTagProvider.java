@@ -1,4 +1,4 @@
-package knightminer.metalborn.data;
+package knightminer.metalborn.data.tag;
 
 import knightminer.metalborn.Metalborn;
 import net.minecraft.core.HolderLookup.Provider;
