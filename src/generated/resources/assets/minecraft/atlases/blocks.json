@@ -5,7 +5,9 @@
       "palette_folder": "metalborn:metal_palettes",
       "permutation_list": "metalborn:feruchemy_metals",
       "textures": [
-        "metalborn:item/materials/lerasium_nugget_overlay"
+        "metalborn:item/materials/lerasium_nugget_overlay",
+        "metalborn:item/metalmind/bracer",
+        "metalborn:item/metalmind/ring"
       ]
     }
   ]

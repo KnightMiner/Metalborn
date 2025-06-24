@@ -29,5 +29,7 @@ public class JEIPlugin implements IModPlugin {
     };
 
     registration.registerSubtypeInterpreter(Registration.LERASIUM_ALLOY_NUGGET.asItem(), metal);
+    registration.registerSubtypeInterpreter(Registration.BRACER.asItem(), metal);
+    registration.registerSubtypeInterpreter(Registration.RING.asItem(), metal);
   }
 }

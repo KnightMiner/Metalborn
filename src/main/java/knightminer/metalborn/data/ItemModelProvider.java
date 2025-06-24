@@ -26,12 +26,14 @@ public class ItemModelProvider extends net.minecraftforge.client.model.generator
   protected void registerModels() {
     basicItem(Registration.LERASIUM_NUGGET, "materials/lerasium_nugget");
     // lerasium alloy wants to have a mixture of the two colors so it's not mistaken for a normal nugget, so part is untinted
-    customModel(Registration.LERASIUM_ALLOY_NUGGET)
+    customModel(Registration.LERASIUM_ALLOY_NUGGET, false)
       .texture("layer0", "item/materials/lerasium_nugget")
       .texture("layer1", "item/materials/lerasium_nugget_overlay")
       .customLoader(PalettedModelBuilder::new)
       .normal()
       .paletted(FERUCHEMY_METALS, MetalItem.TAG_METAL);
+    metal(Registration.BRACER, "metalmind/bracer", true);
+    metal(Registration.RING, "metalmind/ring", false);
   }
 
 
@@ -42,14 +44,14 @@ public class ItemModelProvider extends net.minecraftforge.client.model.generator
   }
 
   /** Creates a part model with the given texture */
-  private ItemModelBuilder customModel(ItemObject<?> item) {
-    return withExistingParent(item.getId().getPath(), "forge:item/default");
+  private ItemModelBuilder customModel(ItemObject<?> item, boolean tool) {
+    return withExistingParent(item.getId().getPath(), tool ? "forge:item/default-tool" : "forge:item/default");
   }
 
   /** Creates a part model with the given texture */
-  @SuppressWarnings("SameParameterValue")
-  private PalettedModelBuilder<ItemModelBuilder> metal(ItemObject<?> item, String texture) {
-    return customModel(item)
+  @SuppressWarnings("UnusedReturnValue")
+  private PalettedModelBuilder<ItemModelBuilder> metal(ItemObject<?> item, String texture, boolean tool) {
+    return customModel(item, tool)
       .texture("layer0", resource("item/" + texture))
       .customLoader(PalettedModelBuilder::new)
       .paletted(FERUCHEMY_METALS, MetalItem.TAG_METAL);

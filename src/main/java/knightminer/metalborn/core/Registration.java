@@ -5,6 +5,7 @@ import knightminer.metalborn.Metalborn;
 import knightminer.metalborn.item.LerasiumAlloyNuggetItem;
 import knightminer.metalborn.item.LerasiumNuggetItem;
 import knightminer.metalborn.item.MetalItem;
+import knightminer.metalborn.item.MetalmindItem;
 import knightminer.metalborn.metal.effects.AttributeMetalEffect;
 import knightminer.metalborn.metal.effects.ExperienceMetalEffect;
 import knightminer.metalborn.metal.effects.HealMetalEffect;
@@ -60,6 +61,11 @@ public class Registration {
   public static final ItemObject<LerasiumNuggetItem> LERASIUM_NUGGET = ITEMS.register("lerasium_nugget", () -> new LerasiumNuggetItem(new Item.Properties()));
   public static final ItemObject<LerasiumAlloyNuggetItem> LERASIUM_ALLOY_NUGGET = ITEMS.register("lerasium_alloy_nugget", () -> new LerasiumAlloyNuggetItem(new Item.Properties()));
 
+  // metalminds
+  public static final ItemObject<MetalmindItem> BRACER = ITEMS.register("bracer", () -> new MetalmindItem(new Item.Properties(), 10));
+  public static final ItemObject<MetalmindItem> RING = ITEMS.register("ring", () -> new MetalmindItem(new Item.Properties(), 1));
+
+
   /** Damage type for metal damaging the player, used in gold's effect */
   public static final ResourceKey<DamageType> METAL_HURT = ResourceKey.create(Registries.DAMAGE_TYPE, resource("metal_hurt"));
 
@@ -79,6 +85,8 @@ public class Registration {
 
     output.accept(LERASIUM_NUGGET);
     accept(consumer, LERASIUM_ALLOY_NUGGET);
+    accept(consumer, RING);
+    accept(consumer, BRACER);
   }
 
   /** Adds all members of an enum object to the given creative tab */
