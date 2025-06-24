@@ -4,6 +4,9 @@
     "metalborn:pewter_block",
     "metalborn:steel_block",
     "metalborn:bronze_block",
-    "metalborn:rose_gold_block"
+    "metalborn:rose_gold_block",
+    "metalborn:tin_ore",
+    "metalborn:deepslate_tin_ore",
+    "metalborn:raw_tin_block"
   ]
 }

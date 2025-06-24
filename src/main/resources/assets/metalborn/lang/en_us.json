@@ -53,6 +53,11 @@
   "metal_power.metalborn.rose_gold.stores": "??",
   "metal_power.metalborn.rose_gold.ferring": "??",
 
+  "block.metalborn.tin_ore": "Tin Ore",
+  "block.metalborn.deepslate_tin_ore": "Deepslate Tin Ore",
+  "block.metalborn.raw_tin_block": "Block of Raw Tin",
+  "item.metalborn.raw_tin": "Raw Tin",
+
   "item.metalborn.lerasium_nugget": "Lerasium Nugget",
   "item.metalborn.lerasium_nugget.on_consume": "Eat to become a random ferring",
   "item.metalborn.lerasium_alloy_nugget": "Lerasium Alloy Nugget",

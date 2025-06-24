@@ -32,6 +32,8 @@ public class ItemModelProvider extends net.minecraftforge.client.model.generator
 
   @Override
   protected void registerModels() {
+    // ores
+    basicItem(Registration.RAW_TIN, "raw_tin");
     // ingots and nuggets
     metal(Registration.TIN, MetalIds.tin);
     metal(Registration.PEWTER, MetalIds.pewter);

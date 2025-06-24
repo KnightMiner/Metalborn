@@ -1,0 +1,10 @@
+{
+  "type": "forge:add_features",
+  "biomes": "#minecraft:is_overworld",
+  "features": [
+    "metalborn:tin_ore_upper",
+    "metalborn:tin_ore_middle",
+    "metalborn:tin_ore_small"
+  ],
+  "step": "underground_ores"
+}

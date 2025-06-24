@@ -1,0 +1,14 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "group": "metalborn:raw_tin",
+  "ingredients": [
+    {
+      "item": "metalborn:raw_tin_block"
+    }
+  ],
+  "result": {
+    "count": 9,
+    "item": "metalborn:raw_tin"
+  }
+}

@@ -1,11 +1,17 @@
-// 1.20.1	2025-06-24T02:45:46.5415124	Tags for minecraft:block mod id metalborn
-d88912df4d848086ef2aec216669f16c94a7f872 data/forge/tags/blocks/storage_blocks.json
+// 1.20.1	2025-06-24T03:55:42.6970027	Tags for minecraft:block mod id metalborn
+1c9fb56da40e8cd63f3c1d68523d31e2750702fd data/forge/tags/blocks/ores.json
+e7db865097a0fd2f87bbf744923d819788a81996 data/forge/tags/blocks/ores/tin.json
+486360b6e01293cdc47e60956cceef9cb46d3bc5 data/forge/tags/blocks/ores_in_ground/deepslate.json
+ee27f96aee52946fbb7ae38b66dd45a3035f7c4d data/forge/tags/blocks/ores_in_ground/stone.json
+6bbf031503861748e599ed5679e134fee25df736 data/forge/tags/blocks/ore_rates/singular.json
+420be5329580c1597c82b8b6fad382090cac342c data/forge/tags/blocks/storage_blocks.json
 68406cc2638b7acabe6ad75f8f719d1373e34b91 data/forge/tags/blocks/storage_blocks/bronze.json
 cd5b2c9853eed4454b5baadfa42e59b461e32409 data/forge/tags/blocks/storage_blocks/pewter.json
+98b4f8037e207f94f11e5b6396a5479135d23f88 data/forge/tags/blocks/storage_blocks/raw_tin.json
 0eb858f023ba3ddbb0a3699de23e92faf0feceb0 data/forge/tags/blocks/storage_blocks/rose_gold.json
 2c8e40745b73849326f23e235c1cdb273872a96f data/forge/tags/blocks/storage_blocks/steel.json
 e585c51c68d5f9813b4e4e9ae82ccfc368396757 data/forge/tags/blocks/storage_blocks/tin.json
 1e501044368827a940fd70b0c3d0e4d3baf1b9c1 data/minecraft/tags/blocks/beacon_base_blocks.json
-d16dee78ecb2c473c393cc9fbc57ea7dffc787aa data/minecraft/tags/blocks/mineable/pickaxe.json
+a5de5bd88402e5bd067fe69d729b4d24ecadc6da data/minecraft/tags/blocks/mineable/pickaxe.json
 a2d924f303253ffc5d2334e498f502e7fceacd20 data/minecraft/tags/blocks/needs_iron_tool.json
-e585c51c68d5f9813b4e4e9ae82ccfc368396757 data/minecraft/tags/blocks/needs_stone_tool.json
+17786cc4942fb763a90698e9df13ee1e36113cfb data/minecraft/tags/blocks/needs_stone_tool.json

@@ -1,0 +1,61 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_deepslate": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "metalborn:deepslate_tin_ore"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_ore": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "metalborn:tin_ore"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_raw": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "metalborn:raw_tin"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "metalborn:metal/tin_ingot_blasting"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_raw",
+      "has_ore",
+      "has_deepslate",
+      "has_the_recipe"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "metalborn:metal/tin_ingot_blasting"
+    ]
+  },
+  "sends_telemetry_event": false
+}

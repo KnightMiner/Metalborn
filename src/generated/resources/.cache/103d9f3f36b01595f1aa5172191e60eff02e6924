@@ -1,2 +1,8 @@
-// 1.20.1	2025-06-21T20:42:31.6143346	Registries
+// 1.20.1	2025-06-24T04:10:36.721329	Registries
 6d977b6af1db185812a9b7f8201854846aa93c89 data/metalborn/damage_type/metal_hurt.json
+4fc34f50f50006fbbc54c1056f914e326816da8d data/metalborn/forge/biome_modifier/overworld_ores.json
+81e88c0d8f34c9d9d30f85790fe9c7552b722b22 data/metalborn/worldgen/configured_feature/tin_ore.json
+65d5ccf0c5dd09ef1efdf0c8339f3253c3965231 data/metalborn/worldgen/configured_feature/tin_ore_small.json
+67b45f728c6e88585ee8583dc1bf28bede833020 data/metalborn/worldgen/placed_feature/tin_ore_middle.json
+fbb16036cb34bb1feb9d61002f3c6787a01cea85 data/metalborn/worldgen/placed_feature/tin_ore_small.json
+560948061f7bd42010884b8905e9161cdcfefad6 data/metalborn/worldgen/placed_feature/tin_ore_upper.json

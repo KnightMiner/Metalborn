@@ -33,5 +33,9 @@ public class BlockLootTableProvider extends BlockLootSubProvider {
     dropSelf(Registration.STEEL.get());
     dropSelf(Registration.BRONZE.get());
     dropSelf(Registration.ROSE_GOLD.get());
+    // tin ore
+    dropSelf(Registration.RAW_TIN_BLOCK.get());
+    add(Registration.TIN_ORE.get(), block -> createOreDrop(block, Registration.RAW_TIN.get()));
+    add(Registration.DEEPSLATE_TIN_ORE.get(), block -> createOreDrop(block, Registration.RAW_TIN.get()));
   }
 }

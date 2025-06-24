@@ -1,6 +1,9 @@
-// 1.20.1	2025-06-24T02:21:06.3487234	Loot Tables
+// 1.20.1	2025-06-24T03:55:42.7001796	Loot Tables
 12ac80b91a5718799508c7e6fc3e4facf1a96fb0 data/metalborn/loot_tables/blocks/bronze_block.json
+34c4026a21f753b5e5dfb6d3e9f675c0827990fb data/metalborn/loot_tables/blocks/deepslate_tin_ore.json
 48dacf832f6ac7cde4fc2baea7dee8a178f8a0b2 data/metalborn/loot_tables/blocks/pewter_block.json
+3012ee7ddc3969ce0dd1c950dce213600445575e data/metalborn/loot_tables/blocks/raw_tin_block.json
 45a41436f10be8a8eb21e902c4a416286d9a5598 data/metalborn/loot_tables/blocks/rose_gold_block.json
 8f1b41703d13462d511625843a9d6e9d942e9c7e data/metalborn/loot_tables/blocks/steel_block.json
 70406100cb78b66b0dda15fad7c7502bebf25d4a data/metalborn/loot_tables/blocks/tin_block.json
+84fc64744f6e902c85eeb20137e644bd5eadbefd data/metalborn/loot_tables/blocks/tin_ore.json

@@ -46,8 +46,11 @@ import static knightminer.metalborn.Metalborn.resource;
 
 /** Handles any in code registrations */
 public class Registration {
+  /** Damage type for metal damaging the player, used in gold's effect */
   private static final BlockDeferredRegister BLOCKS = new BlockDeferredRegister(Metalborn.MOD_ID);
   private static final ItemDeferredRegister ITEMS = new ItemDeferredRegister(Metalborn.MOD_ID);
+  private static final Item.Properties PROPS = new Item.Properties();
+  private static final Function<Block, BlockItem> BLOCK_ITEM = block -> new BlockItem(block, PROPS);
 
   private Registration() {}
 
@@ -76,16 +79,17 @@ public class Registration {
   public static final ItemObject<LerasiumAlloyNuggetItem> LERASIUM_ALLOY_NUGGET = ITEMS.register("lerasium_alloy_nugget", () -> new LerasiumAlloyNuggetItem(new Item.Properties()));
 
   // unique
-  public static final MetalItemObject TIN, PEWTER, STEEL, BRONZE, ROSE_GOLD;
-  static {
-    Item.Properties props = new Item.Properties();
-    Function<Block, BlockItem> blockItem = block -> new BlockItem(block, props);
-    TIN       = BLOCKS.registerMetal("tin",       metalBuilder(MapColor.ICE), blockItem, props);
-    PEWTER    = BLOCKS.registerMetal("pewter",    metalBuilder(MapColor.TERRACOTTA_GREEN), blockItem, props);
-    STEEL     = BLOCKS.registerMetal("steel",     metalBuilder(MapColor.STONE), blockItem, props);
-    BRONZE    = BLOCKS.registerMetal("bronze",    metalBuilder(MapColor.WOOD), blockItem, props);
-    ROSE_GOLD = BLOCKS.registerMetal("rose_gold", metalBuilder(MapColor.TERRACOTTA_WHITE), blockItem, props);
-  }
+  public static final MetalItemObject TIN       = BLOCKS.registerMetal("tin",       metalBuilder(MapColor.ICE), BLOCK_ITEM, PROPS);
+  public static final MetalItemObject PEWTER    = BLOCKS.registerMetal("pewter",    metalBuilder(MapColor.TERRACOTTA_GREEN), BLOCK_ITEM, PROPS);
+  public static final MetalItemObject STEEL     = BLOCKS.registerMetal("steel",     metalBuilder(MapColor.STONE), BLOCK_ITEM, PROPS);
+  public static final MetalItemObject BRONZE    = BLOCKS.registerMetal("bronze",    metalBuilder(MapColor.WOOD), BLOCK_ITEM, PROPS);
+  public static final MetalItemObject ROSE_GOLD = BLOCKS.registerMetal("rose_gold", metalBuilder(MapColor.TERRACOTTA_WHITE), BLOCK_ITEM, PROPS);
+
+  // ores
+  public static final ItemObject<Block> TIN_ORE = BLOCKS.register("tin_ore", BlockBehaviour.Properties.of().mapColor(MapColor.STONE).instrument(NoteBlockInstrument.BASEDRUM).requiresCorrectToolForDrops().strength(3.0F, 3.0F), BLOCK_ITEM);
+  public static final ItemObject<Block> DEEPSLATE_TIN_ORE = BLOCKS.register("deepslate_tin_ore", BlockBehaviour.Properties.of().mapColor(MapColor.DEEPSLATE).instrument(NoteBlockInstrument.BASEDRUM).requiresCorrectToolForDrops().strength(4.5F, 3.0F).sound(SoundType.DEEPSLATE), BLOCK_ITEM);
+  public static final ItemObject<Block> RAW_TIN_BLOCK = BLOCKS.register("raw_tin_block", BlockBehaviour.Properties.of().mapColor(MapColor.RAW_IRON).instrument(NoteBlockInstrument.BASEDRUM).requiresCorrectToolForDrops().strength(5.0F, 6.0F), BLOCK_ITEM);
+  public static final ItemObject<Item> RAW_TIN = ITEMS.register("raw_tin");
 
   // metalminds
   public static final ItemObject<MetalmindItem> BRACER = ITEMS.register("bracer", () -> new MetalmindItem(new Item.Properties(), 10));
@@ -109,14 +113,22 @@ public class Registration {
   private static void addTabItems(ItemDisplayParameters itemDisplayParameters, Output output) {
     Consumer<ItemStack> consumer = output::accept;
 
+    // metals
+    output.accept(COPPER_NUGGET);
     accept(output, TIN);
     accept(output, PEWTER);
     accept(output, STEEL);
     accept(output, BRONZE);
     accept(output, ROSE_GOLD);
-    output.accept(COPPER_NUGGET);
+    // ores
+    output.accept(TIN_ORE);
+    output.accept(DEEPSLATE_TIN_ORE);
+    output.accept(RAW_TIN);
+    output.accept(RAW_TIN_BLOCK);
+    // lerasium
     output.accept(LERASIUM_NUGGET);
     accept(consumer, LERASIUM_ALLOY_NUGGET);
+    // metalminds
     accept(consumer, RING);
     accept(consumer, BRACER);
   }

@@ -20,6 +20,9 @@ public class BlockModelProvider extends BlockStateProvider {
 
   @Override
   protected void registerStatesAndModels() {
+    basic(Registration.TIN_ORE, "tin_ore");
+    basic(Registration.DEEPSLATE_TIN_ORE, "deepslate_tin_ore");
+    basic(Registration.RAW_TIN_BLOCK, "raw_tin");
     storage(Registration.TIN, MetalIds.tin);
     storage(Registration.PEWTER, MetalIds.pewter);
     storage(Registration.STEEL, MetalIds.steel);
@@ -28,10 +31,14 @@ public class BlockModelProvider extends BlockStateProvider {
   }
 
   /** Adds a storage block with models under storage */
-  private void storage(ItemObject<? extends Block> block, MetalId metal) {
-    String path = metal.getPath();
+  private void basic(ItemObject<? extends Block> block, String path) {
     ModelFile model = models().cubeAll(path, Metalborn.resource(ModelProvider.BLOCK_FOLDER + '/' + path));
     simpleBlock(block.get(), model);
     simpleBlockItem(block.get(), model);
+  }
+
+  /** Adds a storage block with models under storage */
+  private void storage(ItemObject<? extends Block> block, MetalId metal) {
+    basic(block, metal.getPath());
   }
 }
