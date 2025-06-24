@@ -3,6 +3,7 @@ package knightminer.metalborn.metal;
 import knightminer.metalborn.Metalborn;
 import net.minecraft.Util;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceLocation;
 import org.jetbrains.annotations.Nullable;
 import slimeknights.mantle.data.loadable.Loadables;
@@ -41,8 +42,18 @@ public class MetalId extends ResourceLocation {
   }
 
   /** Gets the display name for this ID */
-  public Component getName() {
+  public MutableComponent getName() {
     return Component.translatable(this.getTranslationKey());
+  }
+
+  /** Gets the display name what is stored with feruchemy */
+  public MutableComponent getStores() {
+    return Component.translatable(this.getTranslationKey() + ".stores");
+  }
+
+  /** Gets the display name for the ferring */
+  public MutableComponent getFerring() {
+    return Component.translatable(this.getTranslationKey() + ".ferring");
   }
 
 

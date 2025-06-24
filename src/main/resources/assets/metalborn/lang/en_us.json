@@ -2,18 +2,46 @@
   "creative_tab.metalborn": "Metalborn",
 
   "metal_power.metalborn.none": "None",
+  "metal_power.metalborn.none.stores": "Nothing",
+  "metal_power.metalborn.none.ferring": "Gnat",
+
   "metal_power.metalborn.iron": "Iron",
+  "metal_power.metalborn.iron.stores": "Weight",
+  "metal_power.metalborn.iron.ferring": "Skimmer",
+
   "metal_power.metalborn.steel": "Steel",
+  "metal_power.metalborn.steel.stores": "Speed",
+  "metal_power.metalborn.steel.ferring": "Steelrunner",
+
   "metal_power.metalborn.tin": "Tin",
+  "metal_power.metalborn.tin.stores": "Senses",
+  "metal_power.metalborn.tin.ferring": "Windwhisperer",
+
   "metal_power.metalborn.pewter": "Pewter",
+  "metal_power.metalborn.pewter.stores": "Strength",
+  "metal_power.metalborn.pewter.ferring": "Brute",
+
   "metal_power.metalborn.copper": "Copper",
+  "metal_power.metalborn.copper.stores": "Experience",
+  "metal_power.metalborn.copper.ferring": "Archivist",
+
   "metal_power.metalborn.bronze": "Bronze",
+  "metal_power.metalborn.bronze.stores": "Energy",
+  "metal_power.metalborn.bronze.ferring": "Subsumer",
+
   "metal_power.metalborn.gold": "Gold",
+  "metal_power.metalborn.gold.stores": "Health",
+  "metal_power.metalborn.gold.ferring": "Bloodmaker",
+
   "metal_power.metalborn.rose_gold": "Rose Gold",
+  "metal_power.metalborn.rose_gold.stores": "??",
+  "metal_power.metalborn.rose_gold.ferring": "??",
 
   "item.metalborn.lerasium_nugget": "Lerasium Nugget",
+  "item.metalborn.lerasium_nugget.on_consume": "Eat to become a random ferring",
   "item.metalborn.lerasium_alloy_nugget": "Lerasium Nugget",
   "item.metalborn.lerasium_alloy_nugget.format": "Lerasium-%s Nugget",
+  "item.metalborn.lerasium_alloy_nugget.on_consume": "Eat to become a %s ferring",
 
   "item.metalborn.bracer": "Bracer",
   "item.metalborn.bracer.format": "%s Bracer",
@@ -21,6 +49,7 @@
   "item.metalborn.ring.format": "%s Ring",
 
   "item.metalborn.metalmind.metal_id": "Metal ID: %s",
+  "item.metalborn.metalmind.stores": "Stores: %s",
   "item.metalborn.metalmind.amount": "Stored: %s / %s",
   "item.metalborn.metalmind.owner": "Owner: %s",
   "item.metalborn.metalmind.owner.none": "Unsealed",

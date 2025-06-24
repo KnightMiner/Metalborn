@@ -24,6 +24,7 @@ import java.util.UUID;
 public class MetalmindItem extends Item implements MetalItem, Metalmind {
   // translation keys
   private static final String KEY_AMOUNT = Metalborn.key("item", "metalmind.amount");
+  private static final String KEY_STORES = Metalborn.key("item", "metalmind.stores");
   private static final String KEY_OWNER = Metalborn.key("item", "metalmind.owner");
   private static final Component UNKNOWN_OWNER = Component.translatable(KEY_OWNER, Metalborn.component("item", "metalmind.owner.unknown").withStyle(ChatFormatting.RED)).withStyle(ChatFormatting.GRAY);
   private static final Component UNSEALED = Component.translatable(KEY_OWNER, Metalborn.component("item", "metalmind.owner.none").withStyle(ChatFormatting.ITALIC)).withStyle(ChatFormatting.GRAY);
@@ -181,7 +182,8 @@ public class MetalmindItem extends Item implements MetalItem, Metalmind {
 
   @Override
   public int getBarWidth(ItemStack stack) {
-    return getAmount(stack) * 13 / getCapacity(stack);
+    int capacity = getCapacity(stack);
+    return capacity > 0 ? Math.min(13, getAmount(stack) * 13 / capacity) : 0;
   }
 
   @Override
@@ -199,24 +201,32 @@ public class MetalmindItem extends Item implements MetalItem, Metalmind {
 
   @Override
   public void appendHoverText(ItemStack stack, @Nullable Level pLevel, List<Component> tooltip, TooltipFlag flag) {
-    if (flag.isAdvanced()) {
-      MetalItem.appendMetalId(stack, tooltip);
-    }
-    // owner name
-    int amount = getAmount(stack);
-    if (amount > 0) {
-      CompoundTag tag = stack.getTag();
-      if (tag != null) {
-        if (tag.contains(TAG_OWNER_NAME, Tag.TAG_STRING)) {
-          tooltip.add(Component.translatable(KEY_OWNER, Component.literal(tag.getString(TAG_OWNER_NAME)).withStyle(ChatFormatting.GOLD)).withStyle(ChatFormatting.GRAY));
-        } else if (tag.hasUUID(TAG_OWNER)) {
-          tooltip.add(UNKNOWN_OWNER);
-        } else {
-          tooltip.add(UNSEALED);
+    MetalId metal = getMetal(stack);
+    if (metal != MetalId.NONE) {
+      if (flag.isAdvanced()) {
+        MetalItem.appendMetalId(metal, tooltip);
+      }
+      // stores
+      tooltip.add(Component.translatable(KEY_STORES, metal.getStores().withStyle(ChatFormatting.GREEN)).withStyle(ChatFormatting.GRAY));
+
+      // amount
+      int amount = getAmount(stack);
+      tooltip.add(Component.translatable(KEY_AMOUNT, amount, getCapacity(stack)).withStyle(ChatFormatting.GRAY));
+
+      // owner name
+      if (amount > 0) {
+        CompoundTag tag = stack.getTag();
+        if (tag != null) {
+          if (tag.contains(TAG_OWNER_NAME, Tag.TAG_STRING)) {
+            tooltip.add(Component.translatable(KEY_OWNER, Component.literal(tag.getString(TAG_OWNER_NAME)).withStyle(ChatFormatting.GOLD)).withStyle(ChatFormatting.GRAY));
+          } else if (tag.hasUUID(TAG_OWNER)) {
+            tooltip.add(UNKNOWN_OWNER);
+          } else {
+            tooltip.add(UNSEALED);
+          }
         }
       }
     }
-    tooltip.add(Component.translatable(KEY_AMOUNT, amount, getCapacity(stack)).withStyle(ChatFormatting.GRAY));
   }
 
   @Override

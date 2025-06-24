@@ -64,7 +64,7 @@ public class FerringCommand {
     context.getSource().sendSuccess(() -> {
       MetalId id = power.id();
       // TODO: use ferring names?
-      return Component.translatable(GET, player.getDisplayName(), id.getName(), id);
+      return Component.translatable(GET, player.getDisplayName(), id.getFerring(), id);
     }, true);
     return power.index();
   }
@@ -95,13 +95,13 @@ public class FerringCommand {
       if (metal == null) {
         source.sendSuccess(() -> Component.translatable(RANDOM_SINGLE, players.iterator().next().getDisplayName()), true);
       } else {
-        source.sendSuccess(() -> Component.translatable(SET_SINGLE, players.iterator().next().getDisplayName(), metal.getName(), metal), true);
+        source.sendSuccess(() -> Component.translatable(SET_SINGLE, players.iterator().next().getDisplayName(), metal.getFerring(), metal), true);
       }
     } else {
       if (metal == null) {
         source.sendSuccess(() -> Component.translatable(RANDOM_MULTIPLE, players.size()), true);
       } else {
-        source.sendSuccess(() -> Component.translatable(SET_MULTIPLE, players.size(), metal.getName(), metal), true);
+        source.sendSuccess(() -> Component.translatable(SET_MULTIPLE, players.size(), metal.getFerring(), metal), true);
       }
     }
     return size;

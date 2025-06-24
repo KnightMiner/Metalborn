@@ -55,11 +55,8 @@ public interface MetalItem extends ItemLike {
   }
 
   /** Adds metal information to the tooltip. Should only be called in advanced tooltips */
-  static void appendMetalId(ItemStack stack, List<Component> tooltip) {
-    MetalId metal = getMetal(stack);
-    if (metal != MetalId.NONE) {
-      tooltip.add(Component.translatable(KEY_METAL_ID, metal.toString()).withStyle(ChatFormatting.DARK_GRAY));
-    }
+  static void appendMetalId(MetalId metal, List<Component> tooltip) {
+    tooltip.add(Component.translatable(KEY_METAL_ID, metal.toString()).withStyle(ChatFormatting.DARK_GRAY));
   }
 
   /** Gets the creator mod ID to show */
