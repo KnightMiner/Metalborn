@@ -49,10 +49,10 @@ public record RangeMetalEffect(int min, int max, MetalEffect effect) implements 
         }
         previous = 0;
       }
-      onChange(power, entity, level, previous);
+      effect.onChange(power, entity, level, previous);
     } else if (previousInRange) {
       // if its not in range but was previously in range, send a 0 to indicate it was "removed"
-      onChange(power, entity, 0, previous);
+      effect.onChange(power, entity, 0, previous);
     }
   }
 
