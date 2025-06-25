@@ -51,7 +51,7 @@ public record AttributeMetalEffect(String unique, UUID uuid, Attribute attribute
 
   @Override
   public void onChange(MetalPower power, LivingEntity entity, int level, int previous) {
-    if (level != previous) {
+    if (level == previous) {
       return;
     }
     AttributeInstance instance = entity.getAttribute(this.attribute);
