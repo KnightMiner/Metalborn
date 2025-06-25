@@ -180,6 +180,9 @@ public class MetalbornCapability implements ICapabilitySerializable<CompoundTag>
 
   /** copy caps when the player respawns/returns from the end */
   private static void playerClone(PlayerEvent.Clone event) {
-    getData(event.getEntity()).copyFrom(getData(event.getOriginal()), event.isWasDeath());
+    Player original = event.getOriginal();
+    original.reviveCaps();
+    getData(event.getEntity()).copyFrom(getData(original), event.isWasDeath());
+    original.invalidateCaps();
   }
 }
