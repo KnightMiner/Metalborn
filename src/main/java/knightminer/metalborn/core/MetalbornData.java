@@ -23,6 +23,9 @@ public interface MetalbornData extends INBTSerializable<CompoundTag> {
   /** Copies the passed data into this data */
   void copyFrom(MetalbornData data, boolean wasDeath);
 
+  /** Ticks all effects */
+  void tick();
+
   /** Empty instance for defaulting data related methods */
   MetalbornData EMPTY = new MetalbornData() {
     @Override
@@ -48,5 +51,8 @@ public interface MetalbornData extends INBTSerializable<CompoundTag> {
 
     @Override
     public void deserializeNBT(CompoundTag nbt) {}
+
+    @Override
+    public void tick() {}
   };
 }

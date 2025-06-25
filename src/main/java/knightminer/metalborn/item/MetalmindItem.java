@@ -96,7 +96,8 @@ public class MetalmindItem extends Item implements MetalItem, Metalmind {
     return 0;
   }
 
-  private void emptyMetalmind(ItemStack stack) {
+  /** Empties out the metalmind entirely */
+  private static void emptyMetalmind(ItemStack stack) {
     // completely drained? clear amount and owner
     CompoundTag tag = stack.getTag();
     if (tag != null) {
@@ -112,33 +113,40 @@ public class MetalmindItem extends Item implements MetalItem, Metalmind {
       return 0;
     }
     int updated = getAmount(stack) + amount;
-    if (amount > 0) {
-      CompoundTag tag = stack.getOrCreateTag();
-      // if we are the first to fill it, set the owner
-      if (amount == updated) {
-        // TODO: identity shenanigans
-        tag.putUUID(TAG_OWNER, player.getUUID());
-        tag.putString(TAG_OWNER_NAME, player.getGameProfile().getName());
-      }
+    CompoundTag tag = stack.getOrCreateTag();
+    // if we are the first to fill it, set the owner
+    if (amount == updated) {
+      // TODO: identity shenanigans
+      tag.putUUID(TAG_OWNER, player.getUUID());
+      tag.putString(TAG_OWNER_NAME, player.getGameProfile().getName());
+    }
 
-      // if given more than we can hold, return the leftover
-      int capacity = getCapacity(stack);
-      if (updated >= capacity) {
-        tag.putInt(TAG_AMOUNT, capacity);
-        return updated - capacity;
-      } else {
-        // store everything
-        tag.putInt(TAG_AMOUNT, updated);
-      }
+    // if given more than we can hold, return the leftover
+    int capacity = getCapacity(stack);
+    if (updated >= capacity) {
+      tag.putInt(TAG_AMOUNT, capacity);
+      return updated - capacity;
+    } else {
+      // store everything
+      tag.putInt(TAG_AMOUNT, updated);
+      return amount;
+    }
+  }
+
+  @Override
+  public int drain(ItemStack stack, Player player, int amount) {
+    if (amount == 0) {
       return 0;
-    } else if (updated > 0) {
+    }
+    int updated = getAmount(stack) - amount;
+    if (updated > 0) {
       // drained but not completely?
       stack.getOrCreateTag().putInt(TAG_AMOUNT, updated);
-      return 0;
+      return amount;
     } else {
       // completely drained? clear amount and owner
       emptyMetalmind(stack);
-      return updated;
+      return amount - updated;
     }
   }
 

@@ -7,6 +7,9 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraftforge.event.AddReloadListenerEvent;
+import net.minecraftforge.event.TickEvent.Phase;
+import net.minecraftforge.event.TickEvent.PlayerTickEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent.RightClickItem;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
@@ -39,5 +42,18 @@ public class MetalbornHandler {
         event.setCancellationResult(InteractionResult.sidedSuccess(client));
       }
     }
+  }
+
+  /** Handles ticking all active metalminds */
+  @SubscribeEvent
+  static void playerTick(PlayerTickEvent event) {
+    if (event.phase == Phase.START && !event.player.level().isClientSide) {
+      MetalbornCapability.getData(event.player).tick();
+    }
+  }
+
+  @SubscribeEvent
+  static void addReloadListeners(AddReloadListenerEvent event) {
+    event.addListener(ActiveMetalminds.RELOAD_LISTENER);
   }
 }

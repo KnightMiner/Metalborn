@@ -23,7 +23,6 @@ import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 /** Capability containing all data related to metalborn status. Includes ferring type, tapping/storing, metalminds, spikes, and alike. */
@@ -43,8 +42,15 @@ public class MetalbornCapability implements ICapabilitySerializable<CompoundTag>
   @Nullable
   private MetalId ferringType;
 
+  /** Handler for effects on active metalminds */
+  private final ActiveMetalminds activeMetalminds;
+  /** Inventory of all metalminds */
+  private final MetalmindInventory metalminds;
+
   private MetalbornCapability(Player player) {
     this.player = player;
+    this.activeMetalminds = new ActiveMetalminds(player);
+    this.metalminds = new MetalmindInventory(activeMetalminds, player);
   }
 
 
@@ -57,6 +63,10 @@ public class MetalbornCapability implements ICapabilitySerializable<CompoundTag>
 
   @Override
   public void setFerringType(MetalId metalId) {
+    // TODO: only run this if the new metal is not available elsehwere
+    if (ferringType != null && !ferringType.equals(metalId)) {
+      activeMetalminds.clearMetal(ferringType);
+    }
     ferringType = metalId;
     // TODO: sync selection?
   }
@@ -70,10 +80,14 @@ public class MetalbornCapability implements ICapabilitySerializable<CompoundTag>
     return ferringType;
   }
 
+  @Override
+  public void tick() {
+    activeMetalminds.tick();
+  }
+
 
   /* Capability logic */
 
-  @NotNull
   @Override
   public <T> LazyOptional<T> getCapability(Capability<T> cap, @Nullable Direction side) {
     return CAPABILITY.orEmpty(cap, capability);
@@ -86,6 +100,7 @@ public class MetalbornCapability implements ICapabilitySerializable<CompoundTag>
       if (!wasDeath) {
         this.ferringType = other.ferringType;
       }
+      this.metalminds.copyFrom(other.metalminds);
     }
   }
 
@@ -100,6 +115,7 @@ public class MetalbornCapability implements ICapabilitySerializable<CompoundTag>
   /* NBT */
 
   private static final String FERRING_TYPE = "ferring_type";
+  private static final String METALMINDS = "metalminds";
 
   @Override
   public CompoundTag serializeNBT() {
@@ -107,6 +123,7 @@ public class MetalbornCapability implements ICapabilitySerializable<CompoundTag>
     if (ferringType != null) {
       tag.putString(FERRING_TYPE, ferringType.toString());
     }
+    tag.put(METALMINDS, metalminds.serializeNBT());
     return tag;
   }
 
@@ -114,6 +131,10 @@ public class MetalbornCapability implements ICapabilitySerializable<CompoundTag>
   public void deserializeNBT(CompoundTag nbt) {
     if (nbt.contains(FERRING_TYPE, Tag.TAG_STRING)) {
       this.ferringType = MetalId.tryParse(nbt.getString(FERRING_TYPE));
+    }
+    if (nbt.contains(METALMINDS, Tag.TAG_LIST)) {
+      this.metalminds.deserializeNBT(nbt.getList(METALMINDS, Tag.TAG_COMPOUND));
+      this.metalminds.refreshActive();
     }
   }
 
@@ -125,9 +146,9 @@ public class MetalbornCapability implements ICapabilitySerializable<CompoundTag>
     FMLJavaModLoadingContext.get().getModEventBus().addListener(EventPriority.NORMAL, false, RegisterCapabilitiesEvent.class, MetalbornCapability::register);
     MinecraftForge.EVENT_BUS.addGenericListener(Entity.class, MetalbornCapability::attachCapability);
     MinecraftForge.EVENT_BUS.addListener(EventPriority.NORMAL, false, PlayerEvent.Clone.class, MetalbornCapability::playerClone);
-    MinecraftForge.EVENT_BUS.addListener(EventPriority.NORMAL, false, PlayerEvent.PlayerRespawnEvent.class, event -> sync(event.getEntity()));
-    MinecraftForge.EVENT_BUS.addListener(EventPriority.NORMAL, false, PlayerEvent.PlayerChangedDimensionEvent.class, event -> sync(event.getEntity()));
-    MinecraftForge.EVENT_BUS.addListener(EventPriority.NORMAL, false, PlayerEvent.PlayerLoggedInEvent.class, event -> sync(event.getEntity()));
+    //MinecraftForge.EVENT_BUS.addListener(EventPriority.NORMAL, false, PlayerEvent.PlayerRespawnEvent.class, event -> sync(event.getEntity()));
+    //MinecraftForge.EVENT_BUS.addListener(EventPriority.NORMAL, false, PlayerEvent.PlayerChangedDimensionEvent.class, event -> sync(event.getEntity()));
+    //MinecraftForge.EVENT_BUS.addListener(EventPriority.NORMAL, false, PlayerEvent.PlayerLoggedInEvent.class, event -> sync(event.getEntity()));
   }
 
 
