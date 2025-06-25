@@ -3,8 +3,6 @@ package knightminer.metalborn.core;
 import knightminer.metalborn.Metalborn;
 import knightminer.metalborn.metal.MetalId;
 import knightminer.metalborn.metal.MetalManager;
-import knightminer.metalborn.network.MetalbornNetwork;
-import knightminer.metalborn.network.SyncMetalbornDataPacket;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
@@ -172,9 +170,6 @@ public class MetalbornCapability implements ICapabilitySerializable<CompoundTag>
     FMLJavaModLoadingContext.get().getModEventBus().addListener(EventPriority.NORMAL, false, RegisterCapabilitiesEvent.class, MetalbornCapability::register);
     MinecraftForge.EVENT_BUS.addGenericListener(Entity.class, MetalbornCapability::attachCapability);
     MinecraftForge.EVENT_BUS.addListener(EventPriority.NORMAL, false, PlayerEvent.Clone.class, MetalbornCapability::playerClone);
-    //MinecraftForge.EVENT_BUS.addListener(EventPriority.NORMAL, false, PlayerEvent.PlayerRespawnEvent.class, event -> sync(event.getEntity()));
-    //MinecraftForge.EVENT_BUS.addListener(EventPriority.NORMAL, false, PlayerEvent.PlayerChangedDimensionEvent.class, event -> sync(event.getEntity()));
-    //MinecraftForge.EVENT_BUS.addListener(EventPriority.NORMAL, false, PlayerEvent.PlayerLoggedInEvent.class, event -> sync(event.getEntity()));
   }
 
 
@@ -197,11 +192,6 @@ public class MetalbornCapability implements ICapabilitySerializable<CompoundTag>
   /** Gets the data for the given player */
   public static MetalbornData getData(LivingEntity player) {
     return player.getCapability(CAPABILITY).orElse(MetalbornData.EMPTY);
-  }
-
-  /** Syncs the data to the given player */
-  private static void sync(Player player) {
-    MetalbornNetwork.getInstance().sendTo(new SyncMetalbornDataPacket(getData(player)), player);
   }
 
   /** copy caps when the player respawns/returns from the end */
