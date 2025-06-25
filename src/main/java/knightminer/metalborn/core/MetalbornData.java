@@ -3,9 +3,11 @@ package knightminer.metalborn.core;
 import knightminer.metalborn.metal.MetalId;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
+import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraftforge.common.util.INBTSerializable;
 import org.jetbrains.annotations.ApiStatus.NonExtendable;
 
+import java.util.Collection;
 import java.util.List;
 
 /** Base interface for metalborn capability. Allows having a read only empty instance and a writable player instance */
@@ -22,6 +24,9 @@ public interface MetalbornData extends INBTSerializable<CompoundTag> {
 
   /** Checks if the given metal can be used */
   boolean canUse(MetalId metal);
+
+  /** Called when the player dies to drop all metalminds */
+  void dropItems(Collection<ItemEntity> drops);
 
   /** Copies the passed data into this data */
   void copyFrom(MetalbornData data, boolean wasDeath);
@@ -49,6 +54,9 @@ public interface MetalbornData extends INBTSerializable<CompoundTag> {
     public boolean canUse(MetalId metal) {
       return false;
     }
+
+    @Override
+    public void dropItems(Collection<ItemEntity> drops) {}
 
     @Override
     public void copyFrom(MetalbornData data, boolean wasDeath) {}

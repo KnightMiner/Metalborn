@@ -5,15 +5,22 @@ import knightminer.metalborn.metal.MetalManager;
 import knightminer.metalborn.metal.MetalPower;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.GameRules;
+import net.minecraftforge.common.util.FakePlayer;
 import net.minecraftforge.event.AddReloadListenerEvent;
 import net.minecraftforge.event.TickEvent.Phase;
 import net.minecraftforge.event.TickEvent.PlayerTickEvent;
+import net.minecraftforge.event.entity.living.LivingDropsEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent.RightClickItem;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus;
+
+import java.util.Collection;
 
 /** Event handlers for metalborn */
 @EventBusSubscriber(modid = Metalborn.MOD_ID, bus = Bus.FORGE)
@@ -55,5 +62,14 @@ public class MetalbornHandler {
   @SubscribeEvent
   static void addReloadListeners(AddReloadListenerEvent event) {
     event.addListener(ActiveMetalminds.RELOAD_LISTENER);
+  }
+
+  @SubscribeEvent
+  static void onPlayerDrops(LivingDropsEvent event) {
+    LivingEntity entity = event.getEntity();
+    if (!entity.level().getGameRules().getBoolean(GameRules.RULE_KEEPINVENTORY) && entity instanceof Player && !(entity instanceof FakePlayer)) {
+      Collection<ItemEntity> drops = event.getDrops();
+      MetalbornCapability.getData(entity).dropItems(drops);
+    }
   }
 }

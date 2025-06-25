@@ -4,6 +4,7 @@ import knightminer.metalborn.item.Metalmind;
 import knightminer.metalborn.metal.MetalId;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
+import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.ContainerData;
 import net.minecraft.world.item.ItemStack;
@@ -11,6 +12,7 @@ import net.minecraftforge.common.util.INBTSerializable;
 import net.minecraftforge.items.IItemHandlerModifiable;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.stream.IntStream;
 
@@ -139,6 +141,13 @@ public class MetalmindInventory implements IItemHandlerModifiable, INBTSerializa
     throw new IndexOutOfBoundsException("Slot out of bounds: " + slot);
   }
 
+  /** Called on death to drop all items */
+  void dropItems(Collection<ItemEntity> drops) {
+    for (MetalmindStack stack : inventory) {
+      stack.drop(drops);
+    }
+  }
+
   /** Copies all stacks from the other inventory */
   void copyFrom(MetalmindInventory other) {
     for (int i = 0; i < inventory.size(); i++) {
@@ -157,7 +166,7 @@ public class MetalmindInventory implements IItemHandlerModifiable, INBTSerializa
   }
 
   /** Clears the inventory */
-  public void clear() {
+  void clear() {
     for (MetalmindStack stack : inventory) {
       stack.setStack(ItemStack.EMPTY, Metalmind.EMPTY);
     }
@@ -272,6 +281,16 @@ public class MetalmindInventory implements IItemHandlerModifiable, INBTSerializa
         level = 0;
       }
       return used;
+    }
+
+    /** Drops this item */
+    private void drop(Collection<ItemEntity> drops) {
+      if (!stack.isEmpty()) {
+        ItemEntity itemEntity = new ItemEntity(player.level(), player.getX(), player.getY(), player.getZ(), stack.copy());
+        itemEntity.setDefaultPickUpDelay();
+        drops.add(itemEntity);
+        setStack(ItemStack.EMPTY, Metalmind.EMPTY);
+      }
     }
 
     /** Updates the contents based on the other stack */

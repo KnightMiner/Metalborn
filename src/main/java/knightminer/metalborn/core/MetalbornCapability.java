@@ -12,6 +12,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.capabilities.Capability;
@@ -26,6 +27,7 @@ import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.Collection;
 import java.util.List;
 
 /** Capability containing all data related to metalborn status. Includes ferring type, tapping/storing, metalminds, spikes, and alike. */
@@ -99,10 +101,16 @@ public class MetalbornCapability implements ICapabilitySerializable<CompoundTag>
   }
 
   @Override
+  public void dropItems(Collection<ItemEntity> drops) {
+    metalminds.dropItems(drops);
+  }
+
+  @Override
   public void clear() {
     metalminds.clear();
     activeMetalminds.clear();
   }
+
 
   /* Capability logic */
 
