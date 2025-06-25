@@ -232,6 +232,14 @@ public class MetalmindInventory implements IItemHandlerModifiable, INBTSerializa
       if (!metalmind.canUse(stack, player)) {
         newLevel = 0;
       }
+      // if the metalmind is empty, no tapping
+      else if (newLevel > 0 && metalmind.getAmount(stack) <= 0) {
+        newLevel = 0;
+      }
+      // if the metalmind is full, no filling
+      else if (newLevel < 0 && metalmind.getAmount(stack) >= metalmind.getCapacity(stack)) {
+        newLevel = 0;
+      }
       if (newLevel != level) {
         // TODO: let the metalmind choose whether active metals or the power list is used
         active.getMetal(this.metal).update(this, newLevel);
