@@ -8,6 +8,7 @@ import knightminer.metalborn.network.SyncMetalbornDataPacket;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
+import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
@@ -24,6 +25,8 @@ import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import org.jetbrains.annotations.Nullable;
+
+import java.util.List;
 
 /** Capability containing all data related to metalborn status. Includes ferring type, tapping/storing, metalminds, spikes, and alike. */
 public class MetalbornCapability implements ICapabilitySerializable<CompoundTag>, MetalbornData, Runnable {
@@ -51,6 +54,11 @@ public class MetalbornCapability implements ICapabilitySerializable<CompoundTag>
     this.player = player;
     this.activeMetalminds = new ActiveMetalminds(player);
     this.metalminds = new MetalmindInventory(activeMetalminds, player);
+  }
+
+  /** Gets the metalmind inventory */
+  public MetalmindInventory getMetalminds() {
+    return metalminds;
   }
 
 
@@ -85,6 +93,16 @@ public class MetalbornCapability implements ICapabilitySerializable<CompoundTag>
     activeMetalminds.tick();
   }
 
+  @Override
+  public void getTooltip(List<Component> tooltip) {
+    activeMetalminds.getTooltip(tooltip);
+  }
+
+  @Override
+  public void clear() {
+    metalminds.clear();
+    activeMetalminds.clear();
+  }
 
   /* Capability logic */
 

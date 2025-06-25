@@ -87,6 +87,14 @@
   "metal_effect.metalborn.xp.gain": "Restores %s XP per second",
   "metal_effect.metalborn.xp.store": "Drains %s XP per second",
 
+  "gui.metalborn.no_metalminds": "No active metalminds",
+  "gui.metalborn.tap.start": "Tap %s",
+  "gui.metalborn.store.start": "Store %s",
+  "gui.metalborn.tap.stop": "Stop Tapping %s",
+  "gui.metalborn.store.stop": "Stop Storing %s",
+  "key.metalborn.binding": "Metalborn",
+  "key.categories.metalborn": "Metalborn",
+
   "command.metalborn.ferring.get": "%s is a %s ferring (ID %s)",
   "command.metalborn.ferring.set.single": "Set ferring type for %s to %s (ID %s)",
   "command.metalborn.ferring.set.multiple": "Set ferring type on %s players to %s (ID %s)",

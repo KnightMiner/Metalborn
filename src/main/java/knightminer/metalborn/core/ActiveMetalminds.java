@@ -5,6 +5,7 @@ import knightminer.metalborn.metal.MetalId;
 import knightminer.metalborn.metal.MetalManager;
 import knightminer.metalborn.metal.MetalPower;
 import knightminer.metalborn.metal.MetalPower.EffectType;
+import net.minecraft.network.chat.Component;
 import net.minecraft.server.packs.resources.ResourceManagerReloadListener;
 import net.minecraft.world.entity.player.Player;
 
@@ -67,6 +68,13 @@ public class ActiveMetalminds {
     }
   }
 
+  /** Appends tooltip for all active effects */
+  void getTooltip(List<Component> tooltip) {
+    for (ActiveMetalmind metalmind : active.values()) {
+      metalmind.getTooltip(tooltip);
+    }
+  }
+
   /** Keeps track of data for a single type of power */
   static class ActiveMetalmind {
     private final Player player;
@@ -106,7 +114,7 @@ public class ActiveMetalminds {
      */
     private void onUpdate(int previous) {
       int level = tapping + storing;
-      if (level != previous) {
+      if (level != previous && !player.level().isClientSide) {
         refreshPower().onChange(EffectType.FERUCHEMY, player, level, previous);
       }
     }
@@ -114,7 +122,7 @@ public class ActiveMetalminds {
     /** Clears all active effects */
     private void clear() {
       int previous = tapping + storing;
-      if (previous != 0) {
+      if (previous != 0 && !player.level().isClientSide) {
         refreshPower().onChange(EffectType.FERUCHEMY, player, 0, previous);
       }
       tapping = 0;
@@ -227,6 +235,14 @@ public class ActiveMetalminds {
 
       // if anything stopped tapping/storing, update the effect
       onUpdate(previous);
+    }
+
+    /** Gets the tooltip to display for this active power */
+    private void getTooltip(List<Component> tooltip) {
+      int level = tapping + storing;
+      if (level != 0) {
+        refreshPower().getTooltip(EffectType.FERUCHEMY, player, level, tooltip);
+      }
     }
   }
 }

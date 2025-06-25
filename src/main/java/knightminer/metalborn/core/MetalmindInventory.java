@@ -131,6 +131,14 @@ public class MetalmindInventory implements IItemHandlerModifiable, INBTSerializa
     }
   }
 
+  /** Gets the metalmind slot for the given index */
+  MetalmindStack getSlot(int slot) {
+    if (slot >= 0 && slot < inventory.size()) {
+      return inventory.get(slot);
+    }
+    throw new IndexOutOfBoundsException("Slot out of bounds: " + slot);
+  }
+
   /** Copies all stacks from the other inventory */
   void copyFrom(MetalmindInventory other) {
     for (int i = 0; i < inventory.size(); i++) {
@@ -146,6 +154,13 @@ public class MetalmindInventory implements IItemHandlerModifiable, INBTSerializa
       stack.refresh();
     }
     active.refresh();
+  }
+
+  /** Clears the inventory */
+  public void clear() {
+    for (MetalmindStack stack : inventory) {
+      stack.setStack(ItemStack.EMPTY, Metalmind.EMPTY);
+    }
   }
 
   @Override
@@ -180,6 +195,15 @@ public class MetalmindInventory implements IItemHandlerModifiable, INBTSerializa
       return level;
     }
 
+    /** Gets the current metal */
+    MetalId getMetal() {
+      return metal;
+    }
+
+    /** Returns true if this metalmind is usable by the player */
+    boolean canUse() {
+      return metalmind.canUse(stack, player);
+    }
 
     /** Updates the item stack */
     private void setStack(ItemStack stack, Metalmind metalmind) {

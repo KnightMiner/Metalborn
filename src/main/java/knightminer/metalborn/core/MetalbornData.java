@@ -2,8 +2,11 @@ package knightminer.metalborn.core;
 
 import knightminer.metalborn.metal.MetalId;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.chat.Component;
 import net.minecraftforge.common.util.INBTSerializable;
 import org.jetbrains.annotations.ApiStatus.NonExtendable;
+
+import java.util.List;
 
 /** Base interface for metalborn capability. Allows having a read only empty instance and a writable player instance */
 @NonExtendable
@@ -25,6 +28,12 @@ public interface MetalbornData extends INBTSerializable<CompoundTag> {
 
   /** Ticks all effects */
   void tick();
+
+  /** Gets the tooltip for display in the screen */
+  void getTooltip(List<Component> tooltip);
+
+  /** Called client side to clear old data when the inventory is opened */
+  void clear();
 
   /** Empty instance for defaulting data related methods */
   MetalbornData EMPTY = new MetalbornData() {
@@ -54,5 +63,11 @@ public interface MetalbornData extends INBTSerializable<CompoundTag> {
 
     @Override
     public void tick() {}
+
+    @Override
+    public void getTooltip(List<Component> tooltip) {}
+
+    @Override
+    public void clear() {}
   };
 }
