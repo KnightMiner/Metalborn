@@ -17,22 +17,7 @@
       "operation": "addition"
     }
   ],
-  "hemalurgy": [
-    {
-      "type": "metalborn:attribute",
-      "attribute": "forge:entity_gravity",
-      "multiplier": 0.05,
-      "operation": "multiply_total"
-    },
-    {
-      "type": "metalborn:range",
-      "attribute": "minecraft:generic.knockback_resistance",
-      "effect_type": "metalborn:attribute",
-      "min_level": 0,
-      "multiplier": 0.05,
-      "operation": "addition"
-    }
-  ],
+  "hemalurgy_charge": 20,
   "index": 1,
   "name": "iron"
 }

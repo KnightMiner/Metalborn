@@ -4,7 +4,6 @@ import knightminer.metalborn.core.inventory.MetalmindInventory.MetalmindStack;
 import knightminer.metalborn.metal.MetalId;
 import knightminer.metalborn.metal.MetalManager;
 import knightminer.metalborn.metal.MetalPower;
-import knightminer.metalborn.metal.MetalPower.EffectType;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.packs.resources.ResourceManagerReloadListener;
 import net.minecraft.world.entity.player.Player;
@@ -115,7 +114,7 @@ public class ActiveMetalminds {
     private void onUpdate(int previous) {
       int level = tapping + storing;
       if (level != previous && !player.level().isClientSide) {
-        refreshPower().onChange(EffectType.FERUCHEMY, player, level, previous);
+        refreshPower().onChange(player, level, previous);
       }
     }
 
@@ -123,7 +122,7 @@ public class ActiveMetalminds {
     private void clear() {
       int previous = tapping + storing;
       if (previous != 0 && !player.level().isClientSide) {
-        refreshPower().onChange(EffectType.FERUCHEMY, player, 0, previous);
+        refreshPower().onChange(player, 0, previous);
       }
       tapping = 0;
       storing = 0;
@@ -189,10 +188,10 @@ public class ActiveMetalminds {
       int tapped = 0; // positive number
       int stored = 0; // negative number
       if (tapping > 0) {
-        tapped = power.onTick(EffectType.FERUCHEMY, player, tapping);
+        tapped = power.onTick(player, tapping);
       }
       if (storing < 0) {
-        stored = power.onTick(EffectType.FERUCHEMY, player, storing);
+        stored = power.onTick(player, storing);
       }
       // nothing changed? nothing to do
       if (tapped == 0 && stored == 0) {
@@ -241,7 +240,7 @@ public class ActiveMetalminds {
     private void getTooltip(List<Component> tooltip) {
       int level = tapping + storing;
       if (level != 0) {
-        refreshPower().getTooltip(EffectType.FERUCHEMY, player, level, tooltip);
+        refreshPower().getTooltip(player, level, tooltip);
       }
     }
   }

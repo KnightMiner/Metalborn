@@ -21,9 +21,9 @@ public class MetalPowerBuilder {
   private String name;
   private int index;
   private int capacity = 20 * 5 * 60; // 5 minutes
+  private int hemalurgyCharge = 20;
   private boolean ferring = true;
   private final List<MetalEffect> feruchemy = new ArrayList<>();
-  private final List<MetalEffect> hemalurgy = new ArrayList<>();
   private final List<ICondition> conditions = new ArrayList<>();
 
   /** Builder constructor */
@@ -84,16 +84,9 @@ public class MetalPowerBuilder {
     return this;
   }
 
-  /** Adds a new hemalurgy effect */
-  public MetalPowerBuilder hemalurgy(MetalEffect effect) {
-    this.hemalurgy.add(effect);
-    return this;
-  }
-
-  /** Adds a new effect to both feruchemy and hemalurgy */
-  public MetalPowerBuilder effect(MetalEffect effect) {
-    feruchemy(effect);
-    hemalurgy(effect);
+  /** Sets the amount of charge needed to fill this spike */
+  public MetalPowerBuilder hemalurgyCharge(int charge) {
+    this.hemalurgyCharge = charge;
     return this;
   }
 
@@ -101,7 +94,7 @@ public class MetalPowerBuilder {
   /** Builds the instance with fewer checks */
   @CheckReturnValue
   private MetalPower buildInternal() {
-    return new MetalPower(id, name, index, ferring, feruchemy, feruchemy.isEmpty() ? 0 : capacity, hemalurgy);
+    return new MetalPower(id, name, index, ferring, feruchemy, feruchemy.isEmpty() ? 0 : capacity, hemalurgyCharge);
   }
 
   /** Builds the final power */

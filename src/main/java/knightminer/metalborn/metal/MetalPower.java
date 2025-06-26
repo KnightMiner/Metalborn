@@ -30,7 +30,7 @@ import java.util.List;
  * @param ferring    If true, this power can be randomly granted.
  * @param feruchemy  List of feruchemical effects to perform
  * @param capacity   Capacity of the base size metalmind.
- * @param hemalurgy  List of hemalurgic effects to perform.
+ * @param hemalurgyCharge  Amount of charge needed to fill this spike. If 0, this is not usable as a spike.
  */
 public record MetalPower(
   MetalId id,
@@ -42,7 +42,7 @@ public record MetalPower(
   boolean ferring,
   List<MetalEffect> feruchemy,
   int capacity,
-  List<MetalEffect> hemalurgy
+  int hemalurgyCharge
 ) {
   /** Loader instane for parsing from JSON and syncing over the network */
   public static final RecordLoadable<MetalPower> LOADABLE = RecordLoadable.create(
@@ -52,11 +52,11 @@ public record MetalPower(
     new AllowFerringField("allow_ferring", "feruchemy"),
     MetalEffect.LIST_LOADABLE.defaultField("feruchemy", List.of(), MetalPower::feruchemy),
     IntLoadable.FROM_ZERO.defaultField("capacity", 0, MetalPower::capacity),
-    MetalEffect.LIST_LOADABLE.defaultField("hemalurgy", List.of(), MetalPower::hemalurgy),
+    IntLoadable.FROM_ZERO.defaultField("hemalurgy_charge", 0, MetalPower::hemalurgyCharge),
     MetalPower::new);
 
   /** Default instance for when a metal does not exist */
-  public static final MetalPower DEFAULT = new MetalPower(MetalId.NONE, "none", -1, false, List.of(), 0, List.of());
+  public static final MetalPower DEFAULT = new MetalPower(MetalId.NONE, "none", -1, false, List.of(), 0, 0);
 
   /** @apiNote Use {@link MetalPowerBuilder} */
   @Internal
@@ -66,13 +66,13 @@ public record MetalPower(
    * Constructor that automatically creates the tag names
    * @apiNote Use {@link MetalPowerBuilder}
    */
-  MetalPower(MetalId id, String name, int index, boolean ferring, List<MetalEffect> feruchemy, int capacity, List<MetalEffect> hemalurgy) {
+  MetalPower(MetalId id, String name, int index, boolean ferring, List<MetalEffect> feruchemy, int capacity, int hemalurgyCharge) {
     this(
       id, name,
       ItemTags.create(Mantle.commonResource("ingots/" + name)),
       ItemTags.create(Mantle.commonResource("nuggets/" + name)),
       TagKey.create(Registries.ENTITY_TYPE, id),
-      index, ferring, feruchemy, capacity, hemalurgy
+      index, ferring, feruchemy, capacity, hemalurgyCharge
     );
   }
 
@@ -109,31 +109,17 @@ public record MetalPower(
 
   /* Effect hooks */
 
-  /** Returns the list of effects for the given type */
-  public List<MetalEffect> effects(EffectType type) {
-    return switch (type) {
-      case HEMALURGY -> hemalurgy;
-      case FERUCHEMY -> feruchemy;
-      default -> List.of();
-    };
-  }
-
-  /** Checks if this metal has effects of the given type */
-  public boolean has(EffectType type) {
-    return !effects(type).isEmpty();
-  }
-
   /** Called when the level of this effect changes to update behavior */
-  public void onChange(EffectType type, LivingEntity entity, int level, int previous) {
-    for (MetalEffect effect : effects(type)) {
+  public void onChange(LivingEntity entity, int level, int previous) {
+    for (MetalEffect effect : feruchemy) {
       effect.onChange(this, entity, level, previous);
     }
   }
 
   /** Called every tick while this power is active. */
-  public int onTick(EffectType type, LivingEntity entity, int level) {
+  public int onTick(LivingEntity entity, int level) {
     int consumed = 0;
-    for (MetalEffect effect : effects(type)) {
+    for (MetalEffect effect : feruchemy) {
       int effectConsumed = effect.onTick(this, entity, level);
       // take the most extreme effect
       if (level > 0 ? (effectConsumed > consumed) : (effectConsumed < consumed)) {
@@ -144,15 +130,9 @@ public record MetalPower(
   }
 
   /** Called every tick while this power is active. */
-  public void getTooltip(EffectType type, LivingEntity entity, int level, List<Component> tooltip) {
-    for (MetalEffect effect : effects(type)) {
+  public void getTooltip(LivingEntity entity, int level, List<Component> tooltip) {
+    for (MetalEffect effect : feruchemy) {
       effect.getTooltip(this, entity, level, tooltip);
     }
-  }
-
-  /** Helper to select the type of effects to run */
-  public enum EffectType {
-    FERUCHEMY,
-    HEMALURGY;
   }
 }
