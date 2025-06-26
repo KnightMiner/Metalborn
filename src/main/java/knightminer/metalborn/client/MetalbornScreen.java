@@ -83,7 +83,7 @@ public class MetalbornScreen extends AbstractContainerScreen<MetalbornMenu> {
     // draw player in center, watching you
     assert this.minecraft != null;
     assert this.minecraft.player != null;
-    InventoryScreen.renderEntityInInventoryFollowsMouse(graphics, leftPos + PLAYER_X, topPos + PLAYER_Y, 30, leftPos + PLAYER_X - pMouseX, topPos + PLAYER_Y - 50 - pMouseY, this.minecraft.player);
+    InventoryScreen.renderEntityInInventoryFollowsAngle(graphics, leftPos + PLAYER_X, topPos + PLAYER_Y, 30, 0, 0, this.minecraft.player);
   }
 
   @Override
