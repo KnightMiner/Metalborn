@@ -87,7 +87,7 @@ public class SpikeInventory extends MetalInventory<SpikeStack> {
   public void refreshActive() {
     extraPowers.clear();
     for (SpikeStack stack : inventory) {
-      if (stack.metal != MetalId.NONE) {
+      if (!stack.stack.isEmpty()) {
         extraPowers.add(stack.metal);
       }
     }
@@ -105,7 +105,9 @@ public class SpikeInventory extends MetalInventory<SpikeStack> {
       Component.translatable(Attributes.MAX_HEALTH.getDescriptionId())
     ).withStyle(ChatFormatting.RED));
       for (MetalId metal : extraPowers.elementSet()) {
-        tooltip.add(Component.translatable(KEY_GRANTS, metal.getStores()).withStyle(ChatFormatting.BLUE));
+        if (metal != MetalId.NONE) {
+          tooltip.add(Component.translatable(KEY_GRANTS, metal.getStores()).withStyle(ChatFormatting.BLUE));
+        }
       }
     } else {
       tooltip.add(NO_SPIKES);
@@ -114,6 +116,7 @@ public class SpikeInventory extends MetalInventory<SpikeStack> {
 
   /** Represents a single slot in the inventory */
   class SpikeStack extends StackHolder<SpikeStack> {
+    /** Metal granted by the spike. May be none when the spike is not full */
     private MetalId metal = MetalId.NONE;
 
     @Override
@@ -131,7 +134,7 @@ public class SpikeInventory extends MetalInventory<SpikeStack> {
       } else if (stack.getItem() instanceof Spike spike) {
         this.stack = stack.copy();
         MetalId oldMetal = this.metal;
-        this.metal = spike.getMetal(stack);
+        this.metal = spike.isFull(stack) ? spike.getMetal(stack) : MetalId.NONE;
         if (!oldMetal.equals(this.metal)) {
           extraPowers.remove(oldMetal);
           extraPowers.add(metal);
@@ -154,7 +157,7 @@ public class SpikeInventory extends MetalInventory<SpikeStack> {
     @Override
     public void deserializeNBT(CompoundTag tag) {
       super.deserializeNBT(tag);
-      metal = stack.getItem() instanceof Spike spike ? spike.getMetal(stack) : MetalId.NONE;
+      metal = stack.getItem() instanceof Spike spike && spike.isFull(stack) ? spike.getMetal(stack) : MetalId.NONE;
     }
   }
 }
