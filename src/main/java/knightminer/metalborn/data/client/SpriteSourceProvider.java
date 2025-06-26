@@ -22,7 +22,8 @@ public class SpriteSourceProvider extends net.minecraftforge.common.data.SpriteS
         List.of(
           resource("metal/item/nugget_overlay"),
           resource("metal/item/bracer"),
-          resource("metal/item/ring")
+          resource("metal/item/ring"),
+          resource("metal/item/spike")
         ),
         resource("metal/palettes"),
         ItemModelProvider.FERUCHEMY_METALS

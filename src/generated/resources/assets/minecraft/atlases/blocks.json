@@ -7,7 +7,8 @@
       "textures": [
         "metalborn:metal/item/nugget_overlay",
         "metalborn:metal/item/bracer",
-        "metalborn:metal/item/ring"
+        "metalborn:metal/item/ring",
+        "metalborn:metal/item/spike"
       ]
     },
     {

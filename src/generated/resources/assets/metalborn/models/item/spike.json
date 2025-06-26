@@ -1,0 +1,11 @@
+{
+  "parent": "forge:item/default-tool",
+  "loader": "metalborn:paletted",
+  "palette": {
+    "key": "metal",
+    "list": "metalborn:metals/feruchemy"
+  },
+  "textures": {
+    "layer0": "metalborn:metal/item/spike"
+  }
+}

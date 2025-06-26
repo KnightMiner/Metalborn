@@ -76,6 +76,8 @@
   "item.metalborn.metalmind.owner.none": "Unsealed",
   "item.metalborn.metalmind.owner.unknown": "Unknown",
 
+  "item.metalborn.spike": "Spike",
+  "item.metalborn.spike.format": "%s Spike",
   "item.metalborn.spike.steals": "Steals: %s",
   "item.metalborn.spike.charge": "Charge: %s / %s",
   "item.metalborn.spike.charge.full": "Fully Charged",

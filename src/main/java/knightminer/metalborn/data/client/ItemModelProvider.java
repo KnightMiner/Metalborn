@@ -51,7 +51,7 @@ public class ItemModelProvider extends net.minecraftforge.client.model.generator
       .paletted(FERUCHEMY_METALS, MetalItem.TAG_METAL);
     metal(Registration.BRACER, "metal/item/bracer", true);
     metal(Registration.RING, "metal/item/ring", false);
-
+    metal(Registration.SPIKE, "metal/item/spike", true);
   }
 
 

@@ -6,6 +6,7 @@ import knightminer.metalborn.item.LerasiumAlloyNuggetItem;
 import knightminer.metalborn.item.LerasiumNuggetItem;
 import knightminer.metalborn.item.MetalItem;
 import knightminer.metalborn.item.MetalmindItem;
+import knightminer.metalborn.item.SpikeItem;
 import knightminer.metalborn.metal.effects.AttributeMetalEffect;
 import knightminer.metalborn.metal.effects.ExperienceMetalEffect;
 import knightminer.metalborn.metal.effects.HealMetalEffect;
@@ -96,9 +97,10 @@ public class Registration {
   public static final ItemObject<Block> RAW_TIN_BLOCK = BLOCKS.register("raw_tin_block", BlockBehaviour.Properties.of().mapColor(MapColor.RAW_IRON).instrument(NoteBlockInstrument.BASEDRUM).requiresCorrectToolForDrops().strength(5.0F, 6.0F), BLOCK_ITEM);
   public static final ItemObject<Item> RAW_TIN = ITEMS.register("raw_tin");
 
-  // metalminds
+  // metal items
   public static final ItemObject<MetalmindItem> BRACER = ITEMS.register("bracer", () -> new MetalmindItem(new Item.Properties(), 10));
   public static final ItemObject<MetalmindItem> RING = ITEMS.register("ring", () -> new MetalmindItem(new Item.Properties(), 1));
+  public static final ItemObject<SpikeItem> SPIKE = ITEMS.register("spike", () -> new SpikeItem(new Item.Properties()));
 
   /** Damage type for metal damaging the player, used in gold's effect */
   public static final ResourceKey<DamageType> METAL_HURT = ResourceKey.create(Registries.DAMAGE_TYPE, resource("metal_hurt"));
@@ -138,6 +140,7 @@ public class Registration {
     // metalminds
     accept(consumer, RING);
     accept(consumer, BRACER);
+    accept(consumer, SPIKE);
   }
 
   /** Adds all members of an metal object to the given creative tab */
