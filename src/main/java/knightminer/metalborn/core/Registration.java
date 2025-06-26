@@ -108,6 +108,8 @@ public class Registration {
   public static final ResourceKey<DamageType> METAL_HURT = ResourceKey.create(Registries.DAMAGE_TYPE, resource("metal_hurt"));
   /** Damage type when using a spike */
   public static final ResourceKey<DamageType> ADD_SPIKE = ResourceKey.create(Registries.DAMAGE_TYPE, resource("add_spike"));
+  /** Damage type when making a spike from yourself */
+  public static final ResourceKey<DamageType> MAKE_SPIKE = ResourceKey.create(Registries.DAMAGE_TYPE, resource("make_spike"));
 
   // menus
   public static final RegistryObject<MenuType<MetalbornMenu>> MENU = MENUS.register("metalborn", MetalbornMenu::forClient);
@@ -167,6 +169,6 @@ public class Registration {
 
   /** Makes a damage source from the given key */
   public static DamageSource makeSource(Level level, ResourceKey<DamageType> key) {
-    return new DamageSource(level.registryAccess().registryOrThrow(Registries.DAMAGE_TYPE).getHolderOrThrow(Registration.METAL_HURT));
+    return new DamageSource(level.registryAccess().registryOrThrow(Registries.DAMAGE_TYPE).getHolderOrThrow(key));
   }
 }

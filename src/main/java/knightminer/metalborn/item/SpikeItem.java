@@ -3,20 +3,27 @@ package knightminer.metalborn.item;
 import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.Multimap;
 import knightminer.metalborn.Metalborn;
+import knightminer.metalborn.core.MetalbornCapability;
+import knightminer.metalborn.core.MetalbornData;
+import knightminer.metalborn.core.Registration;
 import knightminer.metalborn.metal.MetalId;
 import knightminer.metalborn.metal.MetalManager;
 import knightminer.metalborn.metal.MetalPower;
 import net.minecraft.ChatFormatting;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.item.UseAnim;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.Nullable;
 
@@ -201,5 +208,46 @@ public class SpikeItem extends Item implements MetalItem, Spike {
       return true;
     }
     return false;
+  }
+
+  @Override
+  public InteractionResultHolder<ItemStack> use(Level pLevel, Player player, InteractionHand hand) {
+    ItemStack stack = player.getItemInHand(hand);
+    if (isFull(stack)) {
+      return InteractionResultHolder.pass(stack);
+    }
+    player.startUsingItem(hand);
+    return InteractionResultHolder.consume(stack);
+  }
+
+  @Override
+  public int getUseDuration(ItemStack pStack) {
+    return 32;
+  }
+
+  @Override
+  public UseAnim getUseAnimation(ItemStack pStack) {
+    return UseAnim.SPEAR;
+  }
+
+  @Override
+  public ItemStack finishUsingItem(ItemStack stack, Level level, LivingEntity entity) {
+    if (!level.isClientSide) {
+      // if the metal matches, fully fill the spike
+      MetalId spike = getMetal(stack);
+      if (spike != MetalId.NONE) {
+        MetalbornData data = MetalbornCapability.getData(entity);
+        MetalId target = data.getFerringType();
+        if (spike.equals(target)) {
+          data.setFerringType(MetalId.NONE);
+          CompoundTag tag = stack.getOrCreateTag();
+          tag.putBoolean(TAG_FULL, true);
+          tag.remove(TAG_AMOUNT);
+        }
+      }
+      // hurt the target regardless of stabbing success
+      entity.hurt(Registration.makeSource(level, Registration.MAKE_SPIKE), 10);
+    }
+    return stack;
   }
 }
