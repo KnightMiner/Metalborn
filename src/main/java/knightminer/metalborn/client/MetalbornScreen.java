@@ -52,7 +52,7 @@ public class MetalbornScreen extends AbstractContainerScreen<MetalbornMenu> {
   /** X coordinate for spike button */
   private static final int SPIKE_X = 117;
   /** V coordinate for spike hover */
-  private static final int SPIKE_HOVER_V = 176;
+  private static final int SPIKE_HOVER_V = 32;
   /** Size of the info icons */
   private static final int INFO_SIZE = 12;
 
