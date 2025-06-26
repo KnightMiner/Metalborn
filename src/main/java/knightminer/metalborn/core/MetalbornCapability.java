@@ -1,6 +1,8 @@
 package knightminer.metalborn.core;
 
 import knightminer.metalborn.Metalborn;
+import knightminer.metalborn.core.inventory.ActiveMetalminds;
+import knightminer.metalborn.core.inventory.MetalmindInventory;
 import knightminer.metalborn.metal.MetalId;
 import knightminer.metalborn.metal.MetalManager;
 import net.minecraft.core.Direction;

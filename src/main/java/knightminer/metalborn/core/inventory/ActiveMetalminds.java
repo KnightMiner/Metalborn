@@ -1,6 +1,6 @@
-package knightminer.metalborn.core;
+package knightminer.metalborn.core.inventory;
 
-import knightminer.metalborn.core.MetalmindInventory.MetalmindStack;
+import knightminer.metalborn.core.inventory.MetalmindInventory.MetalmindStack;
 import knightminer.metalborn.metal.MetalId;
 import knightminer.metalborn.metal.MetalManager;
 import knightminer.metalborn.metal.MetalPower;
@@ -28,7 +28,7 @@ public class ActiveMetalminds {
   /** Constructor for adding new effects */
   private final Function<MetalId, ActiveMetalmind> constructor;
 
-  ActiveMetalminds(Player player) {
+  public ActiveMetalminds(Player player) {
     this.constructor = id -> new ActiveMetalmind(player, id);
   }
 
@@ -38,14 +38,14 @@ public class ActiveMetalminds {
   }
 
   /** Ticks all active powers */
-  void tick() {
+  public void tick() {
     for (ActiveMetalmind metalmind : active.values()) {
       metalmind.tick();
     }
   }
 
   /** Clears all active metalminds */
-  void clear() {
+  public void clear() {
     // practically speaking, when this is called we should have no effects, but better to be safe
     // on the chance there is something here, we will remove it then add it in two calls, which is not the worst case
     for (ActiveMetalmind metalmind : active.values()) {
@@ -54,7 +54,7 @@ public class ActiveMetalminds {
   }
 
   /** Clears active effects from the given metal */
-  void clearMetal(MetalId metal) {
+  public void clearMetal(MetalId metal) {
     ActiveMetalmind metalmind = active.get(metal);
     if (metalmind != null) {
       metalmind.clear();
@@ -69,7 +69,7 @@ public class ActiveMetalminds {
   }
 
   /** Appends tooltip for all active effects */
-  void getTooltip(List<Component> tooltip) {
+  public void getTooltip(List<Component> tooltip) {
     for (ActiveMetalmind metalmind : active.values()) {
       metalmind.getTooltip(tooltip);
     }

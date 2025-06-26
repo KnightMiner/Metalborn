@@ -1,7 +1,8 @@
 package knightminer.metalborn.core;
 
 import knightminer.metalborn.Metalborn;
-import knightminer.metalborn.core.MetalmindInventory.MetalmindStack;
+import knightminer.metalborn.core.inventory.MetalmindInventory;
+import knightminer.metalborn.core.inventory.MetalmindInventory.MetalmindStack;
 import knightminer.metalborn.metal.MetalId;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.entity.player.Inventory;

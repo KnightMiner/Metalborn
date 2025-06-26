@@ -1,4 +1,4 @@
-package knightminer.metalborn.core;
+package knightminer.metalborn.core.inventory;
 
 import knightminer.metalborn.item.Metalmind;
 import knightminer.metalborn.metal.MetalId;
@@ -22,7 +22,7 @@ public class MetalmindInventory implements IItemHandlerModifiable, INBTSerializa
   private final Player player;
   private final List<MetalmindStack> inventory;
 
-  MetalmindInventory(ActiveMetalminds active, Player player) {
+  public MetalmindInventory(ActiveMetalminds active, Player player) {
     this.active = active;
     this.player = player;
     this.inventory = IntStream.range(0, 10).mapToObj(i -> new MetalmindStack()).toList();
@@ -134,7 +134,7 @@ public class MetalmindInventory implements IItemHandlerModifiable, INBTSerializa
   }
 
   /** Gets the metalmind slot for the given index */
-  MetalmindStack getSlot(int slot) {
+  public MetalmindStack getSlot(int slot) {
     if (slot >= 0 && slot < inventory.size()) {
       return inventory.get(slot);
     }
@@ -142,14 +142,14 @@ public class MetalmindInventory implements IItemHandlerModifiable, INBTSerializa
   }
 
   /** Called on death to drop all items */
-  void dropItems(Collection<ItemEntity> drops) {
+  public void dropItems(Collection<ItemEntity> drops) {
     for (MetalmindStack stack : inventory) {
       stack.drop(drops);
     }
   }
 
   /** Copies all stacks from the other inventory */
-  void copyFrom(MetalmindInventory other) {
+  public void copyFrom(MetalmindInventory other) {
     for (int i = 0; i < inventory.size(); i++) {
       inventory.get(i).copyFrom(other.inventory.get(i));
     }
@@ -157,7 +157,7 @@ public class MetalmindInventory implements IItemHandlerModifiable, INBTSerializa
   }
 
   /** Refreshes the metalminds in the active metalminds list */
-  void refreshActive() {
+  public void refreshActive() {
     active.clear();
     for (MetalmindStack stack : inventory) {
       stack.refresh();
@@ -166,7 +166,7 @@ public class MetalmindInventory implements IItemHandlerModifiable, INBTSerializa
   }
 
   /** Clears the inventory */
-  void clear() {
+  public void clear() {
     for (MetalmindStack stack : inventory) {
       stack.setStack(ItemStack.EMPTY, Metalmind.EMPTY);
     }
@@ -193,24 +193,24 @@ public class MetalmindInventory implements IItemHandlerModifiable, INBTSerializa
   }
 
   /** Represents a single slot in the metalmind inventory */
-  class MetalmindStack {
+  public class MetalmindStack {
     private ItemStack stack = ItemStack.EMPTY;
     private Metalmind metalmind = Metalmind.EMPTY;
     private MetalId metal = MetalId.NONE;
     private int level = 0;
 
     /** Gets the current level */
-    int getLevel() {
+    public int getLevel() {
       return level;
     }
 
     /** Gets the current metal */
-    MetalId getMetal() {
+    public MetalId getMetal() {
       return metal;
     }
 
     /** Returns true if this metalmind is usable by the player */
-    boolean canUse() {
+    public boolean canUse() {
       return metalmind.canUse(stack, player);
     }
 
