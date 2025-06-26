@@ -11,6 +11,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.concurrent.CompletableFuture;
 
+import static knightminer.metalborn.core.Registration.ADD_SPIKE;
 import static knightminer.metalborn.core.Registration.METAL_HURT;
 
 /** Provider for metalborn damage type tags */
@@ -27,7 +28,7 @@ public class DamageTypeTagProvider extends DamageTypeTagsProvider {
 
   @Override
   protected void addTags(Provider provider) {
-    tag(DamageTypeTags.BYPASSES_COOLDOWN).add(METAL_HURT);
-    tag(DamageTypeTags.BYPASSES_EFFECTS).add(METAL_HURT);
+    tag(DamageTypeTags.BYPASSES_COOLDOWN).add(METAL_HURT, ADD_SPIKE);
+    tag(DamageTypeTags.BYPASSES_EFFECTS).add(METAL_HURT, ADD_SPIKE);
   }
 }

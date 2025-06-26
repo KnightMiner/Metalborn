@@ -59,6 +59,7 @@ public class RegistryProvider {
   /** Adds damage sources */
   private static void damageSources(BootstapContext<DamageType> context) {
     context.register(Registration.METAL_HURT, new DamageType(prefix("metal_hurt"), DamageScaling.NEVER, 0f, DamageEffects.HURT));
+    context.register(Registration.ADD_SPIKE, new DamageType(prefix("add_spike"), DamageScaling.NEVER, 0.1f, DamageEffects.THORNS));
   }
 
   private static void configuredFeatures(BootstapContext<ConfiguredFeature<?, ?>> context) {

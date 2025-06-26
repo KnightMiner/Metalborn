@@ -1,5 +1,6 @@
 {
   "values": [
-    "metalborn:metal_hurt"
+    "metalborn:metal_hurt",
+    "metalborn:add_spike"
   ]
 }

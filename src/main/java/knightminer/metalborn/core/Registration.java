@@ -15,6 +15,7 @@ import knightminer.metalborn.metal.effects.RangeMetalEffect;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceKey;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.DamageType;
 import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.item.BlockItem;
@@ -24,6 +25,7 @@ import net.minecraft.world.item.CreativeModeTab.Output;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.ItemLike;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
@@ -104,6 +106,8 @@ public class Registration {
 
   /** Damage type for metal damaging the player, used in gold's effect */
   public static final ResourceKey<DamageType> METAL_HURT = ResourceKey.create(Registries.DAMAGE_TYPE, resource("metal_hurt"));
+  /** Damage type when using a spike */
+  public static final ResourceKey<DamageType> ADD_SPIKE = ResourceKey.create(Registries.DAMAGE_TYPE, resource("add_spike"));
 
   // menus
   public static final RegistryObject<MenuType<MetalbornMenu>> MENU = MENUS.register("metalborn", MetalbornMenu::forClient);
@@ -159,5 +163,10 @@ public class Registration {
   /** Builder that pre-supplies metal properties */
   private static BlockBehaviour.Properties metalBuilder(MapColor color) {
     return BlockBehaviour.Properties.of().mapColor(color).sound(SoundType.METAL).instrument(NoteBlockInstrument.IRON_XYLOPHONE).requiresCorrectToolForDrops().strength(5.0f);
+  }
+
+  /** Makes a damage source from the given key */
+  public static DamageSource makeSource(Level level, ResourceKey<DamageType> key) {
+    return new DamageSource(level.registryAccess().registryOrThrow(Registries.DAMAGE_TYPE).getHolderOrThrow(Registration.METAL_HURT));
   }
 }

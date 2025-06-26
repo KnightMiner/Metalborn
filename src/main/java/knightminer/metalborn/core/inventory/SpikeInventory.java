@@ -3,6 +3,7 @@ package knightminer.metalborn.core.inventory;
 import com.google.common.collect.HashMultiset;
 import com.google.common.collect.Multiset;
 import knightminer.metalborn.Metalborn;
+import knightminer.metalborn.core.Registration;
 import knightminer.metalborn.core.inventory.SpikeInventory.SpikeStack;
 import knightminer.metalborn.item.Spike;
 import knightminer.metalborn.metal.MetalId;
@@ -29,7 +30,7 @@ public class SpikeInventory extends MetalInventory<SpikeStack> {
   /** UUID for any attribute debuffs */
   private static final UUID DEBUFF_UUID = UUID.fromString("8c2b195c-dbf0-44a1-9e04-47db33c6bc17");
   /** Health loss per spike */
-  private static final int HEALTH_PER_SPIKE = -2;
+  private static final int HEALTH_PER_SPIKE = 2;
   /** Language key for the power granting list */
 
   private final ActiveMetalminds activeMetalminds;
@@ -62,7 +63,7 @@ public class SpikeInventory extends MetalInventory<SpikeStack> {
       } else {
         instance.removeModifier(DEBUFF_UUID);
         if (currentSize != 0) {
-          instance.addTransientModifier(new AttributeModifier(DEBUFF_UUID, "metalborn.spikes", currentSize * HEALTH_PER_SPIKE, Operation.ADDITION));
+          instance.addTransientModifier(new AttributeModifier(DEBUFF_UUID, "metalborn.spikes", currentSize * -HEALTH_PER_SPIKE, Operation.ADDITION));
         }
       }
       lastSize = currentSize;
@@ -96,7 +97,7 @@ public class SpikeInventory extends MetalInventory<SpikeStack> {
   /** Appends tooltip for all active effects */
   public void getTooltip(List<Component> tooltip) {
     tooltip.add(SPIKE_EFFECTS);
-    int health = extraPowers.size() * HEALTH_PER_SPIKE;
+    int health = extraPowers.size() * -HEALTH_PER_SPIKE;
     if (health != 0) {
       tooltip.add(Component.translatable(
         "attribute.modifier.take.0",
@@ -104,7 +105,7 @@ public class SpikeInventory extends MetalInventory<SpikeStack> {
       Component.translatable(Attributes.MAX_HEALTH.getDescriptionId())
     ).withStyle(ChatFormatting.RED));
       for (MetalId metal : extraPowers.elementSet()) {
-        tooltip.add(Component.translatable(KEY_GRANTS, metal.getFerring()).withStyle(ChatFormatting.BLUE));
+        tooltip.add(Component.translatable(KEY_GRANTS, metal.getStores()).withStyle(ChatFormatting.BLUE));
       }
     } else {
       tooltip.add(NO_SPIKES);
@@ -136,6 +137,10 @@ public class SpikeInventory extends MetalInventory<SpikeStack> {
           extraPowers.add(metal);
           updateSpikes();
           onRemoveMetal(oldMetal);
+        }
+        // you get hurt when adding a spike if the metal changed
+        if (!entity.level().isClientSide && !oldMetal.equals(this.metal)) {
+          entity.hurt(Registration.makeSource(entity.level(), Registration.ADD_SPIKE), HEALTH_PER_SPIKE + 1);
         }
       }
     }

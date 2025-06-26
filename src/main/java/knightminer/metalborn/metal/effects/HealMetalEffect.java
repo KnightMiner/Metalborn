@@ -4,9 +4,7 @@ import knightminer.metalborn.Metalborn;
 import knightminer.metalborn.core.Registration;
 import knightminer.metalborn.metal.MetalPower;
 import net.minecraft.ChatFormatting;
-import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
-import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.LivingEntity;
 import slimeknights.mantle.data.loadable.primitive.IntLoadable;
 import slimeknights.mantle.data.loadable.record.RecordLoadable;
@@ -42,7 +40,7 @@ public record HealMetalEffect(int delay) implements MetalEffect {
         }
         return 0;
       } else if (entity.getHealth() > 1) {
-        if (entity.hurt(new DamageSource(entity.level().registryAccess().registryOrThrow(Registries.DAMAGE_TYPE).getHolderOrThrow(Registration.METAL_HURT)), 1)) {
+        if (entity.hurt(Registration.makeSource(entity.level(), Registration.METAL_HURT), 1)) {
           // on storing, you have to actually lose health to gain something
           return -1;
         }
