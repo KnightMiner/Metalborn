@@ -112,20 +112,21 @@ public class MetalmindItem extends Item implements MetalItem, Metalmind {
     if (amount == 0) {
       return 0;
     }
-    int updated = getAmount(stack) + amount;
+    int stored = getAmount(stack);
     CompoundTag tag = stack.getOrCreateTag();
     // if we are the first to fill it, set the owner
-    if (amount == updated) {
+    if (stored == 0) {
       // TODO: identity shenanigans
       tag.putUUID(TAG_OWNER, player.getUUID());
       tag.putString(TAG_OWNER_NAME, player.getGameProfile().getName());
     }
 
     // if given more than we can hold, return the leftover
+    int updated = stored + amount;
     int capacity = getCapacity(stack);
     if (updated >= capacity) {
       tag.putInt(TAG_AMOUNT, capacity);
-      return updated - capacity;
+      return capacity - stored;
     } else {
       // store everything
       tag.putInt(TAG_AMOUNT, updated);
@@ -166,9 +167,9 @@ public class MetalmindItem extends Item implements MetalItem, Metalmind {
         // can use the mainhand metalmind, and the two are storing the same thing
         if (mainhand.getItem() instanceof Metalmind metalmind && getMetal(stack).equals(metalmind.getMetal(mainhand)) && metalmind.canUse(mainhand, player)) {
           // if we could not transfer everything, drain the offhand by how much transferred
-          int remaining = metalmind.fill(mainhand, player, amount);
-          if (remaining > 0) {
-            fill(stack, player, amount - remaining);
+          int used = metalmind.fill(mainhand, player, amount);
+          if (amount > used) {
+            drain(stack, player, used);
           } else {
             // clear offhand entirely if it all transferred
             emptyMetalmind(stack);
