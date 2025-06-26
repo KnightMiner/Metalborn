@@ -41,10 +41,11 @@ public record HealMetalEffect(int delay) implements MetalEffect {
           return level;
         }
         return 0;
-      } else {
-        entity.hurt(new DamageSource(entity.level().registryAccess().registryOrThrow(Registries.DAMAGE_TYPE).getHolderOrThrow(Registration.METAL_HURT)), 1);
-        // on storing, you have to actually lose health to gain something
-        return -1;
+      } else if (entity.getHealth() > 1) {
+        if (entity.hurt(new DamageSource(entity.level().registryAccess().registryOrThrow(Registries.DAMAGE_TYPE).getHolderOrThrow(Registration.METAL_HURT)), 1)) {
+          // on storing, you have to actually lose health to gain something
+          return -1;
+        }
       }
     }
     return 0;
