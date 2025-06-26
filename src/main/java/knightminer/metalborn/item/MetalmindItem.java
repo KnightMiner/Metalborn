@@ -123,17 +123,22 @@ public class MetalmindItem extends Item implements MetalItem, Metalmind {
       return 0;
     }
     int stored = getAmount(stack);
-    CompoundTag tag = stack.getOrCreateTag();
+    int capacity = getCapacity(stack);
+    // if already full, no work to do. Also prevents us from deleting from an overfilled metalmind
+    if (stored >= capacity) {
+      return 0;
+    }
+
     // if we are the first to fill it, set the owner
+    CompoundTag tag = stack.getOrCreateTag();
     if (stored == 0) {
       // TODO: identity shenanigans
       tag.putUUID(TAG_OWNER, player.getUUID());
       tag.putString(TAG_OWNER_NAME, player.getGameProfile().getName());
     }
 
-    // if given more than we can hold, return the leftover
+    // if now filled, we can't use the full amount
     int updated = stored + amount;
-    int capacity = getCapacity(stack);
     if (updated >= capacity) {
       tag.putInt(TAG_AMOUNT, capacity);
       return capacity - stored;
