@@ -1,0 +1,23 @@
+{
+  "type": "metalborn:shapeless_forge",
+  "cooking_time": 200,
+  "experience": 1.0,
+  "ingredients": [
+    {
+      "item": "minecraft:charcoal"
+    },
+    {
+      "item": "minecraft:charcoal"
+    },
+    {
+      "item": "minecraft:charcoal"
+    },
+    {
+      "tag": "metalborn:ingot_like/iron"
+    }
+  ],
+  "result": {
+    "count": 1,
+    "tag": "forge:ingots/steel"
+  }
+}

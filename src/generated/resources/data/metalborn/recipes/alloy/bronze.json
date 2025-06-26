@@ -1,0 +1,23 @@
+{
+  "type": "metalborn:shapeless_forge",
+  "cooking_time": 800,
+  "experience": 0.7,
+  "ingredients": [
+    {
+      "tag": "metalborn:ingot_like/copper"
+    },
+    {
+      "tag": "metalborn:ingot_like/copper"
+    },
+    {
+      "tag": "metalborn:ingot_like/copper"
+    },
+    {
+      "tag": "metalborn:ingot_like/tin"
+    }
+  ],
+  "result": {
+    "count": 4,
+    "tag": "forge:ingots/bronze"
+  }
+}

@@ -41,6 +41,7 @@ public class ItemModelProvider extends net.minecraftforge.client.model.generator
     metal(Registration.BRONZE, MetalIds.bronze);
     metal(Registration.ROSE_GOLD, MetalIds.roseGold);
     nugget(Registration.COPPER_NUGGET, MetalIds.copper);
+    basicItem(Registration.NETHERITE_NUGGET, "netherite_nugget");
     basicItem(Registration.LERASIUM_NUGGET, "lerasium_nugget");
     // lerasium alloy wants to have a mixture of the two colors so it's not mistaken for a normal nugget, so part is untinted
     customModel(Registration.LERASIUM_ALLOY_NUGGET, false)

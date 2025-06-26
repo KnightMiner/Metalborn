@@ -94,6 +94,7 @@ public class Registration {
 
   // metals
   public static final ItemObject<Item> COPPER_NUGGET = ITEMS.register("copper_nugget");
+  public static final ItemObject<Item> NETHERITE_NUGGET = ITEMS.register("netherite_nugget");
   public static final ItemObject<LerasiumNuggetItem> LERASIUM_NUGGET = ITEMS.register("lerasium_nugget", () -> new LerasiumNuggetItem(new Item.Properties()));
   public static final ItemObject<LerasiumAlloyNuggetItem> LERASIUM_ALLOY_NUGGET = ITEMS.register("lerasium_alloy_nugget", () -> new LerasiumAlloyNuggetItem(new Item.Properties()));
 
@@ -146,6 +147,7 @@ public class Registration {
 
     // metals
     output.accept(COPPER_NUGGET);
+    output.accept(NETHERITE_NUGGET);
     accept(output, TIN);
     accept(output, PEWTER);
     accept(output, STEEL);

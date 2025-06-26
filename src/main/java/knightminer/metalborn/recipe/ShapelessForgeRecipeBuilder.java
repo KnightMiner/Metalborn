@@ -3,6 +3,8 @@ package knightminer.metalborn.recipe;
 import net.minecraft.core.NonNullList;
 import net.minecraft.data.recipes.FinishedRecipe;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.tags.TagKey;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.ItemLike;
 import slimeknights.mantle.recipe.helper.ItemOutput;
@@ -24,6 +26,11 @@ public class ShapelessForgeRecipeBuilder extends AbstractForgeRecipeBuilder<Shap
   }
 
   /** Creates a new builder instance */
+  public static ShapelessForgeRecipeBuilder shapeless(TagKey<Item> tag, int count) {
+    return shapeless(ItemOutput.fromTag(tag, count));
+  }
+
+  /** Creates a new builder instance */
   public static ShapelessForgeRecipeBuilder shapeless(ItemLike result, int count) {
     return shapeless(ItemOutput.fromItem(result, count));
   }
@@ -34,23 +41,27 @@ public class ShapelessForgeRecipeBuilder extends AbstractForgeRecipeBuilder<Shap
   }
 
 
-  /** Adds an ingredient */
-  public ShapelessForgeRecipeBuilder requires(Ingredient ingredient) {
-    this.ingredients.add(ingredient);
-    return this;
-  }
-
   /** Adds an ingredient multiple times. */
-  public ShapelessForgeRecipeBuilder requires(Ingredient ingredient, int pQuantity) {
-    for(int i = 0; i < pQuantity; ++i) {
+  public ShapelessForgeRecipeBuilder requires(Ingredient ingredient, int quantity) {
+    for(int i = 0; i < quantity; ++i) {
       this.ingredients.add(ingredient);
     }
     return this;
   }
 
+  /** Adds an ingredient to the recipe. */
+  public ShapelessForgeRecipeBuilder requires(Ingredient ingredient) {
+    return requires(ingredient, 1);
+  }
+
+  /** Adds an item multiple times. */
+  public ShapelessForgeRecipeBuilder requires(ItemLike item, int quantity) {
+    return requires(Ingredient.of(item), quantity);
+  }
+
   @Override
   public void save(Consumer<FinishedRecipe> consumer, ResourceLocation id) {
     ResourceLocation advancementId = buildOptionalAdvancement(id, "forge");
-    consumer.accept(new LoadableFinishedRecipe<>(new ShapelessForgeRecipe(id, result, new NonNullList<>(ingredients, null), experience, cookingTime), ShapelessForgeRecipe.LOADABLE, advancementId));
+    consumer.accept(new LoadableFinishedRecipe<>(new ShapelessForgeRecipe(id, result, new NonNullList<>(ingredients, null), experience, computeCookingTime()), ShapelessForgeRecipe.LOADABLE, advancementId));
   }
 }

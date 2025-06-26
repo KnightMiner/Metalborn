@@ -1,0 +1,27 @@
+{
+  "type": "metalborn:shapeless_forge",
+  "conditions": [
+    {
+      "type": "mantle:tag_filled",
+      "tag": "forge:ingots/electrum"
+    },
+    {
+      "type": "mantle:tag_filled",
+      "tag": "metalborn:ingot_like/silver"
+    }
+  ],
+  "cooking_time": 400,
+  "experience": 1.0,
+  "ingredients": [
+    {
+      "tag": "metalborn:ingot_like/gold"
+    },
+    {
+      "tag": "metalborn:ingot_like/silver"
+    }
+  ],
+  "result": {
+    "count": 2,
+    "tag": "forge:ingots/electrum"
+  }
+}

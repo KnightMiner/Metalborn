@@ -131,7 +131,7 @@ public class ShapedForgeRecipeBuilder extends AbstractForgeRecipeBuilder<ShapedF
       if (experience != 0) {
         json.addProperty("experience", experience);
       }
-      json.addProperty("cooking_time", cookingTime);
+      json.addProperty("cooking_time", computeCookingTime());
     }
 
     @Override

@@ -1,0 +1,16 @@
+{
+  "values": [
+    {
+      "id": "#forge:ingots/zinc",
+      "required": false
+    },
+    {
+      "id": "#forge:raw_materials/zinc",
+      "required": false
+    },
+    {
+      "id": "#forge:ores/zinc",
+      "required": false
+    }
+  ]
+}

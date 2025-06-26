@@ -1,0 +1,27 @@
+{
+  "type": "metalborn:shapeless_forge",
+  "conditions": [
+    {
+      "type": "mantle:tag_filled",
+      "tag": "forge:ingots/constantan"
+    },
+    {
+      "type": "mantle:tag_filled",
+      "tag": "metalborn:ingot_like/nickel"
+    }
+  ],
+  "cooking_time": 400,
+  "experience": 0.7,
+  "ingredients": [
+    {
+      "tag": "metalborn:ingot_like/copper"
+    },
+    {
+      "tag": "metalborn:ingot_like/nickel"
+    }
+  ],
+  "result": {
+    "count": 2,
+    "tag": "forge:ingots/constantan"
+  }
+}

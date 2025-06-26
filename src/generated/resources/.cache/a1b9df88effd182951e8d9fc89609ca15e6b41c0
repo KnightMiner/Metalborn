@@ -1,10 +1,11 @@
-// 1.20.1	2025-06-26T01:00:08.2953157	Item Models: metalborn
+// 1.20.1	2025-06-26T19:36:37.3120228	Item Models: metalborn
 4dc7437e56be8a51858b985325aa1570e1f93125 assets/metalborn/models/item/bracer.json
 6cafe065b45e6f11f06b6fa72ae7ff33b5822c87 assets/metalborn/models/item/bronze_ingot.json
 57256b75590c4b4f2b4ec572a1338e13b49b2bb8 assets/metalborn/models/item/bronze_nugget.json
 eed68e86ae8578312b813454b280a9d33497dd8d assets/metalborn/models/item/copper_nugget.json
 236b438bd353971ec4847103692a02aa83e38847 assets/metalborn/models/item/lerasium_alloy_nugget.json
 73146e3412c7354aeef3be8648ead24b62261d9b assets/metalborn/models/item/lerasium_nugget.json
+183e9ed503e5a797d4b73e0f9a88a1cfce0ee938 assets/metalborn/models/item/netherite_nugget.json
 8cf49690a049273a0b24ba8a4587d21e655b6f04 assets/metalborn/models/item/pewter_ingot.json
 2fc554d9f323521354de9473b8bb15ff33ea3afe assets/metalborn/models/item/pewter_nugget.json
 2f9a7d7dddb76ab589a97ad8b10e75c5583bae9d assets/metalborn/models/item/raw_tin.json

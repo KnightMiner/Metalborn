@@ -1,0 +1,16 @@
+{
+  "values": [
+    {
+      "id": "#forge:ingots/silver",
+      "required": false
+    },
+    {
+      "id": "#forge:raw_materials/silver",
+      "required": false
+    },
+    {
+      "id": "#forge:ores/silver",
+      "required": false
+    }
+  ]
+}

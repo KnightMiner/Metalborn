@@ -58,6 +58,8 @@
   "block.metalborn.raw_tin_block": "Block of Raw Tin",
   "item.metalborn.raw_tin": "Raw Tin",
 
+  "item.metalborn.netherite_nugget": "Netherite Nugget",
+
   "item.metalborn.lerasium_nugget": "Lerasium Nugget",
   "item.metalborn.lerasium_nugget.on_consume": "Eat to become a random ferring",
   "item.metalborn.lerasium_alloy_nugget": "Lerasium Alloy Nugget",

@@ -1,0 +1,33 @@
+{
+  "type": "metalborn:shapeless_forge",
+  "conditions": [
+    {
+      "type": "mantle:tag_filled",
+      "tag": "forge:ingots/hepatizon"
+    },
+    {
+      "type": "mantle:tag_filled",
+      "tag": "metalborn:ingot_like/cobalt"
+    }
+  ],
+  "cooking_time": 400,
+  "experience": 2.0,
+  "ingredients": [
+    {
+      "tag": "metalborn:ingot_like/copper"
+    },
+    {
+      "tag": "metalborn:ingot_like/copper"
+    },
+    {
+      "tag": "metalborn:ingot_like/cobalt"
+    },
+    {
+      "item": "minecraft:quartz"
+    }
+  ],
+  "result": {
+    "count": 2,
+    "tag": "forge:ingots/hepatizon"
+  }
+}

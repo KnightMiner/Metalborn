@@ -1,0 +1,16 @@
+{
+  "values": [
+    {
+      "id": "#forge:ingots/cobalt",
+      "required": false
+    },
+    {
+      "id": "#forge:raw_materials/cobalt",
+      "required": false
+    },
+    {
+      "id": "#forge:ores/cobalt",
+      "required": false
+    }
+  ]
+}

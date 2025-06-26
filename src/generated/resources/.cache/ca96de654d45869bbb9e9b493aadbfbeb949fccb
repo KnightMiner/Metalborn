@@ -1,13 +1,14 @@
-// 1.20.1	2025-06-24T03:55:42.699159	Tags for minecraft:item mod id metalborn
+// 1.20.1	2025-06-26T19:40:06.2729671	Tags for minecraft:item mod id metalborn
 15fc259f6c72ba48b51d2ea9d2bf765763770793 data/forge/tags/items/ingots.json
 03cfb4451bfb3c82bfbe118acfb1c55d545d9835 data/forge/tags/items/ingots/bronze.json
 b82e1386d985cef8647105b101ae7ebaeccee644 data/forge/tags/items/ingots/pewter.json
 e7514c66a0e390083199482c0955ff184c6e6f09 data/forge/tags/items/ingots/rose_gold.json
 f55693b37c9cf80ca29a8d91f1986ce9bf920dab data/forge/tags/items/ingots/steel.json
 df4ca4e29f1642104842e775304066f7ea397604 data/forge/tags/items/ingots/tin.json
-df29915ef8de200961aa2e28f4c2c0392ddb712a data/forge/tags/items/nuggets.json
+7f244aebd1fe0fdc77def65833031c1489ecff8c data/forge/tags/items/nuggets.json
 797e7aa68cda1155014635c424ba4fae6a9eb2fd data/forge/tags/items/nuggets/bronze.json
 96297501f52bc0ed4f61530fdb7322c3c78babf0 data/forge/tags/items/nuggets/copper.json
+153083c83dde50354597232ecb844d923268e973 data/forge/tags/items/nuggets/netherite.json
 80078e9eae7e60d6fbd9aba430daf0bb33123690 data/forge/tags/items/nuggets/pewter.json
 0c5e712e0458eea79f214c53174656165b0ea9aa data/forge/tags/items/nuggets/rose_gold.json
 a5da29b948d57073e58c4450458e704a54312c10 data/forge/tags/items/nuggets/steel.json
@@ -23,3 +24,12 @@ cd5b2c9853eed4454b5baadfa42e59b461e32409 data/forge/tags/items/storage_blocks/pe
 0eb858f023ba3ddbb0a3699de23e92faf0feceb0 data/forge/tags/items/storage_blocks/rose_gold.json
 2c8e40745b73849326f23e235c1cdb273872a96f data/forge/tags/items/storage_blocks/steel.json
 e585c51c68d5f9813b4e4e9ae82ccfc368396757 data/forge/tags/items/storage_blocks/tin.json
+732fab6b01a70cc268f678005329892b585a53d2 data/metalborn/tags/items/ingot_like/cobalt.json
+0f352b026bce2688fab8476e448b9a596737a565 data/metalborn/tags/items/ingot_like/copper.json
+61ff94e2556c9805ea6274be09fa696e637f7299 data/metalborn/tags/items/ingot_like/gold.json
+20a24b3f68438bbf47db62e76fd8619b4cf29363 data/metalborn/tags/items/ingot_like/iron.json
+be0fcfe4559e852598213697713200e2e6c9e7fa data/metalborn/tags/items/ingot_like/netherite_scrap.json
+e811fea8b06671da251e7fbec4e2614f6f191dbf data/metalborn/tags/items/ingot_like/nickel.json
+2e9d8ff13339b9e3a252ed3748a58b49585ac2d0 data/metalborn/tags/items/ingot_like/silver.json
+398b903658b869cb7a0523e23b3a32a634c3be1c data/metalborn/tags/items/ingot_like/tin.json
+a1f720331d641e7f110e85ffcbffcaa6ad50c76b data/metalborn/tags/items/ingot_like/zinc.json

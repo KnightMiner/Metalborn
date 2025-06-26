@@ -2,9 +2,16 @@ package knightminer.metalborn.data.tag;
 
 import knightminer.metalborn.Metalborn;
 import knightminer.metalborn.core.Registration;
+import knightminer.metalborn.data.MetalIds;
+import knightminer.metalborn.metal.MetalId;
 import net.minecraft.core.HolderLookup.Provider;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.tags.ItemTagsProvider;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.tags.ItemTags;
+import net.minecraft.tags.TagKey;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.Block;
 import net.minecraftforge.common.Tags;
 import net.minecraftforge.common.data.ExistingFileHelper;
@@ -13,7 +20,10 @@ import slimeknights.mantle.registration.object.MetalItemObject;
 
 import java.util.concurrent.CompletableFuture;
 
+import static slimeknights.mantle.Mantle.commonResource;
+
 /** Registers item tags for Metalborn */
+@SuppressWarnings("unchecked")
 public class ItemTagProvider extends ItemTagsProvider {
   public ItemTagProvider(PackOutput packOutput, CompletableFuture<Provider> lookupProvider, CompletableFuture<TagLookup<Block>> blockTags, @Nullable ExistingFileHelper existingFileHelper) {
     super(packOutput, lookupProvider, blockTags, Metalborn.MOD_ID, existingFileHelper);
@@ -30,13 +40,29 @@ public class ItemTagProvider extends ItemTagsProvider {
     metal(Registration.BRONZE);
     metal(Registration.ROSE_GOLD);
     tag(MetalbornTags.Items.COPPER_NUGGETS).add(Registration.COPPER_NUGGET.get());
-    tag(Tags.Items.NUGGETS).addTag(MetalbornTags.Items.COPPER_NUGGETS);
+    tag(MetalbornTags.Items.NETHERITE_NUGGETS).add(Registration.NETHERITE_NUGGET.get());
+    tag(Tags.Items.NUGGETS).addTags(MetalbornTags.Items.COPPER_NUGGETS, MetalbornTags.Items.NETHERITE_NUGGETS);
 
     // tin ore
     copy(MetalbornTags.Blocks.TIN_ORE, MetalbornTags.Items.TIN_ORE);
     copy(MetalbornTags.Blocks.RAW_TIN_BLOCK, MetalbornTags.Items.RAW_TIN_BLOCK);
     tag(MetalbornTags.Items.RAW_TIN).add(Registration.RAW_TIN.get());
     tag(Tags.Items.RAW_MATERIALS).addTag(MetalbornTags.Items.RAW_TIN);
+
+    // alloy inputs
+    // base metals
+    addIngotLike(MetalIds.iron, true);
+    addIngotLike(MetalIds.copper, true);
+    addIngotLike(MetalIds.gold, true);
+    addIngotLike(MetalIds.tin, true);
+    // compat
+    addIngotLike(MetalIds.zinc, false);
+    addIngotLike("nickel", false);
+    addIngotLike(MetalIds.silver, false);
+    addIngotLike(MetalIds.cobalt, false);
+
+    // netherite scrap is weird as its not fully tagged, but we can deal with that
+    tag(MetalbornTags.Items.SCRAP_LIKE).add(Items.NETHERITE_SCRAP).addTag(Tags.Items.ORES_NETHERITE_SCRAP);
   }
 
   /** Adds all relevant tags to a metal */
@@ -46,5 +72,31 @@ public class ItemTagProvider extends ItemTagsProvider {
     tag(metal.getNuggetTag()).add(metal.getNugget());
     tag(Tags.Items.INGOTS).addTag(metal.getIngotTag());
     tag(Tags.Items.NUGGETS).addTag(metal.getNuggetTag());
+  }
+
+  /** Creates a tag for an ingot-like input, used in alloying */
+  @SuppressWarnings("SameParameterValue")
+  private void addIngotLike(MetalId metal, boolean required) {
+    addIngotLike(metal.getPath(), required);
+  }
+
+  /** Creates a tag for an ingot-like input, used in alloying */
+  private void addIngotLike(String path, boolean required) {
+    ResourceLocation ingot = commonResource("ingots/" + path);
+    ResourceLocation rawOre = commonResource("raw_materials/" + path);
+    ResourceLocation ore = commonResource("ores/" + path);
+    TagKey<Item> tag = ItemTags.create(Metalborn.resource("ingot_like/" + path));
+    if (required) {
+      tag(tag).addTags(
+        ItemTags.create(ingot),
+        ItemTags.create(rawOre),
+        ItemTags.create(ore)
+      );
+    } else {
+      tag(tag)
+        .addOptionalTag(ingot)
+        .addOptionalTag(rawOre)
+        .addOptionalTag(ore);
+    }
   }
 }

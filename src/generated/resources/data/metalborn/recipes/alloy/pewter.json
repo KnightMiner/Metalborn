@@ -1,0 +1,66 @@
+{
+  "type": "forge:conditional",
+  "recipes": [
+    {
+      "conditions": [
+        {
+          "type": "mantle:tag_filled",
+          "tag": "metalborn:ingot_like/lead"
+        }
+      ],
+      "recipe": {
+        "type": "metalborn:shapeless_forge",
+        "cooking_time": 800,
+        "experience": 1.0,
+        "ingredients": [
+          {
+            "tag": "metalborn:ingot_like/tin"
+          },
+          {
+            "tag": "metalborn:ingot_like/tin"
+          },
+          {
+            "tag": "metalborn:ingot_like/tin"
+          },
+          {
+            "tag": "metalborn:ingot_like/lead"
+          }
+        ],
+        "result": {
+          "count": 4,
+          "tag": "forge:ingots/pewter"
+        }
+      }
+    },
+    {
+      "conditions": [
+        {
+          "type": "forge:true"
+        }
+      ],
+      "recipe": {
+        "type": "metalborn:shapeless_forge",
+        "cooking_time": 800,
+        "experience": 1.0,
+        "ingredients": [
+          {
+            "tag": "metalborn:ingot_like/tin"
+          },
+          {
+            "tag": "metalborn:ingot_like/tin"
+          },
+          {
+            "tag": "metalborn:ingot_like/tin"
+          },
+          {
+            "tag": "metalborn:ingot_like/iron"
+          }
+        ],
+        "result": {
+          "count": 4,
+          "tag": "forge:ingots/pewter"
+        }
+      }
+    }
+  ]
+}
