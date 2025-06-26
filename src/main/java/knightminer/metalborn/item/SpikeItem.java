@@ -113,8 +113,13 @@ public class SpikeItem extends Item implements MetalItem, Spike {
   /* Bar */
 
   @Override
+  public boolean isFoil(ItemStack stack) {
+    return isFull(stack);
+  }
+
+  @Override
   public boolean isBarVisible(ItemStack stack) {
-    return true;
+    return !isFull(stack);
   }
 
   @Override
@@ -132,7 +137,7 @@ public class SpikeItem extends Item implements MetalItem, Spike {
 
   @Override
   public int getBarColor(ItemStack stack) {
-    return 0xBB0000;
+    return 0xFF0000;
   }
 
 
