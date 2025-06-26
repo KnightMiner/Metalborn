@@ -76,6 +76,10 @@
   "item.metalborn.metalmind.owner.none": "Unsealed",
   "item.metalborn.metalmind.owner.unknown": "Unknown",
 
+  "item.metalborn.spike.steals": "Steals: %s",
+  "item.metalborn.spike.charge": "Charge: %s / %s",
+  "item.metalborn.spike.charge.full": "Fully Charged",
+
   "item.metalborn.ferring.matches": "You feel this metal pulling on you slightly.",
   "item.metalborn.ferring.mismatches": "You do not feel anything from this metal.",
 

@@ -35,7 +35,10 @@ public interface MetalbornData extends INBTSerializable<CompoundTag> {
   void tick();
 
   /** Gets the tooltip for display in the screen */
-  void getTooltip(List<Component> tooltip);
+  void getFeruchemyTooltip(List<Component> tooltip);
+
+  /** Gets the tooltip for display in the screen */
+  void getHemalurgyTooltip(List<Component> tooltip);
 
   /** Called client side to clear old data when the inventory is opened */
   void clear();
@@ -73,7 +76,10 @@ public interface MetalbornData extends INBTSerializable<CompoundTag> {
     public void tick() {}
 
     @Override
-    public void getTooltip(List<Component> tooltip) {}
+    public void getFeruchemyTooltip(List<Component> tooltip) {}
+
+    @Override
+    public void getHemalurgyTooltip(List<Component> tooltip) {}
 
     @Override
     public void clear() {}

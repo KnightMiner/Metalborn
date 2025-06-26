@@ -1,0 +1,147 @@
+package knightminer.metalborn.core.inventory;
+
+import com.google.common.collect.HashMultiset;
+import com.google.common.collect.Multiset;
+import knightminer.metalborn.Metalborn;
+import knightminer.metalborn.core.inventory.SpikeInventory.SpikeStack;
+import knightminer.metalborn.item.Spike;
+import knightminer.metalborn.metal.MetalId;
+import net.minecraft.ChatFormatting;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.chat.Component;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.ai.attributes.AttributeInstance;
+import net.minecraft.world.entity.ai.attributes.AttributeModifier;
+import net.minecraft.world.entity.ai.attributes.AttributeModifier.Operation;
+import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.item.ItemStack;
+import slimeknights.mantle.data.loadable.Loadables;
+
+import java.util.List;
+import java.util.UUID;
+import java.util.stream.IntStream;
+
+/** Inventory of all spikes on the target */
+public class SpikeInventory extends MetalInventory<SpikeStack> {
+  /** UUID for any attribute debuffs */
+  private static final UUID DEBUFF_UUID = UUID.fromString("8c2b195c-dbf0-44a1-9e04-47db33c6bc17");
+  /** Health loss per spike */
+  private static final int HEALTH_PER_SPIKE = -2;
+  /** Language key for the power granting list */
+  private static final String KEY_GRANTS = Metalborn.key("gui", "grants");
+
+  private final ActiveMetalminds activeMetalminds;
+  private final LivingEntity entity;
+  private final Multiset<MetalId> extraPowers = HashMultiset.create();
+  private int lastSize = 0;
+  public SpikeInventory(ActiveMetalminds activeMetalminds, LivingEntity entity) {
+    this.activeMetalminds = activeMetalminds;
+    this.entity = entity;
+    this.inventory = IntStream.range(0, 4).mapToObj(i -> new SpikeStack()).toList();
+  }
+
+  @Override
+  public boolean isItemValid(int slot, ItemStack stack) {
+    return stack.isEmpty() || stack.getItem() instanceof Spike;
+  }
+
+  /** Checks if the given metal can be used due to spikes */
+  public boolean canUse(MetalId metal) {
+    return extraPowers.contains(metal);
+  }
+
+  /** Updates debuffs related to number of spikes */
+  private void updateSpikes() {
+    int currentSize = extraPowers.size();
+    if (currentSize != lastSize) {
+      AttributeInstance instance = entity.getAttribute(Attributes.MAX_HEALTH);
+      if (instance == null) {
+        Metalborn.LOG.warn("Entity {} does not support attribute {}", entity, Loadables.ATTRIBUTE.getString(Attributes.MAX_HEALTH));
+      } else {
+        instance.removeModifier(DEBUFF_UUID);
+        if (currentSize != 0) {
+          instance.addTransientModifier(new AttributeModifier(DEBUFF_UUID, "metalborn.spikes", currentSize * HEALTH_PER_SPIKE, Operation.ADDITION));
+        }
+      }
+      lastSize = currentSize;
+    }
+  }
+
+  /** Called when a metal is removed to stop tapping of that metal */
+  private void onRemoveMetal(MetalId metal) {
+    if (!extraPowers.contains(metal)) {
+      activeMetalminds.clearMetal(metal);
+    }
+  }
+
+  @Override
+  public void clear() {
+    super.clear();
+    extraPowers.clear();
+  }
+
+  @Override
+  public void refreshActive() {
+    extraPowers.clear();
+    for (SpikeStack stack : inventory) {
+      if (stack.metal != MetalId.NONE) {
+        extraPowers.add(stack.metal);
+      }
+    }
+    updateSpikes();
+  }
+
+  /** Appends tooltip for all active effects */
+  public void getTooltip(List<Component> tooltip) {
+    tooltip.add(Component.translatable(
+      "attribute.modifier.plus.0",
+      ItemStack.ATTRIBUTE_MODIFIER_FORMAT.format((long) extraPowers.size() * HEALTH_PER_SPIKE),
+      Component.translatable(Attributes.MAX_HEALTH.getDescriptionId())
+    ).withStyle(ChatFormatting.RED));
+    for (MetalId metal : extraPowers.elementSet()) {
+      tooltip.add(Component.translatable(KEY_GRANTS, metal.getFerring()).withStyle(ChatFormatting.BLUE));
+    }
+  }
+
+  /** Represents a single slot in the inventory */
+  class SpikeStack extends StackHolder<SpikeStack> {
+    private MetalId metal = MetalId.NONE;
+
+    @Override
+    protected void setStack(ItemStack stack) {
+      if (stack.isEmpty()) {
+        // clear previous power
+        if (extraPowers.remove(metal)) {
+          updateSpikes();
+          // stop the removed metal from being tapped
+          onRemoveMetal(metal);
+        }
+        // clear stack
+        this.stack = ItemStack.EMPTY;
+        this.metal = MetalId.NONE;
+      } else if (stack.getItem() instanceof Spike spike) {
+        this.stack = stack.copy();
+        MetalId oldMetal = this.metal;
+        this.metal = spike.getMetal(stack);
+        if (!oldMetal.equals(this.metal)) {
+          extraPowers.remove(oldMetal);
+          extraPowers.add(metal);
+          updateSpikes();
+          onRemoveMetal(oldMetal);
+        }
+      }
+    }
+
+    @Override
+    protected void clear() {
+      super.clear();
+      metal = MetalId.NONE;
+    }
+
+    @Override
+    public void deserializeNBT(CompoundTag tag) {
+      super.deserializeNBT(tag);
+      metal = stack.getItem() instanceof Spike spike ? spike.getMetal(stack) : MetalId.NONE;
+    }
+  }
+}

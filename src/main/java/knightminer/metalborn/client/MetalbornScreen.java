@@ -145,7 +145,7 @@ public class MetalbornScreen extends AbstractContainerScreen<MetalbornMenu> {
     // tooltip for hovering the info button
     if (METALMIND_X <= checkX && checkX < METALMIND_X + INFO_SIZE && METALMIND_Y <= checkY && checkY < METALMIND_Y + INFO_SIZE) {
       List<Component> tooltip = new ArrayList<>();
-      data.getTooltip(tooltip);
+      data.getFeruchemyTooltip(tooltip);
       if (tooltip.isEmpty()) {
         graphics.renderTooltip(font, NO_METALMINDS, mouseX, mouseY);
       } else {

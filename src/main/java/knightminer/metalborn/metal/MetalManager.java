@@ -10,6 +10,7 @@ import net.minecraft.server.packs.resources.SimpleJsonResourceReloadListener;
 import net.minecraft.util.GsonHelper;
 import net.minecraft.util.RandomSource;
 import net.minecraft.util.profiling.ProfilerFiller;
+import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.ItemLike;
 import net.minecraftforge.common.MinecraftForge;
@@ -43,12 +44,25 @@ public class MetalManager extends SimpleJsonResourceReloadListener {
   private List<MetalPower> sortedPowers = List.of();
   /** All powers that can be used by a ferring */
   private List<MetalPower> ferrings = List.of();
+
   /** Cache of the metal power for each item type */
   private final Map<Item,MetalPower> itemCache = new HashMap<>();
   /** Cache resolver for getting a power from an item */
   private final Function<Item,MetalPower> itemGetter = item -> {
     for (MetalPower power : sortedPowers) {
       if (power.matches(item)) {
+        return power;
+      }
+    }
+    return MetalPower.DEFAULT;
+  };
+
+  /** Cache of the metal power for each item type */
+  private final Map<EntityType<?>,MetalPower> entityCache = new HashMap<>();
+  /** Cache resolver for getting a power from an item */
+  private final Function<EntityType<?>,MetalPower> entityGetter = entity -> {
+    for (MetalPower power : sortedPowers) {
+      if (power.matches(entity)) {
         return power;
       }
     }
@@ -82,6 +96,8 @@ public class MetalManager extends SimpleJsonResourceReloadListener {
     this.powers = powers;
     this.sortedPowers = powers.values().stream().sorted(Comparator.comparing(MetalPower::index)).toList();
     this.ferrings = sortedPowers.stream().filter(power -> power.ferring() && !power.feruchemy().isEmpty()).toList();
+    this.itemCache.clear();
+    this.entityCache.clear();
   }
 
 
@@ -149,7 +165,11 @@ public class MetalManager extends SimpleJsonResourceReloadListener {
     return itemCache.computeIfAbsent(item.asItem(), itemGetter);
   }
 
+  /** Gets the metal power for the given entity target */
+  public MetalPower fromTarget(EntityType<?> type) {
+    return entityCache.computeIfAbsent(type, entityGetter);
+  }
+
   // TODO: lookup by ingot
   // TODO: lookup by nugget
-  // TODO: lookup by entity
 }

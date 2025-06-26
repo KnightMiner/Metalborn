@@ -5,7 +5,6 @@ import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.tags.TagKey;
-import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.Item;
@@ -102,8 +101,8 @@ public record MetalPower(
   }
 
   /** {@return true if this entity matches the metal} */
-  public boolean matches(Entity entity) {
-    return entity.getType().is(this.entity);
+  public boolean matches(EntityType<?> entity) {
+    return entity.is(this.entity);
   }
 
 

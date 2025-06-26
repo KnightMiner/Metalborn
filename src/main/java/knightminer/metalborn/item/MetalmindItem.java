@@ -29,7 +29,7 @@ public class MetalmindItem extends Item implements MetalItem, Metalmind {
   private static final Component UNKNOWN_OWNER = Component.translatable(KEY_OWNER, Metalborn.component("item", "metalmind.owner.unknown").withStyle(ChatFormatting.RED)).withStyle(ChatFormatting.GRAY);
   private static final Component UNSEALED = Component.translatable(KEY_OWNER, Metalborn.component("item", "metalmind.owner.none").withStyle(ChatFormatting.ITALIC)).withStyle(ChatFormatting.GRAY);
   // NBT keys
-  private static final String TAG_AMOUNT = "amount";
+  static final String TAG_AMOUNT = "amount";
   private static final String TAG_OWNER = "owner";
   private static final String TAG_OWNER_NAME = "owner_name";
 
@@ -119,7 +119,7 @@ public class MetalmindItem extends Item implements MetalItem, Metalmind {
 
   @Override
   public int fill(ItemStack stack, Player player, int amount) {
-    if (amount == 0) {
+    if (amount <= 0) {
       return 0;
     }
     int stored = getAmount(stack);
@@ -151,7 +151,7 @@ public class MetalmindItem extends Item implements MetalItem, Metalmind {
 
   @Override
   public int drain(ItemStack stack, Player player, int amount) {
-    if (amount == 0) {
+    if (amount <= 0) {
       return 0;
     }
     int updated = getAmount(stack) - amount;

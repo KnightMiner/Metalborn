@@ -3,6 +3,7 @@ package knightminer.metalborn.core;
 import knightminer.metalborn.Metalborn;
 import knightminer.metalborn.core.inventory.ActiveMetalminds;
 import knightminer.metalborn.core.inventory.MetalmindInventory;
+import knightminer.metalborn.core.inventory.SpikeInventory;
 import knightminer.metalborn.metal.MetalId;
 import knightminer.metalborn.metal.MetalManager;
 import net.minecraft.core.Direction;
@@ -51,11 +52,14 @@ public class MetalbornCapability implements ICapabilitySerializable<CompoundTag>
   private final ActiveMetalminds activeMetalminds;
   /** Inventory of all metalminds */
   private final MetalmindInventory metalminds;
+  /** Inventory of all spikes */
+  private final SpikeInventory spikes;
 
   private MetalbornCapability(Player player) {
     this.player = player;
     this.activeMetalminds = new ActiveMetalminds(player);
     this.metalminds = new MetalmindInventory(activeMetalminds, player);
+    this.spikes = new SpikeInventory(activeMetalminds, player);
   }
 
   /** Gets the metalmind inventory */
@@ -63,29 +67,31 @@ public class MetalbornCapability implements ICapabilitySerializable<CompoundTag>
     return metalminds;
   }
 
+  /** Gets the metalmind inventory */
+  public SpikeInventory getSpikes() {
+    return spikes;
+  }
+
 
   /* Metal ability */
 
   @Override
   public boolean canUse(MetalId metal) {
-    return getFerringType().equals(metal);
+    return getFerringType().equals(metal) || spikes.canUse(metal);
   }
 
   @Override
   public void setFerringType(MetalId metalId) {
-    // TODO: only run this if the new metal is not available elsehwere
-    if (ferringType != null && !ferringType.equals(metalId)) {
+    if (ferringType != null && !ferringType.equals(metalId) && !spikes.canUse(metalId)) {
       activeMetalminds.clearMetal(ferringType);
     }
     ferringType = metalId;
-    // TODO: sync selection?
   }
 
   @Override
   public MetalId getFerringType() {
     if (ferringType == null) {
       ferringType = MetalManager.INSTANCE.getRandomFerring(player.getRandom()).id();
-      // TODO: sync selection?
     }
     return ferringType;
   }
@@ -96,18 +102,25 @@ public class MetalbornCapability implements ICapabilitySerializable<CompoundTag>
   }
 
   @Override
-  public void getTooltip(List<Component> tooltip) {
+  public void getFeruchemyTooltip(List<Component> tooltip) {
     activeMetalminds.getTooltip(tooltip);
+  }
+
+  @Override
+  public void getHemalurgyTooltip(List<Component> tooltip) {
+    spikes.getTooltip(tooltip);
   }
 
   @Override
   public void dropItems(Collection<ItemEntity> drops) {
     metalminds.dropItems(player, drops);
+    spikes.dropItems(player, drops);
   }
 
   @Override
   public void clear() {
     metalminds.clear();
+    spikes.clear();
   }
 
 
@@ -126,6 +139,7 @@ public class MetalbornCapability implements ICapabilitySerializable<CompoundTag>
         this.ferringType = other.ferringType;
       }
       this.metalminds.copyFrom(other.metalminds);
+      this.spikes.copyFrom(other.spikes);
     }
   }
 
@@ -141,6 +155,7 @@ public class MetalbornCapability implements ICapabilitySerializable<CompoundTag>
 
   private static final String FERRING_TYPE = "ferring_type";
   private static final String METALMINDS = "metalminds";
+  private static final String SPIKES = "spikes";
 
   @Override
   public CompoundTag serializeNBT() {
@@ -149,6 +164,7 @@ public class MetalbornCapability implements ICapabilitySerializable<CompoundTag>
       tag.putString(FERRING_TYPE, ferringType.toString());
     }
     tag.put(METALMINDS, metalminds.serializeNBT());
+    tag.put(SPIKES, spikes.serializeNBT());
     return tag;
   }
 
@@ -156,6 +172,11 @@ public class MetalbornCapability implements ICapabilitySerializable<CompoundTag>
   public void deserializeNBT(CompoundTag nbt) {
     if (nbt.contains(FERRING_TYPE, Tag.TAG_STRING)) {
       this.ferringType = MetalId.tryParse(nbt.getString(FERRING_TYPE));
+    }
+    // important that spikes are deserialized before metalminds as they determine what may be tapped
+    if (nbt.contains(SPIKES, Tag.TAG_LIST)) {
+      this.spikes.deserializeNBT(nbt.getList(SPIKES, Tag.TAG_COMPOUND));
+      this.spikes.refreshActive();
     }
     if (nbt.contains(METALMINDS, Tag.TAG_LIST)) {
       this.metalminds.deserializeNBT(nbt.getList(METALMINDS, Tag.TAG_COMPOUND));
