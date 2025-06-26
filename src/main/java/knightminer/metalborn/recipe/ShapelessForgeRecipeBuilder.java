@@ -1,0 +1,56 @@
+package knightminer.metalborn.recipe;
+
+import net.minecraft.core.NonNullList;
+import net.minecraft.data.recipes.FinishedRecipe;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.world.level.ItemLike;
+import slimeknights.mantle.recipe.helper.ItemOutput;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.function.Consumer;
+
+/** Builder for shapeless forge recipes */
+public class ShapelessForgeRecipeBuilder extends AbstractForgeRecipeBuilder<ShapelessForgeRecipeBuilder> {
+  private final List<Ingredient> ingredients = new ArrayList<>();
+  protected ShapelessForgeRecipeBuilder(ItemOutput result) {
+    super(result);
+  }
+
+  /** Creates a new builder instance */
+  public static ShapelessForgeRecipeBuilder shapeless(ItemOutput result) {
+    return new ShapelessForgeRecipeBuilder(result);
+  }
+
+  /** Creates a new builder instance */
+  public static ShapelessForgeRecipeBuilder shapeless(ItemLike result, int count) {
+    return shapeless(ItemOutput.fromItem(result, count));
+  }
+
+  /** Creates a new builder instance */
+  public static ShapelessForgeRecipeBuilder shapeless(ItemLike result) {
+    return shapeless(result, 1);
+  }
+
+
+  /** Adds an ingredient */
+  public ShapelessForgeRecipeBuilder requires(Ingredient ingredient) {
+    this.ingredients.add(ingredient);
+    return this;
+  }
+
+  /** Adds an ingredient multiple times. */
+  public ShapelessForgeRecipeBuilder requires(Ingredient ingredient, int pQuantity) {
+    for(int i = 0; i < pQuantity; ++i) {
+      this.ingredients.add(ingredient);
+    }
+    return this;
+  }
+
+  @Override
+  public void save(Consumer<FinishedRecipe> consumer, ResourceLocation id) {
+    ResourceLocation advancementId = buildOptionalAdvancement(id, "forge");
+    consumer.accept(new LoadableFinishedRecipe<>(new ShapelessForgeRecipe(id, result, new NonNullList<>(ingredients, null), experience, cookingTime), ShapelessForgeRecipe.LOADABLE, advancementId));
+  }
+}

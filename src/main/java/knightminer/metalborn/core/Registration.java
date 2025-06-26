@@ -12,6 +12,9 @@ import knightminer.metalborn.metal.effects.ExperienceMetalEffect;
 import knightminer.metalborn.metal.effects.HealMetalEffect;
 import knightminer.metalborn.metal.effects.MetalEffect;
 import knightminer.metalborn.metal.effects.RangeMetalEffect;
+import knightminer.metalborn.recipe.ForgeRecipe;
+import knightminer.metalborn.recipe.ShapedForgeRecipe;
+import knightminer.metalborn.recipe.ShapelessForgeRecipe;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceKey;
@@ -24,6 +27,8 @@ import net.minecraft.world.item.CreativeModeTab.ItemDisplayParameters;
 import net.minecraft.world.item.CreativeModeTab.Output;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.RecipeSerializer;
+import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
@@ -37,6 +42,7 @@ import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.RegisterEvent;
 import net.minecraftforge.registries.RegistryObject;
 import org.jetbrains.annotations.ApiStatus.Internal;
+import slimeknights.mantle.recipe.helper.LoadableRecipeSerializer;
 import slimeknights.mantle.registration.deferred.BlockDeferredRegister;
 import slimeknights.mantle.registration.deferred.ItemDeferredRegister;
 import slimeknights.mantle.registration.deferred.MenuTypeDeferredRegister;
@@ -56,6 +62,9 @@ public class Registration {
   private static final BlockDeferredRegister BLOCKS = new BlockDeferredRegister(Metalborn.MOD_ID);
   private static final ItemDeferredRegister ITEMS = new ItemDeferredRegister(Metalborn.MOD_ID);
   private static final MenuTypeDeferredRegister MENUS = new MenuTypeDeferredRegister(Metalborn.MOD_ID);
+  private static final DeferredRegister<RecipeType<?>> RECIPE_TYPES = DeferredRegister.create(Registries.RECIPE_TYPE, Metalborn.MOD_ID);
+  private static final DeferredRegister<RecipeSerializer<?>> RECIPES = DeferredRegister.create(Registries.RECIPE_SERIALIZER, Metalborn.MOD_ID);
+
   private static final Item.Properties PROPS = new Item.Properties();
   private static final Function<Block, BlockItem> BLOCK_ITEM = block -> new BlockItem(block, PROPS);
 
@@ -69,6 +78,8 @@ public class Registration {
     BLOCKS.register(bus);
     ITEMS.register(bus);
     MENUS.register(bus);
+    RECIPE_TYPES.register(bus);
+    RECIPES.register(bus);
 
     // creative tab is simple enough, just do it inline
     DeferredRegister<CreativeModeTab> creativeTabs = DeferredRegister.create(Registries.CREATIVE_MODE_TAB, Metalborn.MOD_ID);
@@ -113,6 +124,11 @@ public class Registration {
 
   // menus
   public static final RegistryObject<MenuType<MetalbornMenu>> MENU = MENUS.register("metalborn", MetalbornMenu::forClient);
+
+  // recipe
+  public static final RegistryObject<RecipeType<ForgeRecipe>> FORGE_RECIPE = RECIPE_TYPES.register("forge", () -> RecipeType.simple(Metalborn.resource("forge")));
+  public static final RegistryObject<RecipeSerializer<ShapelessForgeRecipe>> SHAPELESS_FORGE = RECIPES.register("shapeless_forge", () -> LoadableRecipeSerializer.of(ShapelessForgeRecipe.LOADABLE));
+  public static final RegistryObject<RecipeSerializer<ShapedForgeRecipe>> SHAPED_FORGE = RECIPES.register("shaped_forge", ShapedForgeRecipe.Serializer::new);
 
   /** Registers any relevant static entries */
   private static void registerMisc(RegisterEvent event) {
