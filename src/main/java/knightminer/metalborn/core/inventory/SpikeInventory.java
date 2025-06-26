@@ -25,12 +25,12 @@ import java.util.stream.IntStream;
 public class SpikeInventory extends MetalInventory<SpikeStack> {
   private static final Component SPIKE_EFFECTS = Metalborn.component("gui", "spikes.effects");
   private static final Component NO_SPIKES = Metalborn.component("gui", "spikes.none").withStyle(ChatFormatting.GRAY);
+  private static final String KEY_GRANTS = Metalborn.key("gui", "spikes.grants");
   /** UUID for any attribute debuffs */
   private static final UUID DEBUFF_UUID = UUID.fromString("8c2b195c-dbf0-44a1-9e04-47db33c6bc17");
   /** Health loss per spike */
   private static final int HEALTH_PER_SPIKE = -2;
   /** Language key for the power granting list */
-  private static final String KEY_GRANTS = Metalborn.key("gui", "grants");
 
   private final ActiveMetalminds activeMetalminds;
   private final LivingEntity entity;
@@ -99,7 +99,7 @@ public class SpikeInventory extends MetalInventory<SpikeStack> {
     int health = extraPowers.size() * HEALTH_PER_SPIKE;
     if (health != 0) {
       tooltip.add(Component.translatable(
-        "attribute.modifier.plus.0",
+        "attribute.modifier.take.0",
         ItemStack.ATTRIBUTE_MODIFIER_FORMAT.format(health),
       Component.translatable(Attributes.MAX_HEALTH.getDescriptionId())
     ).withStyle(ChatFormatting.RED));

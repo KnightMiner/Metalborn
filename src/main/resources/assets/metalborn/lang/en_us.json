@@ -97,6 +97,7 @@
   "gui.metalborn.metalminds.none": "No active metalminds",
   "gui.metalborn.spikes.effects": "Hemalurgy Effects:",
   "gui.metalborn.spikes.none": "No spikes",
+  "gui.metalborn.spikes.grants": "Can store %s",
   "gui.metalborn.tap.start": "Tap %s",
   "gui.metalborn.store.start": "Store %s",
   "gui.metalborn.tap.stop": "Stop Tapping %s",

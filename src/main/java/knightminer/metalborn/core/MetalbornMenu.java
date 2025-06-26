@@ -3,6 +3,7 @@ package knightminer.metalborn.core;
 import knightminer.metalborn.Metalborn;
 import knightminer.metalborn.core.inventory.MetalmindInventory;
 import knightminer.metalborn.core.inventory.MetalmindInventory.MetalmindStack;
+import knightminer.metalborn.core.inventory.SpikeInventory;
 import knightminer.metalborn.metal.MetalId;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.entity.player.Inventory;
@@ -20,7 +21,7 @@ import java.util.List;
 
 /** Menu for managing metalminds */
 public class MetalbornMenu extends AbstractContainerMenu {
-  private static final int PLAYER_INVENTORY_START = 10;
+  private static final int PLAYER_INVENTORY_START = 10 + 4;
 
   @Nullable
   private final MetalmindInventory metalminds;
@@ -43,6 +44,12 @@ public class MetalbornMenu extends AbstractContainerMenu {
         addSlot(new MetalmindSlot(metalminds, ring,   8, 124, 33)),
         addSlot(new MetalmindSlot(metalminds, ring,   9, 144, 33))
       );
+      Item spike = Registration.SPIKE.get();
+      SpikeInventory spikes = capability.getSpikes();
+      addSlot(new MetalmindSlot(spikes, spike, 0, 71, 26));
+      addSlot(new MetalmindSlot(spikes, spike, 1, 89, 26));
+      addSlot(new MetalmindSlot(spikes, spike, 2, 71, 44));
+      addSlot(new MetalmindSlot(spikes, spike, 3, 89, 44));
 
       // inventory rows
       for (int r = 0; r < 3; r++) {

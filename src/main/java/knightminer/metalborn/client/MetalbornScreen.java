@@ -45,10 +45,14 @@ public class MetalbornScreen extends AbstractContainerScreen<MetalbornMenu> {
 
   /** X coordinate for metalmind button */
   private static final int METALMIND_X = 47;
-  /** Y coordinate for metalmind button */
-  private static final int METALMIND_Y = 67;
+  /** Y coordinate for info buttons */
+  private static final int INFO_Y = 67;
   /** V coordinate for metalmind hover */
   private static final int METALMIND_HOVER_V = 20;
+  /** X coordinate for spike button */
+  private static final int SPIKE_X = 117;
+  /** V coordinate for spike hover */
+  private static final int SPIKE_HOVER_V = 176;
   /** Size of the info icons */
   private static final int INFO_SIZE = 12;
 
@@ -113,8 +117,13 @@ public class MetalbornScreen extends AbstractContainerScreen<MetalbornMenu> {
     }
 
     // draw icon on hovering over the metalmind
-    if (METALMIND_X <= mouseX && mouseX < METALMIND_X + INFO_SIZE && METALMIND_Y <= mouseY && mouseY < METALMIND_Y + INFO_SIZE) {
-      graphics.blit(TEXTURE, METALMIND_X, METALMIND_Y, ELEMENT_U, METALMIND_HOVER_V, INFO_SIZE, INFO_SIZE);
+    if (INFO_Y <= mouseY && mouseY < INFO_Y + INFO_SIZE) {
+      if (METALMIND_X <= mouseX && mouseX < METALMIND_X + INFO_SIZE) {
+        graphics.blit(TEXTURE, METALMIND_X, INFO_Y, ELEMENT_U, METALMIND_HOVER_V, INFO_SIZE, INFO_SIZE);
+      }
+      else if (SPIKE_X <= mouseX && mouseX < SPIKE_X + INFO_SIZE) {
+        graphics.blit(TEXTURE, SPIKE_X, INFO_Y, ELEMENT_U, SPIKE_HOVER_V, INFO_SIZE, INFO_SIZE);
+      }
     }
   }
 
@@ -142,10 +151,17 @@ public class MetalbornScreen extends AbstractContainerScreen<MetalbornMenu> {
     }
 
     // tooltip for hovering the info button
-    if (METALMIND_X <= checkX && checkX < METALMIND_X + INFO_SIZE && INFO_Y <= checkY && checkY < INFO_Y + INFO_SIZE) {
-      List<Component> tooltip = new ArrayList<>();
-      data.getFeruchemyTooltip(tooltip);
-      graphics.renderComponentTooltip(font, tooltip, mouseX, mouseY);
+    if (INFO_Y <= checkY && checkY < INFO_Y + INFO_SIZE) {
+      if (METALMIND_X <= checkX && checkX < METALMIND_X + INFO_SIZE) {
+        List<Component> tooltip = new ArrayList<>();
+        data.getFeruchemyTooltip(tooltip);
+        graphics.renderComponentTooltip(font, tooltip, mouseX, mouseY);
+      }
+      else if (SPIKE_X <= checkX && checkX < SPIKE_X + INFO_SIZE) {
+        List<Component> tooltip = new ArrayList<>();
+        data.getHemalurgyTooltip(tooltip);
+        graphics.renderComponentTooltip(font, tooltip, mouseX, mouseY);
+      }
     }
   }
 
@@ -158,24 +174,17 @@ public class MetalbornScreen extends AbstractContainerScreen<MetalbornMenu> {
       int checkY = (int)mouseY - topPos;
       for (Slot slot : menu.getMetalmindSlots()) {
         if (slot.hasItem() && menu.canUse(slot.index)) {
-          MetalId metal = menu.getMetal(slot.index);
           int startX = slot.x - 1;
           int startY = slot.y + 17;
           if (startY <= checkY && checkY < startY + BUTTON_HEIGHT && startX <= checkX) {
             // left button is 2i+0
             if (checkX < startX + BUTTON_WIDTH) {
-              int index = slot.index * 2;
-              //if (menu.clickMenuButton(minecraft.player, index)) {
-                minecraft.gameMode.handleInventoryButtonClick(menu.containerId, index);
-                return true;
-              //}
+              minecraft.gameMode.handleInventoryButtonClick(menu.containerId, slot.index * 2);
+              return true;
             // right button is 2i+1
             } else if (checkX < startX + SLOT_WIDTH) {
-              int index = slot.index * 2 + 1;
-              //if (menu.clickMenuButton(minecraft.player, index)) {
-                minecraft.gameMode.handleInventoryButtonClick(menu.containerId, index);
-                return true;
-              //}
+              minecraft.gameMode.handleInventoryButtonClick(menu.containerId, slot.index * 2 + 1);
+              return true;
             }
           }
         }
