@@ -56,7 +56,7 @@ public class SpikeInventory extends MetalInventory<SpikeStack> {
   /** Updates debuffs related to number of spikes */
   private void updateSpikes() {
     int currentSize = extraPowers.size();
-    if (currentSize != lastSize) {
+    if (!entity.level().isClientSide && currentSize != lastSize) {
       AttributeInstance instance = entity.getAttribute(Attributes.MAX_HEALTH);
       if (instance == null) {
         Metalborn.LOG.warn("Entity {} does not support attribute {}", entity, Loadables.ATTRIBUTE.getString(Attributes.MAX_HEALTH));
@@ -121,9 +121,11 @@ public class SpikeInventory extends MetalInventory<SpikeStack> {
 
     @Override
     protected void setStack(ItemStack stack) {
+      boolean wasEmpty = this.stack.isEmpty();
+      MetalId oldMetal = this.metal;
       if (stack.isEmpty()) {
         // clear previous power
-        if (extraPowers.remove(metal)) {
+        if (!wasEmpty && extraPowers.remove(oldMetal)) {
           updateSpikes();
           // stop the removed metal from being tapped
           onRemoveMetal(metal);
@@ -133,18 +135,20 @@ public class SpikeInventory extends MetalInventory<SpikeStack> {
         this.metal = MetalId.NONE;
       } else if (stack.getItem() instanceof Spike spike) {
         this.stack = stack.copy();
-        MetalId oldMetal = this.metal;
         this.metal = spike.isFull(stack) ? spike.getMetal(stack) : MetalId.NONE;
-        if (!oldMetal.equals(this.metal)) {
-          extraPowers.remove(oldMetal);
+        if (wasEmpty || !oldMetal.equals(this.metal)) {
+          // don't remove the old power if it was empty, as we use nones to partially charged spikes
+          if (!wasEmpty) {
+            extraPowers.remove(oldMetal);
+          }
           extraPowers.add(metal);
           updateSpikes();
           onRemoveMetal(oldMetal);
         }
-        // you get hurt when adding a spike if the metal changed
-        if (!entity.level().isClientSide && !oldMetal.equals(this.metal)) {
-          entity.hurt(Registration.makeSource(entity.level(), Registration.ADD_SPIKE), HEALTH_PER_SPIKE + 1);
-        }
+      }
+      // you get hurt when adding or removing a spike
+      if (!entity.level().isClientSide && (wasEmpty != stack.isEmpty() || !oldMetal.equals(this.metal))) {
+        entity.hurt(Registration.makeSource(entity.level(), Registration.ADD_SPIKE), HEALTH_PER_SPIKE);
       }
     }
 
