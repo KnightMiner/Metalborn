@@ -3,6 +3,7 @@ package knightminer.metalborn.plugin.jei;
 import knightminer.metalborn.Metalborn;
 import knightminer.metalborn.core.Registration;
 import knightminer.metalborn.item.MetalItem;
+import knightminer.metalborn.item.SpikeItem;
 import knightminer.metalborn.metal.MetalId;
 import mezz.jei.api.IModPlugin;
 import mezz.jei.api.JeiPlugin;
@@ -31,6 +32,16 @@ public class JEIPlugin implements IModPlugin {
     registration.registerSubtypeInterpreter(Registration.LERASIUM_ALLOY_NUGGET.asItem(), metal);
     registration.registerSubtypeInterpreter(Registration.BRACER.asItem(), metal);
     registration.registerSubtypeInterpreter(Registration.RING.asItem(), metal);
-    registration.registerSubtypeInterpreter(Registration.SPIKE.asItem(), metal);
+    registration.registerSubtypeInterpreter(Registration.SPIKE.asItem(), (stack, context) -> {
+      MetalId id = MetalItem.getMetal(stack);
+      if (id == MetalId.NONE) {
+        return IIngredientSubtypeInterpreter.NONE;
+      }
+      String type = id.toString();
+      if (((SpikeItem)stack.getItem()).isFull(stack)) {
+        type += ",full";
+      }
+      return type;
+    });
   }
 }
