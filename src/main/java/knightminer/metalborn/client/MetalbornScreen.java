@@ -25,7 +25,6 @@ public class MetalbornScreen extends AbstractContainerScreen<MetalbornMenu> {
   private static final String KEY_TAP_STOP = Metalborn.key("gui", "tap.stop");
   private static final String KEY_STORE_START = Metalborn.key("gui", "store.start");
   private static final String KEY_STORE_STOP = Metalborn.key("gui", "store.stop");
-  private static final Component NO_METALMINDS = Metalborn.component("gui", "no_metalminds");
   // texture
   /** U index for all extra elements */
   private static final int ELEMENT_U = 176;
@@ -143,14 +142,10 @@ public class MetalbornScreen extends AbstractContainerScreen<MetalbornMenu> {
     }
 
     // tooltip for hovering the info button
-    if (METALMIND_X <= checkX && checkX < METALMIND_X + INFO_SIZE && METALMIND_Y <= checkY && checkY < METALMIND_Y + INFO_SIZE) {
+    if (METALMIND_X <= checkX && checkX < METALMIND_X + INFO_SIZE && INFO_Y <= checkY && checkY < INFO_Y + INFO_SIZE) {
       List<Component> tooltip = new ArrayList<>();
       data.getFeruchemyTooltip(tooltip);
-      if (tooltip.isEmpty()) {
-        graphics.renderTooltip(font, NO_METALMINDS, mouseX, mouseY);
-      } else {
-        graphics.renderComponentTooltip(font, tooltip, mouseX, mouseY);
-      }
+      graphics.renderComponentTooltip(font, tooltip, mouseX, mouseY);
     }
   }
 

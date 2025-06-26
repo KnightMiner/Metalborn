@@ -93,7 +93,10 @@
   "metal_effect.metalborn.xp.gain": "Restores %s XP per second",
   "metal_effect.metalborn.xp.store": "Drains %s XP per second",
 
-  "gui.metalborn.no_metalminds": "No active metalminds",
+  "gui.metalborn.metalminds.effects": "Feruchemy Effects:",
+  "gui.metalborn.metalminds.none": "No active metalminds",
+  "gui.metalborn.spikes.effects": "Hemalurgy Effects:",
+  "gui.metalborn.spikes.none": "No spikes",
   "gui.metalborn.tap.start": "Tap %s",
   "gui.metalborn.store.start": "Store %s",
   "gui.metalborn.tap.stop": "Stop Tapping %s",

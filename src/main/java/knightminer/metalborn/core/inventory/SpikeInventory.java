@@ -23,6 +23,8 @@ import java.util.stream.IntStream;
 
 /** Inventory of all spikes on the target */
 public class SpikeInventory extends MetalInventory<SpikeStack> {
+  private static final Component SPIKE_EFFECTS = Metalborn.component("gui", "spikes.effects");
+  private static final Component NO_SPIKES = Metalborn.component("gui", "spikes.none").withStyle(ChatFormatting.GRAY);
   /** UUID for any attribute debuffs */
   private static final UUID DEBUFF_UUID = UUID.fromString("8c2b195c-dbf0-44a1-9e04-47db33c6bc17");
   /** Health loss per spike */
@@ -93,13 +95,19 @@ public class SpikeInventory extends MetalInventory<SpikeStack> {
 
   /** Appends tooltip for all active effects */
   public void getTooltip(List<Component> tooltip) {
-    tooltip.add(Component.translatable(
-      "attribute.modifier.plus.0",
-      ItemStack.ATTRIBUTE_MODIFIER_FORMAT.format((long) extraPowers.size() * HEALTH_PER_SPIKE),
+    tooltip.add(SPIKE_EFFECTS);
+    int health = extraPowers.size() * HEALTH_PER_SPIKE;
+    if (health != 0) {
+      tooltip.add(Component.translatable(
+        "attribute.modifier.plus.0",
+        ItemStack.ATTRIBUTE_MODIFIER_FORMAT.format(health),
       Component.translatable(Attributes.MAX_HEALTH.getDescriptionId())
     ).withStyle(ChatFormatting.RED));
-    for (MetalId metal : extraPowers.elementSet()) {
-      tooltip.add(Component.translatable(KEY_GRANTS, metal.getFerring()).withStyle(ChatFormatting.BLUE));
+      for (MetalId metal : extraPowers.elementSet()) {
+        tooltip.add(Component.translatable(KEY_GRANTS, metal.getFerring()).withStyle(ChatFormatting.BLUE));
+      }
+    } else {
+      tooltip.add(NO_SPIKES);
     }
   }
 

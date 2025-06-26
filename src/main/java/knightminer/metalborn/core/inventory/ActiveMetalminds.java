@@ -1,9 +1,11 @@
 package knightminer.metalborn.core.inventory;
 
+import knightminer.metalborn.Metalborn;
 import knightminer.metalborn.core.inventory.MetalmindInventory.MetalmindStack;
 import knightminer.metalborn.metal.MetalId;
 import knightminer.metalborn.metal.MetalManager;
 import knightminer.metalborn.metal.MetalPower;
+import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.packs.resources.ResourceManagerReloadListener;
 import net.minecraft.world.entity.player.Player;
@@ -17,6 +19,8 @@ import java.util.function.Function;
 
 /** Object handling active metalmind effects, both tapping and storing */
 public class ActiveMetalminds {
+  private static final Component METALMIND_EFFECTS = Metalborn.component("gui", "metalminds.effects");
+  private static final Component NO_METALMINDS = Metalborn.component("gui", "metalminds.none").withStyle(ChatFormatting.GRAY);
   /** Index of last reload, so powers know when to refresh. */
   private static int reloadCount = 0;
   /** Reload listener to keep the reload count up to date */
@@ -69,8 +73,13 @@ public class ActiveMetalminds {
 
   /** Appends tooltip for all active effects */
   public void getTooltip(List<Component> tooltip) {
+    tooltip.add(METALMIND_EFFECTS);
     for (ActiveMetalmind metalmind : active.values()) {
       metalmind.getTooltip(tooltip);
+    }
+    // add empty message if nothing else was added
+    if (tooltip.size() == 1) {
+      tooltip.add(NO_METALMINDS);
     }
   }
 
