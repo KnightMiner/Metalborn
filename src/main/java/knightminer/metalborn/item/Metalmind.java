@@ -12,11 +12,11 @@ public interface Metalmind {
   /** Checks if the given player can use this metalmind */
   boolean canUse(ItemStack stack, Player player);
 
-  /** Gets the amount currently in the metalmind */
-  int getAmount(ItemStack stack);
+  /** Checks if the metalmind is currently empty (and thus cannot tap) */
+  boolean isEmpty(ItemStack stack);
 
-  /** Gets the maximum capacity in the metalmind */
-  int getCapacity(ItemStack stack);
+  /** Checks if the metalmind is currently full (and thus cannot store) */
+  boolean isFull(ItemStack stack);
 
   /**
    * Fills the metalmind by the given amount.
@@ -49,13 +49,13 @@ public interface Metalmind {
     }
 
     @Override
-    public int getAmount(ItemStack stack) {
-      return 0;
+    public boolean isEmpty(ItemStack stack) {
+      return true;
     }
 
     @Override
-    public int getCapacity(ItemStack stack) {
-      return 0;
+    public boolean isFull(ItemStack stack) {
+      return true;
     }
 
     @Override

@@ -233,11 +233,11 @@ public class MetalmindInventory implements IItemHandlerModifiable, INBTSerializa
         newLevel = 0;
       }
       // if the metalmind is empty, no tapping
-      else if (newLevel > 0 && metalmind.getAmount(stack) <= 0) {
+      else if (newLevel > 0 && metalmind.isEmpty(stack)) {
         newLevel = 0;
       }
       // if the metalmind is full, no filling
-      else if (newLevel < 0 && metalmind.getAmount(stack) >= metalmind.getCapacity(stack)) {
+      else if (newLevel < 0 && metalmind.isFull(stack)) {
         newLevel = 0;
       }
       if (newLevel != level) {
@@ -263,7 +263,7 @@ public class MetalmindInventory implements IItemHandlerModifiable, INBTSerializa
       // update the stack
       int used = metalmind.fill(stack, player, amount);
       // if its now empty, stop filling
-      if (metalmind.getAmount(stack) >= metalmind.getCapacity(stack)) {
+      if (metalmind.isFull(stack)) {
         level = 0;
       }
       return used;
@@ -285,7 +285,7 @@ public class MetalmindInventory implements IItemHandlerModifiable, INBTSerializa
       // update the stack
       int used = metalmind.drain(stack, player, amount);
       // if its now empty, stop draining
-      if (metalmind.getAmount(stack) <= 0) {
+      if (metalmind.isEmpty(stack)) {
         level = 0;
       }
       return used;

@@ -78,8 +78,8 @@ public class MetalmindItem extends Item implements MetalItem, Metalmind {
 
   /* Storage */
 
-  @Override
-  public int getAmount(ItemStack stack) {
+  /** Gets the amount stored in this stack */
+  public static int getAmount(ItemStack stack) {
     CompoundTag tag = stack.getTag();
     if (tag != null) {
       return tag.getInt(TAG_AMOUNT);
@@ -87,13 +87,23 @@ public class MetalmindItem extends Item implements MetalItem, Metalmind {
     return 0;
   }
 
-  @Override
+  /** Gets the capacity of this metalmind */
   public int getCapacity(ItemStack stack) {
     MetalId metal = getMetal(stack);
     if (metal != MetalId.NONE) {
       return MetalManager.INSTANCE.get(metal).capacity() * this.capacityMultiplier;
     }
     return 0;
+  }
+
+  @Override
+  public boolean isEmpty(ItemStack stack) {
+    return getAmount(stack) <= 0;
+  }
+
+  @Override
+  public boolean isFull(ItemStack stack) {
+    return getAmount(stack) >= getCapacity(stack);
   }
 
   /** Empties out the metalmind entirely */
