@@ -131,14 +131,12 @@ public class ActiveMetalminds {
 
     /** Adds a metalmind stack that was previously absent */
     void add(MetalmindStack stack) {
+      metalminds.add(stack);
       int level = stack.getLevel();
-      if (level != 0) {
-        metalminds.add(stack);
-        if (level > 0) {
-          tapping += level;
-        } else {
-          storing += level;
-        }
+      if (level > 0) {
+        tapping += level;
+      } else {
+        storing += level;
       }
     }
 

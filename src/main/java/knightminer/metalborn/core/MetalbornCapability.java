@@ -102,13 +102,12 @@ public class MetalbornCapability implements ICapabilitySerializable<CompoundTag>
 
   @Override
   public void dropItems(Collection<ItemEntity> drops) {
-    metalminds.dropItems(drops);
+    metalminds.dropItems(player, drops);
   }
 
   @Override
   public void clear() {
     metalminds.clear();
-    activeMetalminds.clear();
   }
 
 

@@ -1,10 +1,10 @@
 package knightminer.metalborn.core.inventory;
 
+import knightminer.metalborn.core.inventory.MetalmindInventory.MetalmindStack;
 import knightminer.metalborn.item.Metalmind;
 import knightminer.metalborn.metal.MetalId;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
-import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.ContainerData;
 import net.minecraft.world.item.ItemStack;
@@ -12,15 +12,12 @@ import net.minecraftforge.common.util.INBTSerializable;
 import net.minecraftforge.items.IItemHandlerModifiable;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.Collection;
-import java.util.List;
 import java.util.stream.IntStream;
 
 /** Inventory of metalminds held on the player */
-public class MetalmindInventory implements IItemHandlerModifiable, INBTSerializable<ListTag>, ContainerData {
+public class MetalmindInventory extends MetalInventory<MetalmindStack> implements IItemHandlerModifiable, INBTSerializable<ListTag>, ContainerData {
   private final ActiveMetalminds active;
   private final Player player;
-  private final List<MetalmindStack> inventory;
 
   public MetalmindInventory(ActiveMetalminds active, Player player) {
     this.active = active;
@@ -29,108 +26,8 @@ public class MetalmindInventory implements IItemHandlerModifiable, INBTSerializa
   }
 
   @Override
-  public int getSlots() {
-    return inventory.size();
-  }
-
-  @Override
-  public int getSlotLimit(int slot) {
-    return 1;
-  }
-
-  @Override
   public boolean isItemValid(int slot, @NotNull ItemStack stack) {
     return stack.isEmpty() || stack.getItem() instanceof Metalmind;
-  }
-
-  @Override
-  public void setStackInSlot(int slot, ItemStack stack) {
-    if (slot >= 0 && slot < inventory.size()) {
-      if (stack.isEmpty()) {
-        inventory.get(slot).setStack(ItemStack.EMPTY, Metalmind.EMPTY);
-      } else if (stack.getItem() instanceof Metalmind metalmind) {
-        // TODO: copy?
-        if (stack.getCount() > 1) {
-          stack.setCount(1);
-        }
-        inventory.get(slot).setStack(stack, metalmind);
-      }
-    }
-  }
-
-  @Override
-  public ItemStack getStackInSlot(int slot) {
-    if (slot >= 0 && slot < inventory.size()) {
-      return inventory.get(slot).stack;
-    }
-    return ItemStack.EMPTY;
-  }
-
-  @Override
-  public ItemStack insertItem(int slot, ItemStack stack, boolean simulate) {
-    // if nothing to insert or at an invalid location, do nothing
-    if (stack.isEmpty() || slot < 0 || slot >= inventory.size()) {
-      return stack;
-    }
-    // can only insert if we have nothing and the new thing is a metalmind
-    MetalmindStack current = inventory.get(slot);
-    if (current.stack.isEmpty() && stack.getItem() instanceof Metalmind metalmind) {
-      if (!simulate) {
-        current.setStack(stack.copyWithCount(1), metalmind);
-      }
-      if (stack.getCount() == 1) {
-        return ItemStack.EMPTY;
-      }
-      return stack.copyWithCount(stack.getCount() - 1);
-    }
-    return stack;
-  }
-
-  @Override
-  public ItemStack extractItem(int slot, int amount, boolean simulate) {
-    if (amount <= 0 || slot < 0 || slot >= inventory.size()) {
-      return ItemStack.EMPTY;
-    }
-    MetalmindStack current = inventory.get(slot);
-    ItemStack currentStack = current.stack;
-    if (currentStack.isEmpty()) {
-      return ItemStack.EMPTY;
-    }
-    if (!simulate) {
-      current.setStack(ItemStack.EMPTY, Metalmind.EMPTY);
-    }
-    return currentStack.copyWithCount(1);
-  }
-
-  @Override
-  public ListTag serializeNBT() {
-    ListTag list = new ListTag();
-    for (int i = 0; i < inventory.size(); i++) {
-      MetalmindStack stack = inventory.get(i);
-      if (!stack.stack.isEmpty()) {
-        CompoundTag tag = stack.stack.serializeNBT();
-        tag.putInt("Slot", i);
-        tag.putInt("level", stack.getLevel());
-        list.add(tag);
-      }
-    }
-    return list;
-  }
-
-  @Override
-  public void deserializeNBT(ListTag list) {
-    for (int i = 0; i < list.size(); i++) {
-      CompoundTag tag = list.getCompound(i);
-      int slot = tag.getInt("Slot");
-      if (slot >= 0 && slot < inventory.size()) {
-        ItemStack stack = ItemStack.of(tag);
-        MetalmindStack current = inventory.get(slot);
-        current.setStack(stack, stack.getItem() instanceof Metalmind m ? m : Metalmind.EMPTY);
-        if (!stack.isEmpty()) {
-          current.level = tag.getInt("level");
-        }
-      }
-    }
   }
 
   /** Gets the metalmind slot for the given index */
@@ -141,22 +38,7 @@ public class MetalmindInventory implements IItemHandlerModifiable, INBTSerializa
     throw new IndexOutOfBoundsException("Slot out of bounds: " + slot);
   }
 
-  /** Called on death to drop all items */
-  public void dropItems(Collection<ItemEntity> drops) {
-    for (MetalmindStack stack : inventory) {
-      stack.drop(drops);
-    }
-  }
-
-  /** Copies all stacks from the other inventory */
-  public void copyFrom(MetalmindInventory other) {
-    for (int i = 0; i < inventory.size(); i++) {
-      inventory.get(i).copyFrom(other.inventory.get(i));
-    }
-    refreshActive();
-  }
-
-  /** Refreshes the metalminds in the active metalminds list */
+  @Override
   public void refreshActive() {
     active.clear();
     for (MetalmindStack stack : inventory) {
@@ -165,11 +47,10 @@ public class MetalmindInventory implements IItemHandlerModifiable, INBTSerializa
     active.refresh();
   }
 
-  /** Clears the inventory */
+  @Override
   public void clear() {
-    for (MetalmindStack stack : inventory) {
-      stack.setStack(ItemStack.EMPTY, Metalmind.EMPTY);
-    }
+    super.clear();
+    active.clear();
   }
 
   @Override
@@ -193,8 +74,7 @@ public class MetalmindInventory implements IItemHandlerModifiable, INBTSerializa
   }
 
   /** Represents a single slot in the metalmind inventory */
-  public class MetalmindStack {
-    private ItemStack stack = ItemStack.EMPTY;
+  public class MetalmindStack extends StackHolder<MetalmindStack> {
     private Metalmind metalmind = Metalmind.EMPTY;
     private MetalId metal = MetalId.NONE;
     private int level = 0;
@@ -212,6 +92,15 @@ public class MetalmindInventory implements IItemHandlerModifiable, INBTSerializa
     /** Returns true if this metalmind is usable by the player */
     public boolean canUse() {
       return metalmind.canUse(stack, player);
+    }
+
+    @Override
+    protected void setStack(ItemStack stack) {
+      if (stack.isEmpty()) {
+        setStack(ItemStack.EMPTY, Metalmind.EMPTY);
+      } else if (stack.getItem() instanceof Metalmind m) {
+        setStack(stack, m);
+      }
     }
 
     /** Updates the item stack */
@@ -291,18 +180,8 @@ public class MetalmindInventory implements IItemHandlerModifiable, INBTSerializa
       return used;
     }
 
-    /** Drops this item */
-    private void drop(Collection<ItemEntity> drops) {
-      if (!stack.isEmpty()) {
-        ItemEntity itemEntity = new ItemEntity(player.level(), player.getX(), player.getY(), player.getZ(), stack.copy());
-        itemEntity.setDefaultPickUpDelay();
-        drops.add(itemEntity);
-        setStack(ItemStack.EMPTY, Metalmind.EMPTY);
-      }
-    }
-
-    /** Updates the contents based on the other stack */
-    private void copyFrom(MetalmindStack other) {
+    @Override
+    protected void copyFrom(MetalmindStack other) {
       this.stack = other.stack.copy();
       this.metalmind = other.metalmind;
       this.metal = other.metal;
@@ -311,7 +190,34 @@ public class MetalmindInventory implements IItemHandlerModifiable, INBTSerializa
 
     /** Refreshes the stack in the active metalmind list */
     private void refresh() {
-      active.getMetal(metal).add(this);
+      if (level != 0 && canUse()) {
+        active.getMetal(metal).add(this);
+      }
+    }
+
+    @Override
+    protected void clear() {
+      super.clear();
+      metalmind = Metalmind.EMPTY;
+      metal = MetalId.NONE;
+      level = 0;
+    }
+
+    @Override
+    public CompoundTag serializeNBT() {
+      CompoundTag tag = super.serializeNBT();
+      tag.putInt("level", level);
+      return tag;
+    }
+
+    @Override
+    public void deserializeNBT(CompoundTag tag) {
+      super.deserializeNBT(tag);
+      this.metalmind = stack.getItem() instanceof Metalmind m ? m : Metalmind.EMPTY;
+      this.metal = this.metalmind.getMetal(stack);
+      if (!stack.isEmpty()) {
+        level = tag.getInt("level");
+      }
     }
   }
 }
