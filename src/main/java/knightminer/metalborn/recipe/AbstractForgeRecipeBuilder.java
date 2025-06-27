@@ -7,7 +7,7 @@ import slimeknights.mantle.recipe.helper.ItemOutput;
 
 import java.util.function.Consumer;
 
-import static knightminer.metalborn.recipe.AbstractForgeRecipe.DEFAULT_COOKING_TIME;
+import static knightminer.metalborn.recipe.ForgeRecipe.DEFAULT_COOKING_TIME;
 
 /** Shared logic for Forge recipe builders */
 public abstract class AbstractForgeRecipeBuilder<T extends AbstractForgeRecipeBuilder<T>> extends AbstractRecipeBuilder<T> {

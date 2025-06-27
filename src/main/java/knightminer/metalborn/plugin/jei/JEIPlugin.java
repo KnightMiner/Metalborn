@@ -5,12 +5,18 @@ import knightminer.metalborn.core.Registration;
 import knightminer.metalborn.item.MetalItem;
 import knightminer.metalborn.item.SpikeItem;
 import knightminer.metalborn.metal.MetalId;
+import knightminer.metalborn.recipe.ForgeRecipe;
 import mezz.jei.api.IModPlugin;
 import mezz.jei.api.JeiPlugin;
 import mezz.jei.api.ingredients.subtypes.IIngredientSubtypeInterpreter;
+import mezz.jei.api.registration.IRecipeCategoryRegistration;
+import mezz.jei.api.registration.IRecipeRegistration;
 import mezz.jei.api.registration.ISubtypeRegistration;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
+import slimeknights.mantle.client.SafeClientAccess;
+import slimeknights.mantle.recipe.helper.RecipeHelper;
 
 /** Plugin adding any relevant things to JEI */
 @JeiPlugin
@@ -43,5 +49,18 @@ public class JEIPlugin implements IModPlugin {
       }
       return type;
     });
+  }
+
+  @Override
+  public void registerCategories(IRecipeCategoryRegistration registration) {
+    registration.addRecipeCategories(new ForgeRecipeCategory(registration.getJeiHelpers().getGuiHelper()));
+  }
+
+  @Override
+  public void registerRecipes(IRecipeRegistration registration) {
+    Level level = SafeClientAccess.getLevel();
+    if (level != null) {
+      registration.addRecipes(ForgeRecipeCategory.TYPE, RecipeHelper.getJEIRecipes(level.registryAccess(), level.getRecipeManager(), Registration.FORGE_RECIPE.get(), ForgeRecipe.class));
+    }
   }
 }

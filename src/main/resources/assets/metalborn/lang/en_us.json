@@ -111,6 +111,8 @@
   "key.metalborn.binding": "Metalborn",
   "key.categories.metalborn": "Metalborn",
 
+  "jei.metalborn.forge": "Metal Forging",
+
   "command.metalborn.ferring.get": "%s is a %s ferring (ID %s)",
   "command.metalborn.ferring.set.single": "Set ferring type for %s to %s (ID %s)",
   "command.metalborn.ferring.set.multiple": "Set ferring type on %s players to %s (ID %s)",

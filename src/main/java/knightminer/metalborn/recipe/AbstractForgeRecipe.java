@@ -9,15 +9,16 @@ import slimeknights.mantle.data.loadable.primitive.FloatLoadable;
 import slimeknights.mantle.data.loadable.primitive.IntLoadable;
 import slimeknights.mantle.recipe.helper.ItemOutput;
 
+import java.util.List;
+
 /** Common elements between {@link ShapedForgeRecipe} and {@link ShapelessForgeRecipe} */
 public abstract class AbstractForgeRecipe implements ForgeRecipe {
-  public static final int DEFAULT_COOKING_TIME = 200;
   protected static final LoadableField<ItemOutput,AbstractForgeRecipe> RESULT_FIELD = ItemOutput.Loadable.REQUIRED_STACK.requiredField("result", r -> r.result);
   protected static final LoadableField<Float,AbstractForgeRecipe> EXPERIENCE_FIELD = FloatLoadable.FROM_ZERO.defaultField("experience",0f, r -> r.experience);
   protected static final LoadableField<Integer,AbstractForgeRecipe> TIME_FIELD = IntLoadable.FROM_ONE.defaultField("cooking_time", DEFAULT_COOKING_TIME, true, r -> r.cookingTime);
 
   private final ResourceLocation id;
-  private final ItemOutput result;
+  protected final ItemOutput result;
   private final float experience;
   private final int cookingTime;
 
@@ -31,6 +32,11 @@ public abstract class AbstractForgeRecipe implements ForgeRecipe {
   @Override
   public ResourceLocation getId() {
     return id;
+  }
+
+  @Override
+  public List<ItemStack> getResult() {
+    return List.of(result.get());
   }
 
   @Override

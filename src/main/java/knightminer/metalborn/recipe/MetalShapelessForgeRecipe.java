@@ -1,9 +1,9 @@
 package knightminer.metalborn.recipe;
 
 import knightminer.metalborn.core.Registration;
-import knightminer.metalborn.item.MetalItem;
 import knightminer.metalborn.metal.MetalId;
 import knightminer.metalborn.metal.MetalPower;
+import knightminer.metalborn.recipe.MetalShapedForgeRecipe.JEIInfo;
 import net.minecraft.core.NonNullList;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.resources.ResourceLocation;
@@ -15,6 +15,7 @@ import net.minecraft.world.level.Level;
 import slimeknights.mantle.data.loadable.record.RecordLoadable;
 import slimeknights.mantle.recipe.helper.ItemOutput;
 
+import java.util.List;
 import java.util.function.Predicate;
 
 /** Forge recipe which sets a metal to the result */
@@ -42,16 +43,37 @@ public class MetalShapelessForgeRecipe extends ShapelessForgeRecipe {
 
   @Override
   public ItemStack assemble(CraftingContainer inv, RegistryAccess registryAccess) {
-    ItemStack stack = super.assemble(inv, registryAccess);
-    MetalId metal = MetalShapedForgeRecipe.findMetal(inv, getMetalFilter());
-    if (metal != MetalId.NONE) {
-      stack.getOrCreateTag().putString(MetalItem.TAG_METAL, metal.toString());
-    }
-    return stack;
+    return MetalShapedForgeRecipe.setMetal(super.assemble(inv, registryAccess), MetalShapedForgeRecipe.findMetal(inv, getMetalFilter()));
   }
 
   @Override
   public RecipeSerializer<?> getSerializer() {
     return Registration.METAL_SHAPELESS_FORGE.get();
+  }
+
+
+  /* JEI */
+  private int[] linkedInputs;
+  private List<ItemStack> displayResults;
+
+  /** Setup the JEI display */
+  private void setupJEI() {
+    if (displayResults == null || linkedInputs == null) {
+      JEIInfo info = MetalShapedForgeRecipe.getJEIInfo(getIngredients(), result.get());
+      displayResults = info.displayResults();
+      linkedInputs = info.linkedInputs();
+    }
+  }
+
+  @Override
+  public List<ItemStack> getResult() {
+    setupJEI();
+    return displayResults;
+  }
+
+  @Override
+  public int[] getLinkedInputs() {
+    setupJEI();
+    return linkedInputs;
   }
 }
