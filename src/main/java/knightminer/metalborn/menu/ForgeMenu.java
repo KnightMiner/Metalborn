@@ -27,7 +27,7 @@ import static knightminer.metalborn.block.ForgeInventory.WIDTH;
 
 /** Menu for the forge */
 public class ForgeMenu extends BaseMenu {
-  private static final int PLAYER_INVENTORY_START = ForgeInventory.SIZE;
+  public static final int PLAYER_INVENTORY_START = ForgeInventory.SIZE;
 
   @Nullable
   private final ForgeBlockEntity blockEntity;
@@ -41,11 +41,11 @@ public class ForgeMenu extends BaseMenu {
     // result slot, 126
     addSlot(new ResultSlot(itemHandler, 126, 35, playerInventory.player, blockEntity));
     // fuel slot
-    addSlot(new SmartItemHandlerSlot(itemHandler, ForgeInventory.FUEL_SLOT, 26, 44));
+    addSlot(new ForgeSlot(itemHandler, ForgeInventory.FUEL_SLOT, 26, 44));
     // input slots
     for (int y = 0; y < HEIGHT; y++) {
       for (int x = 0; x < WIDTH; x++) {
-        addSlot(new SmartItemHandlerSlot(itemHandler, ForgeInventory.GRID_START + y * WIDTH + x, 48 + x * 18, 26 + y * 18));
+        addSlot(new ForgeSlot(itemHandler, ForgeInventory.GRID_START + y * WIDTH + x, 48 + x * 18, 26 + y * 18));
       }
     }
 
@@ -139,8 +139,22 @@ public class ForgeMenu extends BaseMenu {
     return result;
   }
 
+  /** Slot fixing pickup for JEI */
+  private static class ForgeSlot extends SmartItemHandlerSlot {
+    public ForgeSlot(IItemHandler itemHandler, int index, int xPosition, int yPosition) {
+      super(itemHandler, index, xPosition, yPosition);
+    }
+
+    @Override
+    public boolean mayPickup(Player playerIn) {
+      // forge item handler returns false for empty stacks, interpreting "may pickup" as "may currently pickup"
+      // JEI expects it to be a global "may ever pickup"
+      return true;
+    }
+  }
+
   /** Logic to grant XP when taking the result */
-  private static class ResultSlot extends SmartItemHandlerSlot {
+  private static class ResultSlot extends ForgeSlot {
     private final Player player;
     @Nullable
     private final ForgeBlockEntity blockEntity;

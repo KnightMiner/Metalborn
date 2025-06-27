@@ -37,8 +37,7 @@ public class ForgeRecipeCategory implements IRecipeCategory<ForgeRecipe> {
   private final IDrawable icon;
 
   public ForgeRecipeCategory(IGuiHelper guiHelper) {
-    // TODO: replace with forge block
-    this.icon = guiHelper.createDrawableItemLike(Registration.PEWTER.getIngot());
+    this.icon = guiHelper.createDrawableItemLike(Registration.FORGE);
   }
 
   @Override

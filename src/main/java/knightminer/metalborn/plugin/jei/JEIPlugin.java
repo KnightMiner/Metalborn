@@ -1,16 +1,20 @@
 package knightminer.metalborn.plugin.jei;
 
 import knightminer.metalborn.Metalborn;
+import knightminer.metalborn.block.ForgeInventory;
 import knightminer.metalborn.core.Registration;
 import knightminer.metalborn.item.MetalItem;
 import knightminer.metalborn.item.SpikeItem;
+import knightminer.metalborn.menu.ForgeMenu;
 import knightminer.metalborn.metal.MetalId;
 import knightminer.metalborn.recipe.ForgeRecipe;
 import mezz.jei.api.IModPlugin;
 import mezz.jei.api.JeiPlugin;
 import mezz.jei.api.ingredients.subtypes.IIngredientSubtypeInterpreter;
+import mezz.jei.api.registration.IRecipeCatalystRegistration;
 import mezz.jei.api.registration.IRecipeCategoryRegistration;
 import mezz.jei.api.registration.IRecipeRegistration;
+import mezz.jei.api.registration.IRecipeTransferRegistration;
 import mezz.jei.api.registration.ISubtypeRegistration;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
@@ -52,6 +56,11 @@ public class JEIPlugin implements IModPlugin {
   }
 
   @Override
+  public void registerRecipeCatalysts(IRecipeCatalystRegistration registration) {
+    registration.addRecipeCatalyst(Registration.FORGE, ForgeRecipeCategory.TYPE);
+  }
+
+  @Override
   public void registerCategories(IRecipeCategoryRegistration registration) {
     registration.addRecipeCategories(new ForgeRecipeCategory(registration.getJeiHelpers().getGuiHelper()));
   }
@@ -62,5 +71,10 @@ public class JEIPlugin implements IModPlugin {
     if (level != null) {
       registration.addRecipes(ForgeRecipeCategory.TYPE, RecipeHelper.getJEIRecipes(level.registryAccess(), level.getRecipeManager(), Registration.FORGE_RECIPE.get(), ForgeRecipe.class));
     }
+  }
+
+  @Override
+  public void registerRecipeTransferHandlers(IRecipeTransferRegistration registration) {
+    registration.addRecipeTransferHandler(ForgeMenu.class, Registration.FORGE_MENU.get(), ForgeRecipeCategory.TYPE, ForgeInventory.GRID_START, ForgeInventory.GRID_SIZE, ForgeInventory.SIZE, 36);
   }
 }
