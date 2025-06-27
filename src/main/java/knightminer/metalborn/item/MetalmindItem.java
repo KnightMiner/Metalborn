@@ -41,11 +41,6 @@ public class MetalmindItem extends Item implements MetalItem, Metalmind {
     this.capacityMultiplier = capacityMultiplier;
   }
 
-  @Override
-  public int getMaxStackSize(ItemStack stack) {
-    return 1;
-  }
-
 
   /* Metal */
 
@@ -201,7 +196,7 @@ public class MetalmindItem extends Item implements MetalItem, Metalmind {
 
   @Override
   public boolean isBarVisible(ItemStack stack) {
-    return true;
+    return stack.getCount() == 1;
   }
 
   @Override

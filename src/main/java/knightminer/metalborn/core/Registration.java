@@ -125,9 +125,9 @@ public class Registration {
   public static final ItemObject<Item> RAW_TIN = ITEMS.register("raw_tin");
 
   // metal items
-  public static final ItemObject<MetalmindItem> BRACER = ITEMS.register("bracer", () -> new MetalmindItem(new Item.Properties(), 10));
-  public static final ItemObject<MetalmindItem> RING = ITEMS.register("ring", () -> new MetalmindItem(new Item.Properties(), 1));
-  public static final ItemObject<SpikeItem> SPIKE = ITEMS.register("spike", () -> new SpikeItem(new Item.Properties()));
+  public static final ItemObject<MetalmindItem> BRACER = ITEMS.register("bracer", () -> new MetalmindItem(new Item.Properties().stacksTo(8), 10));
+  public static final ItemObject<MetalmindItem> RING = ITEMS.register("ring", () -> new MetalmindItem(new Item.Properties().stacksTo(8), 1));
+  public static final ItemObject<SpikeItem> SPIKE = ITEMS.register("spike", () -> new SpikeItem(new Item.Properties().stacksTo(1)));
 
   // metal forge
   public static final ItemObject<ForgeBlock> FORGE = BLOCKS.register("forge", () -> new ForgeBlock(BlockBehaviour.Properties.of().mapColor(MapColor.STONE).instrument(NoteBlockInstrument.BASEDRUM).requiresCorrectToolForDrops().strength(3.5F).lightLevel(s -> s.getValue(BlockStateProperties.LIT) ? 13 : 0)), BLOCK_ITEM);

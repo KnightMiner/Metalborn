@@ -126,7 +126,7 @@ public class SpikeItem extends Item implements MetalItem, Spike {
 
   @Override
   public boolean isBarVisible(ItemStack stack) {
-    return !isFull(stack);
+    return stack.getCount() == 1 && !isFull(stack);
   }
 
   @Override
@@ -200,12 +200,14 @@ public class SpikeItem extends Item implements MetalItem, Spike {
 
   @Override
   public boolean hurtEnemy(ItemStack stack, LivingEntity target, LivingEntity attacker) {
-    MetalId metal = getMetal(stack);
-    if (metal != MetalId.NONE && metal.equals(MetalManager.INSTANCE.fromTarget(target.getType()).id())) {
-      if (target.isDeadOrDying()) {
-        fill(stack, 1);
+    if (stack.getCount() == 1) {
+      MetalId metal = getMetal(stack);
+      if (metal != MetalId.NONE && metal.equals(MetalManager.INSTANCE.fromTarget(target.getType()).id())) {
+        if (target.isDeadOrDying()) {
+          fill(stack, 1);
+        }
+        return true;
       }
-      return true;
     }
     return false;
   }
@@ -213,7 +215,7 @@ public class SpikeItem extends Item implements MetalItem, Spike {
   @Override
   public InteractionResultHolder<ItemStack> use(Level pLevel, Player player, InteractionHand hand) {
     ItemStack stack = player.getItemInHand(hand);
-    if (isFull(stack)) {
+    if (stack.getCount() > 1 || isFull(stack)) {
       return InteractionResultHolder.pass(stack);
     }
     player.startUsingItem(hand);
