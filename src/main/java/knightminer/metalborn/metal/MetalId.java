@@ -51,6 +51,11 @@ public class MetalId extends ResourceLocation {
     return Component.translatable(this.getTranslationKey() + ".stores");
   }
 
+  /** Gets the display name what entites are targeted by this spike */
+  public MutableComponent getTarget() {
+    return Component.translatable(this.getTranslationKey() + ".target");
+  }
+
   /** Gets the display name for the ferring */
   public MutableComponent getFerring() {
     return Component.translatable(this.getTranslationKey() + ".ferring");

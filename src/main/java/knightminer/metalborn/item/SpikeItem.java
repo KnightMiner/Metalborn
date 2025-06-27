@@ -37,6 +37,7 @@ public class SpikeItem extends Item implements MetalItem, Spike {
   // translation keys
   private static final String KEY_CHARGE = Metalborn.key("item", "spike.charge");
   private static final String KEY_STEALS = Metalborn.key("item", "spike.steals");
+  private static final String KEY_TARGET = Metalborn.key("item", "spike.target");
   private static final Component FULLY_CHARGED = Metalborn.component("item", "spike.charge.full").withStyle(ChatFormatting.GRAY);
   // weapon properties
   private static final float ATTACK_DAMAGE = 2;
@@ -166,15 +167,12 @@ public class SpikeItem extends Item implements MetalItem, Spike {
       tooltip.add(Component.translatable(KEY_STEALS, metal.getStores().withStyle(ChatFormatting.GREEN)).withStyle(ChatFormatting.GRAY));
 
       // amount
-      CompoundTag tag = stack.getTag();
-      if (tag != null) {
-        if (tag.getBoolean(TAG_FULL)) {
+      if (isFull(stack)) {
           tooltip.add(FULLY_CHARGED);
-        } else {
-          int amount = MetalmindItem.getAmount(stack);
-          tooltip.add(Component.translatable(KEY_CHARGE, amount, getMaxCharge(stack)).withStyle(ChatFormatting.GRAY));
-        }
-
+      } else {
+        tooltip.add(Component.translatable(KEY_TARGET, metal.getTarget().withStyle(ChatFormatting.RED)).withStyle(ChatFormatting.GRAY));
+        int amount = MetalmindItem.getAmount(stack);
+        tooltip.add(Component.translatable(KEY_CHARGE, amount, getMaxCharge(stack)).withStyle(ChatFormatting.GRAY));
       }
     }
   }

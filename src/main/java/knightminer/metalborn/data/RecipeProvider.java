@@ -104,7 +104,7 @@ public class RecipeProvider extends net.minecraft.data.recipes.RecipeProvider im
       .pattern(" #").pattern("# ")
       .define('#', MetalIngredient.ingot(MetalFilter.SPIKE))
       .metal()
-      .cookingRate(2)
+      .cookingRate(4) // you get 4 spikes per fuel usage, but you really want hoppers since they are unstackable
       .experience(1f)
       .save(consumer, location("spike"));
 

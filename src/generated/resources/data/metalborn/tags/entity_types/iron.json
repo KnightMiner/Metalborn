@@ -1,9 +1,6 @@
 {
   "values": [
-    "minecraft:ghast",
-    "minecraft:phantom",
     "minecraft:hoglin",
-    "minecraft:zoglin",
     "minecraft:ravager"
   ]
 }

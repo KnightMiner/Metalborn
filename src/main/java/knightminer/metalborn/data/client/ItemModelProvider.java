@@ -8,6 +8,7 @@ import knightminer.metalborn.item.MetalItem;
 import knightminer.metalborn.metal.MetalId;
 import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.level.ItemLike;
 import net.minecraftforge.client.model.generators.ItemModelBuilder;
 import net.minecraftforge.client.model.generators.ModelFile.UncheckedModelFile;
@@ -52,7 +53,10 @@ public class ItemModelProvider extends net.minecraftforge.client.model.generator
       .paletted(FERUCHEMY_METALS, MetalItem.TAG_METAL);
     metal(Registration.BRACER, "metal/item/bracer", true);
     metal(Registration.RING, "metal/item/ring", false);
-    metal(Registration.SPIKE, "metal/item/spike", true);
+    // spikes we want to rotate the in hand model 180 degrees so it points out
+    metal(Registration.SPIKE, "metal/item/spike", true).end().transforms()
+      .transform(ItemDisplayContext.FIRST_PERSON_LEFT_HAND).rotation(0, -90, -25).translation(1.13f, 3.2f, 1.13f).scale(0.68f, 0.68f, 0.68f).end()
+      .transform(ItemDisplayContext.FIRST_PERSON_RIGHT_HAND).rotation(0, 90, 25).translation(1.13f, 3.2f, 1.13f).scale(0.68f, 0.68f, 0.68f).end();
   }
 
 

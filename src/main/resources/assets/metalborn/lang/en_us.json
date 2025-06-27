@@ -4,42 +4,51 @@
   "metal_power.metalborn.none": "None",
   "metal_power.metalborn.none.stores": "Nothing",
   "metal_power.metalborn.none.ferring": "Gnat",
+  "metal_power.metalborn.none.target": "None",
 
   "metal_power.metalborn.iron": "Iron",
   "metal_power.metalborn.iron.stores": "Weight",
   "metal_power.metalborn.iron.ferring": "Skimmer",
+  "metal_power.metalborn.iron.target": "Hoglins or Ravagers",
 
   "metal_power.metalborn.steel": "Steel",
   "metal_power.metalborn.steel.stores": "Speed",
   "metal_power.metalborn.steel.ferring": "Steelrunner",
+  "metal_power.metalborn.steel.target": "Spiders",
 
   "metal_power.metalborn.tin": "Tin",
   "metal_power.metalborn.tin.stores": "Senses",
   "metal_power.metalborn.tin.ferring": "Windwhisperer",
+  "metal_power.metalborn.tin.target": "Skeletons",
 
   "metal_power.metalborn.pewter": "Pewter",
   "metal_power.metalborn.pewter.stores": "Strength",
   "metal_power.metalborn.pewter.ferring": "Brute",
+  "metal_power.metalborn.pewter.target": "Creepers",
 
   "metal_power.metalborn.copper": "Copper",
   "metal_power.metalborn.copper.stores": "Experience",
   "metal_power.metalborn.copper.ferring": "Archivist",
+  "metal_power.metalborn.copper.target": "Illagers",
 
   "metal_power.metalborn.bronze": "Bronze",
   "metal_power.metalborn.bronze.stores": "Energy",
   "metal_power.metalborn.bronze.ferring": "Subsumer",
+  "metal_power.metalborn.bronze.target": "Zombies",
 
   "metal_power.metalborn.gold": "Gold",
   "metal_power.metalborn.gold.stores": "Health",
   "metal_power.metalborn.gold.ferring": "Bloodmaker",
+  "metal_power.metalborn.gold.target": "Piglins",
 
   "metal_power.metalborn.rose_gold": "Rose Gold",
   "metal_power.metalborn.rose_gold.stores": "??",
   "metal_power.metalborn.rose_gold.ferring": "??",
+  "metal_power.metalborn.rose_gold.target": "Slimes",
 
 
   "_group_ores_": "",
-  
+
   "item.metalborn.copper_nugget": "Copper Nugget",
 
   "block.metalborn.tin_ore": "Tin Ore",
@@ -94,6 +103,7 @@
   "item.metalborn.spike": "Spike",
   "item.metalborn.spike.format": "%s Spike",
   "item.metalborn.spike.steals": "Steals: %s",
+  "item.metalborn.spike.target": "Target: %s",
   "item.metalborn.spike.charge": "Charge: %s / %s",
   "item.metalborn.spike.charge.full": "Fully Charged",
 
