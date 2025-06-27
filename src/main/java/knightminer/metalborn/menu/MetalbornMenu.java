@@ -1,6 +1,9 @@
-package knightminer.metalborn.core;
+package knightminer.metalborn.menu;
 
 import knightminer.metalborn.Metalborn;
+import knightminer.metalborn.core.MetalbornCapability;
+import knightminer.metalborn.core.MetalbornData;
+import knightminer.metalborn.core.Registration;
 import knightminer.metalborn.core.inventory.MetalmindInventory;
 import knightminer.metalborn.core.inventory.MetalmindInventory.MetalmindStack;
 import knightminer.metalborn.core.inventory.SpikeInventory;
@@ -8,7 +11,6 @@ import knightminer.metalborn.metal.MetalId;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.Item;
@@ -20,7 +22,7 @@ import slimeknights.mantle.inventory.SmartItemHandlerSlot;
 import java.util.List;
 
 /** Menu for managing metalminds */
-public class MetalbornMenu extends AbstractContainerMenu {
+public class MetalbornMenu extends BaseMenu {
   private static final int PLAYER_INVENTORY_START = 10 + 4;
 
   @Nullable
@@ -52,15 +54,8 @@ public class MetalbornMenu extends AbstractContainerMenu {
       addSlot(new MetalmindSlot(spikes, spike, 3, 89, 44));
 
       // inventory rows
-      for (int r = 0; r < 3; r++) {
-        for (int c = 0; c < 9; c++) {
-          this.addSlot(new Slot(inventory, c + r * 9 + 9, 8 + c * 18, 84 + r * 18));
-        }
-      }
-      // hotbar
-      for (int c = 0; c < 9; c++) {
-        this.addSlot(new Slot(inventory, c, 8 + c * 18, 142));
-      }
+      addPlayerInventory(inventory, 84);
+
       // other data slots
       addDataSlots(metalminds);
     } else {
@@ -71,7 +66,7 @@ public class MetalbornMenu extends AbstractContainerMenu {
   }
 
   public MetalbornMenu(int id, Inventory inventory) {
-    this(Registration.MENU.get(), id, inventory);
+    this(Registration.METALBORN_MENU.get(), id, inventory);
   }
 
   /** Opens the menu on the client */

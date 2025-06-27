@@ -1,6 +1,7 @@
 package knightminer.metalborn.data.client;
 
 import knightminer.metalborn.Metalborn;
+import knightminer.metalborn.block.ForgeBlock;
 import knightminer.metalborn.core.Registration;
 import knightminer.metalborn.data.MetalIds;
 import knightminer.metalborn.metal.MetalId;
@@ -11,6 +12,8 @@ import net.minecraftforge.client.model.generators.ModelFile;
 import net.minecraftforge.client.model.generators.ModelProvider;
 import net.minecraftforge.common.data.ExistingFileHelper;
 import slimeknights.mantle.registration.object.ItemObject;
+
+import static knightminer.metalborn.Metalborn.resource;
 
 /** Provider for block models in Metalborn */
 public class BlockModelProvider extends BlockStateProvider {
@@ -28,11 +31,24 @@ public class BlockModelProvider extends BlockStateProvider {
     storage(Registration.STEEL, MetalIds.steel);
     storage(Registration.BRONZE, MetalIds.bronze);
     storage(Registration.ROSE_GOLD, MetalIds.roseGold);
+    ModelFile forge = models().orientableWithBottom(
+      "forge",
+      resource("block/forge/side"),
+      resource("block/forge/front"),
+      resource("block/forge/bottom"),
+      resource("block/forge/top")
+    );
+    ModelFile forgeLit = models()
+      .getBuilder("forge_lit")
+      .parent(forge)
+      .texture("front", resource("block/forge/front_on"));
+    horizontalBlock(Registration.FORGE.get(), state -> state.getValue(ForgeBlock.LIT) ? forgeLit : forge);
+    simpleBlockItem(Registration.FORGE.get(), forge);
   }
 
   /** Adds a storage block with models under storage */
   private void basic(ItemObject<? extends Block> block, String path) {
-    ModelFile model = models().cubeAll(path, Metalborn.resource(ModelProvider.BLOCK_FOLDER + '/' + path));
+    ModelFile model = models().cubeAll(path, resource(ModelProvider.BLOCK_FOLDER + '/' + path));
     simpleBlock(block.get(), model);
     simpleBlockItem(block.get(), model);
   }

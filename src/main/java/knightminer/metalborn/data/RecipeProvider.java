@@ -10,6 +10,7 @@ import knightminer.metalborn.recipe.ShapelessForgeRecipeBuilder;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.recipes.FinishedRecipe;
 import net.minecraft.data.recipes.RecipeCategory;
+import net.minecraft.data.recipes.ShapedRecipeBuilder;
 import net.minecraft.data.recipes.SimpleCookingRecipeBuilder;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.ItemTags;
@@ -19,6 +20,7 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.AbstractCookingRecipe;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.RecipeSerializer;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraftforge.common.crafting.ConditionalRecipe;
 import net.minecraftforge.common.crafting.conditions.ICondition;
 import net.minecraftforge.common.crafting.conditions.TrueCondition;
@@ -73,6 +75,15 @@ public class RecipeProvider extends net.minecraft.data.recipes.RecipeProvider im
       .cookingRate(1)
       .experience(2f)
       .save(consumer, location(metalFolder + "lerasium_alloy"));
+
+    // forge
+    ShapedRecipeBuilder.shaped(RecipeCategory.DECORATIONS, Registration.FORGE)
+      .define('#', Blocks.SMOOTH_SANDSTONE)
+      .define('X', Blocks.FURNACE)
+      .define('I', Registration.TIN.getIngotTag())
+      .pattern("III").pattern("IXI").pattern("###")
+      .unlockedBy("has_tin", has(Registration.TIN.getIngotTag()))
+      .save(consumer, location("forge"));
 
     // metal items
     ShapedForgeRecipeBuilder.shaped(Registration.RING)

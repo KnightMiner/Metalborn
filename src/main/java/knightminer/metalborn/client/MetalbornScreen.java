@@ -3,7 +3,7 @@ package knightminer.metalborn.client;
 import knightminer.metalborn.Metalborn;
 import knightminer.metalborn.core.MetalbornCapability;
 import knightminer.metalborn.core.MetalbornData;
-import knightminer.metalborn.core.MetalbornMenu;
+import knightminer.metalborn.menu.MetalbornMenu;
 import knightminer.metalborn.metal.MetalId;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;

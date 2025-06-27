@@ -1,7 +1,7 @@
 package knightminer.metalborn.network;
 
 import knightminer.metalborn.core.MetalbornCapability;
-import knightminer.metalborn.core.MetalbornMenu;
+import knightminer.metalborn.menu.MetalbornMenu;
 import knightminer.metalborn.metal.MetalId;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.chat.Component;

@@ -1,0 +1,9 @@
+{
+  "parent": "minecraft:block/orientable_with_bottom",
+  "textures": {
+    "bottom": "metalborn:block/forge/bottom",
+    "front": "metalborn:block/forge/front",
+    "side": "metalborn:block/forge/side",
+    "top": "metalborn:block/forge/top"
+  }
+}

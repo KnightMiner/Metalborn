@@ -1,6 +1,7 @@
-// 1.20.1	2025-06-24T03:55:42.7031942	Block States: metalborn
+// 1.20.1	2025-06-27T17:42:05.3119949	Block States: metalborn
 369f18d967167825f66ddd27de24aaf6e15392ae assets/metalborn/blockstates/bronze_block.json
 0c05cd95777cf61350e0f5c749b84b6bf6f90635 assets/metalborn/blockstates/deepslate_tin_ore.json
+8c815a32eeef3a6b870515cf5edaebb284527783 assets/metalborn/blockstates/forge.json
 8c151a8beb3f12466029abeeb89f41feb47e68e6 assets/metalborn/blockstates/pewter_block.json
 445ac87b75d4f5b0da620ef38664ed4931f11371 assets/metalborn/blockstates/raw_tin_block.json
 651278860f36f218331ec38d22b43035acdbd4ca assets/metalborn/blockstates/rose_gold_block.json
@@ -9,6 +10,8 @@ f9d8208318e1a648237c9db1aeb818bcc5e5df34 assets/metalborn/blockstates/tin_block.
 39f9ceedb32482e9520522b2a4211b20a885c70c assets/metalborn/blockstates/tin_ore.json
 f8cbf1996bbb6337a1e45bcfb02708586839da17 assets/metalborn/models/block/bronze.json
 6f65cde2d9fb167f16beff40c131f21b3487c7a8 assets/metalborn/models/block/deepslate_tin_ore.json
+a54c9ee37f50d62136e7e1d8a8c370dbab07ebd4 assets/metalborn/models/block/forge.json
+2f52c7070f5cd98bc7d2ca5180d13cf750090018 assets/metalborn/models/block/forge_lit.json
 b0f2524a3bcf973343d282c51c331961374c9663 assets/metalborn/models/block/pewter.json
 de8a7d40961b6b9cbb7c29fa4794112be8cda38b assets/metalborn/models/block/raw_tin.json
 73ea839815e64d89dc225e6eeeca40f2f6bc3a98 assets/metalborn/models/block/rose_gold.json
@@ -17,6 +20,7 @@ c4b57cb04fb7c51b10e764ff27ba4a3116e96309 assets/metalborn/models/block/steel.jso
 57252f3c9c22a7d1cd67aa8ce2d3ed0f146e35ac assets/metalborn/models/block/tin_ore.json
 8ca7a77d576e2fa33c50b5790210b781231434ce assets/metalborn/models/item/bronze_block.json
 1f8fcfbb0317bd21282cfdf9307e145f37a32397 assets/metalborn/models/item/deepslate_tin_ore.json
+d41a27332d6411b699b4e71c34c8d9f90431a1fd assets/metalborn/models/item/forge.json
 72169692f3a1d9d6be042838b846c8a66d6bcb6e assets/metalborn/models/item/pewter_block.json
 dfaf6c3535064a0e30934182021b403b63cb7dc7 assets/metalborn/models/item/raw_tin_block.json
 4f3015b1bb4c2f70af4804148e2788c77861fc39 assets/metalborn/models/item/rose_gold_block.json

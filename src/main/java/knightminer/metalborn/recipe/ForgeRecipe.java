@@ -31,4 +31,11 @@ public interface ForgeRecipe extends Recipe<CraftingContainer> {
   default int[] getLinkedInputs() {
     return NO_LINKS;
   }
+
+  // silences log errors about missing recipe book
+  @Override
+  default boolean isSpecial() {
+    // TODO: look into custom recipe book support
+    return true;
+  }
 }

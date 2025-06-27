@@ -47,7 +47,8 @@ public class MetalbornClient {
 
   @SubscribeEvent
   static void registerScreens(FMLClientSetupEvent event) {
-    event.enqueueWork(() -> MenuScreens.register(Registration.MENU.get(), MetalbornScreen::new));
+    event.enqueueWork(() -> MenuScreens.register(Registration.METALBORN_MENU.get(), MetalbornScreen::new));
+    event.enqueueWork(() -> MenuScreens.register(Registration.FORGE_MENU.get(), ForgeScreen::new));
   }
 
   private static void clientTick(ClientTickEvent event) {

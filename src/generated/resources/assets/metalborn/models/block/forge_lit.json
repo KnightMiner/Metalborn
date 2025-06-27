@@ -1,0 +1,6 @@
+{
+  "parent": "metalborn:block/forge",
+  "textures": {
+    "front": "metalborn:block/forge/front_on"
+  }
+}
