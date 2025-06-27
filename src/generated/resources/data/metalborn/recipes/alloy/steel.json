@@ -4,16 +4,13 @@
   "experience": 1.0,
   "ingredients": [
     {
-      "item": "minecraft:charcoal"
-    },
-    {
-      "item": "minecraft:charcoal"
-    },
-    {
-      "item": "minecraft:charcoal"
-    },
-    {
       "tag": "metalborn:ingot_like/iron"
+    },
+    {
+      "item": "minecraft:blaze_powder"
+    },
+    {
+      "item": "minecraft:sand"
     }
   ],
   "result": {

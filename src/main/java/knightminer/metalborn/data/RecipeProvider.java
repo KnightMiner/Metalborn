@@ -123,8 +123,9 @@ public class RecipeProvider extends net.minecraft.data.recipes.RecipeProvider im
         .requires(ingotLike("iron"), 1)::save)
       .build(consumer, location(alloyFolder + "pewter"));
     ShapelessForgeRecipeBuilder.shapeless(Registration.STEEL.getIngotTag(), 1)
-      .requires(Items.CHARCOAL, 3)
       .requires(ingotLike("iron"), 1)
+      .requires(Items.BLAZE_POWDER, 1)
+      .requires(Blocks.SAND, 1) // TODO: recipe not fully decided, maybe do some blaze powder?
       .cookingRate(4)
       .save(consumer, location(alloyFolder + "steel"));
     ShapelessForgeRecipeBuilder.shapeless(Registration.BRONZE.getIngotTag(), 4)
