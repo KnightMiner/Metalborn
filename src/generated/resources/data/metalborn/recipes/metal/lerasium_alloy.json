@@ -1,6 +1,6 @@
 {
   "type": "metalborn:metal_shapeless_forge",
-  "cooking_time": 200,
+  "cooking_time": 100,
   "experience": 2.0,
   "ingredients": [
     {

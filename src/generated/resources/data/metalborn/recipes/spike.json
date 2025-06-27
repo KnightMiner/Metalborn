@@ -1,6 +1,6 @@
 {
   "type": "metalborn:metal_shaped_forge",
-  "cooking_time": 400,
+  "cooking_time": 200,
   "experience": 1.0,
   "key": {
     "#": {

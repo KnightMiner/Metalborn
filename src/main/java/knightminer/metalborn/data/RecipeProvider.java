@@ -114,6 +114,7 @@ public class RecipeProvider extends net.minecraft.data.recipes.RecipeProvider im
     ShapelessForgeRecipeBuilder.shapeless(Registration.STEEL.getIngotTag(), 1)
       .requires(Items.CHARCOAL, 3)
       .requires(ingotLike("iron"), 1)
+      .cookingRate(4)
       .save(consumer, location(alloyFolder + "steel"));
     ShapelessForgeRecipeBuilder.shapeless(Registration.BRONZE.getIngotTag(), 4)
       .requires(ingotLike("copper"), 3)

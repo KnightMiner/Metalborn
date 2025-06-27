@@ -10,7 +10,7 @@ import java.util.List;
 
 /** Base interface for forge recipes */
 public interface ForgeRecipe extends Recipe<CraftingContainer> {
-  int DEFAULT_COOKING_TIME = 200;
+  int DEFAULT_COOKING_TIME = 100;
   int[] NO_LINKS = new int[0];
 
   @Override
