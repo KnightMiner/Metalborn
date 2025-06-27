@@ -9,35 +9,22 @@
   "metal_power.metalborn.iron.stores": "Weight",
   "metal_power.metalborn.iron.ferring": "Skimmer",
 
-  "block.metalborn.steel_block": "Block of Steel",
-  "item.metalborn.steel_ingot": "Steel Ingot",
-  "item.metalborn.steel_nugget": "Steel Nugget",
   "metal_power.metalborn.steel": "Steel",
   "metal_power.metalborn.steel.stores": "Speed",
   "metal_power.metalborn.steel.ferring": "Steelrunner",
 
-  "block.metalborn.tin_block": "Block of Tin",
-  "item.metalborn.tin_ingot": "Tin Ingot",
-  "item.metalborn.tin_nugget": "Tin Nugget",
   "metal_power.metalborn.tin": "Tin",
   "metal_power.metalborn.tin.stores": "Senses",
   "metal_power.metalborn.tin.ferring": "Windwhisperer",
 
-  "block.metalborn.pewter_block": "Block of Pewter",
-  "item.metalborn.pewter_ingot": "Pewter Ingot",
-  "item.metalborn.pewter_nugget": "Pewter Nugget",
   "metal_power.metalborn.pewter": "Pewter",
   "metal_power.metalborn.pewter.stores": "Strength",
   "metal_power.metalborn.pewter.ferring": "Brute",
 
-  "item.metalborn.copper_nugget": "Copper Nugget",
   "metal_power.metalborn.copper": "Copper",
   "metal_power.metalborn.copper.stores": "Experience",
   "metal_power.metalborn.copper.ferring": "Archivist",
 
-  "block.metalborn.bronze_block": "Block of Bronze",
-  "item.metalborn.bronze_ingot": "Bronze Ingot",
-  "item.metalborn.bronze_nugget": "Bronze Nugget",
   "metal_power.metalborn.bronze": "Bronze",
   "metal_power.metalborn.bronze.stores": "Energy",
   "metal_power.metalborn.bronze.ferring": "Subsumer",
@@ -46,17 +33,42 @@
   "metal_power.metalborn.gold.stores": "Health",
   "metal_power.metalborn.gold.ferring": "Bloodmaker",
 
-  "block.metalborn.rose_gold_block": "Block of Rose Gold",
-  "item.metalborn.rose_gold_ingot": "Rose Gold Ingot",
-  "item.metalborn.rose_gold_nugget": "Rose Gold Nugget",
   "metal_power.metalborn.rose_gold": "Rose Gold",
   "metal_power.metalborn.rose_gold.stores": "??",
   "metal_power.metalborn.rose_gold.ferring": "??",
+
+
+  "_group_ores_": "",
+  
+  "item.metalborn.copper_nugget": "Copper Nugget",
 
   "block.metalborn.tin_ore": "Tin Ore",
   "block.metalborn.deepslate_tin_ore": "Deepslate Tin Ore",
   "block.metalborn.raw_tin_block": "Block of Raw Tin",
   "item.metalborn.raw_tin": "Raw Tin",
+
+  "block.metalborn.tin_block": "Block of Tin",
+  "item.metalborn.tin_ingot": "Tin Ingot",
+  "item.metalborn.tin_nugget": "Tin Nugget",
+
+
+  "_group_aloys_": "",
+
+  "block.metalborn.pewter_block": "Block of Pewter",
+  "item.metalborn.pewter_ingot": "Pewter Ingot",
+  "item.metalborn.pewter_nugget": "Pewter Nugget",
+
+  "block.metalborn.steel_block": "Block of Steel",
+  "item.metalborn.steel_ingot": "Steel Ingot",
+  "item.metalborn.steel_nugget": "Steel Nugget",
+
+  "block.metalborn.bronze_block": "Block of Bronze",
+  "item.metalborn.bronze_ingot": "Bronze Ingot",
+  "item.metalborn.bronze_nugget": "Bronze Nugget",
+
+  "block.metalborn.rose_gold_block": "Block of Rose Gold",
+  "item.metalborn.rose_gold_ingot": "Rose Gold Ingot",
+  "item.metalborn.rose_gold_nugget": "Rose Gold Nugget",
 
   "item.metalborn.netherite_nugget": "Netherite Nugget",
 
@@ -65,6 +77,7 @@
   "item.metalborn.lerasium_alloy_nugget": "Lerasium Alloy Nugget",
   "item.metalborn.lerasium_alloy_nugget.format": "Lerasium-%s Nugget",
   "item.metalborn.lerasium_alloy_nugget.on_consume": "Eat to become a %s ferring",
+
 
   "item.metalborn.bracer": "Bracer",
   "item.metalborn.bracer.format": "%s Bracer",
