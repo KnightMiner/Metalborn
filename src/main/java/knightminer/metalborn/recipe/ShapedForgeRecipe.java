@@ -1,6 +1,7 @@
 package knightminer.metalborn.recipe;
 
 import com.google.gson.JsonObject;
+import com.mojang.datafixers.util.Function7;
 import knightminer.metalborn.core.Registration;
 import net.minecraft.core.NonNullList;
 import net.minecraft.resources.ResourceLocation;
@@ -23,15 +24,6 @@ import java.util.Map;
 
 /** Cross between {@link net.minecraft.world.item.crafting.ShapedRecipe} and {@link net.minecraft.world.item.crafting.AbstractCookingRecipe} */
 public class ShapedForgeRecipe extends AbstractForgeRecipe implements IShapedRecipe<CraftingContainer> {
-  /** Logic for syncing this recipe over the network */
-  public static final RecordLoadable<ShapedForgeRecipe> NETWORK = RecordLoadable.create(
-    ContextKey.ID.requiredField(),
-    IntLoadable.FROM_ONE.requiredField("width", r -> r.width),
-    IntLoadable.FROM_ONE.requiredField("height", r -> r.height),
-    IngredientLoadable.ALLOW_EMPTY.list(1).xmap((l, error) -> new NonNullList<>(l, null), (l, error) -> l).requiredField("ingredients", r -> r.grid),
-    RESULT_FIELD, EXPERIENCE_FIELD, TIME_FIELD,
-    ShapedForgeRecipe::new);
-
   static int MAX_WIDTH = 2;
   static int MAX_HEIGHT = 2;
 
@@ -41,9 +33,9 @@ public class ShapedForgeRecipe extends AbstractForgeRecipe implements IShapedRec
     if (MAX_HEIGHT < height) MAX_HEIGHT = height;
   }
 
-  private final int width;
-  private final int height;
-  private final NonNullList<Ingredient> grid;
+  final int width;
+  final int height;
+  final NonNullList<Ingredient> grid;
 
   public ShapedForgeRecipe(ResourceLocation id, int width, int height, NonNullList<Ingredient> grid, ItemOutput result, float experience, int cookingTime) {
     super(id, result, experience, cookingTime);
@@ -99,7 +91,6 @@ public class ShapedForgeRecipe extends AbstractForgeRecipe implements IShapedRec
    * Checks if the region of a crafting inventory is match for the recipe.
    * Based on {@link net.minecraft.world.item.crafting.ShapedRecipe#matches(CraftingContainer, int, int, boolean)}, can't call because its an instance method.
    */
-  @SuppressWarnings("JavadocReference")
   private boolean matches(CraftingContainer inv, int xStart, int yStart, boolean mirrored) {
     // loop over items in the inventory
     for(int x = 0; x < inv.getWidth(); x++) {
@@ -130,19 +121,27 @@ public class ShapedForgeRecipe extends AbstractForgeRecipe implements IShapedRec
   }
 
   /** Custom serializer for parsing the recipe differently */
-  public static class Serializer extends LoadableRecipeSerializer<ShapedForgeRecipe> {
-    public Serializer() {
-      super(NETWORK);
+  public static class Serializer<T extends ShapedForgeRecipe> extends LoadableRecipeSerializer<T> {
+    private final Function7<ResourceLocation, Integer, Integer, NonNullList<Ingredient>, ItemOutput, Float, Integer, T> constructor;
+    public Serializer(Function7<ResourceLocation,Integer,Integer,NonNullList<Ingredient>,ItemOutput,Float,Integer,T> constructor) {
+      super(RecordLoadable.create(
+        ContextKey.ID.requiredField(),
+        IntLoadable.FROM_ONE.requiredField("width", r -> r.width),
+        IntLoadable.FROM_ONE.requiredField("height", r -> r.height),
+        IngredientLoadable.ALLOW_EMPTY.list(1).xmap((l, error) -> new NonNullList<>(l, null), (l, error) -> l).requiredField("ingredients", r -> r.grid),
+        RESULT_FIELD, EXPERIENCE_FIELD, TIME_FIELD,
+        constructor));
+      this.constructor = constructor;
     }
 
     @Override
-    public ShapedForgeRecipe fromJson(ResourceLocation id, JsonObject json) {
+    public T fromJson(ResourceLocation id, JsonObject json) {
       Map<String, Ingredient> map = ShapedRecipe.keyFromJson(GsonHelper.getAsJsonObject(json, "key"));
       String[] pattern = ShapedRecipe.shrink(ShapedRecipe.patternFromJson(GsonHelper.getAsJsonArray(json, "pattern")));
       int width = pattern[0].length();
       int height = pattern.length;
       NonNullList<Ingredient> grid = ShapedRecipe.dissolvePattern(pattern, map, width, height);
-      return new ShapedForgeRecipe(id, width, height, grid, RESULT_FIELD.get(json), EXPERIENCE_FIELD.get(json), TIME_FIELD.get(json));
+      return constructor.apply(id, width, height, grid, RESULT_FIELD.get(json), EXPERIENCE_FIELD.get(json), TIME_FIELD.get(json));
     }
   }
 }

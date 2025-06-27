@@ -1,0 +1,17 @@
+{
+  "type": "metalborn:metal_shaped_forge",
+  "cooking_time": 400,
+  "experience": 1.0,
+  "key": {
+    "#": {
+      "type": "metalborn:metal",
+      "filter": "spike",
+      "shape": "ingot"
+    }
+  },
+  "pattern": [
+    " #",
+    "# "
+  ],
+  "result": "metalborn:spike"
+}

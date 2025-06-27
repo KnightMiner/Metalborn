@@ -27,6 +27,7 @@ import java.util.function.Consumer;
 
 /** Builder for shaped forge recipes. Based largely on {@link net.minecraft.data.recipes.ShapedRecipeBuilder} */
 public class ShapedForgeRecipeBuilder extends AbstractForgeRecipeBuilder<ShapedForgeRecipeBuilder> {
+  private RecipeSerializer<? extends ShapedForgeRecipe> serializer = Registration.SHAPED_FORGE.get();
   private final List<String> rows = new ArrayList<>();
   private final Map<Character, Ingredient> key = new LinkedHashMap<>();
   protected ShapedForgeRecipeBuilder(ItemOutput result) {
@@ -78,6 +79,12 @@ public class ShapedForgeRecipeBuilder extends AbstractForgeRecipeBuilder<ShapedF
       this.rows.add(pattern);
       return this;
     }
+  }
+
+  /** Makes this a metal recipe, setting the output metal based on input ingredients. Should have at least one {@link MetalIngredient} for best results. */
+  public ShapedForgeRecipeBuilder metal() {
+    this.serializer = Registration.METAL_SHAPED_FORGE.get();
+    return this;
   }
 
   @Override
@@ -136,7 +143,7 @@ public class ShapedForgeRecipeBuilder extends AbstractForgeRecipeBuilder<ShapedF
 
     @Override
     public RecipeSerializer<?> getType() {
-      return Registration.SHAPED_FORGE.get();
+      return serializer;
     }
   }
 }

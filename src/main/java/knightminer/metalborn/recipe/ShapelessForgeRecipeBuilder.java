@@ -15,6 +15,7 @@ import java.util.function.Consumer;
 
 /** Builder for shapeless forge recipes */
 public class ShapelessForgeRecipeBuilder extends AbstractForgeRecipeBuilder<ShapelessForgeRecipeBuilder> {
+  private boolean metal = false;
   private final List<Ingredient> ingredients = new ArrayList<>();
   protected ShapelessForgeRecipeBuilder(ItemOutput result) {
     super(result);
@@ -59,9 +60,24 @@ public class ShapelessForgeRecipeBuilder extends AbstractForgeRecipeBuilder<Shap
     return requires(Ingredient.of(item), quantity);
   }
 
+  /** Adds an item to the recipe. */
+  public ShapelessForgeRecipeBuilder requires(ItemLike item) {
+    return requires(item, 1);
+  }
+
+  /** Makes this a metal recipe, setting the output metal based on input ingredients. Should have at least one {@link MetalIngredient} for best results. */
+  public ShapelessForgeRecipeBuilder metal() {
+    this.metal = true;
+    return this;
+  }
+
   @Override
   public void save(Consumer<FinishedRecipe> consumer, ResourceLocation id) {
     ResourceLocation advancementId = buildOptionalAdvancement(id, "forge");
-    consumer.accept(new LoadableFinishedRecipe<>(new ShapelessForgeRecipe(id, result, new NonNullList<>(ingredients, null), experience, computeCookingTime()), ShapelessForgeRecipe.LOADABLE, advancementId));
+    if (metal) {
+      consumer.accept(new LoadableFinishedRecipe<>(new MetalShapelessForgeRecipe(id, result, new NonNullList<>(ingredients, null), experience, computeCookingTime()), MetalShapelessForgeRecipe.LOADABLE, advancementId));
+    } else {
+      consumer.accept(new LoadableFinishedRecipe<>(new ShapelessForgeRecipe(id, result, new NonNullList<>(ingredients, null), experience, computeCookingTime()), ShapelessForgeRecipe.LOADABLE, advancementId));
+    }
   }
 }

@@ -1,0 +1,19 @@
+{
+  "type": "metalborn:metal_shapeless_forge",
+  "cooking_time": 200,
+  "experience": 2.0,
+  "ingredients": [
+    {
+      "item": "metalborn:lerasium_nugget"
+    },
+    {
+      "type": "metalborn:metal",
+      "filter": "metalmind",
+      "shape": "nugget"
+    }
+  ],
+  "result": {
+    "count": 2,
+    "item": "metalborn:lerasium_alloy_nugget"
+  }
+}

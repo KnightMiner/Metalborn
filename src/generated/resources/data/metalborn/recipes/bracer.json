@@ -1,0 +1,17 @@
+{
+  "type": "metalborn:metal_shaped_forge",
+  "cooking_time": 800,
+  "experience": 2.0,
+  "key": {
+    "#": {
+      "type": "metalborn:metal",
+      "filter": "metalmind",
+      "shape": "ingot"
+    }
+  },
+  "pattern": [
+    "##",
+    "##"
+  ],
+  "result": "metalborn:bracer"
+}

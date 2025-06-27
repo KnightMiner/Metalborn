@@ -169,7 +169,4 @@ public class MetalManager extends SimpleJsonResourceReloadListener {
   public MetalPower fromTarget(EntityType<?> type) {
     return entityCache.computeIfAbsent(type, entityGetter);
   }
-
-  // TODO: lookup by ingot
-  // TODO: lookup by nugget
 }

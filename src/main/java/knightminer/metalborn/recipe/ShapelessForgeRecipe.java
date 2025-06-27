@@ -1,5 +1,6 @@
 package knightminer.metalborn.recipe;
 
+import com.mojang.datafixers.util.Function5;
 import knightminer.metalborn.core.Registration;
 import net.minecraft.core.NonNullList;
 import net.minecraft.resources.ResourceLocation;
@@ -21,13 +22,9 @@ import java.util.List;
 /** Forge recipe matching a number of ingredients which can go in any slot */
 public class ShapelessForgeRecipe extends AbstractForgeRecipe {
   /** Loadable instance to create the serializer */
-  public static final RecordLoadable<ShapelessForgeRecipe> LOADABLE = RecordLoadable.create(
-    ContextKey.ID.requiredField(), RESULT_FIELD,
-    IngredientLoadable.DISALLOW_EMPTY.list(1).xmap((l, error) -> new NonNullList<>(l, null), (l, error) -> l).requiredField("ingredients", r -> r.ingredients),
-    EXPERIENCE_FIELD, TIME_FIELD,
-    ShapelessForgeRecipe::new);
+  public static final RecordLoadable<ShapelessForgeRecipe> LOADABLE = makeLoader(ShapelessForgeRecipe::new);
 
-  private final NonNullList<Ingredient> ingredients;
+  final NonNullList<Ingredient> ingredients;
   private final boolean isSimple;
   protected ShapelessForgeRecipe(ResourceLocation id, ItemOutput result, NonNullList<Ingredient> ingredients, float experience, int cookingTime) {
     super(id, result, experience, cookingTime);
@@ -75,5 +72,14 @@ public class ShapelessForgeRecipe extends AbstractForgeRecipe {
       }
       return inputs.size() == this.ingredients.size() && RecipeMatcher.findMatches(inputs, this.ingredients) != null;
     }
+  }
+
+  /** Makes a loader for this recipe */
+  public static <T extends ShapelessForgeRecipe> RecordLoadable<T> makeLoader(Function5<ResourceLocation,ItemOutput,NonNullList<Ingredient>,Float,Integer,T> constructor) {
+    return RecordLoadable.create(
+      ContextKey.ID.requiredField(), RESULT_FIELD,
+      IngredientLoadable.DISALLOW_EMPTY.list(1).xmap((l, error) -> new NonNullList<>(l, null), (l, error) -> l).requiredField("ingredients", r -> r.ingredients),
+      EXPERIENCE_FIELD, TIME_FIELD,
+      constructor);
   }
 }

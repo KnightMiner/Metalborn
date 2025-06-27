@@ -3,6 +3,9 @@ package knightminer.metalborn.data;
 import knightminer.metalborn.Metalborn;
 import knightminer.metalborn.core.Registration;
 import knightminer.metalborn.data.tag.MetalbornTags;
+import knightminer.metalborn.recipe.MetalIngredient;
+import knightminer.metalborn.recipe.MetalIngredient.MetalFilter;
+import knightminer.metalborn.recipe.ShapedForgeRecipeBuilder;
 import knightminer.metalborn.recipe.ShapelessForgeRecipeBuilder;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.recipes.FinishedRecipe;
@@ -61,6 +64,38 @@ public class RecipeProvider extends net.minecraft.data.recipes.RecipeProvider im
         .save(consumer, location(metalFolder + "tin_ingot_" + name));
     }
     packingRecipe(consumer, RecipeCategory.MISC, "raw_block", Registration.RAW_TIN_BLOCK, "raw", Registration.RAW_TIN, MetalbornTags.Items.RAW_TIN, metalFolder);
+
+    // lerasium alloy nuggets
+    ShapelessForgeRecipeBuilder.shapeless(Registration.LERASIUM_ALLOY_NUGGET, 2)
+      .requires(Registration.LERASIUM_NUGGET)
+      .requires(MetalIngredient.nugget(MetalFilter.METALMIND))
+      .metal()
+      .cookingRate(1)
+      .experience(2f)
+      .save(consumer, location(metalFolder + "lerasium_alloy"));
+
+    // metal items
+    ShapedForgeRecipeBuilder.shaped(Registration.RING)
+      .pattern("##").pattern("##")
+      .define('#', MetalIngredient.nugget(MetalFilter.METALMIND))
+      .metal()
+      .cookingRate(1)
+      .experience(0.5f)
+      .save(consumer, location("ring"));
+    ShapedForgeRecipeBuilder.shaped(Registration.BRACER)
+      .pattern("##").pattern("##")
+      .define('#', MetalIngredient.ingot(MetalFilter.METALMIND))
+      .metal()
+      .cookingRate(4)
+      .experience(2f)
+      .save(consumer, location("bracer"));
+    ShapedForgeRecipeBuilder.shaped(Registration.SPIKE)
+      .pattern(" #").pattern("# ")
+      .define('#', MetalIngredient.ingot(MetalFilter.SPIKE))
+      .metal()
+      .cookingRate(2)
+      .experience(1f)
+      .save(consumer, location("spike"));
 
     // alloys
     String alloyFolder = "alloy/";

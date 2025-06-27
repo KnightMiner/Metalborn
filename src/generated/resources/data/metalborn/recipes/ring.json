@@ -1,0 +1,17 @@
+{
+  "type": "metalborn:metal_shaped_forge",
+  "cooking_time": 200,
+  "experience": 0.5,
+  "key": {
+    "#": {
+      "type": "metalborn:metal",
+      "filter": "metalmind",
+      "shape": "nugget"
+    }
+  },
+  "pattern": [
+    "##",
+    "##"
+  ],
+  "result": "metalborn:ring"
+}

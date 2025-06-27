@@ -13,6 +13,9 @@ import knightminer.metalborn.metal.effects.HealMetalEffect;
 import knightminer.metalborn.metal.effects.MetalEffect;
 import knightminer.metalborn.metal.effects.RangeMetalEffect;
 import knightminer.metalborn.recipe.ForgeRecipe;
+import knightminer.metalborn.recipe.MetalIngredient;
+import knightminer.metalborn.recipe.MetalShapedForgeRecipe;
+import knightminer.metalborn.recipe.MetalShapelessForgeRecipe;
 import knightminer.metalborn.recipe.ShapedForgeRecipe;
 import knightminer.metalborn.recipe.ShapelessForgeRecipe;
 import net.minecraft.core.registries.Registries;
@@ -36,6 +39,7 @@ import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.properties.NoteBlockInstrument;
 import net.minecraft.world.level.material.MapColor;
+import net.minecraftforge.common.crafting.CraftingHelper;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.registries.DeferredRegister;
@@ -129,7 +133,9 @@ public class Registration {
   // recipe
   public static final RegistryObject<RecipeType<ForgeRecipe>> FORGE_RECIPE = RECIPE_TYPES.register("forge", () -> RecipeType.simple(Metalborn.resource("forge")));
   public static final RegistryObject<RecipeSerializer<ShapelessForgeRecipe>> SHAPELESS_FORGE = RECIPES.register("shapeless_forge", () -> LoadableRecipeSerializer.of(ShapelessForgeRecipe.LOADABLE));
-  public static final RegistryObject<RecipeSerializer<ShapedForgeRecipe>> SHAPED_FORGE = RECIPES.register("shaped_forge", ShapedForgeRecipe.Serializer::new);
+  public static final RegistryObject<RecipeSerializer<ShapedForgeRecipe>> SHAPED_FORGE = RECIPES.register("shaped_forge", () -> new ShapedForgeRecipe.Serializer<>(ShapedForgeRecipe::new));
+  public static final RegistryObject<RecipeSerializer<MetalShapelessForgeRecipe>> METAL_SHAPELESS_FORGE = RECIPES.register("metal_shapeless_forge", () -> LoadableRecipeSerializer.of(MetalShapelessForgeRecipe.LOADABLE));
+  public static final RegistryObject<RecipeSerializer<MetalShapedForgeRecipe>> METAL_SHAPED_FORGE = RECIPES.register("metal_shaped_forge", () -> new ShapedForgeRecipe.Serializer<>(MetalShapedForgeRecipe::new));
 
   /** Registers any relevant static entries */
   private static void registerMisc(RegisterEvent event) {
@@ -138,6 +144,8 @@ public class Registration {
       MetalEffect.REGISTRY.register(resource("attribute"), AttributeMetalEffect.LOADER);
       MetalEffect.REGISTRY.register(resource("heal"), HealMetalEffect.LOADER);
       MetalEffect.REGISTRY.register(resource("experience"), ExperienceMetalEffect.LOADER);
+      // ingredients
+      CraftingHelper.register(MetalIngredient.ID, MetalIngredient.SERIALIZER);
     }
   }
 
