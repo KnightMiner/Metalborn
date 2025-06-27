@@ -32,6 +32,7 @@ import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.block.state.properties.DirectionProperty;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
+import net.minecraftforge.items.ItemHandlerHelper;
 import org.jetbrains.annotations.Nullable;
 import slimeknights.mantle.block.InventoryBlock;
 import slimeknights.mantle.util.BlockEntityHelper;
@@ -122,7 +123,23 @@ public class ForgeBlock extends BaseEntityBlock {
     }
   }
 
-  // TODO: comparator support
+
+  /* Comparators */
+
+  @SuppressWarnings("deprecation")
+  @Override
+  public boolean hasAnalogOutputSignal(BlockState pState) {
+    return true;
+  }
+
+  @Override
+  public int getAnalogOutputSignal(BlockState state, Level level, BlockPos pos) {
+    if (level.getBlockEntity(pos) instanceof ForgeBlockEntity forge) {
+      return ItemHandlerHelper.calcRedstoneFromInventory(forge.getInventory());
+    }
+    return 0;
+  }
+
 
   /* Particles */
 

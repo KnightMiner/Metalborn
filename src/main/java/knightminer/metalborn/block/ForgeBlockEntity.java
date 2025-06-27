@@ -25,6 +25,7 @@ import net.minecraft.world.inventory.RecipeHolder;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.item.crafting.RecipeManager;
+import net.minecraft.world.level.block.Rotation;
 import net.minecraft.world.level.block.entity.AbstractFurnaceBlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
@@ -312,12 +313,24 @@ public class ForgeBlockEntity extends NameableBlockEntity implements ContainerDa
   @SuppressWarnings("unchecked")
   private void initializeCaps() {
     itemHandler = LazyOptional.of(() -> inventory);
-    // each side will get a different slot to allow some autocrafting
-    // interestingly, this matches up to fuel on top, result on bottom, and four input slots on the four sides
     sideHandlers = new LazyOptional[6];
-    for (int i = 0; i < 6; i++) {
-      int fi = i;
-      sideHandlers[i] = LazyOptional.of(() -> new RangedWrapper(inventory, fi, fi + 1));
+    // map each facing to a rotation, need to reverse them though as west is a counterclockwise rotation from south
+    Rotation rotation = Rotation.values()[3 - getBlockState().getValue(ForgeBlock.FACING).get2DDataValue()];
+    for (Direction direction : Direction.values()) {
+      // map each index to a slot
+      int slotIndex = switch (rotation.rotate(direction)) {
+        // down being result works nicely with hoppers
+        case DOWN -> RESULT_SLOT;
+        // up being fuel departs from furnaces a bit, but we need the sides
+        case UP -> FUEL_SLOT;
+        // no direct mapping from directions to slots we want. This makes the hopper behind match upper left, and the left hopper lower left
+        // in other words, hoppers line up to the inventory model perspective
+        case NORTH -> 3;
+        case EAST -> 5;
+        case SOUTH -> 4;
+        case WEST -> 2;
+      };
+      sideHandlers[direction.get3DDataValue()] = LazyOptional.of(() -> new RangedWrapper(inventory, slotIndex, slotIndex + 1));
     }
   }
 
