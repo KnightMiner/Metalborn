@@ -97,7 +97,7 @@ public class SpikeInventory extends MetalInventory<SpikeStack> {
   /** Appends tooltip for all active effects */
   public void getTooltip(List<Component> tooltip) {
     tooltip.add(SPIKE_EFFECTS);
-    int health = extraPowers.size() * -HEALTH_PER_SPIKE;
+    int health = extraPowers.size() * HEALTH_PER_SPIKE;
     if (health != 0) {
       tooltip.add(Component.translatable(
         "attribute.modifier.take.0",
