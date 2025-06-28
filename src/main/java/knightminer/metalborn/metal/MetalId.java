@@ -2,9 +2,12 @@ package knightminer.metalborn.metal;
 
 import knightminer.metalborn.Metalborn;
 import net.minecraft.Util;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.tags.TagKey;
+import net.minecraft.world.entity.EntityType;
 import org.jetbrains.annotations.Nullable;
 import slimeknights.mantle.data.loadable.Loadables;
 import slimeknights.mantle.data.loadable.primitive.StringLoadable;
@@ -76,5 +79,10 @@ public class MetalId extends ResourceLocation {
       return new MetalId(namespace, path, null);
     }
     return null;
+  }
+
+  /** Creates a target tag for the given metal ID */
+  public static TagKey<EntityType<?>> getTargetTag(ResourceLocation metal) {
+    return TagKey.create(Registries.ENTITY_TYPE, metal.withPrefix("targets/"));
   }
 }

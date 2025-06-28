@@ -4,10 +4,8 @@ import knightminer.metalborn.Metalborn;
 import knightminer.metalborn.data.MetalIds;
 import knightminer.metalborn.metal.MetalId;
 import net.minecraft.core.HolderLookup.Provider;
-import net.minecraft.core.registries.Registries;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.tags.EntityTypeTagsProvider;
-import net.minecraft.tags.TagKey;
 import net.minecraft.world.entity.EntityType;
 import net.minecraftforge.common.data.ExistingFileHelper;
 import org.jetbrains.annotations.Nullable;
@@ -36,6 +34,6 @@ public class EntityTagProvider extends EntityTypeTagsProvider {
 
   /** Creates a tag for a metal */
   public IntrinsicTagAppender<EntityType<?>> tag(MetalId metal) {
-    return tag(TagKey.create(Registries.ENTITY_TYPE, metal));
+    return tag(MetalId.getTargetTag(metal));
   }
 }

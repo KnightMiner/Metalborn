@@ -1,7 +1,6 @@
 package knightminer.metalborn.metal;
 
 import knightminer.metalborn.metal.effects.MetalEffect;
-import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.tags.TagKey;
@@ -24,7 +23,7 @@ import java.util.List;
  * @param name       Tag suffix for this metal
  * @param ingot      Ingot tag for this metal, used in recipes.
  * @param nugget     Nugget tag for this metal, used in recipes.
- * @param entity     Entity tag of entities that can provide this metal through hemalurgy.
+ * @param target     Entity tag of targets that can provide this metal through hemalurgy.
  * @param index      Sort order for this metal.
  * @param ferring    If true, this power can be randomly granted.
  * @param feruchemy  List of feruchemical effects to perform
@@ -36,7 +35,7 @@ public record MetalPower(
   String name,
   TagKey<Item> ingot,
   TagKey<Item> nugget,
-  TagKey<EntityType<?>> entity,
+  TagKey<EntityType<?>> target,
   int index,
   boolean ferring,
   List<MetalEffect> feruchemy,
@@ -70,7 +69,7 @@ public record MetalPower(
       id, name,
       ItemTags.create(Mantle.commonResource("ingots/" + name)),
       ItemTags.create(Mantle.commonResource("nuggets/" + name)),
-      TagKey.create(Registries.ENTITY_TYPE, id),
+      MetalId.getTargetTag(id),
       index, ferring, feruchemy, capacity, hemalurgyCharge
     );
   }
@@ -102,7 +101,7 @@ public record MetalPower(
 
   /** {@return true if this entity matches the metal} */
   public boolean matches(EntityType<?> entity) {
-    return entity.is(this.entity);
+    return entity.is(this.target);
   }
 
 
