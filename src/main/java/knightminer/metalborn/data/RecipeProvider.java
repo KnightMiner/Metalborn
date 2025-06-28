@@ -114,8 +114,8 @@ public class RecipeProvider extends net.minecraft.data.recipes.RecipeProvider im
     // use lead instead of iron if its present, as thats closer to the real recipe for pewter
     ConditionalRecipe.builder()
       .addCondition(ingotLikeCondition("lead"))
-      .addRecipe(ShapelessForgeRecipeBuilder.shapeless(Registration.PEWTER.getIngotTag(), 4)
-        .requires(ingotLike("tin"), 3)
+      .addRecipe(ShapelessForgeRecipeBuilder.shapeless(Registration.PEWTER.getIngotTag(), 3)
+        .requires(ingotLike("tin"), 2)
         .requires(ingotLike("lead"), 1)::save)
       .addCondition(TrueCondition.INSTANCE)
       .addRecipe(ShapelessForgeRecipeBuilder.shapeless(Registration.PEWTER.getIngotTag(), 4)
