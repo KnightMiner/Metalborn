@@ -16,6 +16,9 @@ import net.minecraftforge.event.AddReloadListenerEvent;
 import net.minecraftforge.event.TickEvent.Phase;
 import net.minecraftforge.event.TickEvent.PlayerTickEvent;
 import net.minecraftforge.event.entity.living.LivingDropsEvent;
+import net.minecraftforge.event.entity.living.LivingFallEvent;
+import net.minecraftforge.event.entity.living.LivingKnockBackEvent;
+import net.minecraftforge.event.entity.player.PlayerEvent.BreakSpeed;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent.RightClickItem;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
@@ -72,5 +75,20 @@ public class MetalbornHandler {
       Collection<ItemEntity> drops = event.getDrops();
       MetalbornCapability.getData(entity).dropItems(drops);
     }
+  }
+
+  @SubscribeEvent
+  static void onKnockback(LivingKnockBackEvent event) {
+    event.setStrength((float) (event.getStrength() * event.getEntity().getAttributeValue(Registration.KNOCKBACK_MULTIPLIER.get())));
+  }
+
+  @SubscribeEvent
+  static void onLivingFall(LivingFallEvent event) {
+    event.setDistance((float) (event.getDistance() * event.getEntity().getAttributeValue(Registration.FALL_DISTANCE_MULTIPLIER.get())));
+  }
+
+  @SubscribeEvent
+  static void onBreakSpeed(BreakSpeed event) {
+    event.setNewSpeed((float) (event.getNewSpeed() * event.getEntity().getAttributeValue(Registration.MINING_SPEED_MULTIPLIER.get())));
   }
 }

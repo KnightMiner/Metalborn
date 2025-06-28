@@ -21,7 +21,7 @@ public class MetalPowerBuilder {
   private String name;
   private int index;
   private int capacity = 20 * 5 * 60; // 5 minutes
-  private int hemalurgyCharge = 20;
+  private int hemalurgyCharge = 10; // 10 kills with a spike is probably a big enough ask
   private boolean ferring = true;
   private final List<MetalEffect> feruchemy = new ArrayList<>();
   private final List<ICondition> conditions = new ArrayList<>();

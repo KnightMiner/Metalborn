@@ -13,9 +13,15 @@
       "attribute": "minecraft:generic.armor_toughness",
       "multiplier": 0.5,
       "operation": "addition"
+    },
+    {
+      "type": "metalborn:attribute",
+      "attribute": "metalborn:mining_speed_multiplier",
+      "multiplier": 0.1,
+      "operation": "multiply_total"
     }
   ],
-  "hemalurgy_charge": 20,
+  "hemalurgy_charge": 10,
   "index": 4,
   "name": "pewter"
 }

@@ -1,5 +1,21 @@
 {
-  "hemalurgy_charge": 20,
+  "allow_ferring": true,
+  "capacity": 6000,
+  "feruchemy": [
+    {
+      "type": "metalborn:attribute",
+      "attribute": "forge:entity_reach",
+      "multiplier": 0.25,
+      "operation": "addition"
+    },
+    {
+      "type": "metalborn:attribute",
+      "attribute": "forge:block_reach",
+      "multiplier": 0.25,
+      "operation": "addition"
+    }
+  ],
+  "hemalurgy_charge": 10,
   "index": 3,
   "name": "tin"
 }

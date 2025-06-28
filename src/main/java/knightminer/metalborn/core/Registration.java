@@ -12,21 +12,27 @@ import knightminer.metalborn.item.SpikeItem;
 import knightminer.metalborn.menu.ForgeMenu;
 import knightminer.metalborn.menu.MetalbornMenu;
 import knightminer.metalborn.metal.effects.AttributeMetalEffect;
+import knightminer.metalborn.metal.effects.EnergyMetalEffect;
 import knightminer.metalborn.metal.effects.ExperienceMetalEffect;
 import knightminer.metalborn.metal.effects.HealMetalEffect;
 import knightminer.metalborn.metal.effects.MetalEffect;
 import knightminer.metalborn.metal.effects.RangeMetalEffect;
+import knightminer.metalborn.metal.effects.UpdateHealthEffect;
 import knightminer.metalborn.recipe.ForgeRecipe;
 import knightminer.metalborn.recipe.MetalIngredient;
 import knightminer.metalborn.recipe.MetalShapedForgeRecipe;
 import knightminer.metalborn.recipe.MetalShapelessForgeRecipe;
 import knightminer.metalborn.recipe.ShapedForgeRecipe;
 import knightminer.metalborn.recipe.ShapelessForgeRecipe;
+import knightminer.metalborn.util.AttributeDeferredRegister;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.DamageType;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.CreativeModeTab;
@@ -46,6 +52,7 @@ import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.NoteBlockInstrument;
 import net.minecraft.world.level.material.MapColor;
 import net.minecraftforge.common.crafting.CraftingHelper;
+import net.minecraftforge.event.entity.EntityAttributeModificationEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.registries.DeferredRegister;
@@ -76,23 +83,26 @@ public class Registration {
   private static final BlockEntityTypeDeferredRegister BLOCK_ENTITIES = new BlockEntityTypeDeferredRegister(Metalborn.MOD_ID);
   private static final DeferredRegister<RecipeType<?>> RECIPE_TYPES = DeferredRegister.create(Registries.RECIPE_TYPE, Metalborn.MOD_ID);
   private static final DeferredRegister<RecipeSerializer<?>> RECIPES = DeferredRegister.create(Registries.RECIPE_SERIALIZER, Metalborn.MOD_ID);
+  private static final AttributeDeferredRegister ATTRIBUTES = new AttributeDeferredRegister(Metalborn.MOD_ID);
 
   private static final Item.Properties PROPS = new Item.Properties();
   private static final Function<Block, BlockItem> BLOCK_ITEM = block -> new BlockItem(block, PROPS);
 
   private Registration() {}
 
-  /** Initializes the registration event busses */
+  /** Initializes the registration event buses */
   @Internal
   public static void init() {
     IEventBus bus = FMLJavaModLoadingContext.get().getModEventBus();
     bus.addListener(Registration::registerMisc);
+    bus.addListener(Registration::addAttributes);
     BLOCKS.register(bus);
     BLOCK_ENTITIES.register(bus);
     ITEMS.register(bus);
     MENUS.register(bus);
     RECIPE_TYPES.register(bus);
     RECIPES.register(bus);
+    ATTRIBUTES.register(bus);
 
     // creative tab is simple enough, just do it inline
     DeferredRegister<CreativeModeTab> creativeTabs = DeferredRegister.create(Registries.CREATIVE_MODE_TAB, Metalborn.MOD_ID);
@@ -151,6 +161,14 @@ public class Registration {
   public static final RegistryObject<RecipeSerializer<MetalShapelessForgeRecipe>> METAL_SHAPELESS_FORGE = RECIPES.register("metal_shapeless_forge", () -> LoadableRecipeSerializer.of(MetalShapelessForgeRecipe.LOADABLE));
   public static final RegistryObject<RecipeSerializer<MetalShapedForgeRecipe>> METAL_SHAPED_FORGE = RECIPES.register("metal_shaped_forge", () -> new ShapedForgeRecipe.Serializer<>(MetalShapedForgeRecipe::new));
 
+  // attributes
+  /** Multiplier on the distance you can safely fall without damage */
+  public static final RegistryObject<Attribute> FALL_DISTANCE_MULTIPLIER = ATTRIBUTES.registerMultiplier("fall_distance_multiplier", true);
+  /** Multiplier for knockback this entity takes. Similar to {@link net.minecraft.world.entity.ai.attributes.Attributes#KNOCKBACK_RESISTANCE} but can be used to increase knockback */
+  public static final RegistryObject<Attribute> KNOCKBACK_MULTIPLIER = ATTRIBUTES.registerMultiplier("knockback_multiplier", true);
+  /** Player modifier data key for mining speed multiplier as an additive percentage boost on mining speed. */
+  public static final RegistryObject<Attribute> MINING_SPEED_MULTIPLIER = ATTRIBUTES.registerMultiplier("mining_speed_multiplier", true);
+
   /** Registers any relevant static entries */
   private static void registerMisc(RegisterEvent event) {
     if (event.getRegistryKey() == Registries.RECIPE_SERIALIZER) {
@@ -158,8 +176,26 @@ public class Registration {
       MetalEffect.REGISTRY.register(resource("attribute"), AttributeMetalEffect.LOADER);
       MetalEffect.REGISTRY.register(resource("heal"), HealMetalEffect.LOADER);
       MetalEffect.REGISTRY.register(resource("experience"), ExperienceMetalEffect.LOADER);
+      MetalEffect.REGISTRY.register(resource("update_health"), UpdateHealthEffect.LOADER);
+      MetalEffect.REGISTRY.register(resource("energy"), EnergyMetalEffect.LOADER);
       // ingredients
       CraftingHelper.register(MetalIngredient.ID, MetalIngredient.SERIALIZER);
+    }
+  }
+
+  /** Adds new attributes to entities */
+  private static void addAttributes(EntityAttributeModificationEvent event) {
+    event.add(EntityType.PLAYER, MINING_SPEED_MULTIPLIER.get());
+    // general attributes
+    addToAll(event, KNOCKBACK_MULTIPLIER);
+    addToAll(event, FALL_DISTANCE_MULTIPLIER);
+  }
+
+  /** Adds an attribute to all entities */
+  private static void addToAll(EntityAttributeModificationEvent event, RegistryObject<Attribute> attribute) {
+    Attribute attr = attribute.get();
+    for (EntityType<? extends LivingEntity> entity : event.getTypes()) {
+      event.add(entity, attr, attr.getDefaultValue());
     }
   }
 

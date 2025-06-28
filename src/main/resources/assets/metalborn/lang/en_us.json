@@ -17,7 +17,7 @@
   "metal_power.metalborn.steel.target": "Spiders",
 
   "metal_power.metalborn.tin": "Tin",
-  "metal_power.metalborn.tin.stores": "Senses",
+  "metal_power.metalborn.tin.stores": "Reach",
   "metal_power.metalborn.tin.ferring": "Windwhisperer",
   "metal_power.metalborn.tin.target": "Skeletons",
 
@@ -42,7 +42,7 @@
   "metal_power.metalborn.gold.target": "Piglins",
 
   "metal_power.metalborn.rose_gold": "Rose Gold",
-  "metal_power.metalborn.rose_gold.stores": "??",
+  "metal_power.metalborn.rose_gold.stores": "Vitality",
   "metal_power.metalborn.rose_gold.ferring": "??",
   "metal_power.metalborn.rose_gold.target": "Slimes",
 
@@ -110,6 +110,10 @@
   "item.metalborn.ferring.matches": "You feel this metal pulling on you slightly.",
   "item.metalborn.ferring.mismatches": "You do not feel anything from this metal.",
 
+  "attribute.name.metalborn.fall_distance_multiplier": "Fall Distance",
+  "attribute.name.metalborn.knockback_multiplier": "Knockback",
+  "attribute.name.metalborn.mining_speed_multiplier": "Mining Speed",
+
   "death.attack.metalborn.metal_hurt": "%1$s stored too much health",
   "death.attack.metalborn.metal_hurt.player": "%1$s stored too much health whilst fighting %2$s",
   "metal_effect.metalborn.health.heal": "Heals 1 health every %s seconds",
@@ -121,6 +125,8 @@
 
   "metal_effect.metalborn.xp.gain": "Restores %s XP per second",
   "metal_effect.metalborn.xp.store": "Drains %s XP per second",
+  "metal_effect.metalborn.saturation.gain": "Restores %s saturation per second",
+  "metal_effect.metalborn.saturation.store": "Causes %s exhaustion per second",
 
   "gui.metalborn.metalminds.effects": "Feruchemy Effects:",
   "gui.metalborn.metalminds.none": "No active metalminds",

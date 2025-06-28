@@ -6,7 +6,15 @@
       "type": "metalborn:attribute",
       "attribute": "forge:entity_gravity",
       "multiplier": 0.05,
-      "operation": "multiply_total"
+      "operation": "multiply_total",
+      "swap_colors": true
+    },
+    {
+      "type": "metalborn:attribute",
+      "attribute": "metalborn:fall_distance_multiplier",
+      "multiplier": 0.05,
+      "operation": "multiply_total",
+      "swap_colors": true
     },
     {
       "type": "metalborn:range",
@@ -15,9 +23,18 @@
       "min_level": 0,
       "multiplier": 0.05,
       "operation": "addition"
+    },
+    {
+      "type": "metalborn:range",
+      "attribute": "metalborn:knockback_multiplier",
+      "effect_type": "metalborn:attribute",
+      "max_level": 0,
+      "multiplier": -0.1,
+      "operation": "multiply_total",
+      "swap_colors": true
     }
   ],
-  "hemalurgy_charge": 20,
+  "hemalurgy_charge": 5,
   "index": 1,
   "name": "iron"
 }
