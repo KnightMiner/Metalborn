@@ -15,6 +15,7 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.CapabilityManager;
@@ -109,6 +110,11 @@ public class MetalbornCapability implements ICapabilitySerializable<CompoundTag>
   @Override
   public void getHemalurgyTooltip(List<Component> tooltip) {
     spikes.getTooltip(tooltip);
+  }
+
+  @Override
+  public boolean equip(ItemStack stack) {
+    return metalminds.equip(stack) || spikes.equip(stack);
   }
 
   @Override

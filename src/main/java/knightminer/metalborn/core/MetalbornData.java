@@ -4,6 +4,7 @@ import knightminer.metalborn.metal.MetalId;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.item.ItemEntity;
+import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.common.util.INBTSerializable;
 import org.jetbrains.annotations.ApiStatus.NonExtendable;
 
@@ -24,6 +25,15 @@ public interface MetalbornData extends INBTSerializable<CompoundTag> {
 
   /** Checks if the given metal can be used */
   boolean canUse(MetalId metal);
+
+  /**
+   * Attempts to add the given item to the metalborn inventory.
+   * Note this may not behave as expected if called client side as the inventory only syncs when open.
+   * @param stack    Stack to add
+   * @return true if an item was added.
+   */
+  @SuppressWarnings("UnusedReturnValue")
+  boolean equip(ItemStack stack);
 
   /** Called when the player dies to drop all metalminds */
   void dropItems(Collection<ItemEntity> drops);
@@ -55,6 +65,11 @@ public interface MetalbornData extends INBTSerializable<CompoundTag> {
 
     @Override
     public boolean canUse(MetalId metal) {
+      return false;
+    }
+
+    @Override
+    public boolean equip(ItemStack stack) {
       return false;
     }
 

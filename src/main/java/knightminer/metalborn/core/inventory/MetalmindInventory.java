@@ -1,5 +1,6 @@
 package knightminer.metalborn.core.inventory;
 
+import knightminer.metalborn.core.Registration;
 import knightminer.metalborn.core.inventory.MetalmindInventory.MetalmindStack;
 import knightminer.metalborn.item.Metalmind;
 import knightminer.metalborn.metal.MetalId;
@@ -10,7 +11,6 @@ import net.minecraft.world.inventory.ContainerData;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.common.util.INBTSerializable;
 import net.minecraftforge.items.IItemHandlerModifiable;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.stream.IntStream;
 
@@ -26,8 +26,16 @@ public class MetalmindInventory extends MetalInventory<MetalmindStack> implement
   }
 
   @Override
-  public boolean isItemValid(int slot, @NotNull ItemStack stack) {
-    return stack.isEmpty() || stack.getItem() instanceof Metalmind;
+  public boolean isItemValid(int slot, ItemStack stack) {
+    if (stack.isEmpty()) {
+      return true;
+    }
+    // first two slots are bracers
+    if (slot < 2) {
+      return stack.is(Registration.BRACER.get());
+    }
+    // last slot is ring
+    return stack.is(Registration.RING.get());
   }
 
   /** Gets the metalmind slot for the given index */

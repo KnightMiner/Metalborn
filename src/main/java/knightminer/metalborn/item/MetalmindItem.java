@@ -166,28 +166,13 @@ public class MetalmindItem extends Item implements MetalItem, Metalmind {
 
   @Override
   public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
-    // TODO: consider some status bar messages for unusable metal and wrong owner
-    // if using an offhand metalmind, try to transfer into main hand
+    // attempt to wear the metalmind, requires a free slot
     ItemStack stack = player.getItemInHand(hand);
-    if (hand == InteractionHand.OFF_HAND) {
-      int amount = getAmount(stack);
-      // can use the offhand metalmind
-      if (amount > 0 && canUse(stack, player)) {
-        ItemStack mainhand = player.getMainHandItem();
-        // can use the mainhand metalmind, and the two are storing the same thing
-        if (mainhand.getItem() instanceof Metalmind metalmind && getMetal(stack).equals(metalmind.getMetal(mainhand)) && metalmind.canUse(mainhand, player)) {
-          // if we could not transfer everything, drain the offhand by how much transferred
-          int used = metalmind.fill(mainhand, player, amount);
-          if (amount > used) {
-            drain(stack, player, used);
-          } else {
-            // clear offhand entirely if it all transferred
-            emptyMetalmind(stack);
-          }
-
-          return InteractionResultHolder.sidedSuccess(stack, level.isClientSide());
-        }
+    if (canUse(stack, player)) {
+      if (!level.isClientSide) {
+        MetalbornCapability.getData(player).equip(stack);
       }
+      return InteractionResultHolder.consume(stack);
     }
     return InteractionResultHolder.pass(stack);
   }

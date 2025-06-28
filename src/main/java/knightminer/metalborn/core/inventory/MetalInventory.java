@@ -113,6 +113,18 @@ public abstract class MetalInventory<T extends StackHolder<T>> implements IItemH
     }
   }
 
+  /** Attempts to equip the given item */
+  public boolean equip(ItemStack stack) {
+    for (int i = 0; i < inventory.size(); i++) {
+      StackHolder<?> slot = inventory.get(i);
+      if (slot.stack.isEmpty() && isItemValid(i, stack)) {
+        slot.setStack(stack.split(1));
+        return true;
+      }
+    }
+    return false;
+  }
+
   /** Called on death to drop all items */
   public void dropItems(Entity entity, Collection<ItemEntity> drops) {
     for (StackHolder<?> stack : inventory) {

@@ -211,9 +211,15 @@ public class SpikeItem extends Item implements MetalItem, Spike {
   }
 
   @Override
-  public InteractionResultHolder<ItemStack> use(Level pLevel, Player player, InteractionHand hand) {
+  public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
     ItemStack stack = player.getItemInHand(hand);
-    if (stack.getCount() > 1 || isFull(stack)) {
+    if (isFull(stack)) {
+      if (!level.isClientSide) {
+        MetalbornCapability.getData(player).equip(stack);
+      }
+      return InteractionResultHolder.consume(stack);
+    }
+    if (stack.getCount() > 1) {
       return InteractionResultHolder.pass(stack);
     }
     player.startUsingItem(hand);
