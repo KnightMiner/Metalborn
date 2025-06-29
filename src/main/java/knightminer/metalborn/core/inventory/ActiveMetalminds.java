@@ -211,26 +211,34 @@ public class ActiveMetalminds {
       // ensure power is up to date
       refreshPower();
 
-      // tick the effects
-      int tapped = 0; // positive number
-      int stored = 0; // negative number
-      if (tapping > 0) {
-        tapped = power.onTap(player, tapping);
+      // decide which power to run
+      int tapped;
+      int stored;
+      int previous = tapping - storing;
+      if (previous == 0) {
+        tapped = tapping;
+        stored = storing;
       }
-      if (storing > 0) {
-        stored = power.onStore(player, storing);
+      else if (previous > 0) {
+        // if we are also storing, anything being stored will just move over freely
+        tapped = power.onTap(player, previous) + storing;
+        stored = storing;
+      } else {
+        // if we are also tapping, anything being tapped will just move over freely
+        stored = power.onStore(player, -previous) + tapping;
+        tapped = tapping;
       }
+
       // nothing changed? nothing to do
       if (tapped <= 0 && stored <= 0) {
         return;
       }
 
       // update metalmind amounts
-      int previous = tapping - storing;
-      if (!tappingStacks.isEmpty()) {
+      if (tapped > 0 && !tappingStacks.isEmpty()) {
         resumeTapping = updateMetalminds(tappingStacks, true, tapped, resumeTapping);
       }
-      if (!storingStacks.isEmpty()) {
+      if (stored > 0 && !storingStacks.isEmpty()) {
         resumeStoring = updateMetalminds(storingStacks, false, stored, resumeStoring);
       }
 
