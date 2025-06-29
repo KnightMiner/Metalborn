@@ -17,7 +17,8 @@ import knightminer.metalborn.metal.effects.EnergyMetalEffect;
 import knightminer.metalborn.metal.effects.ExperienceMetalEffect;
 import knightminer.metalborn.metal.effects.HealMetalEffect;
 import knightminer.metalborn.metal.effects.MetalEffect;
-import knightminer.metalborn.metal.effects.RangeMetalEffect;
+import knightminer.metalborn.metal.effects.StoringMetalEffect;
+import knightminer.metalborn.metal.effects.TappingMetalEffect;
 import knightminer.metalborn.metal.effects.UpdateHealthEffect;
 import knightminer.metalborn.recipe.ForgeRecipe;
 import knightminer.metalborn.recipe.MetalIngredient;
@@ -190,7 +191,8 @@ public class Registration {
   /** Registers any relevant static entries */
   private static void registerMisc(RegisterEvent event) {
     if (event.getRegistryKey() == Registries.RECIPE_SERIALIZER) {
-      MetalEffect.REGISTRY.register(resource("range"), RangeMetalEffect.LOADER);
+      MetalEffect.REGISTRY.register(resource("tapping"), TappingMetalEffect.LOADER);
+      MetalEffect.REGISTRY.register(resource("storing"), StoringMetalEffect.LOADER);
       MetalEffect.REGISTRY.register(resource("attribute"), AttributeMetalEffect.LOADER);
       MetalEffect.REGISTRY.register(resource("heal"), HealMetalEffect.LOADER);
       MetalEffect.REGISTRY.register(resource("experience"), ExperienceMetalEffect.LOADER);

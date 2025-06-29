@@ -17,20 +17,18 @@
       "swap_colors": true
     },
     {
-      "type": "metalborn:range",
+      "type": "metalborn:tapping",
       "attribute": "minecraft:generic.knockback_resistance",
-      "effect_type": "metalborn:attribute",
-      "min_level": 0,
       "multiplier": 0.05,
-      "operation": "addition"
+      "operation": "addition",
+      "tapping_type": "metalborn:attribute"
     },
     {
-      "type": "metalborn:range",
+      "type": "metalborn:storing",
       "attribute": "metalborn:knockback_multiplier",
-      "effect_type": "metalborn:attribute",
-      "max_level": 0,
       "multiplier": -0.1,
       "operation": "multiply_total",
+      "storing_type": "metalborn:attribute",
       "swap_colors": true
     }
   ],

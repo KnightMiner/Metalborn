@@ -6,7 +6,8 @@ import knightminer.metalborn.metal.effects.AttributeMetalEffect;
 import knightminer.metalborn.metal.effects.EnergyMetalEffect;
 import knightminer.metalborn.metal.effects.ExperienceMetalEffect;
 import knightminer.metalborn.metal.effects.HealMetalEffect;
-import knightminer.metalborn.metal.effects.RangeMetalEffect;
+import knightminer.metalborn.metal.effects.StoringMetalEffect;
+import knightminer.metalborn.metal.effects.TappingMetalEffect;
 import knightminer.metalborn.metal.effects.UpdateHealthEffect;
 import net.minecraft.data.PackOutput;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier.Operation;
@@ -27,8 +28,8 @@ public class MetalPowerProvider extends AbstractMetalPowerProvider {
       .hemalurgyCharge(5) // hoglins are a pain to hunt down and fight, double the health bar
       .feruchemy(AttributeMetalEffect.builder(ForgeMod.ENTITY_GRAVITY, Operation.MULTIPLY_TOTAL).swapColors().eachLevel(0.05f))
       .feruchemy(AttributeMetalEffect.builder(Registration.FALL_DISTANCE_MULTIPLIER, Operation.MULTIPLY_TOTAL).swapColors().eachLevel(0.05f))
-      .feruchemy(RangeMetalEffect.tapping(AttributeMetalEffect.builder(Attributes.KNOCKBACK_RESISTANCE, Operation.ADDITION).eachLevel(0.05f)))
-      .feruchemy(RangeMetalEffect.storing(AttributeMetalEffect.builder(Registration.KNOCKBACK_MULTIPLIER, Operation.MULTIPLY_TOTAL).swapColors().eachLevel(-0.1f)));
+      .feruchemy(new TappingMetalEffect(AttributeMetalEffect.builder(Attributes.KNOCKBACK_RESISTANCE, Operation.ADDITION).eachLevel(0.05f)))
+      .feruchemy(new StoringMetalEffect(AttributeMetalEffect.builder(Registration.KNOCKBACK_MULTIPLIER, Operation.MULTIPLY_TOTAL).swapColors().eachLevel(-0.1f)));
     metal(MetalIds.steel).index(2).temperature(950)
       .feruchemy(AttributeMetalEffect.builder(Attributes.MOVEMENT_SPEED, Operation.MULTIPLY_TOTAL).eachLevel(0.1f))
       .feruchemy(AttributeMetalEffect.builder(Attributes.ATTACK_SPEED, Operation.MULTIPLY_TOTAL).eachLevel(0.05f))
