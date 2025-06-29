@@ -28,17 +28,26 @@ public record ExperienceMetalEffect(int multiplier) implements MetalEffect {
   }
 
   @Override
-  public int onTick(MetalPower power, LivingEntity entity, int level) {
+  public int onTap(MetalPower power, LivingEntity entity, int level) {
+    if (entity.tickCount % 20 == 0 && entity instanceof Player player) {
+      player.giveExperiencePoints(level * multiplier);
+      return level / multiplier;
+    }
+    return 0;
+  }
+
+  @Override
+  public int onStore(MetalPower power, LivingEntity entity, int level) {
     if (entity.tickCount % 20 == 0 && entity instanceof Player player) {
       // ensure we don't try to store more XP than the player has
-      int give = level * multiplier;
-      if (give < 0 && -give > player.totalExperience) {
-        give = -player.totalExperience;
+      int take = level * multiplier;
+      if (take > player.totalExperience) {
+        take = player.totalExperience;
       }
       // update XP
-      player.giveExperiencePoints(give);
+      player.giveExperiencePoints(-take);
       // return how much we actually stored
-      return give / multiplier;
+      return take / multiplier;
     }
     return 0;
   }

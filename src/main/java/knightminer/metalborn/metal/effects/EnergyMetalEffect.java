@@ -27,19 +27,24 @@ public record EnergyMetalEffect(float saturation, float exhaustion) implements M
   }
 
   @Override
-  public int onTick(MetalPower power, LivingEntity entity, int level) {
+  public int onTap(MetalPower power, LivingEntity entity, int level) {
     if (entity.tickCount % 20 == 0 && entity instanceof Player player) {
       FoodData data = player.getFoodData();
-      if (level > 0) {
-        if (data.getFoodLevel() < 20) {
-          data.eat(1, saturation * level);
-          return level;
-        }
-      } else {
-        if (data.getFoodLevel() > 0) {
-          data.addExhaustion(exhaustion * -level);
-          return level;
-        }
+      if (data.getFoodLevel() < 20) {
+        data.eat(1, saturation * level);
+        return level;
+      }
+    }
+    return 0;
+  }
+
+  @Override
+  public int onStore(MetalPower power, LivingEntity entity, int level) {
+    if (entity.tickCount % 20 == 0 && entity instanceof Player player) {
+      FoodData data = player.getFoodData();
+      if (data.getFoodLevel() > 0) {
+        data.addExhaustion(exhaustion * level);
+        return level;
       }
     }
     return 0;

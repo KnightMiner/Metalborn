@@ -103,9 +103,9 @@ public class ActiveMetalminds {
     private MetalPower power = null;
     /** Index when the power was last refreshed */
     private int refreshIndex;
-    /** Amount of power being tapped, always positive */
+    /** Amount of power being tapped */
     private int tapping = 0;
-    /** Amount of power being stored, always negative */
+    /** Amount of power being stored */
     private int storing = 0;
 
     public ActiveMetalmind(Player player, MetalId id) {
@@ -129,7 +129,7 @@ public class ActiveMetalminds {
      * @param previous  previous value
      */
     private void onUpdate(int previous) {
-      int level = tapping + storing;
+      int level = tapping - storing;
       if (level != previous && !player.level().isClientSide) {
         refreshPower().onChange(player, level, previous);
       }
@@ -137,7 +137,7 @@ public class ActiveMetalminds {
 
     /** Clears all active effects */
     private void clear() {
-      int previous = tapping + storing;
+      int previous = tapping - storing;
       if (previous != 0 && !player.level().isClientSide) {
         refreshPower().onChange(player, 0, previous);
       }
@@ -154,7 +154,7 @@ public class ActiveMetalminds {
         tapping += level;
         tappingStacks.add(stack);
       } else {
-        storing += level;
+        storing -= level;
         storingStacks.add(stack);
       }
     }
@@ -185,18 +185,18 @@ public class ActiveMetalminds {
       }
 
       // next, update the tapping and storing amounts
-      int previous = tapping + storing;
+      int previous = tapping - storing;
       // we split positive from negative to the benefit of ticking,
       // allows you to transfer power from one metalmind to another despite getting no effect
       if (newLevel > 0) {
         tapping += newLevel;
       } else if (newLevel < 0) {
-        storing += newLevel;
+        storing -= newLevel;
       }
       if (oldLevel > 0) {
         tapping -= oldLevel;
       } else if (oldLevel < 0) {
-        storing -= oldLevel;
+        storing += oldLevel;
       }
 
       // finally, update effects
@@ -205,7 +205,7 @@ public class ActiveMetalminds {
 
     /** Ticks all metalminds, filling/draining and running tick effects */
     private void tick() {
-      if (tapping <= 0 && storing >= 0) {
+      if (tapping <= 0 && storing <= 0) {
         return;
       }
       // ensure power is up to date
@@ -215,23 +215,23 @@ public class ActiveMetalminds {
       int tapped = 0; // positive number
       int stored = 0; // negative number
       if (tapping > 0) {
-        tapped = power.onTick(player, tapping);
+        tapped = power.onTap(player, tapping);
       }
-      if (storing < 0) {
-        stored = power.onTick(player, storing);
+      if (storing > 0) {
+        stored = power.onStore(player, storing);
       }
       // nothing changed? nothing to do
-      if (tapped == 0 && stored == 0) {
+      if (tapped <= 0 && stored <= 0) {
         return;
       }
 
       // update metalmind amounts
-      int previous = tapping + storing;
+      int previous = tapping - storing;
       if (!tappingStacks.isEmpty()) {
         resumeTapping = updateMetalminds(tappingStacks, true, tapped, resumeTapping);
       }
       if (!storingStacks.isEmpty()) {
-        resumeStoring = updateMetalminds(storingStacks, false, -stored, resumeStoring);
+        resumeStoring = updateMetalminds(storingStacks, false, stored, resumeStoring);
       }
 
       // if anything stopped tapping/storing, update the effect
@@ -264,7 +264,7 @@ public class ActiveMetalminds {
           if (drain) {
             tapping -= oldLevel;
           } else {
-            storing -= oldLevel;
+            storing += oldLevel;
           }
         }
         // if we ran out of stuff to process, done
@@ -291,7 +291,7 @@ public class ActiveMetalminds {
 
     /** Gets the tooltip to display for this active power */
     private void getTooltip(List<Component> tooltip) {
-      int level = tapping + storing;
+      int level = tapping - storing;
       if (level != 0) {
         refreshPower().getTooltip(player, level, tooltip);
       }

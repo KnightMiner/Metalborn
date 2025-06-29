@@ -130,12 +130,25 @@ public record MetalPower(
   }
 
   /** Called every tick while this power is active. */
-  public int onTick(LivingEntity entity, int level) {
+  public int onTap(LivingEntity entity, int level) {
     int consumed = 0;
     for (MetalEffect effect : feruchemy) {
-      int effectConsumed = effect.onTick(this, entity, level);
+      int effectConsumed = effect.onTap(this, entity, level);
       // take the most extreme effect
-      if (level > 0 ? (effectConsumed > consumed) : (effectConsumed < consumed)) {
+      if (effectConsumed > consumed) {
+        consumed = effectConsumed;
+      }
+    }
+    return consumed;
+  }
+
+  /** Called every tick while this power is active. */
+  public int onStore(LivingEntity entity, int level) {
+    int consumed = 0;
+    for (MetalEffect effect : feruchemy) {
+      int effectConsumed = effect.onStore(this, entity, level);
+      // take the most extreme effect
+      if (effectConsumed > consumed) {
         consumed = effectConsumed;
       }
     }

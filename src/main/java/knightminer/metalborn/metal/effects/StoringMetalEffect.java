@@ -28,10 +28,12 @@ public record StoringMetalEffect(MetalEffect effect) implements MetalEffect {
   }
 
   @Override
-  public int onTick(MetalPower power, LivingEntity entity, int level) {
-    if (level < 0) {
-      return effect.onTick(power, entity, level);
-    }
+  public int onStore(MetalPower power, LivingEntity entity, int level) {
+    return effect.onStore(power, entity, level);
+  }
+
+  @Override
+  public int onTap(MetalPower power, LivingEntity entity, int level) {
     return 0;
   }
 

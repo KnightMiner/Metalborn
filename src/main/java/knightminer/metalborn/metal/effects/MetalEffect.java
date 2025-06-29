@@ -26,13 +26,24 @@ public interface MetalEffect extends IHaveLoader {
   default void onChange(MetalPower power, LivingEntity entity, int level, int previous) {}
 
   /**
+   * Called every tick while this power is tapping.
+   * @param power    Power instance
+   * @param entity   Entity receiving the effect
+   * @param level    Current level of the power.
+   * @return amount of the level to drain. Return 0 if nothing happened.
+   */
+  default int onTap(MetalPower power, LivingEntity entity, int level) {
+    return level;
+  }
+
+  /**
    * Called every tick while this power is active.
    * @param power    Power instance
    * @param entity   Entity receiving the effect
-   * @param level    Current level of the power. May be negative to indicate reversed power, but never 0.
-   * @return amount of the level consumed, or a negative number for amount restored. Return 0 if nothing happened.
+   * @param level    Current level of the power.
+   * @return amount of the level to store. Return 0 if nothing happened.
    */
-  default int onTick(MetalPower power, LivingEntity entity, int level) {
+  default int onStore(MetalPower power, LivingEntity entity, int level) {
     return level;
   }
 

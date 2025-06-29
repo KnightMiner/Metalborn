@@ -29,21 +29,23 @@ public record HealMetalEffect(int delay) implements MetalEffect {
   }
 
   @Override
-  public int onTick(MetalPower power, LivingEntity entity, int level) {
-    int frequency = delay / Math.abs(level);
-    if (frequency == 0 || entity.tickCount % frequency == 1) {
-      if (level > 0) {
-        if (entity.getHealth() < entity.getMaxHealth()) {
-          entity.heal(1);
-          // on tapping, higher speeds also reduce how much you get
-          return level;
-        }
-        return 0;
-      } else if (entity.getHealth() > 1) {
-        if (entity.hurt(Registration.makeSource(entity.level(), Registration.METAL_HURT), 1)) {
-          // on storing, you have to actually lose health to gain something
-          return -1;
-        }
+  public int onTap(MetalPower power, LivingEntity entity, int level) {
+    int frequency = delay / level;
+    if (frequency == 0 || entity.tickCount % frequency == 1 && entity.getHealth() < entity.getMaxHealth()) {
+      entity.heal(1);
+      // on tapping, higher speeds also reduce how much you get
+      return level;
+    }
+    return 0;
+  }
+
+  @Override
+  public int onStore(MetalPower power, LivingEntity entity, int level) {
+    int frequency = delay / level;
+    if (frequency == 0 || entity.tickCount % frequency == 1 && entity.getHealth() > 1) {
+      if (entity.hurt(Registration.makeSource(entity.level(), Registration.METAL_HURT), 1)) {
+        // on storing, you have to actually lose health to gain something
+        return -1;
       }
     }
     return 0;

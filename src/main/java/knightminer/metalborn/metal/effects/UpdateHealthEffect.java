@@ -24,7 +24,12 @@ public enum UpdateHealthEffect implements MetalEffect {
   }
 
   @Override
-  public int onTick(MetalPower power, LivingEntity entity, int level) {
+  public int onTap(MetalPower power, LivingEntity entity, int level) {
+    return 0;
+  }
+
+  @Override
+  public int onStore(MetalPower power, LivingEntity entity, int level) {
     return 0;
   }
 
