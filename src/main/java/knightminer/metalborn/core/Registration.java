@@ -116,7 +116,11 @@ public class Registration {
     creativeTabs.register(Metalborn.MOD_ID, () ->
       CreativeModeTab.builder()
         .title(Component.translatable("creative_tab.metalborn"))
-        .icon(() -> MetalItem.setMetal(new ItemStack(RING), MetalIds.pewter))
+        .icon(() -> {
+          ItemStack stack = MetalItem.setMetal(new ItemStack(RING), MetalIds.pewter);
+          stack.getOrCreateTag().putInt(MetalmindItem.TAG_AMOUNT, 20 * 60 * 2); // about half full
+          return stack;
+        })
         .displayItems(Registration::addTabItems)
         .build());
   }
