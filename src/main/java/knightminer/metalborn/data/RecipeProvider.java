@@ -3,10 +3,15 @@ package knightminer.metalborn.data;
 import knightminer.metalborn.Metalborn;
 import knightminer.metalborn.core.Registration;
 import knightminer.metalborn.data.tag.MetalbornTags;
+import knightminer.metalborn.plugin.tinkers.MetalCastingRecipeBuilder;
+import knightminer.metalborn.plugin.tinkers.MetalMeltingRecipeBuilder;
+import knightminer.metalborn.plugin.tinkers.TinkersMockRecipeBuilder;
 import knightminer.metalborn.recipe.MetalIngredient;
 import knightminer.metalborn.recipe.MetalIngredient.MetalFilter;
+import knightminer.metalborn.recipe.MetalItemIngredient;
 import knightminer.metalborn.recipe.ShapedForgeRecipeBuilder;
 import knightminer.metalborn.recipe.ShapelessForgeRecipeBuilder;
+import knightminer.metalborn.util.CastItemObject;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.recipes.FinishedRecipe;
 import net.minecraft.data.recipes.RecipeCategory;
@@ -20,12 +25,14 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.AbstractCookingRecipe;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.RecipeSerializer;
+import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraftforge.common.crafting.ConditionalRecipe;
 import net.minecraftforge.common.crafting.conditions.ICondition;
 import net.minecraftforge.common.crafting.conditions.TrueCondition;
 import slimeknights.mantle.recipe.condition.TagFilledCondition;
 import slimeknights.mantle.recipe.data.ICommonRecipeHelper;
+import slimeknights.mantle.registration.object.IdAwareObject;
 
 import java.util.List;
 import java.util.function.Consumer;
@@ -68,7 +75,7 @@ public class RecipeProvider extends net.minecraft.data.recipes.RecipeProvider im
     packingRecipe(consumer, RecipeCategory.MISC, "raw_block", Registration.RAW_TIN_BLOCK, "raw", Registration.RAW_TIN, MetalbornTags.Items.RAW_TIN, metalFolder);
 
     // lerasium alloy nuggets
-    ShapelessForgeRecipeBuilder.shapeless(Registration.LERASIUM_ALLOY_NUGGET, 2)
+    ShapelessForgeRecipeBuilder.shapeless(Registration.LERASIUM_ALLOY_NUGGET, 1)
       .requires(Registration.LERASIUM_NUGGET)
       .requires(MetalIngredient.nugget(MetalFilter.METALMIND))
       .metal()
@@ -183,6 +190,23 @@ public class RecipeProvider extends net.minecraft.data.recipes.RecipeProvider im
       .experience(2f)
       .save(withCondition(consumer, ingotCondition("manyullyn"), ingotLikeCondition("cobalt")), location(alloyFolder + "manyullyn"));
     // TODO: consider slime metals
+
+
+    // Tinkers' Construct melting and casting
+    String tinkersFolder = "tinkers/";
+
+    // casting
+    int ingot = 90;
+    int nugget = 10;
+    metalMeltingCasting(consumer, Registration.RING,   Registration.RING_CAST,   MetalFilter.METALMIND, nugget * 4, tinkersFolder);
+    metalMeltingCasting(consumer, Registration.BRACER, Registration.BRACER_CAST, MetalFilter.METALMIND, ingot * 4,  tinkersFolder);
+    metalMeltingCasting(consumer, Registration.SPIKE,  Registration.SPIKE_CAST,  MetalFilter.SPIKE,     ingot * 2,  tinkersFolder);
+    // lerasium alloy nugget casting - don't think molten lerasium is the best idea so just do it via composite
+    MetalCastingRecipeBuilder.table(Registration.LERASIUM_ALLOY_NUGGET)
+      .setCast(Ingredient.of(Registration.LERASIUM_NUGGET), true)
+      .setFilter(MetalFilter.METALMIND)
+      .setAmount(nugget)
+      .save(consumer, wrap(Registration.LERASIUM_ALLOY_NUGGET, tinkersFolder, "_casting"));
   }
 
 
@@ -209,5 +233,26 @@ public class RecipeProvider extends net.minecraft.data.recipes.RecipeProvider im
   /** Creates a condition for the given ingot like input to be present */
   private ICondition ingotLikeCondition(String name) {
     return tagCondition(Metalborn.resource("ingot_like/" + name));
+  }
+
+  /** Adds a recipe for casting a metal object, like a metalmind */
+  private <T extends ItemLike & IdAwareObject> void metalMeltingCasting(Consumer<FinishedRecipe> consumer, T result, CastItemObject cast, MetalFilter filter, int amount, String folder) {
+    // casting
+    MetalCastingRecipeBuilder.table(result)
+      .setCast(Ingredient.of(cast.getMultiUseTag()), false)
+      .setFilter(filter)
+      .setAmount(amount)
+      .save(consumer, wrap(result, folder, "/casting_gold_cast"));
+    MetalCastingRecipeBuilder.table(result)
+      .setCast(Ingredient.of(cast.getSingleUseTag()), true)
+      .setFilter(filter)
+      .setAmount(amount)
+      .save(consumer, wrap(result, folder, "/casting_sand_cast"));
+
+    // melting
+    MetalMeltingRecipeBuilder.melting(MetalItemIngredient.of(result, filter), amount).save(consumer, wrap(result, folder, "/melting"));
+
+    // cast creation
+    TinkersMockRecipeBuilder.castRecipes(consumer, result, cast, filter, Math.max(1, amount / 90), folder);
   }
 }

@@ -34,6 +34,14 @@ public interface MetalItem extends ItemLike {
     return MetalId.NONE;
   }
 
+  /** Sets the metal on the stack */
+  static ItemStack setMetal(ItemStack stack, MetalId metal) {
+    if (metal != MetalId.NONE) {
+      stack.getOrCreateTag().putString(TAG_METAL, metal.toString());
+    }
+    return stack;
+  }
+
   /** Creates a stack with the given metal ID */
   default ItemStack withMetal(MetalId id) {
     ItemStack stack = new ItemStack(this);

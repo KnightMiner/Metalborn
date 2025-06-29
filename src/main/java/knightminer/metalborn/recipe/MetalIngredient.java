@@ -22,7 +22,7 @@ import java.util.Collection;
 import java.util.function.Predicate;
 import java.util.stream.Stream;
 
-/** Ingredient matching a metal */
+/** Ingredient matching a metal. Does not match a metal item with NBT metal. */
 public class MetalIngredient extends AbstractIngredient {
   public static final ResourceLocation ID = Metalborn.resource("metal");
 
@@ -77,7 +77,9 @@ public class MetalIngredient extends AbstractIngredient {
   private static JsonObject serialize(MetalShape shape, MetalFilter filter) {
     JsonObject json = new JsonObject();
     json.addProperty("shape", MetalShape.LOADABLE.getString(shape));
-    json.addProperty("filter", MetalFilter.LOADABLE.getString(filter));
+    if (filter != MetalFilter.ANY) {
+      json.addProperty("filter", MetalFilter.LOADABLE.getString(filter));
+    }
     return json;
   }
 
@@ -156,7 +158,7 @@ public class MetalIngredient extends AbstractIngredient {
     public MetalIngredient parse(JsonObject json) {
       return new MetalIngredient(
         MetalShape.LOADABLE.getIfPresent(json, "shape"),
-        MetalFilter.LOADABLE.getIfPresent(json, "filter")
+        MetalFilter.LOADABLE.getOrDefault(json, "filter", MetalFilter.ANY)
       );
     }
 

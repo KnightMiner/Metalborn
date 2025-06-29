@@ -1,0 +1,16 @@
+{
+  "type": "metalborn:metal_casting_table",
+  "amount": 180,
+  "cast": {
+    "tag": "metalborn:casts/spike_single_use"
+  },
+  "cast_consumed": true,
+  "conditions": [
+    {
+      "type": "forge:mod_loaded",
+      "modid": "tconstruct"
+    }
+  ],
+  "filter": "spike",
+  "result": "metalborn:spike"
+}

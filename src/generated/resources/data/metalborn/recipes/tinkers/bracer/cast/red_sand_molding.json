@@ -1,0 +1,18 @@
+{
+  "type": "tconstruct:molding_table",
+  "conditions": [
+    {
+      "type": "forge:mod_loaded",
+      "modid": "tconstruct"
+    }
+  ],
+  "material": {
+    "tag": "tconstruct:casts/red_sand"
+  },
+  "pattern": {
+    "type": "metalborn:metal_item",
+    "filter": "metalmind",
+    "item": "metalborn:bracer"
+  },
+  "result": "metalborn:bracer_red_sand_cast"
+}

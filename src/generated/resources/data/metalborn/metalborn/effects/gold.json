@@ -9,5 +9,6 @@
   ],
   "hemalurgy_charge": 10,
   "index": 7,
-  "name": "gold"
+  "name": "gold",
+  "temperature": 700
 }

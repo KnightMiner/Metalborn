@@ -1,0 +1,19 @@
+{
+  "type": "tconstruct:item_part_builder",
+  "conditions": [
+    {
+      "type": "forge:mod_loaded",
+      "modid": "tconstruct"
+    }
+  ],
+  "cost": 4,
+  "material": "tconstruct:copper",
+  "pattern": "metalborn:bracer",
+  "result": {
+    "count": 1,
+    "item": "metalborn:bracer",
+    "nbt": {
+      "metal": "metalborn:copper"
+    }
+  }
+}

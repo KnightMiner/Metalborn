@@ -148,5 +148,27 @@
   "command.metalborn.ferring.set.single": "Set ferring type for %s to %s (ID %s)",
   "command.metalborn.ferring.set.multiple": "Set ferring type on %s players to %s (ID %s)",
   "command.metalborn.ferring.random.single": "Randomized ferring type for %s",
-  "command.metalborn.ferring.random.multiple": "Randomized ferring type on %s players"
+  "command.metalborn.ferring.random.multiple": "Randomized ferring type on %s players",
+
+
+  "_group_tinkers_compat_": "",
+
+  "pattern.metalborn.ring": "Ring",
+  "pattern.metalborn.bracer": "Bracer",
+  "pattern.metalborn.spike": "Spike",
+
+  "item.metalborn.ring_cast.tooltip": "Material cost: 4 nuggets",
+  "item.metalborn.ring_gold_cast": "Ring Gold Cast",
+  "item.metalborn.ring_sand_cast": "Ring Sand Cast",
+  "item.metalborn.ring_red_sand_cast": "Ring Red Sand Cast",
+
+  "item.metalborn.bracer_cast.tooltip": "Material cost: 4 ingots",
+  "item.metalborn.bracer_gold_cast": "Bracer Gold Cast",
+  "item.metalborn.bracer_sand_cast": "Bracer Sand Cast",
+  "item.metalborn.bracer_red_sand_cast": "Bracer Red Sand Cast",
+
+  "item.metalborn.spike_cast.tooltip": "Material cost: 2 ingots",
+  "item.metalborn.spike_gold_cast": "Spike Gold Cast",
+  "item.metalborn.spike_sand_cast": "Spike Sand Cast",
+  "item.metalborn.spike_red_sand_cast": "Spike Red Sand Cast"
 }

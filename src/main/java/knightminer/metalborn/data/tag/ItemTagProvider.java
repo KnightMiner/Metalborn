@@ -4,6 +4,7 @@ import knightminer.metalborn.Metalborn;
 import knightminer.metalborn.core.Registration;
 import knightminer.metalborn.data.MetalIds;
 import knightminer.metalborn.metal.MetalId;
+import knightminer.metalborn.util.CastItemObject;
 import net.minecraft.core.HolderLookup.Provider;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.tags.ItemTagsProvider;
@@ -63,6 +64,12 @@ public class ItemTagProvider extends ItemTagsProvider {
 
     // netherite scrap is weird as its not fully tagged, but we can deal with that
     tag(MetalbornTags.Items.SCRAP_LIKE).add(Items.NETHERITE_SCRAP).addTag(Tags.Items.ORES_NETHERITE_SCRAP);
+
+
+    // tinkers compat - casts
+    addCast(Registration.RING_CAST);
+    addCast(Registration.BRACER_CAST);
+    addCast(Registration.SPIKE_CAST);
   }
 
   /** Adds all relevant tags to a metal */
@@ -98,5 +105,19 @@ public class ItemTagProvider extends ItemTagsProvider {
         .addOptionalTag(rawOre)
         .addOptionalTag(ore);
     }
+  }
+
+  /** Adds all tags for a cast */
+  private void addCast(CastItemObject cast) {
+    // material tags
+    tag(MetalbornTags.Items.GOLD_CASTS).add(cast.get());
+    tag(MetalbornTags.Items.SAND_CASTS).add(cast.getSand());
+    tag(MetalbornTags.Items.RED_SAND_CASTS).add(cast.getRedSand());
+    // type tags
+    tag(MetalbornTags.Items.SINGLE_USE_CASTS).addTag(cast.getSingleUseTag());
+    tag(MetalbornTags.Items.MULTI_USE_CASTS).addTag(cast.getMultiUseTag());
+    // local tags
+    tag(cast.getSingleUseTag()).add(cast.getSand(), cast.getRedSand());
+    tag(cast.getMultiUseTag()).add(cast.get());
   }
 }

@@ -22,6 +22,7 @@ public class MetalPowerBuilder {
   private int index;
   private int capacity = 20 * 5 * 60; // 5 minutes
   private int hemalurgyCharge = 10; // 10 kills with a spike is probably a big enough ask
+  private int temperature = 0;
   private boolean ferring = true;
   private final List<MetalEffect> feruchemy = new ArrayList<>();
   private final List<ICondition> conditions = new ArrayList<>();
@@ -90,11 +91,17 @@ public class MetalPowerBuilder {
     return this;
   }
 
+  /** Sets the temperature for this fluid, for Tinkers' Construct compat. If 0, this will not be castable. */
+  public MetalPowerBuilder temperature(int temperature) {
+    this.temperature = temperature;
+    return this;
+  }
+
 
   /** Builds the instance with fewer checks */
   @CheckReturnValue
   private MetalPower buildInternal() {
-    return new MetalPower(id, name, index, ferring, feruchemy, feruchemy.isEmpty() ? 0 : capacity, hemalurgyCharge);
+    return new MetalPower(id, name, index, ferring, feruchemy, feruchemy.isEmpty() ? 0 : capacity, hemalurgyCharge, temperature);
   }
 
   /** Builds the final power */

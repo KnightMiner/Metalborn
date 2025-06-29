@@ -23,5 +23,6 @@
   ],
   "hemalurgy_charge": 10,
   "index": 4,
-  "name": "pewter"
+  "name": "pewter",
+  "temperature": 400
 }

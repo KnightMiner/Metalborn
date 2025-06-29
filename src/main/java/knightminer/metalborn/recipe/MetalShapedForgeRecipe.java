@@ -92,17 +92,9 @@ public class MetalShapedForgeRecipe extends ShapedForgeRecipe {
     return super.matches(inv, level) && findMetal(inv, getMetalFilter()) != MetalId.NONE;
   }
 
-  /** Sets the metal on the stack */
-  static ItemStack setMetal(ItemStack stack, MetalId metal) {
-    if (metal != MetalId.NONE) {
-      stack.getOrCreateTag().putString(MetalItem.TAG_METAL, metal.toString());
-    }
-    return stack;
-  }
-
   @Override
   public ItemStack assemble(CraftingContainer inv, RegistryAccess registryAccess) {
-    return setMetal(super.assemble(inv, registryAccess), findMetal(inv, getMetalFilter()));
+    return MetalItem.setMetal(super.assemble(inv, registryAccess), findMetal(inv, getMetalFilter()));
   }
 
   @Override
@@ -144,10 +136,10 @@ public class MetalShapedForgeRecipe extends ShapedForgeRecipe {
     List<ItemStack> displayResults;
     if (inputExample == null) {
       displayResults = MetalManager.INSTANCE.getSortedPowers().stream()
-        .map(power -> setMetal(result.copy(), power.id())).toList();
+        .map(power -> MetalItem.setMetal(result.copy(), power.id())).toList();
     } else {
       displayResults = Arrays.stream(inputExample)
-        .map(stack -> setMetal(result.copy(), MetalManager.INSTANCE.fromIngotOrNugget(stack.getItem()).id()))
+        .map(stack -> MetalItem.setMetal(result.copy(), MetalManager.INSTANCE.fromIngotOrNugget(stack.getItem()).id()))
         .toList();
     }
     return new JEIInfo(linkedInputs, displayResults);

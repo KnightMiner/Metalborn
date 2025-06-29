@@ -1,4 +1,4 @@
-// 1.20.1	2025-06-26T19:40:06.2729671	Tags for minecraft:item mod id metalborn
+// 1.20.1	2025-06-28T21:07:28.0234986	Tags for minecraft:item mod id metalborn
 15fc259f6c72ba48b51d2ea9d2bf765763770793 data/forge/tags/items/ingots.json
 03cfb4451bfb3c82bfbe118acfb1c55d545d9835 data/forge/tags/items/ingots/bronze.json
 b82e1386d985cef8647105b101ae7ebaeccee644 data/forge/tags/items/ingots/pewter.json
@@ -24,6 +24,12 @@ cd5b2c9853eed4454b5baadfa42e59b461e32409 data/forge/tags/items/storage_blocks/pe
 0eb858f023ba3ddbb0a3699de23e92faf0feceb0 data/forge/tags/items/storage_blocks/rose_gold.json
 2c8e40745b73849326f23e235c1cdb273872a96f data/forge/tags/items/storage_blocks/steel.json
 e585c51c68d5f9813b4e4e9ae82ccfc368396757 data/forge/tags/items/storage_blocks/tin.json
+f71732471c66195c1b076bbb1c5ae8e5fe804758 data/metalborn/tags/items/casts/bracer_multi_use.json
+ae5b252d16bc49820864077a43aa857230547911 data/metalborn/tags/items/casts/bracer_single_use.json
+04141eaeea3f3584d359773ec22b4661176e28d6 data/metalborn/tags/items/casts/ring_multi_use.json
+0ad762b5326f856a69edbd18211e736b6a914a45 data/metalborn/tags/items/casts/ring_single_use.json
+4b3c55d0115ddd813a639f0665ee561f731ad2a0 data/metalborn/tags/items/casts/spike_multi_use.json
+b8e7bf19630dc5bccc03d9acebff166f72cdc52a data/metalborn/tags/items/casts/spike_single_use.json
 732fab6b01a70cc268f678005329892b585a53d2 data/metalborn/tags/items/ingot_like/cobalt.json
 0f352b026bce2688fab8476e448b9a596737a565 data/metalborn/tags/items/ingot_like/copper.json
 61ff94e2556c9805ea6274be09fa696e637f7299 data/metalborn/tags/items/ingot_like/gold.json
@@ -33,3 +39,8 @@ e811fea8b06671da251e7fbec4e2614f6f191dbf data/metalborn/tags/items/ingot_like/ni
 2e9d8ff13339b9e3a252ed3748a58b49585ac2d0 data/metalborn/tags/items/ingot_like/silver.json
 398b903658b869cb7a0523e23b3a32a634c3be1c data/metalborn/tags/items/ingot_like/tin.json
 a1f720331d641e7f110e85ffcbffcaa6ad50c76b data/metalborn/tags/items/ingot_like/zinc.json
+e5112bd294f39abdbb42a699b7296ad10b513d21 data/tconstruct/tags/items/casts/gold.json
+cd7bd6c1be35fbdd18192672af2887c00e40ce2b data/tconstruct/tags/items/casts/multi_use.json
+ba7b118fbac4947fa33ce0f68eb8098b59e27781 data/tconstruct/tags/items/casts/red_sand.json
+9cbd1890b6de67b976d503867b0e6ed166cb2ca2 data/tconstruct/tags/items/casts/sand.json
+f702dbeacb210fea7fc53d930815fba66f684c81 data/tconstruct/tags/items/casts/single_use.json

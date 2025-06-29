@@ -10,5 +10,6 @@
   ],
   "hemalurgy_charge": 10,
   "index": 6,
-  "name": "bronze"
+  "name": "bronze",
+  "temperature": 700
 }

@@ -1,0 +1,15 @@
+{
+  "type": "metalborn:metal_casting_table",
+  "amount": 40,
+  "cast": {
+    "tag": "metalborn:casts/ring_multi_use"
+  },
+  "conditions": [
+    {
+      "type": "forge:mod_loaded",
+      "modid": "tconstruct"
+    }
+  ],
+  "filter": "metalmind",
+  "result": "metalborn:ring"
+}

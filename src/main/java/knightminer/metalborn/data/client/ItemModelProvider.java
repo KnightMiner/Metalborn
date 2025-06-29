@@ -6,6 +6,7 @@ import knightminer.metalborn.core.Registration;
 import knightminer.metalborn.data.MetalIds;
 import knightminer.metalborn.item.MetalItem;
 import knightminer.metalborn.metal.MetalId;
+import knightminer.metalborn.util.CastItemObject;
 import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemDisplayContext;
@@ -57,6 +58,11 @@ public class ItemModelProvider extends net.minecraftforge.client.model.generator
     metal(Registration.SPIKE, "metal/item/spike", true).end().transforms()
       .transform(ItemDisplayContext.FIRST_PERSON_LEFT_HAND).rotation(0, -90, -25).translation(1.13f, 3.2f, 1.13f).scale(0.68f, 0.68f, 0.68f).end()
       .transform(ItemDisplayContext.FIRST_PERSON_RIGHT_HAND).rotation(0, 90, 25).translation(1.13f, 3.2f, 1.13f).scale(0.68f, 0.68f, 0.68f).end();
+
+    // tinkers' compat
+    cast(Registration.RING_CAST);
+    cast(Registration.BRACER_CAST);
+    cast(Registration.SPIKE_CAST);
   }
 
 
@@ -67,9 +73,14 @@ public class ItemModelProvider extends net.minecraftforge.client.model.generator
 
   /** Generated item with a set texture */
   @SuppressWarnings("SameParameterValue")
-  private void basicItem(ItemObject<?> item, String texture) {
-    String name = item.getId().getPath();
+  private void basicItem(String name, String texture) {
     getBuilder(name).parent(GENERATED).texture("layer0", "item/" + texture);
+  }
+
+  /** Generated item with a set texture */
+  @SuppressWarnings("SameParameterValue")
+  private void basicItem(ItemObject<?> item, String texture) {
+    basicItem(item.getId().getPath(), texture);
   }
 
   /** Adds a basic metal item */
@@ -104,5 +115,13 @@ public class ItemModelProvider extends net.minecraftforge.client.model.generator
       .texture("layer0", resource(texture))
       .customLoader(PalettedModelBuilder::new)
       .paletted(FERUCHEMY_METALS, MetalItem.TAG_METAL);
+  }
+
+  /** Creates models for the given cast object */
+  private void cast(CastItemObject cast) {
+    String name = cast.getId().getPath();
+    basicItem(path(cast.get()), "cast/" + name + "_gold");
+    basicItem(path(cast.getSand()), "cast/" + name + "_sand");
+    basicItem(path(cast.getRedSand()), "cast/" + name + "_red_sand");
   }
 }

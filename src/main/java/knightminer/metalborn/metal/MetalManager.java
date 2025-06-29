@@ -13,6 +13,7 @@ import net.minecraft.util.profiling.ProfilerFiller;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.ItemLike;
+import net.minecraft.world.level.material.Fluid;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.crafting.CraftingHelper;
 import net.minecraftforge.common.crafting.conditions.ICondition.IContext;
@@ -63,6 +64,18 @@ public class MetalManager extends SimpleJsonResourceReloadListener {
   private final Function<EntityType<?>,MetalPower> entityGetter = entity -> {
     for (MetalPower power : sortedPowers) {
       if (power.matches(entity)) {
+        return power;
+      }
+    }
+    return MetalPower.DEFAULT;
+  };
+
+  /** Cache of the metal power for each fluid type, for Tinkers' Construct compat */
+  private final Map<Fluid,MetalPower> fluidCache = new HashMap<>();
+  /** Cache resolver for getting a power from an item */
+  private final Function<Fluid,MetalPower> fluidGetter = fluid -> {
+    for (MetalPower power : sortedPowers) {
+      if (power.temperature() > 0 && power.matches(fluid)) {
         return power;
       }
     }
@@ -160,12 +173,17 @@ public class MetalManager extends SimpleJsonResourceReloadListener {
     }
   }
 
-  /** Gets the metal power for the given ingot or nugget */
+  /** {@return metal power for the given ingot or nugget} */
   public MetalPower fromIngotOrNugget(ItemLike item) {
     return itemCache.computeIfAbsent(item.asItem(), itemGetter);
   }
 
-  /** Gets the metal power for the given entity target */
+  /** {@return metal power for the given fluid} */
+  public MetalPower fromFluid(Fluid fluid) {
+    return fluidCache.computeIfAbsent(fluid, fluidGetter);
+  }
+
+  /** {@return metal power for the given entity target} */
   public MetalPower fromTarget(EntityType<?> type) {
     return entityCache.computeIfAbsent(type, entityGetter);
   }

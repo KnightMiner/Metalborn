@@ -23,33 +23,33 @@ public class MetalPowerProvider extends AbstractMetalPowerProvider {
 
   @Override
   public void addMetals() {
-    metal(MetalIds.iron).index(1)
+    metal(MetalIds.iron).index(1).temperature(800)
       .hemalurgyCharge(5) // hoglins are a pain to hunt down and fight, double the health bar
       .feruchemy(AttributeMetalEffect.builder(ForgeMod.ENTITY_GRAVITY, Operation.MULTIPLY_TOTAL).swapColors().eachLevel(0.05f))
       .feruchemy(AttributeMetalEffect.builder(Registration.FALL_DISTANCE_MULTIPLIER, Operation.MULTIPLY_TOTAL).swapColors().eachLevel(0.05f))
       .feruchemy(RangeMetalEffect.tapping(AttributeMetalEffect.builder(Attributes.KNOCKBACK_RESISTANCE, Operation.ADDITION).eachLevel(0.05f)))
       .feruchemy(RangeMetalEffect.storing(AttributeMetalEffect.builder(Registration.KNOCKBACK_MULTIPLIER, Operation.MULTIPLY_TOTAL).swapColors().eachLevel(-0.1f)));
-    metal(MetalIds.steel).index(2)
+    metal(MetalIds.steel).index(2).temperature(950)
       .feruchemy(AttributeMetalEffect.builder(Attributes.MOVEMENT_SPEED, Operation.MULTIPLY_TOTAL).eachLevel(0.1f))
       .feruchemy(AttributeMetalEffect.builder(Attributes.ATTACK_SPEED, Operation.MULTIPLY_TOTAL).eachLevel(0.05f))
       .feruchemy(AttributeMetalEffect.builder(Registration.MINING_SPEED_MULTIPLIER, Operation.MULTIPLY_TOTAL).eachLevel(0.1f));
-    metal(MetalIds.tin).index(3)
+    metal(MetalIds.tin).index(3).temperature(225)
       .feruchemy(AttributeMetalEffect.builder(ForgeMod.ENTITY_REACH, Operation.ADDITION).eachLevel(0.25f))
       .feruchemy(AttributeMetalEffect.builder(ForgeMod.BLOCK_REACH, Operation.ADDITION).eachLevel(0.25f));
-    metal(MetalIds.pewter).index(4)
+    metal(MetalIds.pewter).index(4).temperature(400)
       .feruchemy(AttributeMetalEffect.builder(Attributes.ATTACK_DAMAGE, Operation.ADDITION).eachLevel(1))
       .feruchemy(AttributeMetalEffect.builder(Attributes.ARMOR_TOUGHNESS, Operation.ADDITION).eachLevel(0.5f))
       .feruchemy(AttributeMetalEffect.builder(Registration.MINING_SPEED_MULTIPLIER, Operation.MULTIPLY_TOTAL).eachLevel(0.1f));
-    metal(MetalIds.copper).index(5)
+    metal(MetalIds.copper).index(5).temperature(500)
       .capacity(100) // about 8 levels
       .feruchemy(new ExperienceMetalEffect(1));
-    metal(MetalIds.bronze).index(6)
+    metal(MetalIds.bronze).index(6).temperature(700)
       .capacity(40) // 2 full food bars
       .feruchemy(new EnergyMetalEffect(0.5f, 2f));
-    metal(MetalIds.gold).index(7)
+    metal(MetalIds.gold).index(7).temperature(700)
       .capacity(40) // 2 full health bars
       .feruchemy(new HealMetalEffect(100));
-    metal(MetalIds.roseGold).index(8)
+    metal(MetalIds.roseGold).index(8).temperature(550)
       .feruchemy(AttributeMetalEffect.builder(Attributes.MAX_HEALTH, Operation.ADDITION).eachLevel(2))
       .feruchemy(UpdateHealthEffect.INSTANCE);
 

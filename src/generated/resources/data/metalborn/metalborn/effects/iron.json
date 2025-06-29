@@ -36,5 +36,6 @@
   ],
   "hemalurgy_charge": 5,
   "index": 1,
-  "name": "iron"
+  "name": "iron",
+  "temperature": 800
 }

@@ -1,0 +1,17 @@
+{
+  "type": "tconstruct:item_part_builder",
+  "conditions": [
+    {
+      "type": "forge:mod_loaded",
+      "modid": "tconstruct"
+    }
+  ],
+  "pattern": "metalborn:bracer",
+  "pattern_item": {
+    "item": "minecraft:sand"
+  },
+  "result": {
+    "count": 4,
+    "item": "metalborn:bracer_sand_cast"
+  }
+}

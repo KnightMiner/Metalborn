@@ -1,0 +1,17 @@
+{
+  "type": "tconstruct:item_part_builder",
+  "conditions": [
+    {
+      "type": "forge:mod_loaded",
+      "modid": "tconstruct"
+    }
+  ],
+  "pattern": "metalborn:spike",
+  "pattern_item": {
+    "item": "minecraft:red_sand"
+  },
+  "result": {
+    "count": 4,
+    "item": "metalborn:spike_red_sand_cast"
+  }
+}

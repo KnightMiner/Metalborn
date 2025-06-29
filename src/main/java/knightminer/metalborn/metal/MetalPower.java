@@ -2,11 +2,13 @@ package knightminer.metalborn.metal;
 
 import knightminer.metalborn.metal.effects.MetalEffect;
 import net.minecraft.network.chat.Component;
+import net.minecraft.tags.FluidTags;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.level.material.Fluid;
 import org.jetbrains.annotations.ApiStatus.Internal;
 import slimeknights.mantle.Mantle;
 import slimeknights.mantle.data.loadable.field.ContextKey;
@@ -19,15 +21,17 @@ import java.util.List;
 
 /**
  * Data container for all metal effects performed by a metal, from Feruchemy and Hemalurgy.
- * @param id         ID of this metal, corresponds to storage in NBT and recipes.
- * @param name       Tag suffix for this metal
- * @param ingot      Ingot tag for this metal, used in recipes.
- * @param nugget     Nugget tag for this metal, used in recipes.
- * @param target     Entity tag of targets that can provide this metal through hemalurgy.
- * @param index      Sort order for this metal.
- * @param ferring    If true, this power can be randomly granted.
- * @param feruchemy  List of feruchemical effects to perform
- * @param capacity   Capacity of the base size metalmind.
+ * @param id           ID of this metal, corresponds to storage in NBT and recipes.
+ * @param name         Tag suffix for this metal
+ * @param ingot        Ingot tag for this metal, used in recipes.
+ * @param nugget       Nugget tag for this metal, used in recipes.
+ * @param fluid        Fluid tag for Tinkers' Construct compatibility
+ * @param temperature  Temperature for Tinkers' Construct compatibility
+ * @param target       Entity tag of targets that can provide this metal through hemalurgy.
+ * @param index        Sort order for this metal.
+ * @param ferring      If true, this power can be randomly granted.
+ * @param feruchemy    List of feruchemical effects to perform
+ * @param capacity     Capacity of the base size metalmind.
  * @param hemalurgyCharge  Amount of charge needed to fill this spike. If 0, this is not usable as a spike.
  */
 public record MetalPower(
@@ -35,6 +39,8 @@ public record MetalPower(
   String name,
   TagKey<Item> ingot,
   TagKey<Item> nugget,
+  TagKey<Fluid> fluid,
+  int temperature,
   TagKey<EntityType<?>> target,
   int index,
   boolean ferring,
@@ -51,10 +57,11 @@ public record MetalPower(
     MetalEffect.LIST_LOADABLE.defaultField("feruchemy", List.of(), MetalPower::feruchemy),
     IntLoadable.FROM_ZERO.defaultField("capacity", 0, MetalPower::capacity),
     IntLoadable.FROM_ZERO.defaultField("hemalurgy_charge", 0, MetalPower::hemalurgyCharge),
+    IntLoadable.FROM_ZERO.defaultField("temperature", 0, false, MetalPower::temperature),
     MetalPower::new);
 
   /** Default instance for when a metal does not exist */
-  public static final MetalPower DEFAULT = new MetalPower(MetalId.NONE, "none", -1, false, List.of(), 0, 0);
+  public static final MetalPower DEFAULT = new MetalPower(MetalId.NONE, "none", -1, false, List.of(), 0, 0, 0);
 
   /** @apiNote Use {@link MetalPowerBuilder} */
   @Internal
@@ -64,11 +71,13 @@ public record MetalPower(
    * Constructor that automatically creates the tag names
    * @apiNote Use {@link MetalPowerBuilder}
    */
-  MetalPower(MetalId id, String name, int index, boolean ferring, List<MetalEffect> feruchemy, int capacity, int hemalurgyCharge) {
+  MetalPower(MetalId id, String name, int index, boolean ferring, List<MetalEffect> feruchemy, int capacity, int hemalurgyCharge, int temperature) {
     this(
       id, name,
       ItemTags.create(Mantle.commonResource("ingots/" + name)),
       ItemTags.create(Mantle.commonResource("nuggets/" + name)),
+      FluidTags.create(Mantle.commonResource("molten_" + name)),
+      temperature,
       MetalId.getTargetTag(id),
       index, ferring, feruchemy, capacity, hemalurgyCharge
     );
@@ -97,6 +106,12 @@ public record MetalPower(
   /** {@return true if this stack is a valid ingot or nugget for this power} */
   public boolean matches(Item item) {
     return matchesIngot(item) || matchesNugget(item);
+  }
+
+  /** {@return true if this fluid matches the metal} */
+  @SuppressWarnings("deprecation")
+  public boolean matches(Fluid fluid) {
+    return fluid.is(this.fluid);
   }
 
   /** {@return true if this entity matches the metal} */

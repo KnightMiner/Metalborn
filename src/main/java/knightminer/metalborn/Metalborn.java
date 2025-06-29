@@ -17,6 +17,7 @@ import knightminer.metalborn.data.tag.EntityTagProvider;
 import knightminer.metalborn.data.tag.ItemTagProvider;
 import knightminer.metalborn.metal.MetalManager;
 import knightminer.metalborn.network.MetalbornNetwork;
+import knightminer.metalborn.plugin.tinkers.TinkersPlugin;
 import net.minecraft.core.HolderLookup.Provider;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.PackOutput;
@@ -32,6 +33,7 @@ import net.minecraftforge.common.data.ExistingFileHelper;
 import net.minecraftforge.data.event.GatherDataEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.DistExecutor;
+import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
@@ -49,11 +51,20 @@ public class Metalborn {
   public static final String MOD_ID = "metalborn";
   public static final Logger LOG = LogManager.getLogger(MOD_ID);
 
+  /** Tinkers' Construct mod ID for various compat */
+  public static final String TINKERS = "tconstruct";
+
   public Metalborn() {
     MetalbornNetwork.setup();
     MetalManager.INSTANCE.init();
     Registration.init();
     MetalbornCommand.init();
+
+    // Tinkers' Construct support
+    if (ModList.get().isLoaded(TINKERS)) {
+      TinkersPlugin.init();
+    }
+
     IEventBus bus = FMLJavaModLoadingContext.get().getModEventBus();
     bus.addListener(this::commonSetup);
     bus.addListener(Metalborn::gatherData);

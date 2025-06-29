@@ -1,0 +1,15 @@
+{
+  "type": "metalborn:metal_melting",
+  "amount": 40,
+  "conditions": [
+    {
+      "type": "forge:mod_loaded",
+      "modid": "tconstruct"
+    }
+  ],
+  "ingredient": {
+    "type": "metalborn:metal_item",
+    "filter": "metalmind",
+    "item": "metalborn:ring"
+  }
+}

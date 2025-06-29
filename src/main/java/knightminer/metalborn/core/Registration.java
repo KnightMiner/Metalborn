@@ -20,11 +20,14 @@ import knightminer.metalborn.metal.effects.RangeMetalEffect;
 import knightminer.metalborn.metal.effects.UpdateHealthEffect;
 import knightminer.metalborn.recipe.ForgeRecipe;
 import knightminer.metalborn.recipe.MetalIngredient;
+import knightminer.metalborn.recipe.MetalItemIngredient;
 import knightminer.metalborn.recipe.MetalShapedForgeRecipe;
 import knightminer.metalborn.recipe.MetalShapelessForgeRecipe;
 import knightminer.metalborn.recipe.ShapedForgeRecipe;
 import knightminer.metalborn.recipe.ShapelessForgeRecipe;
 import knightminer.metalborn.util.AttributeDeferredRegister;
+import knightminer.metalborn.util.CastItemObject;
+import knightminer.metalborn.util.ItemDeferredRegisterExtension;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceKey;
@@ -54,15 +57,16 @@ import net.minecraft.world.level.material.MapColor;
 import net.minecraftforge.common.crafting.CraftingHelper;
 import net.minecraftforge.event.entity.EntityAttributeModificationEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
+import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.registries.DeferredRegister;
+import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegisterEvent;
 import net.minecraftforge.registries.RegistryObject;
 import org.jetbrains.annotations.ApiStatus.Internal;
 import slimeknights.mantle.recipe.helper.LoadableRecipeSerializer;
 import slimeknights.mantle.registration.deferred.BlockDeferredRegister;
 import slimeknights.mantle.registration.deferred.BlockEntityTypeDeferredRegister;
-import slimeknights.mantle.registration.deferred.ItemDeferredRegister;
 import slimeknights.mantle.registration.deferred.MenuTypeDeferredRegister;
 import slimeknights.mantle.registration.object.ItemObject;
 import slimeknights.mantle.registration.object.MetalItemObject;
@@ -78,7 +82,7 @@ import static knightminer.metalborn.Metalborn.resource;
 public class Registration {
   /** Damage type for metal damaging the player, used in gold's effect */
   private static final BlockDeferredRegister BLOCKS = new BlockDeferredRegister(Metalborn.MOD_ID);
-  private static final ItemDeferredRegister ITEMS = new ItemDeferredRegister(Metalborn.MOD_ID);
+  private static final ItemDeferredRegisterExtension ITEMS = new ItemDeferredRegisterExtension(Metalborn.MOD_ID);
   private static final MenuTypeDeferredRegister MENUS = new MenuTypeDeferredRegister(Metalborn.MOD_ID);
   private static final BlockEntityTypeDeferredRegister BLOCK_ENTITIES = new BlockEntityTypeDeferredRegister(Metalborn.MOD_ID);
   private static final DeferredRegister<RecipeType<?>> RECIPE_TYPES = DeferredRegister.create(Registries.RECIPE_TYPE, Metalborn.MOD_ID);
@@ -160,6 +164,13 @@ public class Registration {
   public static final RegistryObject<RecipeSerializer<ShapedForgeRecipe>> SHAPED_FORGE = RECIPES.register("shaped_forge", () -> new ShapedForgeRecipe.Serializer<>(ShapedForgeRecipe::new));
   public static final RegistryObject<RecipeSerializer<MetalShapelessForgeRecipe>> METAL_SHAPELESS_FORGE = RECIPES.register("metal_shapeless_forge", () -> LoadableRecipeSerializer.of(MetalShapelessForgeRecipe.LOADABLE));
   public static final RegistryObject<RecipeSerializer<MetalShapedForgeRecipe>> METAL_SHAPED_FORGE = RECIPES.register("metal_shaped_forge", () -> new ShapedForgeRecipe.Serializer<>(MetalShapedForgeRecipe::new));
+  // Tinkers' compat
+  /** Serializer ID for the metal basin casting recipe, added via the Tinkers' Construct plugin */
+  public static final RegistryObject<RecipeSerializer<?>> METAL_CASTING_BASIN = RegistryObject.create(resource("metal_casting_basin"), ForgeRegistries.RECIPE_SERIALIZERS);
+  /** Serializer ID for the metal table casting recipe, added via the Tinkers' Construct plugin */
+  public static final RegistryObject<RecipeSerializer<?>> METAL_CASTING_TABLE = RegistryObject.create(resource("metal_casting_table"), ForgeRegistries.RECIPE_SERIALIZERS);
+  /** Serializer ID for the metal melting recipe, added via the Tinkers' Construct plugin */
+  public static final RegistryObject<RecipeSerializer<?>> METAL_MELTING = RegistryObject.create(resource("metal_melting"), ForgeRegistries.RECIPE_SERIALIZERS);
 
   // attributes
   /** Multiplier on the distance you can safely fall without damage */
@@ -168,6 +179,12 @@ public class Registration {
   public static final RegistryObject<Attribute> KNOCKBACK_MULTIPLIER = ATTRIBUTES.registerMultiplier("knockback_multiplier", true);
   /** Player modifier data key for mining speed multiplier as an additive percentage boost on mining speed. */
   public static final RegistryObject<Attribute> MINING_SPEED_MULTIPLIER = ATTRIBUTES.registerMultiplier("mining_speed_multiplier", true);
+
+  // Tinkers' Construct compat
+  public static final CastItemObject BRACER_CAST = ITEMS.registerCast("bracer");
+  public static final CastItemObject RING_CAST = ITEMS.registerCast("ring");
+  public static final CastItemObject SPIKE_CAST = ITEMS.registerCast("spike");
+
 
   /** Registers any relevant static entries */
   private static void registerMisc(RegisterEvent event) {
@@ -180,6 +197,7 @@ public class Registration {
       MetalEffect.REGISTRY.register(resource("energy"), EnergyMetalEffect.LOADER);
       // ingredients
       CraftingHelper.register(MetalIngredient.ID, MetalIngredient.SERIALIZER);
+      CraftingHelper.register(MetalItemIngredient.ID, MetalItemIngredient.SERIALIZER);
     }
   }
 
@@ -216,13 +234,20 @@ public class Registration {
     output.accept(DEEPSLATE_TIN_ORE);
     output.accept(RAW_TIN);
     output.accept(RAW_TIN_BLOCK);
-    // lerasium
-    output.accept(LERASIUM_NUGGET);
-    accept(consumer, LERASIUM_ALLOY_NUGGET);
     // metalminds
     accept(consumer, RING);
     accept(consumer, BRACER);
     accept(consumer, SPIKE);
+    // lerasium
+    output.accept(LERASIUM_NUGGET);
+    accept(consumer, LERASIUM_ALLOY_NUGGET);
+
+    // Tinkers' Construct compat
+    if (ModList.get().isLoaded(Metalborn.TINKERS)) {
+      addCasts(output, CastItemObject::get);
+      addCasts(output, CastItemObject::getSand);
+      addCasts(output, CastItemObject::getRedSand);
+    }
   }
 
   /** Adds all members of an metal object to the given creative tab */
@@ -235,6 +260,13 @@ public class Registration {
   @SuppressWarnings("SameParameterValue")
   private static void accept(Output output, MultiObject<? extends ItemLike> object) {
     object.forEach(output::accept);
+  }
+
+  /** Adds adds all casts of the given type to the tab */
+  private static void addCasts(CreativeModeTab.Output output, Function<CastItemObject,ItemLike> getter) {
+    output.accept(getter.apply(RING_CAST));
+    output.accept(getter.apply(BRACER_CAST));
+    output.accept(getter.apply(SPIKE_CAST));
   }
 
 
