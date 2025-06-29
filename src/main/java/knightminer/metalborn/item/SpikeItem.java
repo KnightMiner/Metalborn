@@ -219,7 +219,7 @@ public class SpikeItem extends Item implements MetalItem, Spike {
       }
       return InteractionResultHolder.consume(stack);
     }
-    if (stack.getCount() > 1) {
+    if (stack.getCount() > 1 || getMetal(stack) == MetalId.NONE) {
       return InteractionResultHolder.pass(stack);
     }
     player.startUsingItem(hand);
