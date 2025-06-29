@@ -224,6 +224,8 @@ public class Registration {
   private static void addTabItems(ItemDisplayParameters itemDisplayParameters, Output output) {
     Consumer<ItemStack> consumer = output::accept;
 
+    output.accept(FORGE);
+
     // metals
     output.accept(COPPER_NUGGET);
     output.accept(NETHERITE_NUGGET);
