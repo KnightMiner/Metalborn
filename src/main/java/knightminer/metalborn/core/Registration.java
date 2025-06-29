@@ -4,6 +4,7 @@ package knightminer.metalborn.core;
 import knightminer.metalborn.Metalborn;
 import knightminer.metalborn.block.ForgeBlock;
 import knightminer.metalborn.block.ForgeBlockEntity;
+import knightminer.metalborn.data.MetalIds;
 import knightminer.metalborn.item.LerasiumAlloyNuggetItem;
 import knightminer.metalborn.item.LerasiumNuggetItem;
 import knightminer.metalborn.item.MetalItem;
@@ -114,7 +115,7 @@ public class Registration {
     creativeTabs.register(Metalborn.MOD_ID, () ->
       CreativeModeTab.builder()
         .title(Component.translatable("creative_tab.metalborn"))
-        .icon(() -> new ItemStack(LERASIUM_NUGGET))
+        .icon(() -> MetalItem.setMetal(new ItemStack(RING), MetalIds.pewter))
         .displayItems(Registration::addTabItems)
         .build());
   }
