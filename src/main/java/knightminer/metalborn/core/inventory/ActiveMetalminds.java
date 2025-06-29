@@ -11,9 +11,9 @@ import net.minecraft.server.packs.resources.ResourceManagerReloadListener;
 import net.minecraft.world.entity.player.Player;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.ListIterator;
 import java.util.Map;
 import java.util.function.Function;
 
@@ -88,8 +88,16 @@ public class ActiveMetalminds {
     private final Player player;
     /** ID for this effect */
     private final MetalId id;
-    /** Mapping of metalminds to each of their respective levels */
-    private final List<MetalmindStack> metalminds = new ArrayList<>();
+
+    /** List of all metalminds being tapped */
+    private final List<MetalmindStack> tappingStacks = new ArrayList<>();
+    /** List of all metalminds currently storing */
+    private final List<MetalmindStack> storingStacks = new ArrayList<>();
+
+    /** Index to resume draining tapping stacks */
+    private int resumeTapping = 0;
+    /** Index to resume filling storing metalminds */
+    private int resumeStoring = 0;
 
     /** Active power */
     private MetalPower power = null;
@@ -135,17 +143,19 @@ public class ActiveMetalminds {
       }
       tapping = 0;
       storing = 0;
-      metalminds.clear();
+      tappingStacks.clear();
+      storingStacks.clear();
     }
 
     /** Adds a metalmind stack that was previously absent */
     void add(MetalmindStack stack) {
-      metalminds.add(stack);
       int level = stack.getLevel();
       if (level > 0) {
         tapping += level;
+        tappingStacks.add(stack);
       } else {
         storing += level;
+        storingStacks.add(stack);
       }
     }
 
@@ -156,12 +166,22 @@ public class ActiveMetalminds {
       if (newLevel == oldLevel) {
         return;
       }
-      // update metalmind in list
-      if (oldLevel == 0) {
-        metalminds.add(stack);
+      // update the list placement
+      // is tapping, wasn't before
+      if (newLevel > 0 && oldLevel <= 0) {
+        tappingStacks.add(stack);
       }
-      else if (newLevel == 0) {
-        metalminds.remove(stack);
+      // was tapping, but no longer
+      if (newLevel <= 0 && oldLevel > 0) {
+        tappingStacks.remove(stack);
+      }
+      // is storing, wasn't before
+      if (newLevel < 0 && oldLevel >= 0) {
+        storingStacks.add(stack);
+      }
+      // was storing, but no longer
+      if (newLevel >= 0 && oldLevel < 0) {
+        storingStacks.remove(stack);
       }
 
       // next, update the tapping and storing amounts
@@ -205,42 +225,68 @@ public class ActiveMetalminds {
         return;
       }
 
-      // update metalminds based on what effects ran
+      // update metalmind amounts
       int previous = tapping + storing;
-      Iterator<MetalmindStack> iterator = metalminds.iterator();
-      while (iterator.hasNext()) {
-        MetalmindStack stack = iterator.next();
-        int level = stack.getLevel();
-        // drain the amount from the stack
-        if (level > 0) {
-          if (tapped > 0) {
-            tapped -= stack.drain(tapped);
-          }
-        } else if (level < 0) {
-          if (stored < 0) {
-            stored += stack.fill(-stored);
-          }
-        }
-        // if the stack level changed to 0, remove it
-        if (stack.getLevel() == 0) {
-          iterator.remove();
-          if (level > 0) {
-            tapping -= level;
-          } else {
-            storing -= level;
-          }
-        }
-        // if we ran out of stuff to process, also done
-        if (tapped <= 0 && stored >= 0) {
-          break;
-        }
+      if (!tappingStacks.isEmpty()) {
+        resumeTapping = updateMetalminds(tappingStacks, true, tapped, resumeTapping);
       }
-      // should have used up everything
-      assert tapped == 0;
-      assert stored == 0;
+      if (!storingStacks.isEmpty()) {
+        resumeStoring = updateMetalminds(storingStacks, false, -stored, resumeStoring);
+      }
 
       // if anything stopped tapping/storing, update the effect
       onUpdate(previous);
+    }
+
+    /** Updates the amount in the list of metalminds */
+    private int updateMetalminds(List<MetalmindStack> metalminds, boolean drain, int amount, int startIndex) {
+      // if the index is out of bounds, just start from the beginning
+      if (startIndex >= metalminds.size()) {
+        startIndex = 0;
+      }
+
+      ListIterator<MetalmindStack> iterator = metalminds.listIterator(startIndex);
+      int resume = 0;
+      while (iterator.hasNext()) {
+        MetalmindStack stack = iterator.next();
+        int oldLevel = stack.getLevel();
+
+        // drain the amount from the stack
+        if (drain) {
+          amount -= stack.drain(amount);
+        } else {
+          amount -= stack.fill(amount);
+        }
+
+        // if the stack level changed to 0, remove it
+        if (stack.getLevel() == 0) {
+          iterator.remove();
+          if (drain) {
+            tapping -= oldLevel;
+          } else {
+            storing -= oldLevel;
+          }
+        }
+        // if we ran out of stuff to process, done
+        if (amount <= 0) {
+          // mark where we left off to resume for next time
+          resume = iterator.nextIndex();
+          break;
+        }
+      }
+
+      // if we started from 0 or used everything, we are done
+      if (startIndex == 0 || amount <= 0) {
+        return resume;
+      }
+
+      // if we started from the middle of the list and still have data, cycle back around
+      resume = updateMetalminds(metalminds, drain, amount, 0);
+      // if we managed to cycle the entire list, then we are filling everything, so to make next tick more efficient restart from 0
+      if (resume >= startIndex) {
+        return 0;
+      }
+      return resume;
     }
 
     /** Gets the tooltip to display for this active power */
