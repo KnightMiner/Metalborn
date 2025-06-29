@@ -8,6 +8,7 @@ import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
 
+import static knightminer.metalborn.Metalborn.resource;
 import static slimeknights.mantle.Mantle.commonResource;
 
 /** Any tags defined by this mod that don't exist elsewhere */
@@ -29,7 +30,10 @@ public class MetalbornTags {
     public static final TagKey<Item> TIN_ORE = common("ores/tin");
     public static final TagKey<Item> RAW_TIN = common("raw_materials/tin");
     public static final TagKey<Item> RAW_TIN_BLOCK = common("storage_blocks/raw_tin");
-    public static final TagKey<Item> SCRAP_LIKE = ItemTags.create(Metalborn.resource("ingot_like/netherite_scrap"));
+
+    // ingot-like tags - contains ingots, raw ores, and ore blocks
+    public static final TagKey<Item> SCRAP_LIKE = local("ingot_like/netherite_scrap");
+    public static final TagKey<Item> QUARTZ_LIKE = local("ingot_like/quartz");
 
     // Tinkers' cast tags
     public static final TagKey<Item> GOLD_CASTS = tinkers("casts/gold");
@@ -38,9 +42,16 @@ public class MetalbornTags {
     public static final TagKey<Item> SINGLE_USE_CASTS = tinkers("casts/single_use");
     public static final TagKey<Item> MULTI_USE_CASTS = tinkers("casts/multi_use");
 
+    /** Creates a metalborn tag */
+    private static TagKey<Item> local(String name) {
+      return ItemTags.create(resource(name));
+    }
+
+    /** Creates a common namespace tag */
     private static TagKey<Item> common(String name) {
       return ItemTags.create(commonResource(name));
     }
+
     /** Creates a Tinkers' Construct compat tag. Used to avoid a datagen dependency */
     private static TagKey<Item> tinkers(String name) {
       return ItemTags.create(new ResourceLocation(Metalborn.TINKERS, name));

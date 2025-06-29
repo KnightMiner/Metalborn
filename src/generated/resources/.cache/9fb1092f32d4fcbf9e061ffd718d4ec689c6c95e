@@ -1,4 +1,4 @@
-// 1.20.1	2025-06-28T21:10:53.8190834	Recipes
+// 1.20.1	2025-06-28T21:51:31.5743876	Recipes
 8720e146ed87c91433b7b556aee5d6a5390111ee data/metalborn/advancements/recipes/decorations/forge.json
 6bb6018bc3fcaf2326b259cddc674cf97cd5f90a data/metalborn/advancements/recipes/misc/metal/bronze_block_from_ingots.json
 5054e0cf0ae24f3565b11674c178f1549dc92583 data/metalborn/advancements/recipes/misc/metal/bronze_ingot_from_block.json
@@ -33,7 +33,7 @@ ed1b6a6f30e842b4ae0cec62e286b6365596233f data/metalborn/advancements/recipes/mis
 e8482a36b74b19f3b8869351d40ba88b3b5cebdc data/metalborn/recipes/alloy/bronze.json
 652ce11d0f5b1936ef63fb478b372a16d9808733 data/metalborn/recipes/alloy/constantan.json
 11d7c720f4ef782af4cf126b7de024c6d33a6f5f data/metalborn/recipes/alloy/electrum.json
-6508fc32e53ba448ed5fdb9d4ee980f258f04501 data/metalborn/recipes/alloy/hepatizon.json
+7c97e1e984fca48ef326ba7ac4d13912c7f36cb1 data/metalborn/recipes/alloy/hepatizon.json
 1fe40b0e13b7facfb47a586485b89b5a2d3b4dec data/metalborn/recipes/alloy/invar.json
 08286bad70d6bba675c2d330d8e2a6d1612d3a1b data/metalborn/recipes/alloy/manyullyn.json
 32cefd2af7622f8ea059b87c254468244514d7ba data/metalborn/recipes/alloy/netherite.json

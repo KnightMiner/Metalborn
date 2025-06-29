@@ -65,6 +65,16 @@ public class ShapelessForgeRecipeBuilder extends AbstractForgeRecipeBuilder<Shap
     return requires(item, 1);
   }
 
+  /** Adds a tag multiple times. */
+  public ShapelessForgeRecipeBuilder requires(TagKey<Item> tag, int quantity) {
+    return requires(Ingredient.of(tag), quantity);
+  }
+
+  /** Adds a tag to the recipe. */
+  public ShapelessForgeRecipeBuilder requires(TagKey<Item> tag) {
+    return requires(tag, 1);
+  }
+
   /** Makes this a metal recipe, setting the output metal based on input ingredients. Should have at least one {@link MetalIngredient} for best results. */
   public ShapelessForgeRecipeBuilder metal() {
     this.metal = true;

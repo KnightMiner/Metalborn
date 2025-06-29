@@ -181,12 +181,12 @@ public class RecipeProvider extends net.minecraft.data.recipes.RecipeProvider im
     ShapelessForgeRecipeBuilder.shapeless(ingot("hepatizon"), 2)
       .requires(ingotLike("copper"), 2)
       .requires(ingotLike("cobalt"), 1)
-      .requires(Items.QUARTZ, 1)
+      .requires(MetalbornTags.Items.QUARTZ_LIKE, 1)
       .experience(2f)
       .save(withCondition(consumer, ingotCondition("hepatizon"), ingotLikeCondition("cobalt")), location(alloyFolder + "hepatizon"));
     ShapelessForgeRecipeBuilder.shapeless(ingot("manyullyn"), 4)
       .requires(ingotLike("cobalt"), 3)
-      .requires(ingotLike("netherite_scrap"), 1)
+      .requires(MetalbornTags.Items.SCRAP_LIKE, 1)
       .experience(2f)
       .save(withCondition(consumer, ingotCondition("manyullyn"), ingotLikeCondition("cobalt")), location(alloyFolder + "manyullyn"));
     // TODO: consider slime metals
