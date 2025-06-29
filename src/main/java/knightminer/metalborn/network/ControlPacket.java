@@ -27,7 +27,7 @@ public enum ControlPacket implements IThreadsafePacket {
   @Override
   public void handleThreadsafe(Context context) {
     ServerPlayer player = context.getSender();
-    if (player != null) {
+    if (player != null && !player.hasContainerOpen() && !player.isSpectator()) {
       MetalId ferringType = MetalbornCapability.getData(player).getFerringType();
       NetworkHooks.openScreen(player, new SimpleMenuProvider(
         (id, inventory, p) -> new MetalbornMenu(id, inventory),
