@@ -28,7 +28,7 @@ public class MetalmindItem extends Item implements MetalItem, Metalmind {
   private static final String KEY_STORES = Metalborn.key("item", "metalmind.stores");
   private static final String KEY_OWNER = Metalborn.key("item", "metalmind.owner");
   private static final Component UNKNOWN_OWNER = Component.translatable(KEY_OWNER, Metalborn.component("item", "metalmind.owner.unknown").withStyle(ChatFormatting.RED)).withStyle(ChatFormatting.GRAY);
-  private static final Component UNSEALED = Component.translatable(KEY_OWNER, Metalborn.component("item", "metalmind.owner.none").withStyle(ChatFormatting.ITALIC)).withStyle(ChatFormatting.GRAY);
+  private static final Component UNKEYED = Component.translatable(KEY_OWNER, Metalborn.component("item", "metalmind.owner.none").withStyle(ChatFormatting.ITALIC)).withStyle(ChatFormatting.GRAY);
   // NBT keys
   public static final String TAG_AMOUNT = "amount";
   private static final String TAG_OWNER = "owner";
@@ -225,7 +225,7 @@ public class MetalmindItem extends Item implements MetalItem, Metalmind {
           } else if (tag.hasUUID(TAG_OWNER)) {
             tooltip.add(UNKNOWN_OWNER);
           } else {
-            tooltip.add(UNSEALED);
+            tooltip.add(UNKEYED);
           }
         }
       }
