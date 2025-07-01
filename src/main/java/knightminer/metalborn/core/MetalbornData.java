@@ -31,6 +31,9 @@ public interface MetalbornData extends INBTSerializable<CompoundTag> {
     return false;
   }
 
+  /** Called to update standard metal effects for the given metal */
+  default void updatePower(MetalId metal, int index, int newLevel, int oldLevel) {}
+
   /**
    * Called when a source of a metal is removed to deactivate the related power.
    * No need to check if the metal is still usable via {@link #canUse(MetalId)} before calling, that will be checked internally.

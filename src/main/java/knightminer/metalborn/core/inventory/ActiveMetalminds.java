@@ -37,7 +37,7 @@ public class ActiveMetalminds {
   }
 
   /** Gets the object tracking the given metal */
-  ActiveMetalmind getMetal(MetalId id) {
+  public ActiveMetalmind getMetal(MetalId id) {
     return active.computeIfAbsent(id, constructor);
   }
 
@@ -68,7 +68,7 @@ public class ActiveMetalminds {
   /** Refreshes attributes of all active metalminds */
   void refresh() {
     for (ActiveMetalmind metalmind : active.values()) {
-      metalmind.onUpdate(0);
+      metalmind.refreshEffect();
     }
   }
 
@@ -85,7 +85,7 @@ public class ActiveMetalminds {
   }
 
   /** Keeps track of data for a single type of power */
-  static class ActiveMetalmind {
+  public static class ActiveMetalmind {
     private final Player player;
     /** ID for this effect */
     private final MetalId id;
@@ -108,6 +108,8 @@ public class ActiveMetalminds {
     private int tapping = 0;
     /** Amount of power being stored */
     private int storing = 0;
+    /** Last level used to update attribute effects */
+    private int previous = 0;
 
     public ActiveMetalmind(Player player, MetalId id) {
       this.player = player;
@@ -127,23 +129,22 @@ public class ActiveMetalminds {
 
     /**
      * Called to update the effect level.
-     * @param previous  previous value
      */
-    private void onUpdate(int previous) {
-      int level = tapping - storing;
-      if (level != previous && !player.level().isClientSide) {
-        refreshPower().onChange(player, level, previous);
+    private void refreshEffect() {
+      int current = tapping - storing;
+      if (current != previous && !player.level().isClientSide) {
+        refreshPower().onChange(player, current, previous);
+        previous = current;
       }
     }
 
     /** Clears all active effects */
     private void clear() {
-      int previous = tapping - storing;
       tapping = 0;
       storing = 0;
       tappingStacks.clear();
       storingStacks.clear();
-      onUpdate(previous);
+      refreshEffect();
     }
 
     /** Ensures everything in the list is still usable. */
@@ -162,27 +163,13 @@ public class ActiveMetalminds {
 
     /** Removes any active powers which are no longer usable. */
     private void validateUsable() {
-      int previous = tapping - storing;
       tapping -= validateList(tappingStacks);
       storing += validateList(storingStacks);
-      onUpdate(previous);
-    }
-
-    /** Adds a metalmind stack that was previously absent */
-    void add(MetalmindStack stack) {
-      int level = stack.getLevel();
-      if (level > 0) {
-        tapping += level;
-        tappingStacks.add(stack);
-      } else {
-        storing -= level;
-        storingStacks.add(stack);
-      }
+      refreshEffect();
     }
 
     /** Updates a metalmind's value in this effect */
-    void update(MetalmindStack stack, int newLevel) {
-      int oldLevel = stack.getLevel();
+    public void update(MetalmindStack stack, int newLevel, int oldLevel) {
       // nothing changed
       if (newLevel == oldLevel) {
         return;
@@ -206,7 +193,6 @@ public class ActiveMetalminds {
       }
 
       // next, update the tapping and storing amounts
-      int previous = tapping - storing;
       // we split positive from negative to the benefit of ticking,
       // allows you to transfer power from one metalmind to another despite getting no effect
       if (newLevel > 0) {
@@ -219,9 +205,6 @@ public class ActiveMetalminds {
       } else if (oldLevel < 0) {
         storing += oldLevel;
       }
-
-      // finally, update effects
-      onUpdate(previous);
     }
 
     /** Ticks all metalminds, filling/draining and running tick effects */
@@ -235,18 +218,17 @@ public class ActiveMetalminds {
       // decide which power to run
       int tapped;
       int stored;
-      int previous = tapping - storing;
-      if (previous == 0) {
+      if (tapping == storing) {
         tapped = tapping;
         stored = storing;
       }
-      else if (previous > 0) {
+      else if (tapping > storing) {
         // if we are also storing, anything being stored will just move over freely
-        tapped = power.onTap(player, previous) + storing;
+        tapped = power.onTap(player, tapping - storing) + storing;
         stored = storing;
       } else {
         // if we are also tapping, anything being tapped will just move over freely
-        stored = power.onStore(player, -previous) + tapping;
+        stored = power.onStore(player, storing - tapping) + tapping;
         tapped = tapping;
       }
 
@@ -264,7 +246,7 @@ public class ActiveMetalminds {
       }
 
       // if anything stopped tapping/storing, update the effect
-      onUpdate(previous);
+      refreshEffect();
     }
 
     /** Updates the amount in the list of metalminds */

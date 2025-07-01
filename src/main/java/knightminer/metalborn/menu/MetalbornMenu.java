@@ -9,6 +9,7 @@ import knightminer.metalborn.core.inventory.MetalmindInventory.MetalmindStack;
 import knightminer.metalborn.core.inventory.SpikeInventory;
 import knightminer.metalborn.metal.MetalId;
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.MenuType;
@@ -113,18 +114,18 @@ public class MetalbornMenu extends BaseMenu {
   public boolean clickMenuButton(Player player, int id) {
     // on clicking a plus or minus button, update the tapping/storing value
     if (id < 20 && metalminds != null) {
-      // metalmind inventory index
-      int slot = id / 2;
-      // if true, we hit the plus button (right side)
-      boolean plus = id % 2 == 1;
-      MetalmindStack stack = metalminds.getSlot(slot);
-      int current = stack.getLevel();
-      if (plus) {
-        stack.setLevel(current > 0 ? 0 : 1);
-      } else {
-        stack.setLevel(current < 0 ? 0 : -1);
+      // index is doubled for this button click
+      MetalmindStack stack = metalminds.getSlot(id / 2);
+      if (stack != null) {
+        int current = stack.getLevel();
+        // last bit is set to indicate plus or minus button
+        if (id % 2 == 1) {
+          stack.setLevel(current > 0 ? 0 : 1);
+        } else {
+          stack.setLevel(current < 0 ? 0 : -1);
+        }
+        return true;
       }
-      return true;
     }
     return false;
   }
@@ -139,24 +140,33 @@ public class MetalbornMenu extends BaseMenu {
 
   /** Gets the level of the given metalmind */
   public int getMetalmindLevel(int slot) {
-    if (slot >= 0 && metalminds != null && slot < metalmindSlots.size()) {
-      return metalminds.getSlot(slot).getLevel();
+    if (metalminds != null) {
+      MetalmindStack stack = metalminds.getSlot(slot);
+      if (stack != null) {
+        return stack.getLevel();
+      }
     }
     return 0;
   }
 
   /** Gets the metal for the given slot */
-  public MetalId getMetal(int slot) {
-    if (slot >= 0 && metalminds != null && slot < metalmindSlots.size()) {
-      return metalminds.getSlot(slot).getMetal();
+  public Component getStores(int slot) {
+    if (metalminds != null) {
+      MetalmindStack stack = metalminds.getSlot(slot);
+      if (stack != null) {
+        return stack.getStores();
+      }
     }
-    return MetalId.NONE;
+    return MetalId.NONE.getStores();
   }
 
   /** Gets the metal for the given slot */
   public boolean canUse(int slot) {
-    if (slot >= 0 && metalminds != null && slot < metalmindSlots.size()) {
-      return metalminds.getSlot(slot).canUse();
+    if (metalminds != null) {
+      MetalmindStack stack = metalminds.getSlot(slot);
+      if (stack != null) {
+        return stack.canUse();
+      }
     }
     return false;
   }

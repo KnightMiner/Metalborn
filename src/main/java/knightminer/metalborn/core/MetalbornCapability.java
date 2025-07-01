@@ -3,6 +3,7 @@ package knightminer.metalborn.core;
 import knightminer.metalborn.Metalborn;
 import knightminer.metalborn.core.inventory.ActiveMetalminds;
 import knightminer.metalborn.core.inventory.MetalmindInventory;
+import knightminer.metalborn.core.inventory.MetalmindInventory.MetalmindStack;
 import knightminer.metalborn.core.inventory.SpikeInventory;
 import knightminer.metalborn.metal.MetalId;
 import knightminer.metalborn.metal.MetalManager;
@@ -77,6 +78,14 @@ public class MetalbornCapability implements ICapabilitySerializable<CompoundTag>
   @Override
   public boolean canUse(MetalId metal) {
     return getFerringType().equals(metal) || spikes.canUse(metal);
+  }
+
+  @Override
+  public void updatePower(MetalId metal, int index, int newLevel, int oldLevel) {
+    MetalmindStack stack = metalminds.getSlot(index);
+    if (stack != null) {
+      activeMetalminds.getMetal(metal).update(stack, newLevel, oldLevel);
+    }
   }
 
   @Override

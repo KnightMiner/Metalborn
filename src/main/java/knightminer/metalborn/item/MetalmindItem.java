@@ -1,7 +1,6 @@
 package knightminer.metalborn.item;
 
 import knightminer.metalborn.Metalborn;
-import knightminer.metalborn.core.MetalbornCapability;
 import knightminer.metalborn.core.MetalbornData;
 import knightminer.metalborn.metal.MetalId;
 import knightminer.metalborn.metal.MetalManager;
@@ -20,6 +19,8 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 import java.util.UUID;
+
+import static knightminer.metalborn.item.MetalItem.getMetal;
 
 /** Base class for a metalmind */
 public class MetalmindItem extends Item implements MetalItem, Metalmind {
@@ -46,27 +47,36 @@ public class MetalmindItem extends Item implements MetalItem, Metalmind {
   /* Metal */
 
   @Override
-  public MetalId getMetal(ItemStack stack) {
-    return MetalItem.getMetal(stack);
+  public boolean isSamePower(ItemStack stack1, ItemStack stack2) {
+    return getMetal(stack1).equals(getMetal(stack2));
   }
 
   @Override
-  public boolean canUse(ItemStack stack, Player player, MetalbornData data) {
-    // must have a metal and a tag
+  public Component getStores(ItemStack stack) {
+    return getMetal(stack).getStores();
+  }
+
+  /** Checks if the given player is the owner of this metalmind */
+  private static boolean isOwner(ItemStack stack, Player player) {
     CompoundTag tag = stack.getTag();
-    if (tag != null) {
-      MetalId metal = getMetal(stack);
-      if (metal != MetalId.NONE && data.canUse(metal)) {
-        // if we have an owner, must match the owner
-        // TODO: identity shenanigans
-        if (getAmount(stack) > 0 && tag.hasUUID(TAG_OWNER)) {
-          UUID uuid = tag.getUUID(TAG_OWNER);
-          return player.getUUID().equals(uuid);
-        }
-        return true;
-      }
+    if (tag != null && getAmount(stack) > 0 && tag.hasUUID(TAG_OWNER)) {
+      // TODO: identity shenanigans
+      UUID uuid = tag.getUUID(TAG_OWNER);
+      return player.getUUID().equals(uuid);
     }
-    return false;
+    return true;
+  }
+
+  @Override
+  public boolean canUse(ItemStack stack, int index, Player player, MetalbornData data) {
+    // must have a metal, be able to use it, and be the owner
+    MetalId metal = getMetal(stack);
+    return metal != MetalId.NONE && data.canUse(metal) && isOwner(stack, player);
+  }
+
+  @Override
+  public void onUpdate(ItemStack stack, int index, int newLevel, int oldLevel, Player player, MetalbornData data) {
+    data.updatePower(getMetal(stack), index, newLevel, oldLevel);
   }
 
 

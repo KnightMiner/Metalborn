@@ -3,7 +3,6 @@ package knightminer.metalborn.client;
 import knightminer.metalborn.Metalborn;
 import knightminer.metalborn.core.MetalbornData;
 import knightminer.metalborn.menu.MetalbornMenu;
-import knightminer.metalborn.metal.MetalId;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.gui.screens.inventory.InventoryScreen;
@@ -139,11 +138,11 @@ public class MetalbornScreen extends AbstractContainerScreen<MetalbornMenu> {
         int startY = slot.y + 17;
         if (startY <= checkY && checkY < startY + BUTTON_HEIGHT && startX <= checkX) {
           int level = menu.getMetalmindLevel(slot.index);
-          MetalId metal = menu.getMetal(slot.index);
+          Component stores = menu.getStores(slot.index);
           if (checkX < startX + BUTTON_WIDTH) {
-            graphics.renderTooltip(font, Component.translatable(level < 0 ? KEY_STORE_STOP : KEY_STORE_START, metal.getStores()), mouseX, mouseY);
+            graphics.renderTooltip(font, Component.translatable(level < 0 ? KEY_STORE_STOP : KEY_STORE_START, stores), mouseX, mouseY);
           } else if (checkX < startX + SLOT_WIDTH) {
-            graphics.renderTooltip(font, Component.translatable(level > 0 ? KEY_TAP_STOP : KEY_TAP_START, metal.getStores()), mouseX, mouseY);
+            graphics.renderTooltip(font, Component.translatable(level > 0 ? KEY_TAP_STOP : KEY_TAP_START, stores), mouseX, mouseY);
           }
         }
       }
