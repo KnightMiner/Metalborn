@@ -38,9 +38,10 @@ public class FerringCommand {
    */
   public static void register(LiteralArgumentBuilder<CommandSourceStack> subCommand) {
     subCommand.requires(sender -> sender.hasPermission(MantleCommand.PERMISSION_GAME_COMMANDS))
-      // ferring get <target>
+      // ferring get [target]
       .then(Commands.literal("get")
-        .then(Commands.argument("target", EntityArgument.player()).executes(FerringCommand::getFerring)))
+        .executes(context -> getFerring(context, context.getSource().getPlayerOrException()))
+        .then(Commands.argument("target", EntityArgument.player()).executes(context -> getFerring(context, EntityArgument.getPlayer(context, "target")))))
       // ferring set <targets> [metal]
       .then(Commands.literal("set")
         .then(Commands.argument("targets", EntityArgument.players())
@@ -58,8 +59,7 @@ public class FerringCommand {
    * @param context  Command context
    * @return Metal index.
    */
-  private static int getFerring(CommandContext<CommandSourceStack> context) throws CommandSyntaxException {
-    ServerPlayer player = EntityArgument.getPlayer(context, "target");
+  private static int getFerring(CommandContext<CommandSourceStack> context, Player player) {
     MetalPower power = MetalManager.INSTANCE.get(MetalbornData.getData(player).getFerringType());
     context.getSource().sendSuccess(() -> {
       MetalId id = power.id();
