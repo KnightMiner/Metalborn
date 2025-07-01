@@ -59,7 +59,7 @@ public class MetalbornCapability implements ICapabilitySerializable<CompoundTag>
   private MetalbornCapability(Player player) {
     this.player = player;
     this.activeMetalminds = new ActiveMetalminds(player);
-    this.metalminds = new MetalmindInventory(activeMetalminds, player);
+    this.metalminds = new MetalmindInventory(this, activeMetalminds, player);
     this.spikes = new SpikeInventory(activeMetalminds, player);
   }
 

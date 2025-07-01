@@ -1,5 +1,7 @@
 package knightminer.metalborn.item;
 
+import knightminer.metalborn.core.MetalbornCapability;
+import knightminer.metalborn.core.MetalbornData;
 import knightminer.metalborn.metal.MetalId;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -10,7 +12,12 @@ public interface Metalmind {
   MetalId getMetal(ItemStack stack);
 
   /** Checks if the given player can use this metalmind */
-  boolean canUse(ItemStack stack, Player player);
+  default boolean canUse(ItemStack stack, Player player) {
+  return canUse(stack, player, MetalbornCapability.getData(player));
+  }
+
+  /** Checks if the given player can use this metalmind */
+  boolean canUse(ItemStack stack, Player player, MetalbornData data);
 
   /** Checks if the metalmind is currently empty (and thus cannot tap) */
   boolean isEmpty(ItemStack stack);
@@ -45,6 +52,11 @@ public interface Metalmind {
 
     @Override
     public boolean canUse(ItemStack stack, Player player) {
+      return false;
+    }
+
+    @Override
+    public boolean canUse(ItemStack stack, Player player, MetalbornData data) {
       return false;
     }
 

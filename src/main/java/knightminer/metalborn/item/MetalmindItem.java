@@ -2,6 +2,7 @@ package knightminer.metalborn.item;
 
 import knightminer.metalborn.Metalborn;
 import knightminer.metalborn.core.MetalbornCapability;
+import knightminer.metalborn.core.MetalbornData;
 import knightminer.metalborn.metal.MetalId;
 import knightminer.metalborn.metal.MetalManager;
 import net.minecraft.ChatFormatting;
@@ -50,21 +51,19 @@ public class MetalmindItem extends Item implements MetalItem, Metalmind {
   }
 
   @Override
-  public boolean canUse(ItemStack stack, Player player) {
+  public boolean canUse(ItemStack stack, Player player, MetalbornData data) {
     // must have a metal and a tag
     CompoundTag tag = stack.getTag();
     if (tag != null) {
       MetalId metal = getMetal(stack);
-      if (metal != MetalId.NONE) {
+      if (metal != MetalId.NONE && data.canUse(metal)) {
         // if we have an owner, must match the owner
         // TODO: identity shenanigans
         if (getAmount(stack) > 0 && tag.hasUUID(TAG_OWNER)) {
           UUID uuid = tag.getUUID(TAG_OWNER);
-          if (!player.getUUID().equals(uuid)) {
-            return false;
-          }
+          return player.getUUID().equals(uuid);
         }
-        return MetalbornCapability.getData(player).canUse(metal);
+        return true;
       }
     }
     return false;

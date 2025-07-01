@@ -1,5 +1,6 @@
 package knightminer.metalborn.core.inventory;
 
+import knightminer.metalborn.core.MetalbornData;
 import knightminer.metalborn.core.Registration;
 import knightminer.metalborn.core.inventory.MetalmindInventory.MetalmindStack;
 import knightminer.metalborn.item.Metalmind;
@@ -16,10 +17,12 @@ import java.util.stream.IntStream;
 
 /** Inventory of metalminds held on the player */
 public class MetalmindInventory extends MetalInventory<MetalmindStack> implements IItemHandlerModifiable, INBTSerializable<ListTag>, ContainerData {
+  private final MetalbornData data;
   private final ActiveMetalminds active;
   private final Player player;
 
-  public MetalmindInventory(ActiveMetalminds active, Player player) {
+  public MetalmindInventory(MetalbornData data, ActiveMetalminds active, Player player) {
+    this.data = data;
     this.active = active;
     this.player = player;
     this.inventory = IntStream.range(0, 10).mapToObj(i -> new MetalmindStack()).toList();
@@ -99,7 +102,7 @@ public class MetalmindInventory extends MetalInventory<MetalmindStack> implement
 
     /** Returns true if this metalmind is usable by the player */
     public boolean canUse() {
-      return metalmind.canUse(stack, player);
+      return metalmind.canUse(stack, player, data);
     }
 
     @Override
