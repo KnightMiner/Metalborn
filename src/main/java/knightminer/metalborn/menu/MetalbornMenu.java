@@ -13,9 +13,7 @@ import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.inventory.Slot;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraftforge.items.IItemHandler;
 import org.jetbrains.annotations.Nullable;
 import slimeknights.mantle.inventory.SmartItemHandlerSlot;
 
@@ -32,26 +30,23 @@ public class MetalbornMenu extends BaseMenu {
     super(type, id);
     if (MetalbornData.getData(inventory.player) instanceof MetalbornCapability capability) {
       metalminds = capability.getMetalminds();
-      Item bracer = Registration.BRACER.get();
-      Item ring = Registration.RING.get();
       metalmindSlots = List.of(
-        addSlot(new MetalmindSlot(metalminds, bracer, 0,  26, 57)),
-        addSlot(new MetalmindSlot(metalminds, bracer, 1, 134, 57)),
-        addSlot(new MetalmindSlot(metalminds, ring,   2,  16,  9)),
-        addSlot(new MetalmindSlot(metalminds, ring,   3,  36,  9)),
-        addSlot(new MetalmindSlot(metalminds, ring,   4, 124,  9)),
-        addSlot(new MetalmindSlot(metalminds, ring,   5, 144,  9)),
-        addSlot(new MetalmindSlot(metalminds, ring,   6,  16, 33)),
-        addSlot(new MetalmindSlot(metalminds, ring,   7,  36, 33)),
-        addSlot(new MetalmindSlot(metalminds, ring,   8, 124, 33)),
-        addSlot(new MetalmindSlot(metalminds, ring,   9, 144, 33))
+        addSlot(new SmartItemHandlerSlot(metalminds, 0,  26, 57)),
+        addSlot(new SmartItemHandlerSlot(metalminds, 1, 134, 57)),
+        addSlot(new SmartItemHandlerSlot(metalminds, 2,  16,  9)),
+        addSlot(new SmartItemHandlerSlot(metalminds, 3,  36,  9)),
+        addSlot(new SmartItemHandlerSlot(metalminds, 4, 124,  9)),
+        addSlot(new SmartItemHandlerSlot(metalminds, 5, 144,  9)),
+        addSlot(new SmartItemHandlerSlot(metalminds, 6,  16, 33)),
+        addSlot(new SmartItemHandlerSlot(metalminds, 7,  36, 33)),
+        addSlot(new SmartItemHandlerSlot(metalminds, 8, 124, 33)),
+        addSlot(new SmartItemHandlerSlot(metalminds, 9, 144, 33))
       );
-      Item spike = Registration.SPIKE.get();
       SpikeInventory spikes = capability.getSpikes();
-      addSlot(new MetalmindSlot(spikes, spike, 0, 71, 26));
-      addSlot(new MetalmindSlot(spikes, spike, 1, 89, 26));
-      addSlot(new MetalmindSlot(spikes, spike, 2, 71, 44));
-      addSlot(new MetalmindSlot(spikes, spike, 3, 89, 44));
+      addSlot(new SmartItemHandlerSlot(spikes, 0, 71, 26));
+      addSlot(new SmartItemHandlerSlot(spikes, 1, 89, 26));
+      addSlot(new SmartItemHandlerSlot(spikes, 2, 71, 44));
+      addSlot(new SmartItemHandlerSlot(spikes, 3, 89, 44));
 
       // inventory rows
       addPlayerInventory(inventory, 84);
@@ -164,19 +159,5 @@ public class MetalbornMenu extends BaseMenu {
       return metalminds.getSlot(slot).canUse();
     }
     return false;
-  }
-
-  /** Slot filtered to a specific metalmind type */
-  private static class MetalmindSlot extends SmartItemHandlerSlot {
-    private final Item filter;
-    public MetalmindSlot(IItemHandler itemHandler, Item filter, int index, int xPosition, int yPosition) {
-      super(itemHandler, index, xPosition, yPosition);
-      this.filter = filter;
-    }
-
-    @Override
-    public boolean mayPlace(ItemStack stack) {
-      return stack.is(filter);
-    }
   }
 }

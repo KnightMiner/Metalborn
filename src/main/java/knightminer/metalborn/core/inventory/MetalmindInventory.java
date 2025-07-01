@@ -35,10 +35,10 @@ public class MetalmindInventory extends MetalInventory<MetalmindStack> implement
     }
     // first two slots are bracers
     if (slot < 2) {
-      return stack.is(Registration.BRACER.get());
+      return stack.is(Registration.BRACERS);
     }
     // last slot is ring
-    return stack.is(Registration.RING.get());
+    return stack.is(Registration.RINGS);
   }
 
   /** Gets the metalmind slot for the given index */

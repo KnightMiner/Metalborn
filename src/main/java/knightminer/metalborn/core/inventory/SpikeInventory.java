@@ -46,7 +46,7 @@ public class SpikeInventory extends MetalInventory<SpikeStack> {
 
   @Override
   public boolean isItemValid(int slot, ItemStack stack) {
-    return stack.isEmpty() || stack.getItem() instanceof Spike;
+    return stack.isEmpty() || stack.is(Registration.SPIKES);
   }
 
   /** Checks if the given metal can be used due to spikes */

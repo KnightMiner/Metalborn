@@ -11,7 +11,7 @@ import net.minecraft.world.level.block.Block;
 import static knightminer.metalborn.Metalborn.resource;
 import static slimeknights.mantle.Mantle.commonResource;
 
-/** Any tags defined by this mod that don't exist elsewhere */
+/** Any tags defined by this mod that are used only in datagen */
 public class MetalbornTags {
   public static class Blocks {
     // tin ore

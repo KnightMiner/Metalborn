@@ -35,6 +35,11 @@ public class ItemTagProvider extends ItemTagsProvider {
     copy(Tags.Blocks.STORAGE_BLOCKS, Tags.Items.STORAGE_BLOCKS);
     copy(Tags.Blocks.ORES, Tags.Items.ORES);
 
+    // inventory
+    tag(Registration.BRACERS).add(Registration.BRACER.get());
+    tag(Registration.RINGS).add(Registration.RING.get());
+    tag(Registration.SPIKES).add(Registration.SPIKE.get());
+
     metal(Registration.TIN);
     metal(Registration.PEWTER);
     metal(Registration.STEEL);

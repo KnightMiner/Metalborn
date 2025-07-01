@@ -4,7 +4,6 @@ package knightminer.metalborn.core;
 import knightminer.metalborn.Metalborn;
 import knightminer.metalborn.block.ForgeBlock;
 import knightminer.metalborn.block.ForgeBlockEntity;
-import knightminer.metalborn.data.MetalIds;
 import knightminer.metalborn.item.LerasiumAlloyNuggetItem;
 import knightminer.metalborn.item.LerasiumNuggetItem;
 import knightminer.metalborn.item.MetalItem;
@@ -12,6 +11,7 @@ import knightminer.metalborn.item.MetalmindItem;
 import knightminer.metalborn.item.SpikeItem;
 import knightminer.metalborn.menu.ForgeMenu;
 import knightminer.metalborn.menu.MetalbornMenu;
+import knightminer.metalborn.metal.MetalId;
 import knightminer.metalborn.metal.effects.AttributeMetalEffect;
 import knightminer.metalborn.metal.effects.EnergyMetalEffect;
 import knightminer.metalborn.metal.effects.ExperienceMetalEffect;
@@ -33,6 +33,8 @@ import knightminer.metalborn.util.ItemDeferredRegisterExtension;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceKey;
+import net.minecraft.tags.ItemTags;
+import net.minecraft.tags.TagKey;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.DamageType;
 import net.minecraft.world.entity.EntityType;
@@ -78,6 +80,7 @@ import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
+import static knightminer.metalborn.Metalborn.MOD_ID;
 import static knightminer.metalborn.Metalborn.resource;
 
 /** Handles any in code registrations */
@@ -117,7 +120,7 @@ public class Registration {
       CreativeModeTab.builder()
         .title(Component.translatable("creative_tab.metalborn"))
         .icon(() -> {
-          ItemStack stack = MetalItem.setMetal(new ItemStack(RING), MetalIds.pewter);
+          ItemStack stack = MetalItem.setMetal(new ItemStack(RING), new MetalId(MOD_ID, "pewter"));
           stack.getOrCreateTag().putInt(MetalmindItem.TAG_AMOUNT, 20 * 60 * 2); // about half full
           return stack;
         })
@@ -143,6 +146,11 @@ public class Registration {
   public static final ItemObject<Block> DEEPSLATE_TIN_ORE = BLOCKS.register("deepslate_tin_ore", BlockBehaviour.Properties.of().mapColor(MapColor.DEEPSLATE).instrument(NoteBlockInstrument.BASEDRUM).requiresCorrectToolForDrops().strength(4.5F, 3.0F).sound(SoundType.DEEPSLATE), BLOCK_ITEM);
   public static final ItemObject<Block> RAW_TIN_BLOCK = BLOCKS.register("raw_tin_block", BlockBehaviour.Properties.of().mapColor(MapColor.RAW_IRON).instrument(NoteBlockInstrument.BASEDRUM).requiresCorrectToolForDrops().strength(5.0F, 6.0F), BLOCK_ITEM);
   public static final ItemObject<Item> RAW_TIN = ITEMS.register("raw_tin");
+
+  // metal item tags
+  public static final TagKey<Item> BRACERS = itemTag("bracers");
+  public static final TagKey<Item> RINGS = itemTag("rings");
+  public static final TagKey<Item> SPIKES = itemTag("spikes");
 
   // metal items
   public static final ItemObject<MetalmindItem> BRACER = ITEMS.register("bracer", () -> new MetalmindItem(new Item.Properties().stacksTo(8), 10));
@@ -287,5 +295,10 @@ public class Registration {
   /** Makes a damage source from the given key */
   public static DamageSource makeSource(Level level, ResourceKey<DamageType> key) {
     return new DamageSource(level.registryAccess().registryOrThrow(Registries.DAMAGE_TYPE).getHolderOrThrow(key));
+  }
+
+  /** Creates a local item tag */
+  private static TagKey<Item> itemTag(String name) {
+    return ItemTags.create(resource(name));
   }
 }
