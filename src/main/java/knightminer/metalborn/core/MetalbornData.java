@@ -27,6 +27,12 @@ public interface MetalbornData extends INBTSerializable<CompoundTag> {
   boolean canUse(MetalId metal);
 
   /**
+   * Called when a source of a metal is removed to deactivate the related power.
+   * No need to check if the metal is still usable via {@link #canUse(MetalId)} before calling, that will be checked internally.
+   */
+  void onRemoved(MetalId metal);
+
+  /**
    * Attempts to add the given item to the metalborn inventory.
    * Note this may not behave as expected if called client side as the inventory only syncs when open.
    * @param stack    Stack to add
@@ -67,6 +73,9 @@ public interface MetalbornData extends INBTSerializable<CompoundTag> {
     public boolean canUse(MetalId metal) {
       return false;
     }
+
+    @Override
+    public void onRemoved(MetalId metal) {}
 
     @Override
     public boolean equip(ItemStack stack) {

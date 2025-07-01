@@ -60,7 +60,7 @@ public class MetalbornCapability implements ICapabilitySerializable<CompoundTag>
     this.player = player;
     this.activeMetalminds = new ActiveMetalminds(player);
     this.metalminds = new MetalmindInventory(this, activeMetalminds, player);
-    this.spikes = new SpikeInventory(activeMetalminds, player);
+    this.spikes = new SpikeInventory(this, player);
   }
 
   /** Gets the metalmind inventory */
@@ -79,6 +79,13 @@ public class MetalbornCapability implements ICapabilitySerializable<CompoundTag>
   @Override
   public boolean canUse(MetalId metal) {
     return getFerringType().equals(metal) || spikes.canUse(metal);
+  }
+
+  @Override
+  public void onRemoved(MetalId metal) {
+    if (!canUse(metal)) {
+      activeMetalminds.clearMetal(metal);
+    }
   }
 
   @Override
