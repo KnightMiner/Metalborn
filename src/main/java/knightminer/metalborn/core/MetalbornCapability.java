@@ -84,14 +84,14 @@ public class MetalbornCapability implements ICapabilitySerializable<CompoundTag>
   @Override
   public void onRemoved(MetalId metal) {
     if (!canUse(metal)) {
-      activeMetalminds.clearMetal(metal);
+      activeMetalminds.onRemoved(metal);
     }
   }
 
   @Override
   public void setFerringType(MetalId metalId) {
     if (ferringType != null && !ferringType.equals(metalId) && !spikes.canUse(metalId)) {
-      activeMetalminds.clearMetal(ferringType);
+      activeMetalminds.onRemoved(ferringType);
     }
     ferringType = metalId;
   }

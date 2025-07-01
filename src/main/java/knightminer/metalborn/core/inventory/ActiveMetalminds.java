@@ -11,6 +11,7 @@ import net.minecraft.server.packs.resources.ResourceManagerReloadListener;
 import net.minecraft.world.entity.player.Player;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.ListIterator;
@@ -56,11 +57,11 @@ public class ActiveMetalminds {
     }
   }
 
-  /** Clears active effects from the given metal */
-  public void clearMetal(MetalId metal) {
+  /** Called when a metal is removed to ensure unusable metalminds are stopped. */
+  public void onRemoved(MetalId metal) {
     ActiveMetalmind metalmind = active.get(metal);
     if (metalmind != null) {
-      metalmind.clear();
+      metalmind.validateUsable();
     }
   }
 
@@ -138,13 +139,33 @@ public class ActiveMetalminds {
     /** Clears all active effects */
     private void clear() {
       int previous = tapping - storing;
-      if (previous != 0 && !player.level().isClientSide) {
-        refreshPower().onChange(player, 0, previous);
-      }
       tapping = 0;
       storing = 0;
       tappingStacks.clear();
       storingStacks.clear();
+      onUpdate(previous);
+    }
+
+    /** Ensures everything in the list is still usable. */
+    private static int validateList(List<MetalmindStack> list) {
+      int change = 0;
+      Iterator<MetalmindStack> iterator = list.iterator();
+      while (iterator.hasNext()) {
+        MetalmindStack stack = iterator.next();
+        if (!stack.canUse()) {
+          change += stack.getLevel();
+          iterator.remove();
+        }
+      }
+      return change;
+    }
+
+    /** Removes any active powers which are no longer usable. */
+    private void validateUsable() {
+      int previous = tapping - storing;
+      tapping -= validateList(tappingStacks);
+      storing += validateList(storingStacks);
+      onUpdate(previous);
     }
 
     /** Adds a metalmind stack that was previously absent */
