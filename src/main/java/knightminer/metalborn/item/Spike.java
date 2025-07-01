@@ -6,10 +6,14 @@ import net.minecraft.world.item.ItemStack;
 /** Interface of various methods available to spikes */
 public interface Spike {
   /** Gets the metal type for this spike */
-  MetalId getMetal(ItemStack stack);
+  default MetalId getMetal(ItemStack stack) {
+    return MetalId.NONE;
+  }
 
   /** Checks if the spike is currently filled, and thus usable */
-  boolean isFull(ItemStack stack);
+  default boolean isFull(ItemStack stack) {
+    return false;
+  }
 
   /**
    * Fills the spike by the given amount.
@@ -17,23 +21,10 @@ public interface Spike {
    * @param amount  Amount to fill. Always positive.
    * @return Amount actually filled.
    */
-  int fill(ItemStack stack, int amount);
+  default int fill(ItemStack stack, int amount) {
+    return 0;
+  }
 
   /** Default spike instance */
-  Spike EMPTY = new Spike() {
-    @Override
-    public MetalId getMetal(ItemStack stack) {
-      return MetalId.NONE;
-    }
-
-    @Override
-    public boolean isFull(ItemStack stack) {
-      return true;
-    }
-
-    @Override
-    public int fill(ItemStack stack, int amount) {
-      return 0;
-    }
-  };
+  Spike EMPTY = new Spike() {};
 }
