@@ -1,7 +1,7 @@
 package knightminer.metalborn.item;
 
 import knightminer.metalborn.Metalborn;
-import knightminer.metalborn.core.MetalbornCapability;
+import knightminer.metalborn.core.MetalbornData;
 import knightminer.metalborn.metal.MetalManager;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
@@ -23,7 +23,7 @@ public class LerasiumNuggetItem extends ConsumableItem {
 
   @Override
   protected void onEat(ItemStack stack, LivingEntity entity) {
-    MetalbornCapability.getData(entity).setFerringType(MetalManager.INSTANCE.getRandomFerring(entity.getRandom()).id());
+    MetalbornData.getData(entity).setFerringType(MetalManager.INSTANCE.getRandomFerring(entity.getRandom()).id());
     // TODO: remove all heamlurgic effects
   }
 

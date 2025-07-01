@@ -18,6 +18,7 @@ import net.minecraftforge.event.TickEvent.PlayerTickEvent;
 import net.minecraftforge.event.entity.living.LivingDropsEvent;
 import net.minecraftforge.event.entity.living.LivingFallEvent;
 import net.minecraftforge.event.entity.living.LivingKnockBackEvent;
+import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent.BreakSpeed;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent.RightClickItem;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -43,7 +44,7 @@ public class MetalbornHandler {
         Player player = event.getEntity();
         boolean client = player.level().isClientSide;
         if (!client) {
-          if (MetalbornCapability.getData(player).canUse(power.id())) {
+          if (MetalbornData.getData(player).canUse(power.id())) {
             player.displayClientMessage(CORRECT_METAL, true);
           } else {
             player.displayClientMessage(WRONG_METAL, true);
@@ -55,11 +56,20 @@ public class MetalbornHandler {
     }
   }
 
+  /** copy caps when the player respawns/returns from the end */
+  @SubscribeEvent
+  static void playerClone(PlayerEvent.Clone event) {
+    Player original = event.getOriginal();
+    original.reviveCaps();
+    MetalbornData.getData(event.getEntity()).copyFrom(MetalbornData.getData(original), event.isWasDeath());
+    original.invalidateCaps();
+  }
+
   /** Handles ticking all active metalminds */
   @SubscribeEvent
   static void playerTick(PlayerTickEvent event) {
     if (event.phase == Phase.START && !event.player.level().isClientSide) {
-      MetalbornCapability.getData(event.player).tick();
+      MetalbornData.getData(event.player).tick();
     }
   }
 
@@ -73,7 +83,7 @@ public class MetalbornHandler {
     LivingEntity entity = event.getEntity();
     if (!entity.level().getGameRules().getBoolean(GameRules.RULE_KEEPINVENTORY) && entity instanceof Player && !(entity instanceof FakePlayer)) {
       Collection<ItemEntity> drops = event.getDrops();
-      MetalbornCapability.getData(entity).dropItems(drops);
+      MetalbornData.getData(entity).dropItems(drops);
     }
   }
 

@@ -1,7 +1,6 @@
 package knightminer.metalborn.client;
 
 import knightminer.metalborn.Metalborn;
-import knightminer.metalborn.core.MetalbornCapability;
 import knightminer.metalborn.core.MetalbornData;
 import knightminer.metalborn.menu.MetalbornMenu;
 import knightminer.metalborn.metal.MetalId;
@@ -66,7 +65,7 @@ public class MetalbornScreen extends AbstractContainerScreen<MetalbornMenu> {
   private final MetalbornData data;
   public MetalbornScreen(MetalbornMenu menu, Inventory inventory, Component title) {
     super(menu, inventory, title);
-    data = MetalbornCapability.getData(inventory.player);
+    data = MetalbornData.getData(inventory.player);
   }
 
   @Override

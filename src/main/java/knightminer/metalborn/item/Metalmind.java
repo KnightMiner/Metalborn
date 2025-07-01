@@ -1,6 +1,5 @@
 package knightminer.metalborn.item;
 
-import knightminer.metalborn.core.MetalbornCapability;
 import knightminer.metalborn.core.MetalbornData;
 import knightminer.metalborn.metal.MetalId;
 import net.minecraft.world.entity.player.Player;
@@ -13,7 +12,7 @@ public interface Metalmind {
 
   /** Checks if the given player can use this metalmind */
   default boolean canUse(ItemStack stack, Player player) {
-  return canUse(stack, player, MetalbornCapability.getData(player));
+  return canUse(stack, player, MetalbornData.getData(player));
   }
 
   /** Checks if the given player can use this metalmind */

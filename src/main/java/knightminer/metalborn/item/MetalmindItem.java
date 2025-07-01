@@ -169,7 +169,7 @@ public class MetalmindItem extends Item implements MetalItem, Metalmind {
     ItemStack stack = player.getItemInHand(hand);
     if (canUse(stack, player)) {
       if (!level.isClientSide) {
-        MetalbornCapability.getData(player).equip(stack);
+        MetalbornData.getData(player).equip(stack);
       }
       return InteractionResultHolder.consume(stack);
     }

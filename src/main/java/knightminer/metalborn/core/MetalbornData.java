@@ -3,6 +3,7 @@ package knightminer.metalborn.core;
 import knightminer.metalborn.metal.MetalId;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.common.util.INBTSerializable;
@@ -108,4 +109,9 @@ public interface MetalbornData extends INBTSerializable<CompoundTag> {
     @Override
     public void clear() {}
   };
+
+  /** Gets the data for the given player */
+  static MetalbornData getData(LivingEntity player) {
+    return player.getCapability(MetalbornCapability.CAPABILITY).orElse(EMPTY);
+  }
 }

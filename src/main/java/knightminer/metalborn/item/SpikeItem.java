@@ -3,7 +3,6 @@ package knightminer.metalborn.item;
 import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.Multimap;
 import knightminer.metalborn.Metalborn;
-import knightminer.metalborn.core.MetalbornCapability;
 import knightminer.metalborn.core.MetalbornData;
 import knightminer.metalborn.core.Registration;
 import knightminer.metalborn.metal.MetalId;
@@ -215,7 +214,7 @@ public class SpikeItem extends Item implements MetalItem, Spike {
     ItemStack stack = player.getItemInHand(hand);
     if (isFull(stack)) {
       if (!level.isClientSide) {
-        MetalbornCapability.getData(player).equip(stack);
+        MetalbornData.getData(player).equip(stack);
       }
       return InteractionResultHolder.consume(stack);
     }
@@ -242,7 +241,7 @@ public class SpikeItem extends Item implements MetalItem, Spike {
       // if the metal matches, fully fill the spike
       MetalId spike = getMetal(stack);
       if (spike != MetalId.NONE) {
-        MetalbornData data = MetalbornCapability.getData(entity);
+        MetalbornData data = MetalbornData.getData(entity);
         MetalId target = data.getFerringType();
         if (spike.equals(target)) {
           data.setFerringType(MetalId.NONE);

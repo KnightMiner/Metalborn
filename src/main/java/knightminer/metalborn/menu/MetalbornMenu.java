@@ -30,7 +30,7 @@ public class MetalbornMenu extends BaseMenu {
   private final List<Slot> metalmindSlots;
   protected MetalbornMenu(@Nullable MenuType<?> type, int id, Inventory inventory) {
     super(type, id);
-    if (MetalbornCapability.getData(inventory.player) instanceof MetalbornCapability capability) {
+    if (MetalbornData.getData(inventory.player) instanceof MetalbornCapability capability) {
       metalminds = capability.getMetalminds();
       Item bracer = Registration.BRACER.get();
       Item ring = Registration.RING.get();
@@ -72,7 +72,7 @@ public class MetalbornMenu extends BaseMenu {
   /** Opens the menu on the client */
   public static MetalbornMenu forClient(int id, Inventory inventory, FriendlyByteBuf buffer) {
     MetalId ferringType = new MetalId(buffer.readResourceLocation());
-    MetalbornData data = MetalbornCapability.getData(inventory.player);
+    MetalbornData data = MetalbornData.getData(inventory.player);
     data.clear();
     data.setFerringType(ferringType);
     return new MetalbornMenu(id, inventory);

@@ -12,7 +12,6 @@ import net.minecraft.nbt.Tag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -24,7 +23,6 @@ import net.minecraftforge.common.capabilities.ICapabilitySerializable;
 import net.minecraftforge.common.capabilities.RegisterCapabilitiesEvent;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
-import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import org.jetbrains.annotations.Nullable;
@@ -204,9 +202,7 @@ public class MetalbornCapability implements ICapabilitySerializable<CompoundTag>
   public static void register() {
     FMLJavaModLoadingContext.get().getModEventBus().addListener(EventPriority.NORMAL, false, RegisterCapabilitiesEvent.class, MetalbornCapability::register);
     MinecraftForge.EVENT_BUS.addGenericListener(Entity.class, MetalbornCapability::attachCapability);
-    MinecraftForge.EVENT_BUS.addListener(EventPriority.NORMAL, false, PlayerEvent.Clone.class, MetalbornCapability::playerClone);
   }
-
 
   /** Registers the capability with the event bus */
   private static void register(RegisterCapabilitiesEvent event) {
@@ -222,18 +218,5 @@ public class MetalbornCapability implements ICapabilitySerializable<CompoundTag>
       event.addCapability(ID, provider);
       event.addListener(provider);
     }
-  }
-
-  /** Gets the data for the given player */
-  public static MetalbornData getData(LivingEntity player) {
-    return player.getCapability(CAPABILITY).orElse(MetalbornData.EMPTY);
-  }
-
-  /** copy caps when the player respawns/returns from the end */
-  private static void playerClone(PlayerEvent.Clone event) {
-    Player original = event.getOriginal();
-    original.reviveCaps();
-    getData(event.getEntity()).copyFrom(getData(original), event.isWasDeath());
-    original.invalidateCaps();
   }
 }

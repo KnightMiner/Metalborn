@@ -1,7 +1,7 @@
 package knightminer.metalborn.item;
 
 import knightminer.metalborn.Metalborn;
-import knightminer.metalborn.core.MetalbornCapability;
+import knightminer.metalborn.core.MetalbornData;
 import knightminer.metalborn.metal.MetalId;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
@@ -24,7 +24,7 @@ public class LerasiumAlloyNuggetItem extends ConsumableItem implements MetalItem
   protected void onEat(ItemStack stack, LivingEntity entity) {
     MetalId metal = MetalItem.getMetal(stack);
     if (metal != MetalId.NONE) {
-      MetalbornCapability.getData(entity).setFerringType(metal);
+      MetalbornData.getData(entity).setFerringType(metal);
       // TODO: play a message here?
       // TODO: clear hemalurgic effects for this metal
     }

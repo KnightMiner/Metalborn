@@ -4,7 +4,7 @@ import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import knightminer.metalborn.Metalborn;
-import knightminer.metalborn.core.MetalbornCapability;
+import knightminer.metalborn.core.MetalbornData;
 import knightminer.metalborn.metal.MetalId;
 import knightminer.metalborn.metal.MetalManager;
 import knightminer.metalborn.metal.MetalPower;
@@ -60,7 +60,7 @@ public class FerringCommand {
    */
   private static int getFerring(CommandContext<CommandSourceStack> context) throws CommandSyntaxException {
     ServerPlayer player = EntityArgument.getPlayer(context, "target");
-    MetalPower power = MetalManager.INSTANCE.get(MetalbornCapability.getData(player).getFerringType());
+    MetalPower power = MetalManager.INSTANCE.get(MetalbornData.getData(player).getFerringType());
     context.getSource().sendSuccess(() -> {
       MetalId id = power.id();
       // TODO: use ferring names?
@@ -84,7 +84,7 @@ public class FerringCommand {
       if (targetMetal == null) {
         targetMetal = MetalManager.INSTANCE.getRandomFerring(player.getRandom()).id();
       }
-      MetalbornCapability.getData(player).setFerringType(targetMetal);
+      MetalbornData.getData(player).setFerringType(targetMetal);
     }
 
     // success message

@@ -1,6 +1,6 @@
 package knightminer.metalborn.network;
 
-import knightminer.metalborn.core.MetalbornCapability;
+import knightminer.metalborn.core.MetalbornData;
 import knightminer.metalborn.menu.MetalbornMenu;
 import knightminer.metalborn.metal.MetalId;
 import net.minecraft.network.FriendlyByteBuf;
@@ -28,7 +28,7 @@ public enum ControlPacket implements IThreadsafePacket {
   public void handleThreadsafe(Context context) {
     ServerPlayer player = context.getSender();
     if (player != null && !player.hasContainerOpen() && !player.isSpectator()) {
-      MetalId ferringType = MetalbornCapability.getData(player).getFerringType();
+      MetalId ferringType = MetalbornData.getData(player).getFerringType();
       NetworkHooks.openScreen(player, new SimpleMenuProvider(
         (id, inventory, p) -> new MetalbornMenu(id, inventory),
         Component.empty()
