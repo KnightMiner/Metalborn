@@ -21,6 +21,7 @@ public class MetalPowerBuilder {
   private String name;
   private int index;
   private int capacity = 20 * 5 * 60; // 5 minutes
+  private MetalFormat format = MetalFormat.TICKS;
   private int hemalurgyCharge = 10; // 10 kills with a spike is probably a big enough ask
   private int temperature = 0;
   private boolean ferring = true;
@@ -80,7 +81,8 @@ public class MetalPowerBuilder {
   }
 
   /** Sets the metalmind capacity for this metal. */
-  public MetalPowerBuilder capacity(int capacity) {
+  public MetalPowerBuilder capacity(MetalFormat format, int capacity) {
+    this.format = format;
     this.capacity = capacity;
     return this;
   }
@@ -101,7 +103,7 @@ public class MetalPowerBuilder {
   /** Builds the instance with fewer checks */
   @CheckReturnValue
   private MetalPower buildInternal() {
-    return new MetalPower(id, name, index, ferring, feruchemy, feruchemy.isEmpty() ? 0 : capacity, hemalurgyCharge, temperature);
+    return new MetalPower(id, name, index, ferring, feruchemy, feruchemy.isEmpty() ? 0 : capacity, format, hemalurgyCharge, temperature);
   }
 
   /** Builds the final power */

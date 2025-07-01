@@ -21,6 +21,7 @@
       "operation": "multiply_total"
     }
   ],
+  "format": "ticks",
   "hemalurgy_charge": 10,
   "index": 4,
   "name": "pewter",

@@ -214,7 +214,7 @@ public class MetalmindItem extends Item implements MetalItem, Metalmind {
 
       // amount
       int amount = getAmount(stack);
-      tooltip.add(Component.translatable(KEY_AMOUNT, amount, getCapacity(stack)).withStyle(ChatFormatting.GRAY));
+      tooltip.add(Component.translatable(KEY_AMOUNT, MetalManager.INSTANCE.get(metal).format(amount, capacityMultiplier)).withStyle(ChatFormatting.GRAY));
 
       // owner name
       if (amount > 0) {

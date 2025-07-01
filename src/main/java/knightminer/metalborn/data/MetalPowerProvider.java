@@ -2,6 +2,7 @@ package knightminer.metalborn.data;
 
 import knightminer.metalborn.core.Registration;
 import knightminer.metalborn.metal.AbstractMetalPowerProvider;
+import knightminer.metalborn.metal.MetalFormat;
 import knightminer.metalborn.metal.effects.AttributeMetalEffect;
 import knightminer.metalborn.metal.effects.EnergyMetalEffect;
 import knightminer.metalborn.metal.effects.ExperienceMetalEffect;
@@ -42,13 +43,13 @@ public class MetalPowerProvider extends AbstractMetalPowerProvider {
       .feruchemy(AttributeMetalEffect.builder(Attributes.ARMOR_TOUGHNESS, Operation.ADDITION).eachLevel(0.5f))
       .feruchemy(AttributeMetalEffect.builder(Registration.MINING_SPEED_MULTIPLIER, Operation.MULTIPLY_TOTAL).eachLevel(0.1f));
     metal(MetalIds.copper).index(5).temperature(500)
-      .capacity(100) // about 8 levels
+      .capacity(MetalFormat.METAL, 100) // about 8 levels
       .feruchemy(new ExperienceMetalEffect(1));
     metal(MetalIds.bronze).index(6).temperature(700)
-      .capacity(40) // 2 full food bars
+      .capacity(MetalFormat.METAL, 40) // 2 full food bars
       .feruchemy(new EnergyMetalEffect(0.5f, 2f));
     metal(MetalIds.gold).index(7).temperature(700)
-      .capacity(40) // 2 full health bars
+      .capacity(MetalFormat.METAL, 40) // 2 full health bars
       .feruchemy(new HealMetalEffect(100));
     metal(MetalIds.roseGold).index(8).temperature(550)
       .feruchemy(AttributeMetalEffect.builder(Attributes.MAX_HEALTH, Operation.ADDITION).eachLevel(2))

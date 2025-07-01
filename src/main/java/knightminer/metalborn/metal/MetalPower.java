@@ -12,6 +12,7 @@ import net.minecraft.world.level.material.Fluid;
 import org.jetbrains.annotations.ApiStatus.Internal;
 import slimeknights.mantle.Mantle;
 import slimeknights.mantle.data.loadable.field.ContextKey;
+import slimeknights.mantle.data.loadable.primitive.EnumLoadable;
 import slimeknights.mantle.data.loadable.primitive.IntLoadable;
 import slimeknights.mantle.data.loadable.primitive.StringLoadable;
 import slimeknights.mantle.data.loadable.record.RecordLoadable;
@@ -32,20 +33,16 @@ import java.util.List;
  * @param ferring      If true, this power can be randomly granted.
  * @param feruchemy    List of feruchemical effects to perform
  * @param capacity     Capacity of the base size metalmind.
+ * @param format       Logic for formatting the amount.
  * @param hemalurgyCharge  Amount of charge needed to fill this spike. If 0, this is not usable as a spike.
  */
 public record MetalPower(
-  MetalId id,
-  String name,
-  TagKey<Item> ingot,
-  TagKey<Item> nugget,
-  TagKey<Fluid> fluid,
-  int temperature,
+  MetalId id, String name,
+  TagKey<Item> ingot, TagKey<Item> nugget, TagKey<Fluid> fluid, int temperature,
   TagKey<EntityType<?>> target,
   int index,
-  boolean ferring,
-  List<MetalEffect> feruchemy,
-  int capacity,
+  boolean ferring, List<MetalEffect> feruchemy,
+  int capacity, MetalFormat format,
   int hemalurgyCharge
 ) {
   /** Loader instane for parsing from JSON and syncing over the network */
@@ -56,12 +53,13 @@ public record MetalPower(
     new AllowFerringField("allow_ferring", "feruchemy"),
     MetalEffect.LIST_LOADABLE.defaultField("feruchemy", List.of(), MetalPower::feruchemy),
     IntLoadable.FROM_ZERO.defaultField("capacity", 0, MetalPower::capacity),
+    new EnumLoadable<>(MetalFormat.class).requiredField("format", MetalPower::format),
     IntLoadable.FROM_ZERO.defaultField("hemalurgy_charge", 0, MetalPower::hemalurgyCharge),
     IntLoadable.FROM_ZERO.defaultField("temperature", 0, false, MetalPower::temperature),
     MetalPower::new);
 
   /** Default instance for when a metal does not exist */
-  public static final MetalPower DEFAULT = new MetalPower(MetalId.NONE, "none", -1, false, List.of(), 0, 0, 0);
+  public static final MetalPower DEFAULT = new MetalPower(MetalId.NONE, "none", -1, false, List.of(), 0, MetalFormat.NO_LABEL, 0, 0);
 
   /** @apiNote Use {@link MetalPowerBuilder} */
   @Internal
@@ -71,7 +69,7 @@ public record MetalPower(
    * Constructor that automatically creates the tag names
    * @apiNote Use {@link MetalPowerBuilder}
    */
-  MetalPower(MetalId id, String name, int index, boolean ferring, List<MetalEffect> feruchemy, int capacity, int hemalurgyCharge, int temperature) {
+  MetalPower(MetalId id, String name, int index, boolean ferring, List<MetalEffect> feruchemy, int capacity, MetalFormat format, int hemalurgyCharge, int temperature) {
     this(
       id, name,
       ItemTags.create(Mantle.commonResource("ingots/" + name)),
@@ -79,15 +77,18 @@ public record MetalPower(
       FluidTags.create(Mantle.commonResource("molten_" + name)),
       temperature,
       MetalId.getTargetTag(id),
-      index, ferring, feruchemy, capacity, hemalurgyCharge
+      index, ferring, feruchemy, capacity, format, hemalurgyCharge
     );
   }
-
-  /* Empty */
 
   /** Checks if this metal power is registered in datapacks */
   public boolean isPresent() {
     return this != DEFAULT;
+  }
+
+  /** Formats the amount and capacity according to the formatter */
+  public Component format(int amount, int capacityMultiplier) {
+    return format.format(id, amount, capacity * capacityMultiplier);
   }
 
 

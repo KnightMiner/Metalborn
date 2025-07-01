@@ -32,6 +32,7 @@
       "swap_colors": true
     }
   ],
+  "format": "ticks",
   "hemalurgy_charge": 5,
   "index": 1,
   "name": "iron",

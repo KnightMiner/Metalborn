@@ -30,16 +30,19 @@
   "metal_power.metalborn.copper.stores": "Experience",
   "metal_power.metalborn.copper.ferring": "Archivist",
   "metal_power.metalborn.copper.target": "Illagers",
+  "metal_power.metalborn.copper.label": "%s / %s XP",
 
   "metal_power.metalborn.bronze": "Bronze",
   "metal_power.metalborn.bronze.stores": "Energy",
   "metal_power.metalborn.bronze.ferring": "Subsumer",
   "metal_power.metalborn.bronze.target": "Zombies",
+  "metal_power.metalborn.bronze.label": "%s / %s energy",
 
   "metal_power.metalborn.gold": "Gold",
   "metal_power.metalborn.gold.stores": "Health",
   "metal_power.metalborn.gold.ferring": "Bloodmaker",
   "metal_power.metalborn.gold.target": "Piglins",
+  "metal_power.metalborn.gold.label": "%s / %s health",
 
   "metal_power.metalborn.rose_gold": "Rose Gold",
   "metal_power.metalborn.rose_gold.stores": "Vitality",
@@ -95,10 +98,13 @@
 
   "item.metalborn.metalmind.metal_id": "Metal ID: %s",
   "item.metalborn.metalmind.stores": "Stores: %s",
-  "item.metalborn.metalmind.amount": "Stored: %s / %s",
+  "item.metalborn.metalmind.amount": "Stored: %s",
   "item.metalborn.metalmind.owner": "Owner: %s",
   "item.metalborn.metalmind.owner.none": "Unkeyed",
   "item.metalborn.metalmind.owner.unknown": "Unknown",
+
+  "gui.metalborn.amount.no_label": "%s / %s",
+  "gui.metalborn.amount.seconds": "%s / %s seconds",
 
   "item.metalborn.spike": "Spike",
   "item.metalborn.spike.format": "%s Spike",
