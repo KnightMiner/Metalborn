@@ -188,11 +188,18 @@
   "command.metalborn.spike.success.multiple.set": "Set %s target's spike charge to %s.",
   "command.metalborn.spike.success.multiple.full": "Filled %s target's metalmind completely.",
 
-  "command.metalborn.metalmind.error.itemless": "%s is not holding any item.",
+  "command.metalborn.error.itemless": "%s is not holding any item.",
   "command.metalborn.metalmind.error.not_metalmind": "%s is not a valid metalmind.",
   "command.metalborn.metalmind.no_action": "No target had a metalmind in their hand.",
   "command.metalborn.spike.error.not_spike": "%s is not a valid spike.",
   "command.metalborn.spike.no_action": "No target had a spike in their hand.",
+
+  "command.metalborn.metal.get": "%s's metal item is %s (ID %s)",
+  "command.metalborn.metal.set.single": "Set %s's metal item to %s (ID %s)",
+  "command.metalborn.metal.set.multiple": "Set %s players metal items to %s (ID %s)",
+  "command.metalborn.metal.error.not_metal": "%s is not a valid metal item.",
+  "command.metalborn.metal.no_action": "No target had a metal item in their hand.",
+  "command.metalborn.metal.not_found": "No registered metal with ID %s",
 
 
   "_group_tinkers_compat_": "",

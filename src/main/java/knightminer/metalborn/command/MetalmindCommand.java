@@ -32,7 +32,7 @@ public class MetalmindCommand {
   /** Key part for multiple success, with entity count and amount */
   private static final String KEY_MULTIPLE = "success.multiplie.";
   /** Failure for holding no item */
-  private static final DynamicCommandExceptionType ERROR_NO_ITEM = new DynamicCommandExceptionType(entity -> Component.translatable(Metalborn.key("command", "metalmind.error.itemless"), entity));
+  static final DynamicCommandExceptionType ERROR_NO_ITEM = new DynamicCommandExceptionType(entity -> Component.translatable(Metalborn.key("command", "error.itemless"), entity));
   /** Failure for not holding a metalmind */
   private static final DynamicCommandExceptionType ERROR_NO_METALMIND = new DynamicCommandExceptionType(entity -> Component.translatable(Metalborn.key("command", "metalmind.error.not_metalmind"), entity));
   /** Failure for not holding a spike */

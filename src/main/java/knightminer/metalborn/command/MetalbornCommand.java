@@ -38,6 +38,7 @@ public class MetalbornCommand {
 
     // sub commands
     register(builder, "ferring", FerringCommand::register);
+    register(builder, "metal", MetalCommand::register);
     MetalmindCommand.register(builder); // registeres "metalmind" and "spike" internally
 
     // register final command
