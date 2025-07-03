@@ -56,6 +56,7 @@ public class PaletteListManager implements ISafeManagerReloadListener {
         }
       }
       list = List.copyOf(values);
+      cache.put(location, list);
     }
     return list;
   }

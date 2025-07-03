@@ -11,6 +11,7 @@ import net.minecraft.client.renderer.texture.atlas.SpriteSourceType;
 import net.minecraft.client.renderer.texture.atlas.SpriteSources;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.ModelEvent;
+import net.minecraftforge.client.event.RegisterClientReloadListenersEvent;
 import net.minecraftforge.client.event.RegisterKeyMappingsEvent;
 import net.minecraftforge.client.settings.KeyConflictContext;
 import net.minecraftforge.common.MinecraftForge;
@@ -33,6 +34,11 @@ public class MetalbornClient {
   /** Runs during mod constructor to register any important client only things */
   public static void onConstruct() {
     MinecraftForge.EVENT_BUS.addListener(MetalbornClient::clientTick);
+  }
+
+  @SubscribeEvent
+  static void registerReloadListeners(RegisterClientReloadListenersEvent event) {
+    event.registerReloadListener(PaletteListManager.INSTANCE);
   }
 
   @SubscribeEvent
