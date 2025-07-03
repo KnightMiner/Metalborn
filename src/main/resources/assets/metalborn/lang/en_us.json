@@ -173,6 +173,27 @@
   "command.metalborn.ferring.random.single": "Randomized ferring type for %s",
   "command.metalborn.ferring.random.multiple": "Randomized ferring type on %s players",
 
+  "command.metalborn.metalmind.success.single.fill": "Filled %s's metalmind by %s.",
+  "command.metalborn.metalmind.success.single.drain": "Drained %s's metalmind by %s.",
+  "command.metalborn.metalmind.success.single.set": "Set %s's metalmind amount to %s.",
+  "command.metalborn.metalmind.success.multiple.fill": "Filled %s target's metalmind by %s.",
+  "command.metalborn.metalmind.success.multiple.drain": "Drained %s target's metalmind by %s.",
+  "command.metalborn.metalmind.success.multiple.set": "Set %s target's metalmind amount to %s.",
+  "command.metalborn.metalmind.success.multiple.full": "Filled %s target's metalmind completely.",
+  "command.metalborn.metalmind.success.multiple.empty": "Emptied %s metalminds completely.",
+
+  "command.metalborn.spike.success.single.fill": "Filled %s's spike by %s.",
+  "command.metalborn.spike.success.single.set": "Set %s's spike charge to %s.",
+  "command.metalborn.spike.success.multiple.fill": "Filled %s target's spike by %s.",
+  "command.metalborn.spike.success.multiple.set": "Set %s target's spike charge to %s.",
+  "command.metalborn.spike.success.multiple.full": "Filled %s target's metalmind completely.",
+
+  "command.metalborn.metalmind.error.itemless": "%s is not holding any item.",
+  "command.metalborn.metalmind.error.not_metalmind": "%s is not a valid metalmind.",
+  "command.metalborn.metalmind.no_action": "No target had a metalmind in their hand.",
+  "command.metalborn.spike.error.not_spike": "%s is not a valid spike.",
+  "command.metalborn.spike.no_action": "No target had a spike in their hand.",
+
 
   "_group_tinkers_compat_": "",
 

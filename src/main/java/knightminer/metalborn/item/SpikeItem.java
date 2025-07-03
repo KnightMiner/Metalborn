@@ -73,8 +73,37 @@ public class SpikeItem extends Item implements MetalItem, Spike {
   }
 
   /** Gets the amount of charge needed to be full */
-  private int getMaxCharge(ItemStack stack) {
+  public int getMaxCharge(ItemStack stack) {
     return MetalManager.INSTANCE.get(getMetal(stack)).hemalurgyCharge();
+  }
+
+  /** Sets the charge on the spike */
+  public int setCharge(ItemStack stack, int amount) {
+    // zero amount? clean up NBT
+    if (amount <= 0) {
+      CompoundTag tag = stack.getTag();
+      if (tag != null) {
+        tag.remove(TAG_FULL);
+        tag.remove(TAG_AMOUNT);
+        if (tag.isEmpty()) {
+          stack.setTag(null);
+        }
+      }
+    } else {
+      // if now full, set the full tag
+      CompoundTag tag = stack.getOrCreateTag();
+      int max = getMaxCharge(stack);
+      if (amount >= getMaxCharge(stack)) {
+        tag.putBoolean(TAG_FULL, true);
+        tag.remove(TAG_AMOUNT);
+        return max;
+      } else {
+        // otherwise clear full and set amount
+        tag.remove(TAG_FULL);
+        tag.putInt(TAG_AMOUNT, amount);
+      }
+    }
+    return amount;
   }
 
   @Override

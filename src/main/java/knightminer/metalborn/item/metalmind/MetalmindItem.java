@@ -14,6 +14,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
@@ -59,6 +60,28 @@ public abstract class MetalmindItem extends Item implements Metalmind {
       return tag.getInt(TAG_AMOUNT);
     }
     return 0;
+  }
+
+  /** Sets the amount on the stack */
+  public void setAmount(ItemStack stack, @Nullable Player player, int amount, @Nullable MetalbornData data) {
+    // if amount is 0, empty it out
+    if (amount <= 0) {
+      CompoundTag tag = stack.getTag();
+      if (tag != null) {
+        emptyMetalmind(tag);
+        if (tag.isEmpty()) {
+          stack.setTag(null);
+        }
+      }
+    } else {
+      // if amount is non-zero, start filling
+      CompoundTag tag = stack.getOrCreateTag();
+      // if we were empty before, set on fill properties
+      if (player != null && data != null && tag.getInt(TAG_AMOUNT) == 0) {
+        startFillingMetalmind(tag, player, data);
+      }
+      tag.putInt(TAG_AMOUNT, amount);
+    }
   }
 
   /** Gets the capacity for this metalmind */

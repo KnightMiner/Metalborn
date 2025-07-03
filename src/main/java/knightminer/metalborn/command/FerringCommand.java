@@ -63,7 +63,6 @@ public class FerringCommand {
     MetalPower power = MetalManager.INSTANCE.get(MetalbornData.getData(player).getFerringType());
     context.getSource().sendSuccess(() -> {
       MetalId id = power.id();
-      // TODO: use ferring names?
       return Component.translatable(GET, player.getDisplayName(), id.getFerring(), id);
     }, true);
     return power.index();
