@@ -59,6 +59,12 @@ public class PowerMetalmindItem extends MetalmindItem implements MetalItem {
     return true;
   }
 
+  @Override
+  protected boolean isTransferrable(ItemStack destination, ItemStack source) {
+    // any power metalmind is fine, as long as the metals match (which isSamePower checks)
+    return source.getItem() instanceof PowerMetalmindItem && isSamePower(destination, source);
+  }
+
 
   /* Tooltip */
 

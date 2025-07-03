@@ -10,7 +10,10 @@ import net.minecraft.nbt.Tag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
+import net.minecraft.world.entity.SlotAccess;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.inventory.ClickAction;
+import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
@@ -115,6 +118,8 @@ public abstract class MetalmindItem extends Item implements Metalmind {
 
   @Override
   public int fill(ItemStack stack, Player player, int amount, MetalbornData data) {
+    int size = stack.getCount();
+    amount /= size;
     if (amount <= 0) {
       return 0;
     }
@@ -132,8 +137,13 @@ public abstract class MetalmindItem extends Item implements Metalmind {
       startFillingMetalmind(tag, player, data);
     }
 
-    // if now filled, we can't use the full amount
+    return fill(tag, stored, capacity, amount) * size;
+  }
+
+  /** Adds the given amount into the tag */
+  protected static int fill(CompoundTag tag, int stored, int capacity, int amount) {
     int updated = stored + amount;
+    // if unable to use the full amount, return the remainder
     if (updated >= capacity) {
       tag.putInt(TAG_AMOUNT, capacity);
       return capacity - stored;
@@ -144,16 +154,24 @@ public abstract class MetalmindItem extends Item implements Metalmind {
     }
   }
 
+  /** Fills this stack from the source stack. Exists to allow overriding. */
+  protected int fillFrom(ItemStack stack, Player player, ItemStack source, MetalbornData data) {
+    return fill(stack, player, getAmount(source), data);
+  }
+
   @Override
   public int drain(ItemStack stack, Player player, int amount, MetalbornData data) {
+    int size = stack.getCount();
+    amount /= size;
     if (amount <= 0) {
       return 0;
     }
-    int updated = getAmount(stack) - amount;
+    int current = getAmount(stack);
+    int updated = current - amount;
     if (updated > 0) {
       // drained but not completely?
       stack.getOrCreateTag().putInt(TAG_AMOUNT, updated);
-      return amount;
+      return amount * size;
     } else {
       // completely drained? clear amount and owner
       CompoundTag tag = stack.getTag();
@@ -163,10 +181,42 @@ public abstract class MetalmindItem extends Item implements Metalmind {
           stack.setTag(null);
         }
       }
-      return amount - updated;
+      return current * size;
     }
   }
 
+
+  /**
+   * Checks if transfer is possible for {@link #overrideOtherStackedOnMe(ItemStack, ItemStack, Slot, ClickAction, Player, SlotAccess)}
+   * @param destination Stack of this class receiving power.
+   * @param source      Stack of unknown item giving power. Validation should make it instanceof MetalmindItem by the end.
+   * @return true if power can be transferred from {@code held} into {@code stack}
+   */
+  protected boolean isTransferrable(ItemStack destination, ItemStack source) {
+    return destination.getItem() == source.getItem() && getAmount(destination) > 0 && isSamePower(destination, source);
+  }
+
+  @Override
+  public boolean overrideOtherStackedOnMe(ItemStack stack, ItemStack held, Slot slot, ClickAction action, Player player, SlotAccess access) {
+    // we can transfer a single metalmind of power into the slot stack, provided its the same power
+    if (held.getCount() == 1 && action == ClickAction.SECONDARY && isTransferrable(stack, held) && slot.allowModification(player)) {
+      MetalmindItem other = (MetalmindItem) held.getItem();
+      MetalbornData data = MetalbornData.getData(player);
+      // ensure both are usable (e.g. no identity issues)
+      if (canUse(stack, -1, player, data) && other.canUse(held, -1, player, data)) {
+        // attempt transfer
+        int filled = fillFrom(stack, player, held, data);
+        if (filled > 0) {
+          int drained = other.drain(held, player, filled, data);
+          if (drained != filled) {
+            Metalborn.LOG.error("Failed to drain {} from {}, drained {} instead. Happened in stack on {}", filled, held, drained, stack);
+          }
+        }
+      }
+      return true;
+    }
+    return false;
+  }
 
   /* Transfer */
 

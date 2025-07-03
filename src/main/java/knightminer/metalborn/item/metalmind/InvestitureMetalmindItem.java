@@ -104,6 +104,34 @@ public class InvestitureMetalmindItem extends MetalmindItem {
     tag.putString(MetalItem.TAG_METAL, data.getFerringType().toString());
   }
 
+  @Override
+  protected int fillFrom(ItemStack stack, Player player, ItemStack source, MetalbornData data) {
+    int amount = getAmount(source) / stack.getCount();
+    if (amount <= 0) {
+      return 0;
+    }
+    int stored = getAmount(stack);
+    int capacity = getCapacity(stack);
+    // if already full, no work to do. Also prevents us from deleting from an overfilled metalmind
+    if (stored >= capacity) {
+      return 0;
+    }
+
+    // set the metal directly from the source stack; it will always exist if it has amount
+    CompoundTag tag = stack.getOrCreateTag();
+    if (stored == 0) {
+      tag.putString(MetalItem.TAG_METAL, getMetal(source).toString());
+    }
+
+    return fill(tag, stored, capacity, amount) * stack.getCount();
+  }
+
+  @Override
+  protected boolean isTransferrable(ItemStack destination, ItemStack source) {
+    // any investiture metalmind is fine, as long as the power being stored matches (which isSamePower handles)
+    return source.getItem() instanceof InvestitureMetalmindItem && isSamePower(destination, source);
+  }
+
 
   /* Tooltip */
 
