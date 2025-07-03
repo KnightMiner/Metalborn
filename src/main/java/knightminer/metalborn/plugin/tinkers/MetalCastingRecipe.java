@@ -1,6 +1,7 @@
 package knightminer.metalborn.plugin.tinkers;
 
 import knightminer.metalborn.item.MetalItem;
+import knightminer.metalborn.metal.MetalId;
 import knightminer.metalborn.metal.MetalManager;
 import knightminer.metalborn.metal.MetalPower;
 import knightminer.metalborn.recipe.MetalIngredient.MetalFilter;
@@ -68,11 +69,22 @@ public class MetalCastingRecipe extends AbstractCastingRecipe implements IMultiR
 
   @Override
   public boolean matches(ICastingContainer inv, Level pLevel) {
-    if (!this.getCast().test(inv.getStack())) {
+    ItemStack cast = inv.getStack();
+    // cast must match
+    if (!this.getCast().test(cast)) {
       return false;
     }
+    // fluid must match the filter
     MetalPower power = MetalManager.INSTANCE.fromFluid(inv.getFluid());
-    return power != MetalPower.DEFAULT && filter.test(power);
+    if (power == MetalPower.DEFAULT || !filter.test(power)) {
+      return false;
+    }
+    // if cast is a metal item, then metal must match existing metal
+    if (cast.getItem() instanceof MetalItem) {
+      MetalId metal = MetalItem.getMetal(cast);
+      return metal.equals(power.id());
+    }
+    return true;
   }
 
   @Override
@@ -100,16 +112,30 @@ public class MetalCastingRecipe extends AbstractCastingRecipe implements IMultiR
   /* JEI */
   protected List<IDisplayableCastingRecipe> multiRecipes = null;
 
+  /** Adds the metal to the list of stacks */
+  private static List<ItemStack> withMetal(List<ItemStack> stacks, MetalId metal) {
+    // first, find a stack that is a metal item; if none we don't need a new list
+    for (ItemStack stack : stacks) {
+      if (stack.getItem() instanceof MetalItem) {
+        // we now know we have a stack, so copy each over
+        return stacks.stream().map(s -> s.getItem() instanceof MetalItem ? MetalItem.setMetal(s.copy(), metal) : s).toList();
+      }
+    }
+    return stacks;
+  }
+
   @Override
   public List<IDisplayableCastingRecipe> getRecipes(RegistryAccess access) {
     if (multiRecipes == null) {
-      List<ItemStack> castItems = Arrays.asList(getCast().getItems());
+      // if its a metal ingredient, display each stack as a separate recipe
+      Ingredient cast = getCast();
+      List<ItemStack> castItems = Arrays.asList(cast.getItems());
       multiRecipes = MetalManager.INSTANCE.getSortedPowers().stream()
         .filter(power -> power.temperature() > 0 && filter.test(power))
         .map(power -> {
           List<FluidStack> fluids = ((FluidIngredient)FluidIngredient.of(power.fluid(), amount)).getFluids();
           return new DisplayCastingRecipe(
-            getId(), getType(), castItems, fluids, MetalItem.setMetal(result.copy(), power.id()),
+            getId(), getType(), withMetal(castItems, power.id()), fluids, MetalItem.setMetal(result.copy(), power.id()),
             ICastingRecipe.calcCoolingTime(power.temperature(), amount), isConsumed());
         }).collect(Collectors.toList());
     }

@@ -54,6 +54,7 @@ public class ItemModelProvider extends net.minecraftforge.client.model.generator
       .paletted(FERUCHEMY_METALS, MetalItem.TAG_METAL);
     metal(Registration.BRACER, "metal/item/bracer", true);
     metal(Registration.RING, "metal/item/ring", false);
+    metal(Registration.UNSEALED_RING, "metal/item/ring", false).end().texture("layer1", "item/unsealed_ring_gem");
     // investiture metalminds just use netherite directly
     metalItem(Registration.INVESTITURE_BRACER, "bracer", MetalIds.netherite);
     metalItem(Registration.INVESTITURE_RING, "ring", MetalIds.netherite);

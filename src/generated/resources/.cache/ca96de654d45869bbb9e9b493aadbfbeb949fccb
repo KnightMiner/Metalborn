@@ -1,4 +1,4 @@
-// 1.20.1	2025-07-02T21:09:43.9071487	Tags for minecraft:item mod id metalborn
+// 1.20.1	2025-07-03T00:00:34.3273265	Tags for minecraft:item mod id metalborn
 15fc259f6c72ba48b51d2ea9d2bf765763770793 data/forge/tags/items/ingots.json
 03cfb4451bfb3c82bfbe118acfb1c55d545d9835 data/forge/tags/items/ingots/bronze.json
 b82e1386d985cef8647105b101ae7ebaeccee644 data/forge/tags/items/ingots/pewter.json
@@ -41,7 +41,7 @@ e811fea8b06671da251e7fbec4e2614f6f191dbf data/metalborn/tags/items/ingot_like/ni
 2e9d8ff13339b9e3a252ed3748a58b49585ac2d0 data/metalborn/tags/items/ingot_like/silver.json
 398b903658b869cb7a0523e23b3a32a634c3be1c data/metalborn/tags/items/ingot_like/tin.json
 a1f720331d641e7f110e85ffcbffcaa6ad50c76b data/metalborn/tags/items/ingot_like/zinc.json
-ec3df0207379fc322512190e74c7f0248b36c7b2 data/metalborn/tags/items/rings.json
+9be0db2a1aa4a786f5f2e84c21399f2dd66033c5 data/metalborn/tags/items/rings.json
 e638769a051e895e72ace29f7ece44c911555b39 data/metalborn/tags/items/spikes.json
 e5112bd294f39abdbb42a699b7296ad10b513d21 data/tconstruct/tags/items/casts/gold.json
 cd7bd6c1be35fbdd18192672af2887c00e40ce2b data/tconstruct/tags/items/casts/multi_use.json

@@ -12,6 +12,7 @@ import net.minecraft.server.packs.resources.ResourceManagerReloadListener;
 import net.minecraft.world.entity.player.Player;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -30,26 +31,33 @@ public class ActiveMetalminds {
   private static final String KEY_FERRING_TAP = Metalborn.key("gui", "metalminds.investiture.tap");
   /** Key for storing in a metalmind */
   private static final String KEY_FERRING_STORE = Metalborn.key("gui", "metalminds.investiture.store");
+  /** Maximum number of unsealed metalminds allowed at once */
+  private static final int MAX_UNSEALED = 2;
 
   /** Index of last reload, so powers know when to refresh. */
   private static int reloadCount = 0;
   /** Reload listener to keep the reload count up to date */
   public static final ResourceManagerReloadListener RELOAD_LISTENER = manager -> reloadCount += 1;
 
-  /** Map of all active effects */
-  private final Map<MetalId, ActiveMetalmind> active = new LinkedHashMap<>();
   /** Reference to the parent object */
   private final MetalbornCapability data;
+
+  /** Map of all active effects */
+  private final Map<MetalId, ActiveMetalmind> active = new LinkedHashMap<>();
   /** Constructor for adding new effects */
   private final Function<MetalId, ActiveMetalmind> constructor;
+
   /** Reference to the metalminds currently receiving our ferring power */
   private final List<MetalmindStack> storingFerring = new ArrayList<>();
   /** Last index that received power from our ferring type */
   private int lastFerringIndex = 0;
+  /** Indices containing unsealed metalminds */
+  private final int[] unsealedIndices = new int[MAX_UNSEALED];
 
   public ActiveMetalminds(MetalbornCapability data, Player player) {
     this.data = data;
     this.constructor = id -> new ActiveMetalmind(player, id);
+    Arrays.fill(unsealedIndices, -1);
   }
 
   /** Gets the object tracking the given metal */
@@ -72,8 +80,6 @@ public class ActiveMetalminds {
   public boolean isStoringFerring() {
     return !storingFerring.isEmpty();
   }
-
-
 
   /**
    * Updates the index currently storing ferring power.
@@ -104,6 +110,35 @@ public class ActiveMetalminds {
       return !metalmind.investitureStacks.isEmpty();
     }
     return false;
+  }
+
+
+  /* Unsealed */
+
+  /** Checks if we can use an unsealed metalmind at the given index */
+  public boolean canUseUnsealed(int index) {
+    return unsealedIndices[0] == -1 || unsealedIndices[1] == -1
+      || unsealedIndices[0] == index || unsealedIndices[1] == index;
+  }
+
+  /** Swaps the given value in the unsealed list with the given replacement */
+  private void swapUnsealed(int match, int replace) {
+    if (unsealedIndices[0] == match) {
+      unsealedIndices[0] = replace;
+    }
+    else if (unsealedIndices[1] == match) {
+      unsealedIndices[1] = replace;
+    }
+  }
+
+  /** Starts using unsealed at the given index */
+  public void useUnsealed(int index) {
+    swapUnsealed(-1, index);
+  }
+
+  /** Stops using unsealed at the given index */
+  public void stopUsingUnsealed(int index) {
+    swapUnsealed(index, -1);
   }
 
 

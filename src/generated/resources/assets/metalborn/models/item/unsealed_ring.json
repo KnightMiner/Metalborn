@@ -1,0 +1,12 @@
+{
+  "parent": "forge:item/default",
+  "loader": "metalborn:paletted",
+  "palette": {
+    "key": "metal",
+    "list": "metalborn:metals/feruchemy"
+  },
+  "textures": {
+    "layer0": "metalborn:metal/item/ring",
+    "layer1": "metalborn:item/unsealed_ring_gem"
+  }
+}

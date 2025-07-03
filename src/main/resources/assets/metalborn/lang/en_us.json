@@ -104,6 +104,8 @@
   "item.metalborn.ring": "Ring",
   "item.metalborn.ring.format": "%s Ring",
   "item.metalborn.investiture_ring": "Netherite Ring",
+  "item.metalborn.unsealed_ring": "Unsealed Ring",
+  "item.metalborn.unsealed_ring.format": "Unsealed %s Ring",
 
   "item.metalborn.metalmind.metal_id": "Metal ID: %s",
   "item.metalborn.metalmind.stores": "Stores: %s",

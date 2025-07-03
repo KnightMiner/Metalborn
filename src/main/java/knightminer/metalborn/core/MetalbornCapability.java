@@ -162,6 +162,24 @@ public class MetalbornCapability implements ICapabilitySerializable<CompoundTag>
   }
 
 
+  /* Unsealed */
+
+  @Override
+  public boolean canUseUnsealed(int index) {
+    return activeMetalminds.canUseUnsealed(index);
+  }
+
+  @Override
+  public void useUnsealed(int index) {
+    activeMetalminds.useUnsealed(index);
+  }
+
+  @Override
+  public void stopUsingUnsealed(int index) {
+    activeMetalminds.stopUsingUnsealed(index);
+  }
+
+
   /* Inventory */
 
   @Override

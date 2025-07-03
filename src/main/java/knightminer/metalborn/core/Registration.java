@@ -11,6 +11,7 @@ import knightminer.metalborn.item.SpikeItem;
 import knightminer.metalborn.item.metalmind.InvestitureMetalmindItem;
 import knightminer.metalborn.item.metalmind.MetalmindItem;
 import knightminer.metalborn.item.metalmind.PowerMetalmindItem;
+import knightminer.metalborn.item.metalmind.UnsealedMetalmindItem;
 import knightminer.metalborn.menu.ForgeMenu;
 import knightminer.metalborn.menu.MetalbornMenu;
 import knightminer.metalborn.metal.MetalId;
@@ -158,6 +159,7 @@ public class Registration {
   // metalminds
   public static final ItemObject<PowerMetalmindItem> BRACER = ITEMS.register("bracer", () -> new PowerMetalmindItem(new Item.Properties().stacksTo(8), 10));
   public static final ItemObject<PowerMetalmindItem> RING = ITEMS.register("ring", () -> new PowerMetalmindItem(new Item.Properties().stacksTo(8), 1));
+  public static final ItemObject<PowerMetalmindItem> UNSEALED_RING = ITEMS.register("unsealed_ring", () -> new UnsealedMetalmindItem(new Item.Properties().stacksTo(8), 1));
   // special metalminds
   public static final ItemObject<InvestitureMetalmindItem> INVESTITURE_BRACER = ITEMS.register("investiture_bracer", () -> new InvestitureMetalmindItem(new Item.Properties().stacksTo(8), 10));
   public static final ItemObject<InvestitureMetalmindItem> INVESTITURE_RING = ITEMS.register("investiture_ring", () -> new InvestitureMetalmindItem(new Item.Properties().stacksTo(8), 1));
@@ -264,6 +266,8 @@ public class Registration {
     accept(consumer, BRACER);
     output.accept(INVESTITURE_BRACER);
     accept(consumer, SPIKE);
+    // unsealed metalminds
+    accept(consumer, UNSEALED_RING);
     // lerasium
     output.accept(LERASIUM_NUGGET);
     accept(consumer, LERASIUM_ALLOY_NUGGET);

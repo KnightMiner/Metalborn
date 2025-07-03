@@ -109,6 +109,14 @@ public class RecipeProvider extends net.minecraft.data.recipes.RecipeProvider im
       .cookingRate(1)
       .experience(0.5f)
       .save(consumer, location("ring_netherite"));
+    ShapedForgeRecipeBuilder.shaped(Registration.UNSEALED_RING)
+      .pattern("L#").pattern("##")
+      .define('#', MetalIngredient.nugget(MetalFilter.METALMIND))
+      .define('L', Registration.LERASIUM_NUGGET)
+      .metal()
+      .cookingRate(1)
+      .experience(0.5f)
+      .save(consumer, location("ring_unsealed"));
     ShapedForgeRecipeBuilder.shaped(Registration.BRACER)
       .pattern("##").pattern("##")
       .define('#', MetalIngredient.ingot(MetalFilter.METALMIND))
@@ -229,6 +237,11 @@ public class RecipeProvider extends net.minecraft.data.recipes.RecipeProvider im
       .setFilter(MetalFilter.METALMIND)
       .setAmount(nugget)
       .save(consumer, wrap(Registration.LERASIUM_ALLOY_NUGGET, tinkersFolder, "_casting"));
+    MetalCastingRecipeBuilder.table(Registration.UNSEALED_RING)
+      .setCast(Ingredient.of(Registration.LERASIUM_ALLOY_NUGGET), true)
+      .setFilter(MetalFilter.METALMIND)
+      .setAmount(nugget * 2)
+      .save(consumer, wrap(Registration.UNSEALED_RING, tinkersFolder, "_casting"));
   }
 
 
