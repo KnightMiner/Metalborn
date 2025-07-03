@@ -201,6 +201,17 @@
   "command.metalborn.metal.no_action": "No target had a metal item in their hand.",
   "command.metalborn.metal.not_found": "No registered metal with ID %s",
 
+  "command.metalborn.metal.feruchemy": "Feruchemy for %s (ID %s) at level %s:",
+  "command.metalborn.metal.feruchemy.no_effects": "No effects",
+  "command.metalborn.metal.stats": "Stats for %s (ID %s, index %s):",
+  "command.metalborn.metal.stats.ingot": "Ingot tag: %s",
+  "command.metalborn.metal.stats.nugget": "Nugget tag: %s",
+  "command.metalborn.metal.stats.fluid": "Fluid: tag %s, temperature %s",
+  "command.metalborn.metal.stats.ferring": "Ferring: %s, naturally spawns %s",
+  "command.metalborn.metal.stats.stores": "Stores: %s, capacity %s, formatted %s",
+  "command.metalborn.metal.stats.hemalurgy": "Hemalurgy: target %s, %s required charge",
+  "command.metalborn.metal.stats.target": "Target entity tag: %s",
+
 
   "_group_tinkers_compat_": "",
 
