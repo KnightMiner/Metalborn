@@ -27,6 +27,7 @@ import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraftforge.common.Tags;
 import net.minecraftforge.common.crafting.ConditionalRecipe;
 import net.minecraftforge.common.crafting.conditions.ICondition;
 import net.minecraftforge.common.crafting.conditions.TrueCondition;
@@ -100,6 +101,12 @@ public class RecipeProvider extends net.minecraft.data.recipes.RecipeProvider im
       .cookingRate(1)
       .experience(0.5f)
       .save(consumer, location("ring"));
+    ShapedForgeRecipeBuilder.shaped(Registration.INVESTITURE_RING)
+      .pattern("##").pattern("##")
+      .define('#', MetalbornTags.Items.NETHERITE_NUGGETS)
+      .cookingRate(1)
+      .experience(0.5f)
+      .save(consumer, location("ring_netherite"));
     ShapedForgeRecipeBuilder.shaped(Registration.BRACER)
       .pattern("##").pattern("##")
       .define('#', MetalIngredient.ingot(MetalFilter.METALMIND))
@@ -107,6 +114,12 @@ public class RecipeProvider extends net.minecraft.data.recipes.RecipeProvider im
       .cookingRate(4)
       .experience(2f)
       .save(consumer, location("bracer"));
+    ShapedForgeRecipeBuilder.shaped(Registration.INVESTITURE_BRACER)
+      .pattern("##").pattern("##")
+      .define('#', Tags.Items.INGOTS_NETHERITE)
+      .cookingRate(4)
+      .experience(2f)
+      .save(consumer, location("bracer_netherite"));
     ShapedForgeRecipeBuilder.shaped(Registration.SPIKE)
       .pattern(" #").pattern("# ")
       .define('#', MetalIngredient.ingot(MetalFilter.SPIKE))
@@ -132,7 +145,7 @@ public class RecipeProvider extends net.minecraft.data.recipes.RecipeProvider im
     ShapelessForgeRecipeBuilder.shapeless(Registration.STEEL.getIngotTag(), 1)
       .requires(ingotLike("iron"), 1)
       .requires(Items.BLAZE_POWDER, 1)
-      .requires(Blocks.SAND, 1) // TODO: recipe not fully decided, maybe do some blaze powder?
+      .requires(Blocks.SAND, 1)
       .cookingRate(4)
       .save(consumer, location(alloyFolder + "steel"));
     ShapelessForgeRecipeBuilder.shapeless(Registration.BRONZE.getIngotTag(), 4)

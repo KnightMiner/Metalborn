@@ -4,10 +4,12 @@ package knightminer.metalborn.core;
 import knightminer.metalborn.Metalborn;
 import knightminer.metalborn.block.ForgeBlock;
 import knightminer.metalborn.block.ForgeBlockEntity;
+import knightminer.metalborn.item.InvestitureMetalmindItem;
 import knightminer.metalborn.item.LerasiumAlloyNuggetItem;
 import knightminer.metalborn.item.LerasiumNuggetItem;
 import knightminer.metalborn.item.MetalItem;
 import knightminer.metalborn.item.MetalmindItem;
+import knightminer.metalborn.item.PowerMetalmindItem;
 import knightminer.metalborn.item.SpikeItem;
 import knightminer.metalborn.menu.ForgeMenu;
 import knightminer.metalborn.menu.MetalbornMenu;
@@ -153,8 +155,13 @@ public class Registration {
   public static final TagKey<Item> SPIKES = itemTag("spikes");
 
   // metal items
-  public static final ItemObject<MetalmindItem> BRACER = ITEMS.register("bracer", () -> new MetalmindItem(new Item.Properties().stacksTo(8), 10));
-  public static final ItemObject<MetalmindItem> RING = ITEMS.register("ring", () -> new MetalmindItem(new Item.Properties().stacksTo(8), 1));
+  // metalminds
+  public static final ItemObject<PowerMetalmindItem> BRACER = ITEMS.register("bracer", () -> new PowerMetalmindItem(new Item.Properties().stacksTo(8), 10));
+  public static final ItemObject<PowerMetalmindItem> RING = ITEMS.register("ring", () -> new PowerMetalmindItem(new Item.Properties().stacksTo(8), 1));
+  // special metalminds
+  public static final ItemObject<InvestitureMetalmindItem> INVESTITURE_BRACER = ITEMS.register("investiture_bracer", () -> new InvestitureMetalmindItem(new Item.Properties().stacksTo(8), 10));
+  public static final ItemObject<InvestitureMetalmindItem> INVESTITURE_RING = ITEMS.register("investiture_ring", () -> new InvestitureMetalmindItem(new Item.Properties().stacksTo(8), 1));
+  // spikes
   public static final ItemObject<SpikeItem> SPIKE = ITEMS.register("spike", () -> new SpikeItem(new Item.Properties().stacksTo(1)));
 
   // metal forge
@@ -253,7 +260,9 @@ public class Registration {
     output.accept(RAW_TIN_BLOCK);
     // metalminds
     accept(consumer, RING);
+    output.accept(INVESTITURE_RING);
     accept(consumer, BRACER);
+    output.accept(INVESTITURE_BRACER);
     accept(consumer, SPIKE);
     // lerasium
     output.accept(LERASIUM_NUGGET);

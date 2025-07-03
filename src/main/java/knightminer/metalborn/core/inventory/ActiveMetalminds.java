@@ -1,6 +1,7 @@
 package knightminer.metalborn.core.inventory;
 
 import knightminer.metalborn.Metalborn;
+import knightminer.metalborn.core.MetalbornCapability;
 import knightminer.metalborn.core.inventory.MetalmindInventory.MetalmindStack;
 import knightminer.metalborn.metal.MetalId;
 import knightminer.metalborn.metal.MetalManager;
@@ -17,11 +18,19 @@ import java.util.List;
 import java.util.ListIterator;
 import java.util.Map;
 import java.util.function.Function;
+import java.util.function.IntConsumer;
 
 /** Object handling active metalmind effects, both tapping and storing */
 public class ActiveMetalminds {
+  /** Title for metalmind effect list */
   private static final Component METALMIND_EFFECTS = Metalborn.component("gui", "metalminds.effects");
+  /** Used when no effects are active */
   private static final Component NO_METALMINDS = Metalborn.component("gui", "metalminds.none").withStyle(ChatFormatting.GRAY);
+  /** Key for tapping a metalmind */
+  private static final String KEY_FERRING_TAP = Metalborn.key("gui", "metalminds.investiture.tap");
+  /** Key for storing in a metalmind */
+  private static final String KEY_FERRING_STORE = Metalborn.key("gui", "metalminds.investiture.store");
+
   /** Index of last reload, so powers know when to refresh. */
   private static int reloadCount = 0;
   /** Reload listener to keep the reload count up to date */
@@ -29,32 +38,23 @@ public class ActiveMetalminds {
 
   /** Map of all active effects */
   private final Map<MetalId, ActiveMetalmind> active = new LinkedHashMap<>();
+  /** Reference to the parent object */
+  private final MetalbornCapability data;
   /** Constructor for adding new effects */
   private final Function<MetalId, ActiveMetalmind> constructor;
+  /** Reference to the metalminds currently receiving our ferring power */
+  private final List<MetalmindStack> storingFerring = new ArrayList<>();
+  /** Last index that received power from our ferring type */
+  private int lastFerringIndex = 0;
 
-  public ActiveMetalminds(Player player) {
+  public ActiveMetalminds(MetalbornCapability data, Player player) {
+    this.data = data;
     this.constructor = id -> new ActiveMetalmind(player, id);
   }
 
   /** Gets the object tracking the given metal */
   public ActiveMetalmind getMetal(MetalId id) {
     return active.computeIfAbsent(id, constructor);
-  }
-
-  /** Ticks all active powers */
-  public void tick() {
-    for (ActiveMetalmind metalmind : active.values()) {
-      metalmind.tick();
-    }
-  }
-
-  /** Clears all active metalminds */
-  public void clear() {
-    // practically speaking, when this is called we should have no effects, but better to be safe
-    // on the chance there is something here, we will remove it then add it in two calls, which is not the worst case
-    for (ActiveMetalmind metalmind : active.values()) {
-      metalmind.clear();
-    }
   }
 
   /** Called when a metal is removed to ensure unusable metalminds are stopped. */
@@ -65,16 +65,82 @@ public class ActiveMetalminds {
     }
   }
 
-  /** Refreshes attributes of all active metalminds */
-  void refresh() {
+
+  /* Investiture */
+
+  /** Checks if the ferring power can be stored at the given index */
+  public boolean isStoringFerring() {
+    return !storingFerring.isEmpty();
+  }
+
+
+
+  /**
+   * Updates the index currently storing ferring power.
+   * @param stack  Stack to store
+   */
+  public void storeFerring(MetalmindStack stack) {
+    storingFerring.add(stack);
+    data.onRemoved(data.getFerringType());
+  }
+
+  /** Stops storing the passed metalmind as a ferring */
+  public void stopStoringFerring(MetalmindStack stack) {
+    storingFerring.remove(stack);
+  }
+
+  /** Stops storing all ferring types */
+  public void clearStoringFerring() {
+    for (MetalmindStack ferring : storingFerring) {
+      ferring.level = 0;
+    }
+    storingFerring.clear();
+  }
+
+  /** Checks if the given metal can be used due to an investiture metalmind */
+  public boolean canUse(MetalId metalId) {
+    ActiveMetalmind metalmind = active.get(metalId);
+    if (metalmind != null) {
+      return !metalmind.investitureStacks.isEmpty();
+    }
+    return false;
+  }
+
+
+  /* Updating */
+
+  /** Ticks all active powers */
+  public void tick() {
     for (ActiveMetalmind metalmind : active.values()) {
-      metalmind.refreshEffect();
+      metalmind.tick();
+    }
+    // store our ferring power in the next metalmind
+    if (!storingFerring.isEmpty()) {
+      lastFerringIndex = updateMetalminds(storingFerring, false, 1, lastFerringIndex, NO_ACTION);
     }
   }
+
+  /** Clears all active metalminds */
+  public void clear() {
+    // practically speaking, when this is called we should have no effects, but better to be safe
+    // on the chance there is something here, we will remove it then add it in two calls, which is not the worst case
+    for (ActiveMetalmind metalmind : active.values()) {
+      metalmind.clear();
+    }
+    storingFerring.clear();
+  }
+
+
+  /* Menu */
 
   /** Appends tooltip for all active effects */
   public void getTooltip(List<Component> tooltip) {
     tooltip.add(METALMIND_EFFECTS);
+    // storing power to use investiture
+    if (!storingFerring.isEmpty()) {
+      tooltip.add(Component.translatable(KEY_FERRING_STORE, data.getFerringType().getStores()).withStyle(ChatFormatting.RED));
+    }
+    // all active powers
     for (ActiveMetalmind metalmind : active.values()) {
       metalmind.getTooltip(tooltip);
     }
@@ -85,7 +151,7 @@ public class ActiveMetalminds {
   }
 
   /** Keeps track of data for a single type of power */
-  public static class ActiveMetalmind {
+  public class ActiveMetalmind {
     private final Player player;
     /** ID for this effect */
     private final MetalId id;
@@ -94,6 +160,8 @@ public class ActiveMetalminds {
     private final List<MetalmindStack> tappingStacks = new ArrayList<>();
     /** List of all metalminds currently storing */
     private final List<MetalmindStack> storingStacks = new ArrayList<>();
+    /** List of investiture metalminds granting this power */
+    private final List<MetalmindStack> investitureStacks = new ArrayList<>();
 
     /** Index to resume draining tapping stacks */
     private int resumeTapping = 0;
@@ -110,6 +178,11 @@ public class ActiveMetalminds {
     private int storing = 0;
     /** Last level used to update attribute effects */
     private int previous = 0;
+
+    /** Consumer for stopping tapping a metalmind */
+    private final IntConsumer stopTapping = oldLevel -> tapping -= oldLevel;
+    /** Consumer for stopping storing a metalmind */
+    private final IntConsumer stopStoring = oldLevel -> storing += oldLevel;
 
     public ActiveMetalmind(Player player, MetalId id) {
       this.player = player;
@@ -144,6 +217,7 @@ public class ActiveMetalminds {
       storing = 0;
       tappingStacks.clear();
       storingStacks.clear();
+      investitureStacks.clear();
       refreshEffect();
     }
 
@@ -154,7 +228,8 @@ public class ActiveMetalminds {
       while (iterator.hasNext()) {
         MetalmindStack stack = iterator.next();
         if (!stack.canUse()) {
-          change += stack.getLevel();
+          change += stack.level;
+          stack.level = 0;
           iterator.remove();
         }
       }
@@ -167,6 +242,9 @@ public class ActiveMetalminds {
       storing += validateList(storingStacks);
       refreshEffect();
     }
+
+
+    /* Activating metalminds */
 
     /** Updates a metalmind's value in this effect */
     public void update(MetalmindStack stack, int newLevel, int oldLevel) {
@@ -207,6 +285,22 @@ public class ActiveMetalminds {
       }
     }
 
+    /** Called to start granting a power */
+    public void grantPower(MetalmindStack stack) {
+      investitureStacks.add(stack);
+    }
+
+    /** Called to stop granting a power */
+    public void revokePower(MetalmindStack stack) {
+      investitureStacks.remove(stack);
+      if (investitureStacks.isEmpty() && !data.canUse(id)) {
+        validateUsable();
+      }
+    }
+
+
+    /* Ticking metalminds */
+
     /** Ticks all metalminds, filling/draining and running tick effects */
     private void tick() {
       if (tapping <= 0 && storing <= 0) {
@@ -214,6 +308,14 @@ public class ActiveMetalminds {
       }
       // ensure power is up to date
       refreshPower();
+
+      // if we are active, tick investiture. Doesn't matter if we end up using power as not every power runs every tick
+      // TODO: only drain if we have no other source of power
+      // TODO: don't drain if the metalminds are all unsealed
+      if (!investitureStacks.isEmpty()) {
+        // only need 1 power to add this effect, and not currently bothering with round-robin draining; just drain the first one first
+        updateMetalminds(investitureStacks, true, 1, 0, NO_ACTION);
+      }
 
       // decide which power to run
       int tapped;
@@ -239,73 +341,77 @@ public class ActiveMetalminds {
 
       // update metalmind amounts
       if (tapped > 0 && !tappingStacks.isEmpty()) {
-        resumeTapping = updateMetalminds(tappingStacks, true, tapped, resumeTapping);
+        resumeTapping = updateMetalminds(tappingStacks, Boolean.TRUE, tapped, resumeTapping, stopTapping);
       }
       if (stored > 0 && !storingStacks.isEmpty()) {
-        resumeStoring = updateMetalminds(storingStacks, false, stored, resumeStoring);
+        resumeStoring = updateMetalminds(storingStacks, Boolean.FALSE, stored, resumeStoring, stopStoring);
       }
 
       // if anything stopped tapping/storing, update the effect
       refreshEffect();
     }
 
-    /** Updates the amount in the list of metalminds */
-    private int updateMetalminds(List<MetalmindStack> metalminds, boolean drain, int amount, int startIndex) {
-      // if the index is out of bounds, just start from the beginning
-      if (startIndex >= metalminds.size()) {
-        startIndex = 0;
-      }
-
-      ListIterator<MetalmindStack> iterator = metalminds.listIterator(startIndex);
-      int resume = 0;
-      while (iterator.hasNext()) {
-        MetalmindStack stack = iterator.next();
-        int oldLevel = stack.getLevel();
-
-        // drain the amount from the stack
-        if (drain) {
-          amount -= stack.drain(amount);
-        } else {
-          amount -= stack.fill(amount);
-        }
-
-        // if the stack level changed to 0, remove it
-        if (stack.getLevel() == 0) {
-          iterator.remove();
-          if (drain) {
-            tapping -= oldLevel;
-          } else {
-            storing += oldLevel;
-          }
-        }
-        // if we ran out of stuff to process, done
-        if (amount <= 0) {
-          // mark where we left off to resume for next time
-          resume = iterator.nextIndex();
-          break;
-        }
-      }
-
-      // if we started from 0 or used everything, we are done
-      if (startIndex == 0 || amount <= 0) {
-        return resume;
-      }
-
-      // if we started from the middle of the list and still have data, cycle back around
-      resume = updateMetalminds(metalminds, drain, amount, 0);
-      // if we managed to cycle the entire list, then we are filling everything, so to make next tick more efficient restart from 0
-      if (resume >= startIndex) {
-        return 0;
-      }
-      return resume;
-    }
-
     /** Gets the tooltip to display for this active power */
     private void getTooltip(List<Component> tooltip) {
+      // tapping power to use investiture
+      if (!investitureStacks.isEmpty()) {
+        tooltip.add(Component.translatable(KEY_FERRING_TAP, id.getStores()).withStyle(ChatFormatting.BLUE));
+      }
+      // active tapping or storing effect
       int level = tapping - storing;
       if (level != 0) {
         refreshPower().getTooltip(player, level, tooltip);
       }
     }
+  }
+
+  /** Consumer to perform no action on level remove */
+  private static final IntConsumer NO_ACTION = i -> {};
+
+  /** Updates the amount in the list of metalminds */
+  private static int updateMetalminds(List<MetalmindStack> metalminds, boolean drain, int amount, int startIndex, IntConsumer onRemove) {
+    // if the index is out of bounds, just start from the beginning
+    if (startIndex >= metalminds.size()) {
+      startIndex = 0;
+    }
+
+    ListIterator<MetalmindStack> iterator = metalminds.listIterator(startIndex);
+    int resume = 0;
+    while (iterator.hasNext()) {
+      MetalmindStack stack = iterator.next();
+      int oldLevel = stack.level;
+
+      // drain the amount from the stack
+      if (drain) {
+        amount -= stack.drain(amount);
+      } else {
+        amount -= stack.fill(amount);
+      }
+
+      // if the stack level changed to 0, remove it
+      if (stack.level == 0) {
+        iterator.remove();
+        onRemove.accept(oldLevel);
+      }
+      // if we ran out of stuff to process, done
+      if (amount <= 0) {
+        // mark where we left off to resume for next time
+        resume = iterator.nextIndex();
+        break;
+      }
+    }
+
+    // if we started from 0 or used everything, we are done
+    if (startIndex == 0 || amount <= 0) {
+      return resume;
+    }
+
+    // if we started from the middle of the list and still have data, cycle back around
+    resume = updateMetalminds(metalminds, drain, amount, 0, onRemove);
+    // if we managed to cycle the entire list, then we are filling everything, so to make next tick more efficient restart from 0
+    if (resume >= startIndex) {
+      return 0;
+    }
+    return resume;
   }
 }

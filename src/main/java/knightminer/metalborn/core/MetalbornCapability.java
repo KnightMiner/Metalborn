@@ -57,8 +57,8 @@ public class MetalbornCapability implements ICapabilitySerializable<CompoundTag>
 
   private MetalbornCapability(Player player) {
     this.player = player;
-    this.activeMetalminds = new ActiveMetalminds(player);
-    this.metalminds = new MetalmindInventory(this, activeMetalminds, player);
+    this.activeMetalminds = new ActiveMetalminds(this, player);
+    this.metalminds = new MetalmindInventory(this, player);
     this.spikes = new SpikeInventory(this, player);
   }
 
@@ -73,34 +73,21 @@ public class MetalbornCapability implements ICapabilitySerializable<CompoundTag>
   }
 
 
-  /* Metal ability */
-
-  @Override
-  public boolean canUse(MetalId metal) {
-    return getFerringType().equals(metal) || spikes.canUse(metal);
-  }
-
-  @Override
-  public void updatePower(MetalId metal, int index, int newLevel, int oldLevel) {
-    MetalmindStack stack = metalminds.getSlot(index);
-    if (stack != null) {
-      activeMetalminds.getMetal(metal).update(stack, newLevel, oldLevel);
-    }
-  }
-
-  @Override
-  public void onRemoved(MetalId metal) {
-    if (!canUse(metal)) {
-      activeMetalminds.onRemoved(metal);
-    }
-  }
+  /* Ferring */
 
   @Override
   public void setFerringType(MetalId metalId) {
-    if (ferringType != null && !ferringType.equals(metalId) && !spikes.canUse(metalId)) {
-      activeMetalminds.onRemoved(ferringType);
-    }
+    MetalId oldType = ferringType;
     ferringType = metalId;
+    if (oldType != null && !oldType.equals(metalId)) {
+      // stop storing the power if we were
+      if (activeMetalminds.isStoringFerring()) {
+        activeMetalminds.clearStoringFerring();
+      } else {
+        // notify that the ferring type is no longer available
+        onRemoved(oldType);
+      }
+    }
   }
 
   @Override
@@ -112,18 +99,74 @@ public class MetalbornCapability implements ICapabilitySerializable<CompoundTag>
   }
 
   @Override
+  public void storeFerring(int index) {
+    // find the stack and store that
+    MetalmindStack stack = metalminds.getSlot(index);
+    if (stack != null) {
+      activeMetalminds.storeFerring(stack);
+    }
+  }
+
+  @Override
+  public void stopStoringFerring(int index) {
+    // find the stack and store that
+    MetalmindStack stack = metalminds.getSlot(index);
+    if (stack != null) {
+      activeMetalminds.stopStoringFerring(stack);
+    }
+  }
+
+
+  /* Metal powers */
+
+  @Override
+  public boolean canUse(MetalId metal) {
+    // can use our ferring type (which may need to be computed) as long as not storing it
+    return (!activeMetalminds.isStoringFerring() && getFerringType().equals(metal))
+      // can use any power granted by a spike or metalmind
+      || spikes.canUse(metal) || activeMetalminds.canUse(metal);
+  }
+
+  @Override
+  public void updatePower(MetalId metal, int index, int newLevel, int oldLevel) {
+    MetalmindStack stack = metalminds.getSlot(index);
+    if (stack != null) {
+      activeMetalminds.getMetal(metal).update(stack, newLevel, oldLevel);
+    }
+  }
+
+  /**
+   * Called when a source of a metal is removed to deactivate the related power.
+   * No need to check if the metal is still usable via {@link #canUse(MetalId)} before calling, that will be checked internally.
+   */
+  public void onRemoved(MetalId metal) {
+    if (!canUse(metal)) {
+      activeMetalminds.onRemoved(metal);
+    }
+  }
+
+  @Override
+  public void grantPower(MetalId metal, int index) {
+    MetalmindStack stack = metalminds.getSlot(index);
+    if (stack != null) {
+      activeMetalminds.getMetal(metal).grantPower(stack);
+    }
+  }
+
+  @Override
+  public void revokePower(MetalId metal, int index) {
+    MetalmindStack stack = metalminds.getSlot(index);
+    if (stack != null) {
+      activeMetalminds.getMetal(metal).revokePower(stack);
+    }
+  }
+
+
+  /* Inventory */
+
+  @Override
   public void tick() {
     activeMetalminds.tick();
-  }
-
-  @Override
-  public void getFeruchemyTooltip(List<Component> tooltip) {
-    activeMetalminds.getTooltip(tooltip);
-  }
-
-  @Override
-  public void getHemalurgyTooltip(List<Component> tooltip) {
-    spikes.getTooltip(tooltip);
   }
 
   @Override
@@ -137,8 +180,22 @@ public class MetalbornCapability implements ICapabilitySerializable<CompoundTag>
     spikes.dropItems(player, drops);
   }
 
+
+  /* Menu */
+
+  @Override
+  public void getFeruchemyTooltip(List<Component> tooltip) {
+    activeMetalminds.getTooltip(tooltip);
+  }
+
+  @Override
+  public void getHemalurgyTooltip(List<Component> tooltip) {
+    spikes.getTooltip(tooltip);
+  }
+
   @Override
   public void clear() {
+    activeMetalminds.clear();
     metalminds.clear();
     spikes.clear();
   }
@@ -158,6 +215,9 @@ public class MetalbornCapability implements ICapabilitySerializable<CompoundTag>
       if (!wasDeath) {
         this.ferringType = other.ferringType;
       }
+      this.activeMetalminds.clear();
+      // there may be some redundant work as all the metalminds are copied over
+      // however, it did not seem work having a suppress updates part of the API when this is rarely called
       this.metalminds.copyFrom(other.metalminds);
       this.spikes.copyFrom(other.spikes);
     }
@@ -193,15 +253,11 @@ public class MetalbornCapability implements ICapabilitySerializable<CompoundTag>
     if (nbt.contains(FERRING_TYPE, Tag.TAG_STRING)) {
       this.ferringType = MetalId.tryParse(nbt.getString(FERRING_TYPE));
     }
-    // important that spikes are deserialized before metalminds as they determine what may be tapped
-    if (nbt.contains(SPIKES, Tag.TAG_LIST)) {
-      this.spikes.deserializeNBT(nbt.getList(SPIKES, Tag.TAG_COMPOUND));
-      this.spikes.refreshActive();
-    }
-    if (nbt.contains(METALMINDS, Tag.TAG_LIST)) {
-      this.metalminds.deserializeNBT(nbt.getList(METALMINDS, Tag.TAG_COMPOUND));
-      this.metalminds.refreshActive();
-    }
+    // clear any active powers, ensures we don't apply double effects upon refreshing metalminds
+    this.activeMetalminds.clear();
+    // read both inventories from NBT, this will automatically update any relevant effects
+    this.spikes.deserializeNBT(nbt.getList(SPIKES, Tag.TAG_COMPOUND));
+    this.metalminds.deserializeNBT(nbt.getList(METALMINDS, Tag.TAG_COMPOUND));
   }
 
 

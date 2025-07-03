@@ -7,7 +7,7 @@ import knightminer.metalborn.metal.MetalId;
 public class MetalIds {
   private MetalIds() {}
 
-  // core
+  // metalminds
   public static final MetalId iron = id("iron");
   public static final MetalId steel = id("steel");
   public static final MetalId tin = id("tin");
@@ -16,6 +16,10 @@ public class MetalIds {
   public static final MetalId bronze = id("bronze");
   public static final MetalId gold = id("gold");
   public static final MetalId roseGold = id("rose_gold");
+
+  // textures
+  public static final MetalId netherite = id("netherite");
+
   // general compat
   public static final MetalId silver = id("silver");
   public static final MetalId electrum = id("electrum");

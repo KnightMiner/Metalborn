@@ -43,7 +43,7 @@ public class ItemModelProvider extends net.minecraftforge.client.model.generator
     metal(Registration.BRONZE, MetalIds.bronze);
     metal(Registration.ROSE_GOLD, MetalIds.roseGold);
     nugget(Registration.COPPER_NUGGET, MetalIds.copper);
-    basicItem(Registration.NETHERITE_NUGGET, "netherite_nugget");
+    nugget(Registration.NETHERITE_NUGGET, MetalIds.netherite);
     basicItem(Registration.LERASIUM_NUGGET, "lerasium_nugget");
     // lerasium alloy wants to have a mixture of the two colors so it's not mistaken for a normal nugget, so part is untinted
     customModel(Registration.LERASIUM_ALLOY_NUGGET, false)
@@ -54,6 +54,9 @@ public class ItemModelProvider extends net.minecraftforge.client.model.generator
       .paletted(FERUCHEMY_METALS, MetalItem.TAG_METAL);
     metal(Registration.BRACER, "metal/item/bracer", true);
     metal(Registration.RING, "metal/item/ring", false);
+    // investiture metalminds just use netherite directly
+    metalItem(Registration.INVESTITURE_BRACER, "bracer", MetalIds.netherite);
+    metalItem(Registration.INVESTITURE_RING, "ring", MetalIds.netherite);
     // spikes we want to rotate the in hand model 180 degrees so it points out
     metal(Registration.SPIKE, "metal/item/spike", true).end().transforms()
       .transform(ItemDisplayContext.FIRST_PERSON_LEFT_HAND).rotation(0, -90, -25).translation(1.13f, 3.2f, 1.13f).scale(0.68f, 0.68f, 0.68f).end()
@@ -91,9 +94,14 @@ public class ItemModelProvider extends net.minecraftforge.client.model.generator
     getBuilder(path).parent(GENERATED).texture("layer0", texture);
   }
 
+  /** Adds a basic metal item */
+  private void metalItem(IdAwareObject item, String name, MetalId metal) {
+    metalItem(item.getId().getPath(), name, metal);
+  }
+
   /** Adds a nugget model */
   private void nugget(IdAwareObject item, MetalId metal) {
-    metalItem(item.getId().getPath(), "nugget", metal);
+    metalItem(item, "nugget", metal);
   }
 
   /** Generated ingots and nuggets for the given metal object */

@@ -49,6 +49,11 @@
   "metal_power.metalborn.rose_gold.ferring": "??",
   "metal_power.metalborn.rose_gold.target": "Slimes",
 
+  "metal_power.metalborn.investiture": "Netherite",
+  "metal_power.metalborn.investiture.stores": "Investiture",
+  "metal_power.metalborn.investiture.ferring": "Soulbearer",
+  "metal_power.metalborn.investiture.target": "None",
+
 
   "_group_ores_": "",
 
@@ -91,13 +96,18 @@
   "item.metalborn.lerasium_alloy_nugget.on_consume": "Eat to become a %s ferring",
 
 
+  "_group_metal_": "",
+
   "item.metalborn.bracer": "Bracer",
   "item.metalborn.bracer.format": "%s Bracer",
+  "item.metalborn.investiture_bracer": "Netherite Bracer",
   "item.metalborn.ring": "Ring",
   "item.metalborn.ring.format": "%s Ring",
+  "item.metalborn.investiture_ring": "Netherite Ring",
 
   "item.metalborn.metalmind.metal_id": "Metal ID: %s",
   "item.metalborn.metalmind.stores": "Stores: %s",
+  "item.metalborn.metalmind.investiture": "Investiture: %s",
   "item.metalborn.metalmind.amount": "Stored: %s",
   "item.metalborn.metalmind.owner": "Owner: %s",
   "item.metalborn.metalmind.owner.none": "Unkeyed",
@@ -136,13 +146,18 @@
 
   "gui.metalborn.metalminds.effects": "Feruchemy Effects:",
   "gui.metalborn.metalminds.none": "No active metalminds",
+  "gui.metalborn.metalminds.investiture.tap": "Can store %s",
+  "gui.metalborn.metalminds.investiture.store": "Cannot store %s",
+
   "gui.metalborn.spikes.effects": "Hemalurgy Effects:",
   "gui.metalborn.spikes.none": "No spikes",
   "gui.metalborn.spikes.grants": "Can store %s",
+
   "gui.metalborn.tap.start": "Tap %s",
   "gui.metalborn.store.start": "Store %s",
   "gui.metalborn.tap.stop": "Stop Tapping %s",
   "gui.metalborn.store.stop": "Stop Storing %s",
+
   "key.metalborn.binding": "Metalborn",
   "key.categories.metalborn": "Metalborn",
 

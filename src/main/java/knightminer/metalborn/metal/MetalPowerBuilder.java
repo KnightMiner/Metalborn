@@ -103,7 +103,7 @@ public class MetalPowerBuilder {
   /** Builds the instance with fewer checks */
   @CheckReturnValue
   private MetalPower buildInternal() {
-    return new MetalPower(id, name, index, ferring, feruchemy, feruchemy.isEmpty() ? 0 : capacity, format, hemalurgyCharge, temperature);
+    return new MetalPower(id, name, index, ferring, feruchemy, capacity, format, hemalurgyCharge, temperature);
   }
 
   /** Builds the final power */

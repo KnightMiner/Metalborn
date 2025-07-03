@@ -111,6 +111,7 @@ public abstract class MetalInventory<T extends StackHolder<T>> implements IItemH
         current.deserializeNBT(tag);
       }
     }
+    refreshActive();
   }
 
   /** Attempts to equip the given item */
@@ -141,7 +142,7 @@ public abstract class MetalInventory<T extends StackHolder<T>> implements IItemH
   }
 
   /** Refreshes the properties of this inventory */
-  public abstract void refreshActive();
+  protected abstract void refreshActive();
 
   /** Clears the inventory */
   public void clear() {

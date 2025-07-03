@@ -3,7 +3,7 @@ package knightminer.metalborn.core.inventory;
 import com.google.common.collect.HashMultiset;
 import com.google.common.collect.Multiset;
 import knightminer.metalborn.Metalborn;
-import knightminer.metalborn.core.MetalbornData;
+import knightminer.metalborn.core.MetalbornCapability;
 import knightminer.metalborn.core.Registration;
 import knightminer.metalborn.core.inventory.SpikeInventory.SpikeStack;
 import knightminer.metalborn.item.Spike;
@@ -34,11 +34,11 @@ public class SpikeInventory extends MetalInventory<SpikeStack> {
   private static final int HEALTH_PER_SPIKE = 2;
   /** Language key for the power granting list */
 
-  private final MetalbornData data;
+  private final MetalbornCapability data;
   private final LivingEntity entity;
   private final Multiset<MetalId> extraPowers = HashMultiset.create();
   private int lastSize = 0;
-  public SpikeInventory(MetalbornData data, LivingEntity entity) {
+  public SpikeInventory(MetalbornCapability data, LivingEntity entity) {
     this.data = data;
     this.entity = entity;
     this.inventory = IntStream.range(0, 4).mapToObj(i -> new SpikeStack()).toList();
@@ -85,7 +85,7 @@ public class SpikeInventory extends MetalInventory<SpikeStack> {
   }
 
   @Override
-  public void refreshActive() {
+  protected void refreshActive() {
     extraPowers.clear();
     for (SpikeStack stack : inventory) {
       if (!stack.stack.isEmpty()) {

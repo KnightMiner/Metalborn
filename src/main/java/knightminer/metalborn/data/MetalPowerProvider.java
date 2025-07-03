@@ -1,6 +1,7 @@
 package knightminer.metalborn.data;
 
 import knightminer.metalborn.core.Registration;
+import knightminer.metalborn.item.InvestitureMetalmindItem;
 import knightminer.metalborn.metal.AbstractMetalPowerProvider;
 import knightminer.metalborn.metal.MetalFormat;
 import knightminer.metalborn.metal.effects.AttributeMetalEffect;
@@ -54,6 +55,9 @@ public class MetalPowerProvider extends AbstractMetalPowerProvider {
     metal(MetalIds.roseGold).index(8).temperature(550)
       .feruchemy(AttributeMetalEffect.builder(Attributes.MAX_HEALTH, Operation.ADDITION).eachLevel(2))
       .feruchemy(UpdateHealthEffect.INSTANCE);
+
+    // special - does not use standard metal effects but wants capacity and alike
+    metal(InvestitureMetalmindItem.METAL).name("netherite").index(16).temperature(1250).hemalurgyCharge(0);
 
     // compat
     // TODO: silver

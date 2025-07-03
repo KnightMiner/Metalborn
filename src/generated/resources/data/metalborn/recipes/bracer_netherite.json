@@ -1,0 +1,15 @@
+{
+  "type": "metalborn:shaped_forge",
+  "cooking_time": 400,
+  "experience": 2.0,
+  "key": {
+    "#": {
+      "tag": "forge:ingots/netherite"
+    }
+  },
+  "pattern": [
+    "##",
+    "##"
+  ],
+  "result": "metalborn:investiture_bracer"
+}

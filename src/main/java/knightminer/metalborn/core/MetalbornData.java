@@ -15,6 +15,8 @@ import java.util.List;
 /** Base interface for metalborn capability. Allows having a read only empty instance and a writable player instance */
 @NonExtendable
 public interface MetalbornData extends INBTSerializable<CompoundTag> {
+  /* Ferring */
+
   /** Sets the ferring metal type */
   default void setFerringType(MetalId metalId) {}
 
@@ -26,6 +28,21 @@ public interface MetalbornData extends INBTSerializable<CompoundTag> {
     return MetalId.NONE;
   }
 
+  /**
+   * Updates the index currently storing ferring power.
+   * @param index  Index to store, or -1 to stop storing.
+   */
+  default void storeFerring(int index) {}
+
+  /**
+   * Updates the index currently storing ferring power.
+   * @param index  Index to store, or -1 to stop storing.
+   */
+  default void stopStoringFerring(int index) {}
+
+
+  /* Powers */
+
   /** Checks if the given metal can be used */
   default boolean canUse(MetalId metal) {
     return false;
@@ -34,11 +51,14 @@ public interface MetalbornData extends INBTSerializable<CompoundTag> {
   /** Called to update standard metal effects for the given metal */
   default void updatePower(MetalId metal, int index, int newLevel, int oldLevel) {}
 
-  /**
-   * Called when a source of a metal is removed to deactivate the related power.
-   * No need to check if the metal is still usable via {@link #canUse(MetalId)} before calling, that will be checked internally.
-   */
-  default void onRemoved(MetalId metal) {}
+  /** Called to start granting a power from the given index */
+  default void grantPower(MetalId metal, int index) {}
+
+  /** Called to stop granting a power from the given index */
+  default void revokePower(MetalId metal, int index) {}
+
+
+  /* Inventory */
 
   /**
    * Attempts to add the given item to the metalborn inventory.
@@ -60,6 +80,9 @@ public interface MetalbornData extends INBTSerializable<CompoundTag> {
   /** Ticks all effects */
   default void tick() {}
 
+
+  /* Menu */
+
   /** Gets the tooltip for display in the screen */
   default void getFeruchemyTooltip(List<Component> tooltip) {}
 
@@ -68,6 +91,7 @@ public interface MetalbornData extends INBTSerializable<CompoundTag> {
 
   /** Called client side to clear old data when the inventory is opened */
   default void clear() {}
+
 
   /** Empty instance for defaulting data related methods */
   MetalbornData EMPTY = new MetalbornData() {

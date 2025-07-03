@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:item/generated",
   "textures": {
-    "layer0": "metalborn:item/netherite_nugget"
+    "layer0": "metalborn:metal/item/nugget_metalborn_netherite"
   }
 }

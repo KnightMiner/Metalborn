@@ -65,7 +65,7 @@ public interface Metalmind {
    * @param amount  Amount to fill. Always positive.
    * @return Amount actually filled.
    */
-  default int fill(ItemStack stack, Player player, int amount) {
+  default int fill(ItemStack stack, Player player, int amount, MetalbornData data) {
     return 0;
   }
 
@@ -76,7 +76,7 @@ public interface Metalmind {
    * @param amount  Amount to drain. Always positive
    * @return Amount Actually drained.
    */
-  default int drain(ItemStack stack, Player player, int amount) {
+  default int drain(ItemStack stack, Player player, int amount, MetalbornData data) {
     return 0;
   }
 

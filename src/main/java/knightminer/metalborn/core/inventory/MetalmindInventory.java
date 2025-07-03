@@ -19,12 +19,10 @@ import java.util.stream.IntStream;
 /** Inventory of metalminds held on the player */
 public class MetalmindInventory extends MetalInventory<MetalmindStack> implements IItemHandlerModifiable, INBTSerializable<ListTag>, ContainerData {
   private final MetalbornData data;
-  private final ActiveMetalminds active;
   private final Player player;
 
-  public MetalmindInventory(MetalbornData data, ActiveMetalminds active, Player player) {
+  public MetalmindInventory(MetalbornData data, Player player) {
     this.data = data;
-    this.active = active;
     this.player = player;
     this.inventory = IntStream.range(0, 10).mapToObj(MetalmindStack::new).toList();
   }
@@ -52,18 +50,10 @@ public class MetalmindInventory extends MetalInventory<MetalmindStack> implement
   }
 
   @Override
-  public void refreshActive() {
-    active.clear();
+  protected void refreshActive() {
     for (MetalmindStack stack : inventory) {
       stack.refresh();
     }
-    active.refresh();
-  }
-
-  @Override
-  public void clear() {
-    super.clear();
-    active.clear();
   }
 
   @Override
@@ -90,7 +80,7 @@ public class MetalmindInventory extends MetalInventory<MetalmindStack> implement
   public class MetalmindStack extends StackHolder<MetalmindStack> {
     private final int index;
     private Metalmind metalmind = Metalmind.EMPTY;
-    private int level = 0;
+    int level = 0;
 
     public MetalmindStack(int index) {
       this.index = index;
@@ -130,7 +120,6 @@ public class MetalmindInventory extends MetalInventory<MetalmindStack> implement
       // if we are currently tapping or storing, stop as something changed
       if (level != 0 && (this.stack.getItem() != stack.getItem() || !this.metalmind.isSamePower(this.stack, stack))) {
         onUpdate(0, level);
-        active.refresh();
         level = 0;
       }
       this.stack = stack;
@@ -157,7 +146,6 @@ public class MetalmindInventory extends MetalInventory<MetalmindStack> implement
         } else {
           level = 0;
         }
-        active.refresh();
       }
     }
 
