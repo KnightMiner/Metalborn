@@ -1,7 +1,8 @@
-package knightminer.metalborn.item;
+package knightminer.metalborn.item.metalmind;
 
 import knightminer.metalborn.Metalborn;
 import knightminer.metalborn.core.MetalbornData;
+import knightminer.metalborn.item.MetalItem;
 import knightminer.metalborn.metal.MetalId;
 import knightminer.metalborn.metal.MetalManager;
 import net.minecraft.ChatFormatting;

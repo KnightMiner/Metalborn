@@ -1,7 +1,7 @@
 package knightminer.metalborn.data;
 
 import knightminer.metalborn.core.Registration;
-import knightminer.metalborn.item.InvestitureMetalmindItem;
+import knightminer.metalborn.item.metalmind.InvestitureMetalmindItem;
 import knightminer.metalborn.metal.AbstractMetalPowerProvider;
 import knightminer.metalborn.metal.MetalFormat;
 import knightminer.metalborn.metal.effects.AttributeMetalEffect;

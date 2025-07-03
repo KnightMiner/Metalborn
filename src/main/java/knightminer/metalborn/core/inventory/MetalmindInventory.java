@@ -3,7 +3,7 @@ package knightminer.metalborn.core.inventory;
 import knightminer.metalborn.core.MetalbornData;
 import knightminer.metalborn.core.Registration;
 import knightminer.metalborn.core.inventory.MetalmindInventory.MetalmindStack;
-import knightminer.metalborn.item.Metalmind;
+import knightminer.metalborn.item.metalmind.Metalmind;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.network.chat.Component;

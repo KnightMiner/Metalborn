@@ -1,4 +1,4 @@
-package knightminer.metalborn.item;
+package knightminer.metalborn.item.metalmind;
 
 import knightminer.metalborn.Metalborn;
 import knightminer.metalborn.core.MetalbornData;

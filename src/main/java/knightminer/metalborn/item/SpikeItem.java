@@ -5,6 +5,7 @@ import com.google.common.collect.Multimap;
 import knightminer.metalborn.Metalborn;
 import knightminer.metalborn.core.MetalbornData;
 import knightminer.metalborn.core.Registration;
+import knightminer.metalborn.item.metalmind.MetalmindItem;
 import knightminer.metalborn.metal.MetalId;
 import knightminer.metalborn.metal.MetalManager;
 import knightminer.metalborn.metal.MetalPower;
@@ -29,7 +30,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.List;
 import java.util.function.Consumer;
 
-import static knightminer.metalborn.item.MetalmindItem.TAG_AMOUNT;
+import static knightminer.metalborn.item.metalmind.MetalmindItem.TAG_AMOUNT;
 
 /** Represents a hemalurgic spike, which can be filled with power from monsters */
 public class SpikeItem extends Item implements MetalItem, Spike {
