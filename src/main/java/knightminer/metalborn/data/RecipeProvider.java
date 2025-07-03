@@ -18,6 +18,7 @@ import net.minecraft.data.recipes.RecipeCategory;
 import net.minecraft.data.recipes.ShapedRecipeBuilder;
 import net.minecraft.data.recipes.SimpleCookingRecipeBuilder;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.tags.FluidTags;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
@@ -27,6 +28,7 @@ import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.material.Fluid;
 import net.minecraftforge.common.Tags;
 import net.minecraftforge.common.crafting.ConditionalRecipe;
 import net.minecraftforge.common.crafting.conditions.ICondition;
@@ -211,9 +213,16 @@ public class RecipeProvider extends net.minecraft.data.recipes.RecipeProvider im
     // casting
     int ingot = 90;
     int nugget = 10;
-    metalMeltingCasting(consumer, Registration.RING,   Registration.RING_CAST,   MetalFilter.METALMIND, nugget * 4, tinkersFolder);
-    metalMeltingCasting(consumer, Registration.BRACER, Registration.BRACER_CAST, MetalFilter.METALMIND, ingot * 4,  tinkersFolder);
-    metalMeltingCasting(consumer, Registration.SPIKE,  Registration.SPIKE_CAST,  MetalFilter.SPIKE,     ingot * 2,  tinkersFolder);
+    // standard metal items
+    metalMeltingCasting(consumer, Registration.RING,   List.of(Registration.INVESTITURE_RING),   Registration.RING_CAST,   MetalFilter.METALMIND, nugget * 4, tinkersFolder);
+    metalMeltingCasting(consumer, Registration.BRACER, List.of(Registration.INVESTITURE_BRACER), Registration.BRACER_CAST, MetalFilter.METALMIND, ingot * 4,  tinkersFolder);
+    metalMeltingCasting(consumer, Registration.SPIKE,  List.of(),                                Registration.SPIKE_CAST,  MetalFilter.SPIKE,     ingot * 2,  tinkersFolder);
+    // special metalminds
+    TagKey<Fluid> netherite = FluidTags.create(commonResource("molten_netherite"));
+    int netheriteTemperature = 1250;
+    TinkersMockRecipeBuilder.meltingCasting(consumer, Registration.INVESTITURE_RING,   Registration.RING_CAST,   netherite, nugget * 4, netheriteTemperature, tinkersFolder + "ring/investiture/");
+    TinkersMockRecipeBuilder.meltingCasting(consumer, Registration.INVESTITURE_BRACER, Registration.BRACER_CAST, netherite, ingot * 4,  netheriteTemperature, tinkersFolder + "bracer/investiture/");
+
     // lerasium alloy nugget casting - don't think molten lerasium is the best idea so just do it via composite
     MetalCastingRecipeBuilder.table(Registration.LERASIUM_ALLOY_NUGGET)
       .setCast(Ingredient.of(Registration.LERASIUM_NUGGET), true)
@@ -249,7 +258,7 @@ public class RecipeProvider extends net.minecraft.data.recipes.RecipeProvider im
   }
 
   /** Adds a recipe for casting a metal object, like a metalmind */
-  private <T extends ItemLike & IdAwareObject> void metalMeltingCasting(Consumer<FinishedRecipe> consumer, T result, CastItemObject cast, MetalFilter filter, int amount, String folder) {
+  private <T extends ItemLike & IdAwareObject> void metalMeltingCasting(Consumer<FinishedRecipe> consumer, T result, List<ItemLike> otherItems, CastItemObject cast, MetalFilter filter, int amount, String folder) {
     // casting
     MetalCastingRecipeBuilder.table(result)
       .setCast(Ingredient.of(cast.getMultiUseTag()), false)
@@ -266,6 +275,6 @@ public class RecipeProvider extends net.minecraft.data.recipes.RecipeProvider im
     MetalMeltingRecipeBuilder.melting(MetalItemIngredient.of(result, filter), amount).save(consumer, wrap(result, folder, "/melting"));
 
     // cast creation
-    TinkersMockRecipeBuilder.castRecipes(consumer, result, cast, filter, Math.max(1, amount / 90), folder);
+    TinkersMockRecipeBuilder.castRecipes(consumer, result, otherItems, cast, filter, Math.max(1, amount / 90), folder);
   }
 }

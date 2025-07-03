@@ -9,10 +9,15 @@
   "material": {
     "tag": "tconstruct:casts/red_sand"
   },
-  "pattern": {
-    "type": "metalborn:metal_item",
-    "filter": "metalmind",
-    "item": "metalborn:bracer"
-  },
+  "pattern": [
+    {
+      "type": "metalborn:metal_item",
+      "filter": "metalmind",
+      "item": "metalborn:bracer"
+    },
+    {
+      "item": "metalborn:investiture_bracer"
+    }
+  ],
   "result": "metalborn:bracer_red_sand_cast"
 }

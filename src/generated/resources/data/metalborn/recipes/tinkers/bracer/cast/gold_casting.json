@@ -1,10 +1,15 @@
 {
   "type": "tconstruct:casting_table",
-  "cast": {
-    "type": "metalborn:metal_item",
-    "filter": "metalmind",
-    "item": "metalborn:bracer"
-  },
+  "cast": [
+    {
+      "type": "metalborn:metal_item",
+      "filter": "metalmind",
+      "item": "metalborn:bracer"
+    },
+    {
+      "item": "metalborn:investiture_bracer"
+    }
+  ],
   "cast_consumed": true,
   "conditions": [
     {
@@ -15,7 +20,7 @@
   "cooling_time": 57,
   "fluid": {
     "amount": 90,
-    "tag": "tconstruct:molten_gold"
+    "tag": "forge:molten_gold"
   },
   "result": "metalborn:bracer_gold_cast",
   "switch_slots": true

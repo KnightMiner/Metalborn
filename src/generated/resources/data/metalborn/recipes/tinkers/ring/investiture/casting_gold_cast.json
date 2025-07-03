@@ -1,0 +1,20 @@
+{
+  "type": "tconstruct:casting_table",
+  "cast": {
+    "tag": "metalborn:casts/ring_multi_use"
+  },
+  "cast_consumed": false,
+  "conditions": [
+    {
+      "type": "forge:mod_loaded",
+      "modid": "tconstruct"
+    }
+  ],
+  "cooling_time": 49,
+  "fluid": {
+    "amount": 40,
+    "tag": "forge:molten_netherite"
+  },
+  "result": "metalborn:investiture_ring",
+  "switch_slots": false
+}

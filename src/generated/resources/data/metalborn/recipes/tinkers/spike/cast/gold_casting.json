@@ -15,7 +15,7 @@
   "cooling_time": 57,
   "fluid": {
     "amount": 90,
-    "tag": "tconstruct:molten_gold"
+    "tag": "forge:molten_gold"
   },
   "result": "metalborn:spike_gold_cast",
   "switch_slots": true

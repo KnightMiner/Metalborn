@@ -1,0 +1,18 @@
+{
+  "type": "tconstruct:melting",
+  "conditions": [
+    {
+      "type": "forge:mod_loaded",
+      "modid": "tconstruct"
+    }
+  ],
+  "ingredient": {
+    "item": "metalborn:investiture_bracer"
+  },
+  "result": {
+    "amount": 360,
+    "tag": "forge:molten_netherite"
+  },
+  "temperature": 1250,
+  "time": 147
+}

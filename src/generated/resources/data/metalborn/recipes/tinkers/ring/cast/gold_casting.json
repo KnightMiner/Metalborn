@@ -1,10 +1,15 @@
 {
   "type": "tconstruct:casting_table",
-  "cast": {
-    "type": "metalborn:metal_item",
-    "filter": "metalmind",
-    "item": "metalborn:ring"
-  },
+  "cast": [
+    {
+      "type": "metalborn:metal_item",
+      "filter": "metalmind",
+      "item": "metalborn:ring"
+    },
+    {
+      "item": "metalborn:investiture_ring"
+    }
+  ],
   "cast_consumed": true,
   "conditions": [
     {
@@ -15,7 +20,7 @@
   "cooling_time": 57,
   "fluid": {
     "amount": 90,
-    "tag": "tconstruct:molten_gold"
+    "tag": "forge:molten_gold"
   },
   "result": "metalborn:ring_gold_cast",
   "switch_slots": true

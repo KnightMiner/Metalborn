@@ -1,0 +1,20 @@
+{
+  "type": "tconstruct:casting_table",
+  "cast": {
+    "tag": "metalborn:casts/bracer_single_use"
+  },
+  "cast_consumed": true,
+  "conditions": [
+    {
+      "type": "forge:mod_loaded",
+      "modid": "tconstruct"
+    }
+  ],
+  "cooling_time": 147,
+  "fluid": {
+    "amount": 360,
+    "tag": "forge:molten_netherite"
+  },
+  "result": "metalborn:investiture_bracer",
+  "switch_slots": false
+}

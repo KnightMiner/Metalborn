@@ -9,10 +9,15 @@
   "material": {
     "tag": "tconstruct:casts/red_sand"
   },
-  "pattern": {
-    "type": "metalborn:metal_item",
-    "filter": "metalmind",
-    "item": "metalborn:ring"
-  },
+  "pattern": [
+    {
+      "type": "metalborn:metal_item",
+      "filter": "metalmind",
+      "item": "metalborn:ring"
+    },
+    {
+      "item": "metalborn:investiture_ring"
+    }
+  ],
   "result": "metalborn:ring_red_sand_cast"
 }

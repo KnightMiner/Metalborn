@@ -1,0 +1,18 @@
+{
+  "type": "tconstruct:melting",
+  "conditions": [
+    {
+      "type": "forge:mod_loaded",
+      "modid": "tconstruct"
+    }
+  ],
+  "ingredient": {
+    "item": "metalborn:investiture_ring"
+  },
+  "result": {
+    "amount": 40,
+    "tag": "forge:molten_netherite"
+  },
+  "temperature": 1250,
+  "time": 49
+}
