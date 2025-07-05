@@ -12,6 +12,7 @@ import knightminer.metalborn.item.metalmind.InvestitureMetalmindItem;
 import knightminer.metalborn.item.metalmind.MetalmindItem;
 import knightminer.metalborn.item.metalmind.PowerMetalmindItem;
 import knightminer.metalborn.item.metalmind.UnsealedMetalmindItem;
+import knightminer.metalborn.json.ConfigEnabledCondition;
 import knightminer.metalborn.json.ingredient.MetalIngredient;
 import knightminer.metalborn.json.ingredient.MetalItemIngredient;
 import knightminer.metalborn.json.loot.ApplyDropChanceLootModifier;
@@ -208,6 +209,7 @@ public class Registration {
   public static final CastItemObject SPIKE_CAST = ITEMS.registerCast("spike");
 
   // loot
+  public static final RegistryObject<LootItemConditionType> CONFIG = LOOT_CONDITIONS.register("config", () -> new LootItemConditionType(ConfigEnabledCondition.Serializer.INSTANCE));
   public static final RegistryObject<LootItemConditionType> HAS_LOOT_CONTEXT_SET = LOOT_CONDITIONS.register("has_context_set", () -> new LootItemConditionType(new HasLootContextSetCondition.Serializer()));
 
 
@@ -225,6 +227,7 @@ public class Registration {
       // ingredients
       CraftingHelper.register(MetalIngredient.ID, MetalIngredient.SERIALIZER);
       CraftingHelper.register(MetalItemIngredient.ID, MetalItemIngredient.SERIALIZER);
+      CraftingHelper.register(ConfigEnabledCondition.Serializer.INSTANCE);
 
     // creative tabs
     } else if (key == Registries.CREATIVE_MODE_TAB) {

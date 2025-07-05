@@ -2,6 +2,7 @@ package knightminer.metalborn;
 
 import knightminer.metalborn.client.MetalbornClient;
 import knightminer.metalborn.command.MetalbornCommand;
+import knightminer.metalborn.core.Config;
 import knightminer.metalborn.core.MetalbornCapability;
 import knightminer.metalborn.core.Registration;
 import knightminer.metalborn.data.BlockLootTableProvider;
@@ -35,7 +36,9 @@ import net.minecraftforge.data.event.GatherDataEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.fml.ModList;
+import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.config.ModConfig.Type;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import org.apache.logging.log4j.LogManager;
@@ -56,6 +59,7 @@ public class Metalborn {
   public static final String TINKERS = "tconstruct";
 
   public Metalborn() {
+    ModLoadingContext.get().registerConfig(Type.COMMON, Config.COMMON_SPEC);
     MetalbornNetwork.setup();
     MetalManager.INSTANCE.init();
     Registration.init();

@@ -4,10 +4,12 @@ import com.google.errorprone.annotations.CanIgnoreReturnValue;
 import com.google.errorprone.annotations.CheckReturnValue;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
+import knightminer.metalborn.json.ConfigEnabledCondition;
 import knightminer.metalborn.metal.effects.MetalEffect;
 import net.minecraft.tags.ItemTags;
 import net.minecraftforge.common.crafting.CraftingHelper;
 import net.minecraftforge.common.crafting.conditions.ICondition;
+import net.minecraftforge.common.crafting.conditions.OrCondition;
 import slimeknights.mantle.Mantle;
 import slimeknights.mantle.recipe.condition.TagFilledCondition;
 
@@ -58,11 +60,12 @@ public class MetalPowerBuilder {
   }
 
   /** Sets the metal to be optional based on the ingot and nugget. Must run after {@link #name(String)} for best results (or use the default). */
-  public MetalPowerBuilder optional() {
-    // TODO: force enable condition for easier testing
-    condition(new TagFilledCondition<>(ItemTags.create(Mantle.commonResource("ingots/" + name))));
-    condition(new TagFilledCondition<>(ItemTags.create(Mantle.commonResource("nuggets/" + name))));
-    return this;
+  public MetalPowerBuilder integration() {
+    return condition(new OrCondition(
+      ConfigEnabledCondition.FORCE_INTEGRATION,
+      new TagFilledCondition<>(ItemTags.create(Mantle.commonResource("ingots/" + name))),
+      new TagFilledCondition<>(ItemTags.create(Mantle.commonResource("nuggets/" + name)))
+    ));
   }
 
 
