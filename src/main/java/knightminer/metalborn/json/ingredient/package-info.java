@@ -1,6 +1,6 @@
 @ParametersAreNonnullByDefault
 @MethodsReturnNonnullByDefault
-package knightminer.metalborn.recipe;
+package knightminer.metalborn.json.ingredient;
 
 import net.minecraft.MethodsReturnNonnullByDefault;
 

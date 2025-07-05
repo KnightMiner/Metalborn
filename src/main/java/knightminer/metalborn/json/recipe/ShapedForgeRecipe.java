@@ -1,4 +1,4 @@
-package knightminer.metalborn.recipe;
+package knightminer.metalborn.json.recipe;
 
 import com.google.gson.JsonObject;
 import com.mojang.datafixers.util.Function7;

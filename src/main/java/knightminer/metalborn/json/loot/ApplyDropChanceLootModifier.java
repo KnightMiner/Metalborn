@@ -1,4 +1,4 @@
-package knightminer.metalborn.loot;
+package knightminer.metalborn.json.loot;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;

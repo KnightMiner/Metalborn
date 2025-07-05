@@ -1,4 +1,4 @@
-package knightminer.metalborn.recipe;
+package knightminer.metalborn.json.ingredient;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
@@ -6,8 +6,8 @@ import it.unimi.dsi.fastutil.ints.IntArrayList;
 import it.unimi.dsi.fastutil.ints.IntList;
 import knightminer.metalborn.Metalborn;
 import knightminer.metalborn.item.MetalItem;
+import knightminer.metalborn.json.ingredient.MetalIngredient.MetalFilter;
 import knightminer.metalborn.metal.MetalManager;
-import knightminer.metalborn.recipe.MetalIngredient.MetalFilter;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;

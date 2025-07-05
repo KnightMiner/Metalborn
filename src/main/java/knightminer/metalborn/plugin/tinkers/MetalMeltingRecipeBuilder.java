@@ -2,8 +2,8 @@ package knightminer.metalborn.plugin.tinkers;
 
 import com.google.gson.JsonObject;
 import knightminer.metalborn.core.Registration;
-import knightminer.metalborn.recipe.MetalIngredient.MetalFilter;
-import knightminer.metalborn.recipe.MetalItemIngredient;
+import knightminer.metalborn.json.ingredient.MetalIngredient.MetalFilter;
+import knightminer.metalborn.json.ingredient.MetalItemIngredient;
 import net.minecraft.data.recipes.FinishedRecipe;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.crafting.Ingredient;

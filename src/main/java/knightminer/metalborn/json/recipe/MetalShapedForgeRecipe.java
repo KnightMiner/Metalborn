@@ -1,11 +1,12 @@
-package knightminer.metalborn.recipe;
+package knightminer.metalborn.json.recipe;
 
 import knightminer.metalborn.core.Registration;
 import knightminer.metalborn.item.MetalItem;
+import knightminer.metalborn.json.ingredient.MetalIngredient;
+import knightminer.metalborn.json.ingredient.MetalIngredient.MetalFilter;
 import knightminer.metalborn.metal.MetalId;
 import knightminer.metalborn.metal.MetalManager;
 import knightminer.metalborn.metal.MetalPower;
-import knightminer.metalborn.recipe.MetalIngredient.MetalFilter;
 import net.minecraft.core.NonNullList;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.resources.ResourceLocation;
@@ -36,7 +37,7 @@ public class MetalShapedForgeRecipe extends ShapedForgeRecipe {
   static Predicate<MetalPower> getMetalFilter(List<Ingredient> ingredients) {
     Set<MetalFilter> filters = ingredients.stream().flatMap(ingredient -> {
       if (ingredient instanceof MetalIngredient metal) {
-        return Stream.of(metal.filter);
+        return Stream.of(metal.getFilter());
       }
       return Stream.empty();
     }).collect(Collectors.toSet());

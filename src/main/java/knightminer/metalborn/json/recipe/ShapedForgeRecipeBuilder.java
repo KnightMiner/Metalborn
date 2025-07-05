@@ -1,8 +1,9 @@
-package knightminer.metalborn.recipe;
+package knightminer.metalborn.json.recipe;
 
 import com.google.common.collect.Sets;
 import com.google.gson.JsonObject;
 import knightminer.metalborn.core.Registration;
+import knightminer.metalborn.json.ingredient.MetalIngredient;
 import net.minecraft.data.recipes.FinishedRecipe;
 import net.minecraft.data.recipes.ShapedRecipeBuilder;
 import net.minecraft.resources.ResourceLocation;

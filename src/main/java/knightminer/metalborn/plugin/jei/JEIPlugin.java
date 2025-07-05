@@ -7,7 +7,7 @@ import knightminer.metalborn.item.MetalItem;
 import knightminer.metalborn.item.SpikeItem;
 import knightminer.metalborn.menu.ForgeMenu;
 import knightminer.metalborn.metal.MetalId;
-import knightminer.metalborn.recipe.ForgeRecipe;
+import knightminer.metalborn.json.recipe.ForgeRecipe;
 import mezz.jei.api.IModPlugin;
 import mezz.jei.api.JeiPlugin;
 import mezz.jei.api.ingredients.subtypes.IIngredientSubtypeInterpreter;

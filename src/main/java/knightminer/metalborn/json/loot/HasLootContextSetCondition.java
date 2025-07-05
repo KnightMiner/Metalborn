@@ -1,4 +1,4 @@
-package knightminer.metalborn.loot;
+package knightminer.metalborn.json.loot;
 
 import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonObject;

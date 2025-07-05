@@ -1,5 +1,6 @@
-package knightminer.metalborn.recipe;
+package knightminer.metalborn.json.recipe;
 
+import knightminer.metalborn.json.ingredient.MetalIngredient;
 import net.minecraft.core.NonNullList;
 import net.minecraft.data.recipes.FinishedRecipe;
 import net.minecraft.resources.ResourceLocation;

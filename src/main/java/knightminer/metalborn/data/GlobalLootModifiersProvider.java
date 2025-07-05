@@ -1,8 +1,8 @@
 package knightminer.metalborn.data;
 
 import knightminer.metalborn.Metalborn;
-import knightminer.metalborn.loot.ApplyDropChanceLootModifier;
-import knightminer.metalborn.loot.HasLootContextSetCondition;
+import knightminer.metalborn.json.loot.ApplyDropChanceLootModifier;
+import knightminer.metalborn.json.loot.HasLootContextSetCondition;
 import net.minecraft.data.PackOutput;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
 import net.minecraft.world.level.storage.loot.predicates.AnyOfCondition;

@@ -1,4 +1,4 @@
-package knightminer.metalborn.recipe;
+package knightminer.metalborn.json.recipe;
 
 import knightminer.metalborn.core.Registration;
 import net.minecraft.world.inventory.CraftingContainer;

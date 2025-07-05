@@ -1,6 +1,6 @@
 @ParametersAreNonnullByDefault
 @MethodsReturnNonnullByDefault
-package knightminer.metalborn.loot;
+package knightminer.metalborn.json.loot;
 
 import net.minecraft.MethodsReturnNonnullByDefault;
 

@@ -1,4 +1,4 @@
-package knightminer.metalborn.recipe;
+package knightminer.metalborn.json.ingredient;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
@@ -28,7 +28,7 @@ public class MetalIngredient extends AbstractIngredient {
 
   /** Shape to match, if null then any shape is valid */
   private final MetalShape shape;
-  final MetalFilter filter;
+  private final MetalFilter filter;
   private MetalIngredient(MetalShape shape, MetalFilter filter) {
     super(Stream.of(new MetalValue(shape, filter)));
     this.filter = filter;
@@ -45,6 +45,10 @@ public class MetalIngredient extends AbstractIngredient {
     return new MetalIngredient(MetalShape.NUGGET, filter);
   }
 
+  /** Gets the filter for this ingredient */
+  public MetalFilter getFilter() {
+    return filter;
+  }
 
   /** Gets the metal matched by the given stack */
   public MetalPower getMetal(ItemStack stack) {
