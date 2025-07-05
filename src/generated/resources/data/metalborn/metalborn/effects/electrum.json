@@ -1,0 +1,36 @@
+{
+  "allow_ferring": true,
+  "capacity": 6000,
+  "conditions": [
+    {
+      "type": "forge:or",
+      "values": [
+        {
+          "type": "metalborn:config",
+          "name": "force_integration"
+        },
+        {
+          "type": "mantle:tag_filled",
+          "tag": "forge:ingots/electrum"
+        },
+        {
+          "type": "mantle:tag_filled",
+          "tag": "forge:nuggets/electrum"
+        }
+      ]
+    }
+  ],
+  "feruchemy": [
+    {
+      "type": "metalborn:attribute",
+      "attribute": "metalborn:determination",
+      "multiplier": 0.1,
+      "operation": "multiply_total"
+    }
+  ],
+  "format": "ticks",
+  "hemalurgy_charge": 8,
+  "index": 10,
+  "name": "electrum",
+  "temperature": 760
+}

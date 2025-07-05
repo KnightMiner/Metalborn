@@ -5,6 +5,7 @@ import knightminer.metalborn.core.inventory.ActiveMetalminds;
 import knightminer.metalborn.metal.MetalManager;
 import knightminer.metalborn.metal.MetalPower;
 import net.minecraft.network.chat.Component;
+import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.LivingEntity;
@@ -19,6 +20,7 @@ import net.minecraftforge.event.TickEvent.PlayerTickEvent;
 import net.minecraftforge.event.entity.living.LivingDropsEvent;
 import net.minecraftforge.event.entity.living.LivingExperienceDropEvent;
 import net.minecraftforge.event.entity.living.LivingFallEvent;
+import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.event.entity.living.LivingKnockBackEvent;
 import net.minecraftforge.event.entity.living.LootingLevelEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
@@ -134,6 +136,25 @@ public class MetalbornHandler {
     Player player = event.getAttackingPlayer();
     if (player != null) {
       event.setDroppedExperience((int) Math.round(event.getDroppedExperience() * player.getAttributeValue(Registration.EXPERIENCE_MULTIPLIER.get())));
+    }
+  }
+
+  @SubscribeEvent
+  static void livingHurt(LivingHurtEvent event) {
+    LivingEntity entity = event.getEntity();
+    // value ranges from 0.05 to 1.95, interpreted as -0.95 to 0.95
+    double protection = entity.getAttributeValue(Registration.DETERMINATION.get());
+    DamageSource source = event.getSource();
+    // don't apply to anything bypassing the potion effect or invulnerability
+    if (protection != 1 && !source.is(DamageTypeTags.BYPASSES_INVULNERABILITY) && !source.is(DamageTypeTags.BYPASSES_RESISTANCE) && !source.is(DamageTypeTags.BYPASSES_EFFECTS)) {
+      // above 1, divisor on damage. Means that +100% is half damage
+      if (protection > 1) {
+        event.setAmount((float) (event.getAmount() / protection));
+      } else {
+        // below 1, apply the inverse formula so it doesn't scale up damage too quickly
+        // way it works is if you would take half as much for the positive, its twice as much in the negative
+        event.setAmount((float) (event.getAmount() * (2 - protection)));
+      }
     }
   }
 }

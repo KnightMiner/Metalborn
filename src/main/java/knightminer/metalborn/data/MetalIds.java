@@ -7,27 +7,27 @@ import knightminer.metalborn.metal.MetalId;
 public class MetalIds {
   private MetalIds() {}
 
-  // metalminds
+  // physical
   public static final MetalId iron = id("iron");
   public static final MetalId steel = id("steel");
   public static final MetalId tin = id("tin");
   public static final MetalId pewter = id("pewter");
+  // cognitive
   public static final MetalId copper = id("copper");
   public static final MetalId bronze = id("bronze");
+  // hybrid
   public static final MetalId gold = id("gold");
   public static final MetalId roseGold = id("rose_gold");
 
   // textures
   public static final MetalId netherite = id("netherite");
 
-  // general compat
+  // compat cognitive
   public static final MetalId silver = id("silver");
   public static final MetalId electrum = id("electrum");
+  // compat hybrid
   public static final MetalId zinc = id("zinc");
   public static final MetalId brass = id("brass");
-  // Tinkers compat
-  public static final MetalId cobalt = id("cobalt");
-  public static final MetalId hepatizon = id("hepatizon");
 
   /** Creates a metalborn effect ID */
   private static MetalId id(String name) {

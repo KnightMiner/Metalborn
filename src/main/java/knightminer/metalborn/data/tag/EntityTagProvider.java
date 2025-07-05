@@ -28,8 +28,11 @@ public class EntityTagProvider extends EntityTypeTagsProvider {
     // cognitive
     tag(MetalIds.copper).add(EntityType.PILLAGER, EntityType.VINDICATOR, EntityType.ILLUSIONER, EntityType.WITCH);
     tag(MetalIds.bronze).add(EntityType.ENDERMAN, EntityType.ENDERMITE);
+    // hybrid
     tag(MetalIds.gold).add(EntityType.PIGLIN, EntityType.PIGLIN_BRUTE, EntityType.ZOMBIFIED_PIGLIN);
     tag(MetalIds.roseGold).add(EntityType.ZOMBIE, EntityType.ZOMBIE_VILLAGER, EntityType.HUSK);
+    // compat cognitive
+    tag(MetalIds.electrum).add(EntityType.GUARDIAN, EntityType.ELDER_GUARDIAN);
   }
 
   /** Creates a tag for a metal */

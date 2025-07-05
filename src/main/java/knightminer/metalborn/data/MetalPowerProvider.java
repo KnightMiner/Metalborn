@@ -63,12 +63,11 @@ public class MetalPowerProvider extends AbstractMetalPowerProvider {
 
     // compat
     // TODO: silver
-    // TODO: electrum
+    metal(MetalIds.electrum).index(10).temperature(760).integration()
+      .hemalurgyCharge(8) // guardians are tough creatures
+      .feruchemy(AttributeMetalEffect.builder(Registration.DETERMINATION, Operation.MULTIPLY_TOTAL).eachLevel(0.1f));
     // TODO: zinc
     // TODO: brass
-    // tinkers
-    // TODO: cobalt
-    // TODO: hepatizon
   }
 
   @Override

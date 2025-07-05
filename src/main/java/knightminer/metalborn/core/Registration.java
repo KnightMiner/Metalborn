@@ -202,6 +202,8 @@ public class Registration {
   public static final RegistryObject<Attribute> LOOTING_BOOST = ATTRIBUTES.register("looting_boost", 0, -10, 10, false);
   /** Multiplier to amount of experience gained. */
   public static final RegistryObject<Attribute> EXPERIENCE_MULTIPLIER = ATTRIBUTES.registerMultiplier("experience_multiplier", false);
+  /** Changes the amount of damage taken. */
+  public static final RegistryObject<Attribute> DETERMINATION  = ATTRIBUTES.register("determination", 1, 0, 2, true);
 
   // Tinkers' Construct compat
   public static final CastItemObject BRACER_CAST = ITEMS.registerCast("bracer");
@@ -257,6 +259,7 @@ public class Registration {
     addToAll(event, KNOCKBACK_MULTIPLIER);
     addToAll(event, FALL_DISTANCE_MULTIPLIER);
     addToAll(event, DROP_CHANCE);
+    addToAll(event, DETERMINATION);
   }
 
   /** Adds an attribute to all entities */

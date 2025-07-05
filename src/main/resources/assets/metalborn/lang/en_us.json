@@ -55,6 +55,12 @@
   "metal_power.metalborn.investiture.target": "None",
 
 
+  "metal_power.metalborn.electrum": "Electrum",
+  "metal_power.metalborn.electrum.stores": "Determination",
+  "metal_power.metalborn.electrum.ferring": "Pinnacle",
+  "metal_power.metalborn.electrum.target": "Guardians",
+
+
   "_group_ores_": "",
 
   "item.metalborn.copper_nugget": "Copper Nugget",
@@ -134,6 +140,7 @@
   "attribute.name.metalborn.experience_multiplier": "Experience",
   "attribute.name.metalborn.drop_chance": "Drop Chance",
   "attribute.name.metalborn.looting_boost": "Looting",
+  "attribute.name.metalborn.determination": "Determination",
 
   "death.attack.metalborn.metal_hurt": "%1$s stored too much health",
   "death.attack.metalborn.metal_hurt.player": "%1$s stored too much health whilst fighting %2$s",
