@@ -115,20 +115,6 @@ public class Registration {
     RECIPE_TYPES.register(bus);
     RECIPES.register(bus);
     ATTRIBUTES.register(bus);
-
-    // creative tab is simple enough, just do it inline
-    DeferredRegister<CreativeModeTab> creativeTabs = DeferredRegister.create(Registries.CREATIVE_MODE_TAB, Metalborn.MOD_ID);
-    creativeTabs.register(bus);
-    creativeTabs.register(Metalborn.MOD_ID, () ->
-      CreativeModeTab.builder()
-        .title(Component.translatable("creative_tab.metalborn"))
-        .icon(() -> {
-          ItemStack stack = MetalItem.setMetal(new ItemStack(RING), new MetalId(MOD_ID, "pewter"));
-          stack.getOrCreateTag().putInt(MetalmindItem.TAG_AMOUNT, 20 * 60 * 2); // about half full
-          return stack;
-        })
-        .displayItems(Registration::addTabItems)
-        .build());
   }
 
   // metals
@@ -211,7 +197,8 @@ public class Registration {
 
   /** Registers any relevant static entries */
   private static void registerMisc(RegisterEvent event) {
-    if (event.getRegistryKey() == Registries.RECIPE_SERIALIZER) {
+    ResourceKey<? extends Registry<?>> key = event.getRegistryKey();
+    if (key == Registries.RECIPE_SERIALIZER) {
       MetalEffect.REGISTRY.register(resource("tapping"), TappingMetalEffect.LOADER);
       MetalEffect.REGISTRY.register(resource("storing"), StoringMetalEffect.LOADER);
       MetalEffect.REGISTRY.register(resource("attribute"), AttributeMetalEffect.LOADER);
@@ -222,6 +209,19 @@ public class Registration {
       // ingredients
       CraftingHelper.register(MetalIngredient.ID, MetalIngredient.SERIALIZER);
       CraftingHelper.register(MetalItemIngredient.ID, MetalItemIngredient.SERIALIZER);
+
+    // creative tabs
+    } else if (key == Registries.CREATIVE_MODE_TAB) {
+      Registry.register(BuiltInRegistries.CREATIVE_MODE_TAB, resource(Metalborn.MOD_ID),
+        CreativeModeTab.builder()
+          .title(Component.translatable("creative_tab.metalborn"))
+          .icon(() -> {
+            ItemStack stack = MetalItem.setMetal(new ItemStack(RING), new MetalId(MOD_ID, "pewter"));
+            stack.getOrCreateTag().putInt(MetalmindItem.TAG_AMOUNT, 20 * 60 * 2); // about half full
+            return stack;
+          })
+          .displayItems(Registration::addTabItems)
+          .build());
     }
   }
 
