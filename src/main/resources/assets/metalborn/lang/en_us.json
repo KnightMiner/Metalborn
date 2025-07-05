@@ -33,10 +33,9 @@
   "metal_power.metalborn.copper.label": "%s / %s XP",
 
   "metal_power.metalborn.bronze": "Bronze",
-  "metal_power.metalborn.bronze.stores": "Energy",
-  "metal_power.metalborn.bronze.ferring": "Subsumer",
-  "metal_power.metalborn.bronze.target": "Zombies",
-  "metal_power.metalborn.bronze.label": "%s / %s energy",
+  "metal_power.metalborn.bronze.stores": "Luck",
+  "metal_power.metalborn.bronze.ferring": "Spinner",
+  "metal_power.metalborn.bronze.target": "Ender",
 
   "metal_power.metalborn.gold": "Gold",
   "metal_power.metalborn.gold.stores": "Health",
@@ -45,9 +44,10 @@
   "metal_power.metalborn.gold.label": "%s / %s health",
 
   "metal_power.metalborn.rose_gold": "Rose Gold",
-  "metal_power.metalborn.rose_gold.stores": "Vitality",
-  "metal_power.metalborn.rose_gold.ferring": "??",
-  "metal_power.metalborn.rose_gold.target": "Slimes",
+  "metal_power.metalborn.rose_gold.stores": "Energy",
+  "metal_power.metalborn.rose_gold.ferring": "Subsumer",
+  "metal_power.metalborn.rose_gold.target": "Zombies",
+  "metal_power.metalborn.rose_gold.label": "%s / %s energy",
 
   "metal_power.metalborn.investiture": "Netherite",
   "metal_power.metalborn.investiture.stores": "Investiture",
@@ -131,6 +131,9 @@
   "attribute.name.metalborn.fall_distance_multiplier": "Fall Distance",
   "attribute.name.metalborn.knockback_multiplier": "Knockback",
   "attribute.name.metalborn.mining_speed_multiplier": "Mining Speed",
+  "attribute.name.metalborn.experience_multiplier": "Experience",
+  "attribute.name.metalborn.drop_chance": "Drop Chance",
+  "attribute.name.metalborn.looting_boost": "Looting",
 
   "death.attack.metalborn.metal_hurt": "%1$s stored too much health",
   "death.attack.metalborn.metal_hurt.player": "%1$s stored too much health whilst fighting %2$s",

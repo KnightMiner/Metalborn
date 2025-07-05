@@ -1,16 +1,14 @@
 {
   "allow_ferring": true,
-  "capacity": 6000,
+  "capacity": 40,
   "feruchemy": [
     {
-      "type": "metalborn:attribute",
-      "attribute": "minecraft:generic.max_health",
-      "multiplier": 2.0,
-      "operation": "addition"
-    },
-    "metalborn:update_health"
+      "type": "metalborn:energy",
+      "exhaustion": 4.0,
+      "saturation": 0.5
+    }
   ],
-  "format": "ticks",
+  "format": "metal",
   "hemalurgy_charge": 10,
   "index": 8,
   "name": "rose_gold",

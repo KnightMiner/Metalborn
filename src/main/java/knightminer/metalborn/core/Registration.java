@@ -12,6 +12,8 @@ import knightminer.metalborn.item.metalmind.InvestitureMetalmindItem;
 import knightminer.metalborn.item.metalmind.MetalmindItem;
 import knightminer.metalborn.item.metalmind.PowerMetalmindItem;
 import knightminer.metalborn.item.metalmind.UnsealedMetalmindItem;
+import knightminer.metalborn.loot.ApplyDropChanceLootModifier;
+import knightminer.metalborn.loot.HasLootContextSetCondition;
 import knightminer.metalborn.menu.ForgeMenu;
 import knightminer.metalborn.menu.MetalbornMenu;
 import knightminer.metalborn.metal.MetalId;
@@ -33,6 +35,8 @@ import knightminer.metalborn.recipe.ShapelessForgeRecipe;
 import knightminer.metalborn.util.AttributeDeferredRegister;
 import knightminer.metalborn.util.CastItemObject;
 import knightminer.metalborn.util.ItemDeferredRegisterExtension;
+import net.minecraft.core.Registry;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceKey;
@@ -61,6 +65,7 @@ import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.NoteBlockInstrument;
 import net.minecraft.world.level.material.MapColor;
+import net.minecraft.world.level.storage.loot.predicates.LootItemConditionType;
 import net.minecraftforge.common.crafting.CraftingHelper;
 import net.minecraftforge.event.entity.EntityAttributeModificationEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
@@ -96,6 +101,7 @@ public class Registration {
   private static final DeferredRegister<RecipeType<?>> RECIPE_TYPES = DeferredRegister.create(Registries.RECIPE_TYPE, Metalborn.MOD_ID);
   private static final DeferredRegister<RecipeSerializer<?>> RECIPES = DeferredRegister.create(Registries.RECIPE_SERIALIZER, Metalborn.MOD_ID);
   private static final AttributeDeferredRegister ATTRIBUTES = new AttributeDeferredRegister(Metalborn.MOD_ID);
+  private static final DeferredRegister<LootItemConditionType> LOOT_CONDITIONS = DeferredRegister.create(Registries.LOOT_CONDITION_TYPE, MOD_ID);
 
   private static final Item.Properties PROPS = new Item.Properties();
   private static final Function<Block, BlockItem> BLOCK_ITEM = block -> new BlockItem(block, PROPS);
@@ -115,6 +121,7 @@ public class Registration {
     RECIPE_TYPES.register(bus);
     RECIPES.register(bus);
     ATTRIBUTES.register(bus);
+    LOOT_CONDITIONS.register(bus);
   }
 
   // metals
@@ -188,11 +195,20 @@ public class Registration {
   public static final RegistryObject<Attribute> KNOCKBACK_MULTIPLIER = ATTRIBUTES.registerMultiplier("knockback_multiplier", true);
   /** Player modifier data key for mining speed multiplier as an additive percentage boost on mining speed. */
   public static final RegistryObject<Attribute> MINING_SPEED_MULTIPLIER = ATTRIBUTES.registerMultiplier("mining_speed_multiplier", true);
+  /** Chance that loot in a loot table will drop. */
+  public static final RegistryObject<Attribute> DROP_CHANCE = ATTRIBUTES.registerPercent("drop_chance", 1, false);
+  /** Boost to level of looting in loot tables. */
+  public static final RegistryObject<Attribute> LOOTING_BOOST = ATTRIBUTES.register("looting_boost", 0, -10, 10, false);
+  /** Multiplier to amount of experience gained. */
+  public static final RegistryObject<Attribute> EXPERIENCE_MULTIPLIER = ATTRIBUTES.registerMultiplier("experience_multiplier", false);
 
   // Tinkers' Construct compat
   public static final CastItemObject BRACER_CAST = ITEMS.registerCast("bracer");
   public static final CastItemObject RING_CAST = ITEMS.registerCast("ring");
   public static final CastItemObject SPIKE_CAST = ITEMS.registerCast("spike");
+
+  // loot
+  public static final RegistryObject<LootItemConditionType> HAS_LOOT_CONTEXT_SET = LOOT_CONDITIONS.register("has_context_set", () -> new LootItemConditionType(new HasLootContextSetCondition.Serializer()));
 
 
   /** Registers any relevant static entries */
@@ -222,15 +238,22 @@ public class Registration {
           })
           .displayItems(Registration::addTabItems)
           .build());
+
+    // loot modifiers
+    } else if (key == ForgeRegistries.Keys.GLOBAL_LOOT_MODIFIER_SERIALIZERS) {
+      ForgeRegistries.GLOBAL_LOOT_MODIFIER_SERIALIZERS.get().register(resource("apply_drop_chance"), ApplyDropChanceLootModifier.CODEC);
     }
   }
 
   /** Adds new attributes to entities */
   private static void addAttributes(EntityAttributeModificationEvent event) {
     event.add(EntityType.PLAYER, MINING_SPEED_MULTIPLIER.get());
+    event.add(EntityType.PLAYER, LOOTING_BOOST.get());
+    event.add(EntityType.PLAYER, EXPERIENCE_MULTIPLIER.get());
     // general attributes
     addToAll(event, KNOCKBACK_MULTIPLIER);
     addToAll(event, FALL_DISTANCE_MULTIPLIER);
+    addToAll(event, DROP_CHANCE);
   }
 
   /** Adds an attribute to all entities */

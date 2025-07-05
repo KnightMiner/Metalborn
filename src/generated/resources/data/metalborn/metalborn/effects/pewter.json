@@ -10,16 +10,11 @@
     },
     {
       "type": "metalborn:attribute",
-      "attribute": "minecraft:generic.armor_toughness",
-      "multiplier": 0.5,
+      "attribute": "minecraft:generic.max_health",
+      "multiplier": 2.0,
       "operation": "addition"
     },
-    {
-      "type": "metalborn:attribute",
-      "attribute": "metalborn:mining_speed_multiplier",
-      "multiplier": 0.1,
-      "operation": "multiply_total"
-    }
+    "metalborn:update_health"
   ],
   "format": "ticks",
   "hemalurgy_charge": 10,

@@ -1,9 +1,7 @@
 {
   "values": [
-    "minecraft:slime",
-    {
-      "id": "#forge:slimes",
-      "required": false
-    }
+    "minecraft:zombie",
+    "minecraft:zombie_villager",
+    "minecraft:husk"
   ]
 }

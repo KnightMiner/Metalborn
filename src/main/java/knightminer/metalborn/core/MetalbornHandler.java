@@ -6,6 +6,7 @@ import knightminer.metalborn.metal.MetalManager;
 import knightminer.metalborn.metal.MetalPower;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
@@ -16,11 +17,15 @@ import net.minecraftforge.event.AddReloadListenerEvent;
 import net.minecraftforge.event.TickEvent.Phase;
 import net.minecraftforge.event.TickEvent.PlayerTickEvent;
 import net.minecraftforge.event.entity.living.LivingDropsEvent;
+import net.minecraftforge.event.entity.living.LivingExperienceDropEvent;
 import net.minecraftforge.event.entity.living.LivingFallEvent;
 import net.minecraftforge.event.entity.living.LivingKnockBackEvent;
+import net.minecraftforge.event.entity.living.LootingLevelEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent.BreakSpeed;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent.RightClickItem;
+import net.minecraftforge.event.level.BlockEvent.BreakEvent;
+import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus;
@@ -100,5 +105,35 @@ public class MetalbornHandler {
   @SubscribeEvent
   static void onBreakSpeed(BreakSpeed event) {
     event.setNewSpeed((float) (event.getNewSpeed() * event.getEntity().getAttributeValue(Registration.MINING_SPEED_MULTIPLIER.get())));
+  }
+
+  @SubscribeEvent(priority = EventPriority.LOW)
+  static void onLooting(LootingLevelEvent event) {
+    // apply looting bonus based on killer
+    DamageSource source = event.getDamageSource();
+    if (source != null && source.getEntity() instanceof LivingEntity killer) {
+      double lootingAttribute = killer.getAttributeValue(Registration.LOOTING_BOOST.get());
+      // each integer value gives +1 looting
+      int lootingBonus = (int)lootingAttribute;
+      // partial values are treated as a chance at a higher level
+      double higherChance = lootingAttribute % 1;
+      if (higherChance > 0 && killer.getRandom().nextFloat() < higherChance) {
+        lootingBonus++;
+      }
+      event.setLootingLevel(Math.max(event.getLootingLevel() + lootingBonus, 0));
+    }
+  }
+
+  @SubscribeEvent
+  static void beforeBlockBreak(BreakEvent event) {
+    event.setExpToDrop((int) Math.round(event.getExpToDrop() * event.getPlayer().getAttributeValue(Registration.EXPERIENCE_MULTIPLIER.get())));
+  }
+
+  @SubscribeEvent
+  static void livingExperienceDrop(LivingExperienceDropEvent event) {
+    Player player = event.getAttackingPlayer();
+    if (player != null) {
+      event.setDroppedExperience((int) Math.round(event.getDroppedExperience() * player.getAttributeValue(Registration.EXPERIENCE_MULTIPLIER.get())));
+    }
   }
 }

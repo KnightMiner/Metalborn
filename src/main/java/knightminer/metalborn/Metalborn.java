@@ -5,6 +5,7 @@ import knightminer.metalborn.command.MetalbornCommand;
 import knightminer.metalborn.core.MetalbornCapability;
 import knightminer.metalborn.core.Registration;
 import knightminer.metalborn.data.BlockLootTableProvider;
+import knightminer.metalborn.data.GlobalLootModifiersProvider;
 import knightminer.metalborn.data.MetalPowerProvider;
 import knightminer.metalborn.data.RecipeProvider;
 import knightminer.metalborn.data.RegistryProvider;
@@ -91,6 +92,7 @@ public class Metalborn {
     generator.addProvider(server, new MetalPowerProvider(packOutput));
     generator.addProvider(server, new LootTableProvider(packOutput, Set.of(), List.of(new SubProviderEntry(BlockLootTableProvider::new, LootContextParamSets.BLOCK))));
     generator.addProvider(server, new RecipeProvider(packOutput));
+    generator.addProvider(server, new GlobalLootModifiersProvider(packOutput));
     // tags
     BlockTagProvider blockTags = new BlockTagProvider(packOutput, lookupProvider, existingFileHelper);
     generator.addProvider(server, blockTags);

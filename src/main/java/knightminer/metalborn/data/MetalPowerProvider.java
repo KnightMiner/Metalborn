@@ -41,20 +41,22 @@ public class MetalPowerProvider extends AbstractMetalPowerProvider {
       .feruchemy(AttributeMetalEffect.builder(ForgeMod.BLOCK_REACH, Operation.ADDITION).eachLevel(0.25f));
     metal(MetalIds.pewter).index(4).temperature(400)
       .feruchemy(AttributeMetalEffect.builder(Attributes.ATTACK_DAMAGE, Operation.ADDITION).eachLevel(1))
-      .feruchemy(AttributeMetalEffect.builder(Attributes.ARMOR_TOUGHNESS, Operation.ADDITION).eachLevel(0.5f))
-      .feruchemy(AttributeMetalEffect.builder(Registration.MINING_SPEED_MULTIPLIER, Operation.MULTIPLY_TOTAL).eachLevel(0.1f));
+      .feruchemy(AttributeMetalEffect.builder(Attributes.MAX_HEALTH, Operation.ADDITION).eachLevel(2))
+      .feruchemy(UpdateHealthEffect.INSTANCE);
     metal(MetalIds.copper).index(5).temperature(500)
       .capacity(MetalFormat.METAL, 100) // about 8 levels
       .feruchemy(new ExperienceMetalEffect(1));
     metal(MetalIds.bronze).index(6).temperature(700)
-      .capacity(MetalFormat.METAL, 40) // 2 full food bars
-      .feruchemy(new EnergyMetalEffect(0.5f, 2f));
+      .feruchemy(AttributeMetalEffect.builder(Attributes.LUCK, Operation.ADDITION).eachLevel(0.5f))
+      .feruchemy(AttributeMetalEffect.builder(Registration.EXPERIENCE_MULTIPLIER, Operation.MULTIPLY_TOTAL).eachLevel(0.1f))
+      .feruchemy(new TappingMetalEffect(AttributeMetalEffect.builder(Registration.LOOTING_BOOST, Operation.ADDITION).eachLevel(0.25f)))
+      .feruchemy(new StoringMetalEffect(AttributeMetalEffect.builder(Registration.DROP_CHANCE, Operation.MULTIPLY_TOTAL).eachLevel(0.1f)));
     metal(MetalIds.gold).index(7).temperature(700)
       .capacity(MetalFormat.METAL, 40) // 2 full health bars
       .feruchemy(new HealMetalEffect(100));
     metal(MetalIds.roseGold).index(8).temperature(550)
-      .feruchemy(AttributeMetalEffect.builder(Attributes.MAX_HEALTH, Operation.ADDITION).eachLevel(2))
-      .feruchemy(UpdateHealthEffect.INSTANCE);
+      .capacity(MetalFormat.METAL, 40) // 2 full food bars
+      .feruchemy(new EnergyMetalEffect(0.5f, 4f));
 
     // special - does not use standard metal effects but wants capacity and alike
     metal(InvestitureMetalmindItem.METAL).name("netherite").index(16).temperature(1250).hemalurgyCharge(0);
