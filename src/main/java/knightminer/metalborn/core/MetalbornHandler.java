@@ -113,7 +113,7 @@ public class MetalbornHandler {
   static void onLooting(LootingLevelEvent event) {
     // apply looting bonus based on killer
     DamageSource source = event.getDamageSource();
-    if (source != null && source.getEntity() instanceof LivingEntity killer) {
+    if (source != null && source.getEntity() instanceof Player killer) {
       double lootingAttribute = killer.getAttributeValue(Registration.LOOTING_BOOST.get());
       // each integer value gives +1 looting
       int lootingBonus = (int)lootingAttribute;
