@@ -93,7 +93,12 @@ public class MetalbornCapability implements ICapabilitySerializable<CompoundTag>
   @Override
   public MetalId getFerringType() {
     if (ferringType == null) {
-      ferringType = MetalManager.INSTANCE.getRandomFerring(player.getRandom()).id();
+      String spawnType = Config.SPAWN_AS_FERRING.get();
+      if (spawnType.isEmpty()) {
+        ferringType = MetalManager.INSTANCE.getRandomFerring(player.getRandom()).id();
+      } else {
+        ferringType = new MetalId(spawnType);
+      }
     }
     return ferringType;
   }
@@ -230,7 +235,7 @@ public class MetalbornCapability implements ICapabilitySerializable<CompoundTag>
   public void copyFrom(MetalbornData data, boolean wasDeath) {
     // the only reason this should fail is if the original player had no data
     if (data instanceof MetalbornCapability other) {
-      if (!wasDeath) {
+      if (!wasDeath || Config.KEEP_ON_DEATH.get()) {
         this.ferringType = other.ferringType;
       }
       this.activeMetalminds.clear();

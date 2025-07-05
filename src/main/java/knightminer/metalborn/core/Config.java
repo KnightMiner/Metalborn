@@ -1,14 +1,32 @@
 package knightminer.metalborn.core;
 
+import knightminer.metalborn.metal.MetalId;
 import net.minecraftforge.common.ForgeConfigSpec;
 import net.minecraftforge.common.ForgeConfigSpec.BooleanValue;
+import net.minecraftforge.common.ForgeConfigSpec.ConfigValue;
 
 public class Config {
   public static final ForgeConfigSpec COMMON_SPEC;
+
+  /** Ferring type the player will spawn as */
+  public static final ConfigValue<String> SPAWN_AS_FERRING;
+  /** If true, ferring type is kept on death,  */
+  public static final BooleanValue KEEP_ON_DEATH;
+
+  /** Forces integration metals to be enabled */
   public static final BooleanValue FORCE_INTEGRATION;
 
   static {
     ForgeConfigSpec.Builder builder = new ForgeConfigSpec.Builder();
+
+
+    builder.push("gameplay");
+    {
+      SPAWN_AS_FERRING = builder.comment("Metal ID for the ferring type new players will spawn as. If empty, will randomize. Set to 'metalborn:none' to make players spawn without a power.")
+        .define("spawn_as_ferring", "", o -> o instanceof String s && MetalId.tryParse(s) != null);
+      KEEP_ON_DEATH = builder.comment("If true, ferring type is kept on death. If false, ferring type is reset to spawn type.")
+        .define("keep_ferring_on_death", false);
+    }
 
     builder.push("debug");
     {
