@@ -318,6 +318,9 @@ public class ActiveMetalminds {
       } else if (oldLevel < 0) {
         storing += oldLevel;
       }
+
+      // update level of effects
+      refreshEffect();
     }
 
     /** Called to start granting a power */
