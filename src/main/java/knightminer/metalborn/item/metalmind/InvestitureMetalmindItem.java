@@ -82,7 +82,7 @@ public class InvestitureMetalmindItem extends MetalmindItem {
       MetalId ferringType = data.getFerringType();
       int amount = getAmount(stack);
       // must have a ferring type, and it must match the type we are storing (or we have no current type)
-      if (ferringType != MetalId.NONE && (amount == 0 || metalId == MetalId.NONE || ferringType.equals(metalId))) {
+      if (ferringType.isPresent() && (amount == 0 || metalId == MetalId.NONE || ferringType.equals(metalId))) {
         data.storeFerring(index);
         return true;
       }

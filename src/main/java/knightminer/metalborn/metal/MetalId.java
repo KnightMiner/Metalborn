@@ -39,6 +39,13 @@ public class MetalId extends ResourceLocation {
     super(location.getNamespace(), location.getPath(), null);
   }
 
+  /** Checks if this metal ID is not equal to {@link #NONE} */
+  public boolean isPresent() {
+    // directly comparing the two strings as it saves an instanceof checks
+    return this != NONE && !(getPath().equals(NONE.getPath()) && getNamespace().equals(NONE.getNamespace()));
+  }
+
+
   /** Gets the translation key for this metal */
   public String getTranslationKey() {
     return Util.makeDescriptionId("metal_power", this);
