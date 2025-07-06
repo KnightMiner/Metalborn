@@ -202,6 +202,8 @@ public class ActiveMetalminds {
     private int resumeTapping = 0;
     /** Index to resume filling storing metalminds */
     private int resumeStoring = 0;
+    /** Index to resume filling tapping investiture */
+    private int resumeInvestiture = 0;
 
     /** Active power */
     private MetalPower power = null;
@@ -352,7 +354,7 @@ public class ActiveMetalminds {
       // TODO: don't drain if the metalminds are all unsealed
       if (!investitureStacks.isEmpty()) {
         // only need 1 power to add this effect, and not currently bothering with round-robin draining; just drain the first one first
-        updateMetalminds(investitureStacks, true, 1, 0, NO_ACTION);
+        resumeInvestiture = updateMetalminds(investitureStacks, true, 1, resumeInvestiture, NO_ACTION);
       }
 
       // decide which power to run
