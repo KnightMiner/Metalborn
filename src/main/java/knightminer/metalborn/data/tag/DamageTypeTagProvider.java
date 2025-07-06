@@ -2,9 +2,12 @@ package knightminer.metalborn.data.tag;
 
 import knightminer.metalborn.Metalborn;
 import net.minecraft.core.HolderLookup.Provider;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.tags.DamageTypeTagsProvider;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.DamageTypeTags;
+import net.minecraft.tags.TagKey;
 import net.minecraftforge.common.data.ExistingFileHelper;
 import org.jetbrains.annotations.ApiStatus.Internal;
 import org.jetbrains.annotations.Nullable;
@@ -33,5 +36,6 @@ public class DamageTypeTagProvider extends DamageTypeTagsProvider {
     tag(DamageTypeTags.BYPASSES_COOLDOWN).add(METAL_HURT, ADD_SPIKE, MAKE_SPIKE);
     tag(DamageTypeTags.BYPASSES_EFFECTS).add(METAL_HURT, ADD_SPIKE, MAKE_SPIKE);
     tag(DamageTypeTags.IS_FIRE).add(MELEE_HEAT);
+    tag(TagKey.create(Registries.DAMAGE_TYPE, new ResourceLocation(Metalborn.TINKERS, "protection/melee"))).add(MELEE_HEAT);
   }
 }
