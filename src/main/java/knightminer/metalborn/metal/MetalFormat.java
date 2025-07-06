@@ -24,6 +24,13 @@ public enum MetalFormat {
       return Component.translatable(KEY_SECONDS, SINGLE_DECIMAL.format(value / 20f), capacity / 20);
     }
   },
+  /** Displays the value as seconds directly */
+  SECONDS {
+    @Override
+    public Component format(MetalId metal, int value, int capacity) {
+      return Component.translatable(KEY_SECONDS, value, capacity);
+    }
+  },
   /** Lists the amount with a label fetched from the metal */
   METAL {
     @Override
