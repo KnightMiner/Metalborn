@@ -45,7 +45,7 @@ public record HealMetalEffect(int delay) implements MetalEffect {
     if (frequency == 0 || entity.tickCount % frequency == 1 && entity.getHealth() > 1) {
       if (entity.hurt(Registration.makeSource(entity.level(), Registration.METAL_HURT), 1)) {
         // on storing, you have to actually lose health to gain something
-        return -1;
+        return 1;
       }
     }
     return 0;
