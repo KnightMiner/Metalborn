@@ -33,6 +33,7 @@ import knightminer.metalborn.metal.effects.MetalEffect;
 import knightminer.metalborn.metal.effects.StoringMetalEffect;
 import knightminer.metalborn.metal.effects.TappingMetalEffect;
 import knightminer.metalborn.metal.effects.UpdateHealthEffect;
+import knightminer.metalborn.metal.effects.WarmthMetalEffect;
 import knightminer.metalborn.util.AttributeDeferredRegister;
 import knightminer.metalborn.util.CastItemObject;
 import knightminer.metalborn.util.ItemDeferredRegisterExtension;
@@ -45,6 +46,7 @@ import net.minecraft.tags.ItemTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.DamageType;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attribute;
@@ -170,6 +172,8 @@ public class Registration {
   public static final ResourceKey<DamageType> ADD_SPIKE = ResourceKey.create(Registries.DAMAGE_TYPE, resource("add_spike"));
   /** Damage type when making a spike from yourself */
   public static final ResourceKey<DamageType> MAKE_SPIKE = ResourceKey.create(Registries.DAMAGE_TYPE, resource("make_spike"));
+  /** Bonus heat damage dealt to the target */
+  public static final ResourceKey<DamageType> MELEE_HEAT = ResourceKey.create(Registries.DAMAGE_TYPE, resource("melee_heat"));
 
   // menus
   public static final RegistryObject<MenuType<MetalbornMenu>> METALBORN_MENU = MENUS.register("metalborn", MetalbornMenu::forClient);
@@ -204,6 +208,10 @@ public class Registration {
   public static final RegistryObject<Attribute> EXPERIENCE_MULTIPLIER = ATTRIBUTES.registerMultiplier("experience_multiplier", false);
   /** Changes the amount of damage taken. */
   public static final RegistryObject<Attribute> DETERMINATION  = ATTRIBUTES.register("determination", 1, 0, 2, true);
+  /** Above 1, reduces cold damage and increases heat damage. Below 1, reduces heat damage and increases cold damage. */
+  public static final RegistryObject<Attribute> WARMTH  = ATTRIBUTES.register("warmth", 1, 0, 2, true);
+  /** Applies bonus damage to melee attacks in the form of a fiery attack. */
+  public static final RegistryObject<Attribute> HEAT_DAMAGE  = ATTRIBUTES.register("heat_damage", 0, 0, 1024, true);
 
   // Tinkers' Construct compat
   public static final CastItemObject BRACER_CAST = ITEMS.registerCast("bracer");
@@ -226,6 +234,7 @@ public class Registration {
       MetalEffect.REGISTRY.register(resource("experience"), ExperienceMetalEffect.LOADER);
       MetalEffect.REGISTRY.register(resource("update_health"), UpdateHealthEffect.LOADER);
       MetalEffect.REGISTRY.register(resource("energy"), EnergyMetalEffect.LOADER);
+      MetalEffect.REGISTRY.register(resource("warmth"), WarmthMetalEffect.LOADER);
       // ingredients
       CraftingHelper.register(MetalIngredient.ID, MetalIngredient.SERIALIZER);
       CraftingHelper.register(MetalItemIngredient.ID, MetalItemIngredient.SERIALIZER);
@@ -260,6 +269,8 @@ public class Registration {
     addToAll(event, FALL_DISTANCE_MULTIPLIER);
     addToAll(event, DROP_CHANCE);
     addToAll(event, DETERMINATION);
+    addToAll(event, WARMTH);
+    addToAll(event, HEAT_DAMAGE);
   }
 
   /** Adds an attribute to all entities */
@@ -337,6 +348,11 @@ public class Registration {
   /** Makes a damage source from the given key */
   public static DamageSource makeSource(Level level, ResourceKey<DamageType> key) {
     return new DamageSource(level.registryAccess().registryOrThrow(Registries.DAMAGE_TYPE).getHolderOrThrow(key));
+  }
+
+  /** Makes a damage source from the given key for direct damage from an entity. */
+  public static DamageSource makeSource(ResourceKey<DamageType> key, Entity entity) {
+    return new DamageSource(entity.level().registryAccess().registryOrThrow(Registries.DAMAGE_TYPE).getHolderOrThrow(key), entity);
   }
 
   /** Creates a local item tag */

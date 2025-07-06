@@ -33,6 +33,8 @@ public class EntityTagProvider extends EntityTypeTagsProvider {
     tag(MetalIds.roseGold).add(EntityType.ZOMBIE, EntityType.ZOMBIE_VILLAGER, EntityType.HUSK);
     // compat cognitive
     tag(MetalIds.electrum).add(EntityType.GUARDIAN, EntityType.ELDER_GUARDIAN);
+    // compat hybrid
+    tag(MetalIds.brass).add(EntityType.BLAZE);
   }
 
   /** Creates a tag for a metal */

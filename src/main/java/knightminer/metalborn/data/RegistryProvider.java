@@ -61,6 +61,7 @@ public class RegistryProvider {
     context.register(Registration.METAL_HURT, new DamageType(prefix("metal_hurt"), DamageScaling.NEVER, 0f, DamageEffects.HURT));
     context.register(Registration.ADD_SPIKE, new DamageType(prefix("add_spike"), DamageScaling.NEVER, 0.1f, DamageEffects.THORNS));
     context.register(Registration.MAKE_SPIKE, new DamageType(prefix("make_spike"), DamageScaling.NEVER, 1f, DamageEffects.HURT));
+    context.register(Registration.MELEE_HEAT, new DamageType(prefix("melee_heat"), DamageScaling.WHEN_CAUSED_BY_LIVING_NON_PLAYER, 0.1f, DamageEffects.BURNING));
   }
 
   private static void configuredFeatures(BootstapContext<ConfiguredFeature<?, ?>> context) {

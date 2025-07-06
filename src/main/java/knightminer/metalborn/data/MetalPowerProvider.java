@@ -11,6 +11,7 @@ import knightminer.metalborn.metal.effects.HealMetalEffect;
 import knightminer.metalborn.metal.effects.StoringMetalEffect;
 import knightminer.metalborn.metal.effects.TappingMetalEffect;
 import knightminer.metalborn.metal.effects.UpdateHealthEffect;
+import knightminer.metalborn.metal.effects.WarmthMetalEffect;
 import net.minecraft.data.PackOutput;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier.Operation;
 import net.minecraft.world.entity.ai.attributes.Attributes;
@@ -67,7 +68,11 @@ public class MetalPowerProvider extends AbstractMetalPowerProvider {
       .hemalurgyCharge(8) // guardians are tough creatures
       .feruchemy(AttributeMetalEffect.builder(Registration.DETERMINATION, Operation.MULTIPLY_TOTAL).eachLevel(0.1f));
     // TODO: zinc
-    // TODO: brass
+    metal(MetalIds.brass).index(12).temperature(605).integration()
+      .feruchemy(new WarmthMetalEffect())
+      .feruchemy(AttributeMetalEffect.builder(Registration.WARMTH, Operation.MULTIPLY_TOTAL).eachLevel(0.1f))
+      .feruchemy(new StoringMetalEffect(AttributeMetalEffect.builder(Attributes.ATTACK_DAMAGE, Operation.ADDITION).eachLevel(1)))
+      .feruchemy(new TappingMetalEffect(AttributeMetalEffect.builder(Registration.HEAT_DAMAGE, Operation.ADDITION).eachLevel(1)));
   }
 
   @Override

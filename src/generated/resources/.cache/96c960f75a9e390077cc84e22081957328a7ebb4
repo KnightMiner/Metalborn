@@ -1,3 +1,4 @@
-// 1.20.1	2025-06-26T03:00:33.5889001	Metalborn DamageType tags
+// 1.20.1	2025-07-05T18:51:12.6936526	Metalborn DamageType tags
 e29c117395e7936871eaeb6ec75f4e3dad1d3b42 data/minecraft/tags/damage_type/bypasses_cooldown.json
 e29c117395e7936871eaeb6ec75f4e3dad1d3b42 data/minecraft/tags/damage_type/bypasses_effects.json
+853b0bc478bb20ca8fdc32081c70946e5625f7fc data/minecraft/tags/damage_type/is_fire.json

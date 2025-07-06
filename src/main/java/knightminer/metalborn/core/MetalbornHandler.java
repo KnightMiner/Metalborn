@@ -8,6 +8,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
@@ -17,6 +18,7 @@ import net.minecraftforge.common.util.FakePlayer;
 import net.minecraftforge.event.AddReloadListenerEvent;
 import net.minecraftforge.event.TickEvent.Phase;
 import net.minecraftforge.event.TickEvent.PlayerTickEvent;
+import net.minecraftforge.event.entity.living.LivingAttackEvent;
 import net.minecraftforge.event.entity.living.LivingDropsEvent;
 import net.minecraftforge.event.entity.living.LivingExperienceDropEvent;
 import net.minecraftforge.event.entity.living.LivingFallEvent;
@@ -140,21 +142,73 @@ public class MetalbornHandler {
   }
 
   @SubscribeEvent
+  static void livingAttack(LivingAttackEvent event) {
+    LivingEntity target = event.getEntity();
+    // heat damage only applies if the target is not currently under iframes
+    if (target.invulnerableTime == 0 && !target.fireImmune() && !target.hasEffect(MobEffects.FIRE_RESISTANCE)) {
+      DamageSource source = event.getSource();
+      // only apply to direct damage (no heating arrows)
+      // also skip our damage type to prevent infinite recursion, and require being on fire (not on fire means we are sitting in water and thus avoiding the fire)
+      if (!source.isIndirect() && !source.is(Registration.MELEE_HEAT) && source.getEntity() instanceof LivingEntity attacker && attacker.isOnFire()) {
+        double heatDamage = attacker.getAttributeValue(Registration.HEAT_DAMAGE.get());
+        if (heatDamage > 0) {
+          boolean fakeFire = false;
+          if (!target.isOnFire()) {
+            target.setSecondsOnFire(1);
+          }
+          // hurt them
+          if (target.hurt(Registration.makeSource(Registration.MELEE_HEAT, attacker), (float) heatDamage)) {
+            // reset invulnerable time to 0 for the main attack
+            target.invulnerableTime = 0;
+            target.setSecondsOnFire((int) heatDamage);
+          } else {
+            target.setSecondsOnFire(0);
+          }
+        }
+      }
+    }
+  }
+
+  @SubscribeEvent
   static void livingHurt(LivingHurtEvent event) {
     LivingEntity entity = event.getEntity();
     // value ranges from 0.05 to 1.95, interpreted as -0.95 to 0.95
-    double protection = entity.getAttributeValue(Registration.DETERMINATION.get());
     DamageSource source = event.getSource();
     // don't apply to anything bypassing the potion effect or invulnerability
-    if (protection != 1 && !source.is(DamageTypeTags.BYPASSES_INVULNERABILITY) && !source.is(DamageTypeTags.BYPASSES_RESISTANCE) && !source.is(DamageTypeTags.BYPASSES_EFFECTS)) {
-      // above 1, divisor on damage. Means that +100% is half damage
-      if (protection > 1) {
-        event.setAmount((float) (event.getAmount() / protection));
-      } else {
-        // below 1, apply the inverse formula so it doesn't scale up damage too quickly
-        // way it works is if you would take half as much for the positive, its twice as much in the negative
-        event.setAmount((float) (event.getAmount() * (2 - protection)));
+    if (!source.is(DamageTypeTags.BYPASSES_INVULNERABILITY)) {
+      float damage = event.getAmount();
+
+      // anything that resistance would block is affected by determination
+      if (!source.is(DamageTypeTags.BYPASSES_RESISTANCE) && !source.is(DamageTypeTags.BYPASSES_EFFECTS)) {
+        double determination = entity.getAttributeValue(Registration.DETERMINATION.get());
+        if (determination != 1) {
+          if (determination > 1) {
+            // divisor, this leads to less extreme results above 1
+            damage = (float) (damage / determination);
+          } else {
+            // inverse of divisor approach. Leads to more extreme results above 1
+            damage = (float) (damage * (2 - determination));
+          }
+        }
       }
+
+      // warmth will increase fire damage and decrease freezing damage
+      if (source.is(DamageTypeTags.IS_FREEZING)) {
+        double warmth = entity.getAttributeValue(Registration.WARMTH.get());
+        // just use a simple linear scale for freezing damage, means less extreme penalties and more extreme benefits
+        if (warmth != 1) {
+          damage = (float) (damage * (2 - warmth));
+        }
+      }
+      if (source.is(DamageTypeTags.IS_FIRE)) {
+        double warmth = entity.getAttributeValue(Registration.WARMTH.get());
+        // just use a simple linear scale for heat damage too
+        if (warmth != 1) {
+          damage = (float) (damage * warmth);
+        }
+      }
+
+      event.setAmount(damage);
     }
   }
 }
