@@ -59,7 +59,11 @@ minecraft {
       // You can set various levels here.
       // Please read: https://stackoverflow.com/questions/2031163/when-to-use-the-different-log-levels
       property 'forge.logging.console.level', 'debug'
-      
+
+      // MmmMmmMmmMmm, remap their mixins to work in dev
+      property 'mixin.env.remapRefMap', 'true'
+      property 'mixin.env.refMapRemappingFile', "${projectDir}/build/createSrgToMcp/output.srg"
+
       mods {
         metalborn {
           source sourceSets.main
@@ -93,6 +97,12 @@ repositories {
       name 'BlameJared Maven'
       url 'https://maven.blamejared.com'
   }
+  maven {
+    url "https://www.cursemaven.com"
+    content {
+      includeGroup "curse.maven"
+    }
+  }
   // pull in Mantle builds for testing in dev changes
   flatDir {
     dir '../Mantle/build/libs'
@@ -116,6 +126,10 @@ dependencies {
 
   // Compatability
   compileOnly fg.deobf("slimeknights.tconstruct:TConstruct:${minecraft_version}-${tinkers_version}")
+
+  // testing damage
+  runtimeOnly fg.deobf("curse.maven:MoonlightLib-499980:6000197")
+  runtimeOnly fg.deobf("curse.maven:MmmMmmMmmMmm-225738:5737040")
 }
 
 tasks.named('processResources', ProcessResources).configure {
