@@ -226,6 +226,8 @@
 
   "command.metalborn.metal.feruchemy": "Feruchemy for %s (ID %s) at level %s:",
   "command.metalborn.metal.feruchemy.no_effects": "No effects",
+  "command.metalborn.metal.list": "Registered metals:",
+  "command.metalborn.metal.list.format": "%s (ID %s, index %s)",
   "command.metalborn.metal.stats": "Stats for %s (ID %s, index %s):",
   "command.metalborn.metal.stats.ingot": "Ingot tag: %s",
   "command.metalborn.metal.stats.nugget": "Nugget tag: %s",

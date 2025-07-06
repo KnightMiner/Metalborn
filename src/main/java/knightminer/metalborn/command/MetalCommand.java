@@ -10,6 +10,7 @@ import knightminer.metalborn.Metalborn;
 import knightminer.metalborn.item.MetalItem;
 import knightminer.metalborn.item.metalmind.InvestitureMetalmindItem;
 import knightminer.metalborn.metal.MetalId;
+import knightminer.metalborn.metal.MetalManager;
 import knightminer.metalborn.metal.MetalPower;
 import net.minecraft.ChatFormatting;
 import net.minecraft.commands.CommandSourceStack;
@@ -68,7 +69,9 @@ public class MetalCommand {
           .then(Commands.argument("level", IntegerArgumentType.integer(-10, 10))
             .executes(context -> feruchemy(context, IntegerArgumentType.getInteger(context, "level"))))))
       // stats <metal> - lists all non-effect stats of the metal
-      .then(Commands.literal("stats").then(Commands.argument("metal", MetalArgument.metal()).executes(MetalCommand::stats)));
+      .then(Commands.literal("stats").then(Commands.argument("metal", MetalArgument.metal()).executes(MetalCommand::stats)))
+      // list - lists all metals
+      .then(Commands.literal("list").executes(MetalCommand::list));
   }
 
   /**
@@ -188,5 +191,19 @@ public class MetalCommand {
     }, true);
 
     return power.index();
+  }
+
+  /** Lists all metals */
+  private static int list(CommandContext<CommandSourceStack> context) {
+    List<MetalPower> metals = MetalManager.INSTANCE.getSortedPowers();
+    context.getSource().sendSuccess(() -> {
+      MutableComponent builder = Component.translatable("command.metalborn.metal.list");
+      for (MetalPower power : metals) {
+        MetalId id = power.id();
+        builder.append("\n ").append(Component.translatable("command.metalborn.metal.list.format", id.getName(), id(id), power.index()));
+      }
+      return builder;
+    }, true);
+    return metals.size();
   }
 }
