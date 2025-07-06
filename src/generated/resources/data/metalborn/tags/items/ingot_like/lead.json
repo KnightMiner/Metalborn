@@ -1,0 +1,16 @@
+{
+  "values": [
+    {
+      "id": "#forge:ingots/lead",
+      "required": false
+    },
+    {
+      "id": "#forge:raw_materials/lead",
+      "required": false
+    },
+    {
+      "id": "#forge:ores/lead",
+      "required": false
+    }
+  ]
+}

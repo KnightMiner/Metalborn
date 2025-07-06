@@ -1,4 +1,4 @@
-// 1.20.1	2025-07-03T00:00:34.3273265	Tags for minecraft:item mod id metalborn
+// 1.20.1	2025-07-06T03:59:55.1323866	Tags for minecraft:item mod id metalborn
 15fc259f6c72ba48b51d2ea9d2bf765763770793 data/forge/tags/items/ingots.json
 03cfb4451bfb3c82bfbe118acfb1c55d545d9835 data/forge/tags/items/ingots/bronze.json
 b82e1386d985cef8647105b101ae7ebaeccee644 data/forge/tags/items/ingots/pewter.json
@@ -35,6 +35,7 @@ b8e7bf19630dc5bccc03d9acebff166f72cdc52a data/metalborn/tags/items/casts/spike_s
 0f352b026bce2688fab8476e448b9a596737a565 data/metalborn/tags/items/ingot_like/copper.json
 61ff94e2556c9805ea6274be09fa696e637f7299 data/metalborn/tags/items/ingot_like/gold.json
 20a24b3f68438bbf47db62e76fd8619b4cf29363 data/metalborn/tags/items/ingot_like/iron.json
+c4088ffd2a1fe2cef0fb72ebb092f1c4afba83c1 data/metalborn/tags/items/ingot_like/lead.json
 be0fcfe4559e852598213697713200e2e6c9e7fa data/metalborn/tags/items/ingot_like/netherite_scrap.json
 e811fea8b06671da251e7fbec4e2614f6f191dbf data/metalborn/tags/items/ingot_like/nickel.json
 04af070e9eca777ee38f85c0d8b7eb23c68a99a0 data/metalborn/tags/items/ingot_like/quartz.json
