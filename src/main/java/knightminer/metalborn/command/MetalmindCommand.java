@@ -102,6 +102,9 @@ public class MetalmindCommand {
               int toUpdate = amount;
               if (amount == -1) {
                 toUpdate = metalmind.getCapacity(stack);
+                if (op != Operation.SET) {
+                  toUpdate *= stack.getCount();
+                }
               }
               // fill or drain, don't care if it worked or if we are allowed to
               MetalbornData data = MetalbornData.getData(target);
@@ -152,6 +155,9 @@ public class MetalmindCommand {
               // if no size given, fill max
               if (toFill == -1) {
                 toFill = spike.getMaxCharge(stack);
+                if (op != Operation.SET) {
+                  toFill *= stack.getCount();
+                }
               }
               // fill, don't care if it worked
               if (op == Operation.FILL) {
