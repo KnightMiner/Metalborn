@@ -3,6 +3,7 @@ package knightminer.metalborn.item;
 import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.Multimap;
 import knightminer.metalborn.Metalborn;
+import knightminer.metalborn.core.Config;
 import knightminer.metalborn.core.MetalbornData;
 import knightminer.metalborn.core.Registration;
 import knightminer.metalborn.item.metalmind.MetalmindItem;
@@ -13,6 +14,7 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
@@ -26,6 +28,8 @@ import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.UseAnim;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.Nullable;
+import slimeknights.mantle.util.CombatHelper;
+import slimeknights.mantle.util.OffhandCooldownTracker;
 
 import java.util.List;
 import java.util.function.Consumer;
@@ -242,17 +246,41 @@ public class SpikeItem extends Item implements MetalItem, Spike {
   @Override
   public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
     ItemStack stack = player.getItemInHand(hand);
+    // if using the offhand, swing for missing an entity
+    if (hand == InteractionHand.OFF_HAND && Config.OFFHAND_SPIKE_ATTACK.get()) {
+      if (OffhandCooldownTracker.isAttackReady(player)) {
+        OffhandCooldownTracker.applyCooldown(player, CombatHelper.getOffhandAttribute(stack, player, Attributes.ATTACK_SPEED), 20);
+        OffhandCooldownTracker.swingHand(player, hand, false);
+        return InteractionResultHolder.consume(stack);
+      }
+      return InteractionResultHolder.pass(stack);
+    }
+
+    // main hand equips the spike
     if (isFull(stack)) {
       if (!level.isClientSide) {
         MetalbornData.getData(player).equip(stack);
       }
       return InteractionResultHolder.consume(stack);
     }
-    if (stack.getCount() > 1 || getMetal(stack) == MetalId.NONE) {
+    // if the spike is not full, main hand lets you fill it from yourself
+    // though offhand must be empty to perform this technique, for the sake of dual wielding spikes
+    if (stack.getCount() > 1 || !player.getOffhandItem().isEmpty() || getMetal(stack) == MetalId.NONE) {
       return InteractionResultHolder.pass(stack);
     }
     player.startUsingItem(hand);
     return InteractionResultHolder.consume(stack);
+  }
+
+  @Override
+  public InteractionResult interactLivingEntity(ItemStack stack, Player player, LivingEntity target, InteractionHand hand) {
+    if (hand == InteractionHand.OFF_HAND && Config.OFFHAND_SPIKE_ATTACK.get() && OffhandCooldownTracker.isAttackReady(player)) {
+      if (!player.level().isClientSide && CombatHelper.attack(stack, player, target, target, hand)) {
+        OffhandCooldownTracker.swingHand(player, hand, false);
+        return InteractionResult.CONSUME;
+      }
+    }
+    return InteractionResult.PASS;
   }
 
   @Override

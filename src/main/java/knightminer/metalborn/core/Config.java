@@ -10,8 +10,10 @@ public class Config {
 
   /** Ferring type the player will spawn as */
   public static final ConfigValue<String> SPAWN_AS_FERRING;
-  /** If true, ferring type is kept on death,  */
+  /** If true, ferring type is kept on death */
   public static final BooleanValue KEEP_ON_DEATH;
+  /** If true, spikes can be used as a weapon in the offhand  */
+  public static final BooleanValue OFFHAND_SPIKE_ATTACK;
 
   /** Forces integration metals to be enabled */
   public static final BooleanValue FORCE_INTEGRATION;
@@ -26,6 +28,8 @@ public class Config {
         .define("spawn_as_ferring", "", o -> o instanceof String s && MetalId.tryParse(s) != null);
       KEEP_ON_DEATH = builder.comment("If true, ferring type is kept on death. If false, ferring type is reset to spawn type.")
         .define("keep_ferring_on_death", false);
+      OFFHAND_SPIKE_ATTACK = builder.comment("If true, spikes can be used to attack mobs in the offhand, allowing you to dual wield them with swords. False requires main hand kills.")
+        .define("offhand_spike_attack", true);
     }
 
     builder.push("debug");
