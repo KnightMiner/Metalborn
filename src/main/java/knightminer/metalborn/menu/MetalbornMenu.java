@@ -92,8 +92,14 @@ public class MetalbornMenu extends BaseMenu {
         if (!this.moveItemStackTo(slotStack, PLAYER_INVENTORY_START, end, true)) {
           return ItemStack.EMPTY;
         }
-      // move player inventory into metalminds
-      } else if (!this.moveItemStackTo(slotStack, 0, PLAYER_INVENTORY_START, false)) {
+      // move hotbar to metalminds, then inventory
+      } else if (index >= PLAYER_INVENTORY_START + 27) {
+        if (!this.moveItemStackTo(slotStack, 0, PLAYER_INVENTORY_START + 27, false)) {
+          return ItemStack.EMPTY;
+        }
+      // move player inventory into metalminds, then hotbar
+      } else if (!this.moveItemStackTo(slotStack, 0, PLAYER_INVENTORY_START, false)
+          && !this.moveItemStackTo(slotStack, PLAYER_INVENTORY_START + 27, PLAYER_INVENTORY_START + 36, false)) {
         return ItemStack.EMPTY;
       }
       // if we moved the whole stack, clear the slot
