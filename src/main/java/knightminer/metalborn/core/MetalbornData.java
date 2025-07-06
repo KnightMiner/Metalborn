@@ -97,8 +97,13 @@ public interface MetalbornData extends INBTSerializable<CompoundTag> {
 
   /* Menu */
 
-  /** Gets the tooltip for display in the screen */
-  default void getFeruchemyTooltip(List<Component> tooltip) {}
+  /**
+   * Gets the tooltip for display in the screen.
+   * @return true if any powers are active.
+   */
+  default boolean getFeruchemyTooltip(List<Component> tooltip) {
+    return false;
+  }
 
   /** Gets the tooltip for display in the screen */
   default void getHemalurgyTooltip(List<Component> tooltip) {}

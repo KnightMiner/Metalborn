@@ -169,7 +169,7 @@ public class ActiveMetalminds {
   /* Menu */
 
   /** Appends tooltip for all active effects */
-  public void getTooltip(List<Component> tooltip) {
+  public boolean getTooltip(List<Component> tooltip) {
     tooltip.add(METALMIND_EFFECTS);
     // storing power to use investiture
     if (!storingFerring.isEmpty()) {
@@ -182,7 +182,9 @@ public class ActiveMetalminds {
     // add empty message if nothing else was added
     if (tooltip.size() == 1) {
       tooltip.add(NO_METALMINDS);
+      return false;
     }
+    return true;
   }
 
   /** Keeps track of data for a single type of power */

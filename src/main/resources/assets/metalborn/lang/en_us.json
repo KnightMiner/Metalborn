@@ -165,10 +165,11 @@
   "gui.metalborn.spikes.none": "No spikes",
   "gui.metalborn.spikes.grants": "Can store %s",
 
-  "gui.metalborn.tap.start": "Tap %s",
-  "gui.metalborn.store.start": "Store %s",
-  "gui.metalborn.tap.stop": "Stop Tapping %s",
-  "gui.metalborn.store.stop": "Stop Storing %s",
+  "gui.metalborn.store.start": "Left click to store %s",
+  "gui.metalborn.store.stop": "Left click to stop %s",
+  "gui.metalborn.tap.start": "Right click to tap %s",
+  "gui.metalborn.tap.stop": "Right click to stop %s",
+  "gui.metalborn.metalminds.stop_all": "Click to stop all metalminds",
 
   "key.metalborn.binding": "Metalborn",
   "key.categories.metalborn": "Metalborn",

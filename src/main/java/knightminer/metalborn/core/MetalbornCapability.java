@@ -207,8 +207,8 @@ public class MetalbornCapability implements ICapabilitySerializable<CompoundTag>
   /* Menu */
 
   @Override
-  public void getFeruchemyTooltip(List<Component> tooltip) {
-    activeMetalminds.getTooltip(tooltip);
+  public boolean getFeruchemyTooltip(List<Component> tooltip) {
+    return activeMetalminds.getTooltip(tooltip);
   }
 
   @Override

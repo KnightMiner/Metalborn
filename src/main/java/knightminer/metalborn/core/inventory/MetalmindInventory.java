@@ -71,6 +71,13 @@ public class MetalmindInventory extends MetalInventory<MetalmindStack> implement
     }
   }
 
+  /** Stops all tapping and storing */
+  public void stopAll() {
+    for (MetalmindStack stack : inventory) {
+      stack.setLevel(0);
+    }
+  }
+
   @Override
   public int getCount() {
     return inventory.size();

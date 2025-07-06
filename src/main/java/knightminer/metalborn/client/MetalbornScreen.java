@@ -3,6 +3,7 @@ package knightminer.metalborn.client;
 import knightminer.metalborn.Metalborn;
 import knightminer.metalborn.core.MetalbornData;
 import knightminer.metalborn.menu.MetalbornMenu;
+import net.minecraft.ChatFormatting;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.gui.screens.inventory.InventoryScreen;
@@ -23,34 +24,33 @@ public class MetalbornScreen extends AbstractContainerScreen<MetalbornMenu> {
   private static final String KEY_TAP_STOP = Metalborn.key("gui", "tap.stop");
   private static final String KEY_STORE_START = Metalborn.key("gui", "store.start");
   private static final String KEY_STORE_STOP = Metalborn.key("gui", "store.stop");
+  private static final Component STOP_ALL = Metalborn.component("gui", "metalminds.stop_all").withStyle(ChatFormatting.GRAY);
   // texture
   /** U index for all extra elements */
   private static final int ELEMENT_U = 176;
   /** Width of metalmind buttons */
-  private static final int SLOT_WIDTH = 18;
-  /** Width of metalmind buttons */
-  private static final int BUTTON_WIDTH = SLOT_WIDTH / 2;
+  private static final int BUTTON_WIDTH = 18;
   /** Height of metalmind buttons */
   private static final int BUTTON_HEIGHT = 5;
-  /** V index for neutral buttons */
+  /** V index for neutral button */
   private static final int NEUTRAL_V = 0;
-  /** V index for hovered buttons */
-  private static final int HOVER_V = BUTTON_HEIGHT;
-  /** V index for active buttons */
-  private static final int ACTIVE_V = 2 * BUTTON_HEIGHT;
-  /** V index for active and hovered buttons */
-  private static final int HOVER_ACTIVE_V = 3 * BUTTON_HEIGHT;
+  /** V index for hovered button */
+  private static final int HOVER_OFFSET = BUTTON_HEIGHT;
+  /** V index for storing button */
+  private static final int STORING_V = 2 * BUTTON_HEIGHT;
+  /** V index for tapping button */
+  private static final int TAPPING_V = 4 * BUTTON_HEIGHT;
 
   /** X coordinate for metalmind button */
   private static final int METALMIND_X = 47;
   /** Y coordinate for info buttons */
   private static final int INFO_Y = 67;
   /** V coordinate for metalmind hover */
-  private static final int METALMIND_HOVER_V = 20;
+  private static final int METALMIND_HOVER_V = 30;
   /** X coordinate for spike button */
   private static final int SPIKE_X = 117;
   /** V coordinate for spike hover */
-  private static final int SPIKE_HOVER_V = 32;
+  private static final int SPIKE_HOVER_V = 42;
   /** Size of the info icons */
   private static final int INFO_SIZE = 12;
 
@@ -93,24 +93,23 @@ public class MetalbornScreen extends AbstractContainerScreen<MetalbornMenu> {
         // draw backgrounds, always needed
         int startX = slot.x - 1;
         int startY = slot.y + 17;
-        graphics.blit(TEXTURE, startX, startY, ELEMENT_U, NEUTRAL_V, SLOT_WIDTH, BUTTON_HEIGHT);
         // based on the level and hover, might render another layer
         int level = menu.getMetalmindLevel(slot.index);
-        boolean hoverY = startY <= mouseY && mouseY < startY + BUTTON_HEIGHT;
 
-        // draw left button
-        boolean hoverLeft = hoverY && startX <= mouseX && mouseX < startX + BUTTON_WIDTH;
-        if (hoverLeft || level < 0) {
-          int v = hoverLeft ? (level < 0 ? HOVER_ACTIVE_V : HOVER_V) : ACTIVE_V;
-          graphics.blit(TEXTURE, startX, startY, ELEMENT_U, v, BUTTON_WIDTH, BUTTON_HEIGHT);
+        // select button V based on action
+        int v = NEUTRAL_V;
+        if (level < 0) {
+          v = STORING_V;
+        } else if (level > 0) {
+          v = TAPPING_V;
         }
 
-        // draw right button
-        boolean hoverRight = hoverY && startX + BUTTON_WIDTH <= mouseX && mouseX < startX + SLOT_WIDTH;
-        if (hoverRight || level > 0) {
-          int v = hoverRight ? (level > 0 ? HOVER_ACTIVE_V : HOVER_V) : ACTIVE_V;
-          graphics.blit(TEXTURE, startX + BUTTON_WIDTH, startY, ELEMENT_U + BUTTON_WIDTH, v, BUTTON_WIDTH, BUTTON_HEIGHT);
+        // if hovering, offset V index
+        if (startY <= mouseY && mouseY < startY + BUTTON_HEIGHT && startX <= mouseX && mouseX < startX + BUTTON_WIDTH) {
+          v += HOVER_OFFSET;
         }
+        // draw the button
+        graphics.blit(TEXTURE, startX, startY, ELEMENT_U, v, BUTTON_WIDTH, BUTTON_HEIGHT);
       }
     }
 
@@ -136,14 +135,13 @@ public class MetalbornScreen extends AbstractContainerScreen<MetalbornMenu> {
       if (slot.hasItem() && menu.canUse(slot.index)) {
         int startX = slot.x - 1;
         int startY = slot.y + 17;
-        if (startY <= checkY && checkY < startY + BUTTON_HEIGHT && startX <= checkX) {
+        if (startY <= checkY && checkY < startY + BUTTON_HEIGHT && startX <= checkX && checkX < startX + BUTTON_WIDTH) {
           int level = menu.getMetalmindLevel(slot.index);
           Component stores = menu.getStores(slot.index);
-          if (checkX < startX + BUTTON_WIDTH) {
-            graphics.renderTooltip(font, Component.translatable(level < 0 ? KEY_STORE_STOP : KEY_STORE_START, stores), mouseX, mouseY);
-          } else if (checkX < startX + SLOT_WIDTH) {
-            graphics.renderTooltip(font, Component.translatable(level > 0 ? KEY_TAP_STOP : KEY_TAP_START, stores), mouseX, mouseY);
-          }
+          graphics.renderComponentTooltip(font, List.of(
+            Component.translatable(level < 0 ? KEY_STORE_STOP : KEY_STORE_START, stores),
+            Component.translatable(level > 0 ? KEY_TAP_STOP : KEY_TAP_START, stores)
+          ), mouseX, mouseY);
         }
       }
     }
@@ -152,7 +150,9 @@ public class MetalbornScreen extends AbstractContainerScreen<MetalbornMenu> {
     if (INFO_Y <= checkY && checkY < INFO_Y + INFO_SIZE) {
       if (METALMIND_X <= checkX && checkX < METALMIND_X + INFO_SIZE) {
         List<Component> tooltip = new ArrayList<>();
-        data.getFeruchemyTooltip(tooltip);
+        if (data.getFeruchemyTooltip(tooltip)) {
+          tooltip.add(STOP_ALL);
+        }
         graphics.renderComponentTooltip(font, tooltip, mouseX, mouseY);
       }
       else if (SPIKE_X <= checkX && checkX < SPIKE_X + INFO_SIZE) {
@@ -167,23 +167,24 @@ public class MetalbornScreen extends AbstractContainerScreen<MetalbornMenu> {
   public boolean mouseClicked(double mouseX, double mouseY, int button) {
     assert minecraft != null && minecraft.player != null && minecraft.gameMode != null;
     // buttons below each slot change metalmind status
-    if (!minecraft.player.isSpectator() && button == 0) {
+    if (!minecraft.player.isSpectator() && (button == 0 || button == 1)) {
       int checkX = (int)mouseX - leftPos;
       int checkY = (int)mouseY - topPos;
+
+      // check if we clicked the metalborn button
+      if (METALMIND_X <= checkX && checkX < METALMIND_X + INFO_SIZE && INFO_Y <= checkY && checkY < INFO_Y + INFO_SIZE) {
+        minecraft.gameMode.handleInventoryButtonClick(menu.containerId, 20);
+        return true;
+      }
+
+      // check if we clicked any slot button
       for (Slot slot : menu.getMetalmindSlots()) {
         if (slot.hasItem() && menu.canUse(slot.index)) {
           int startX = slot.x - 1;
           int startY = slot.y + 17;
-          if (startY <= checkY && checkY < startY + BUTTON_HEIGHT && startX <= checkX) {
-            // left button is 2i+0
-            if (checkX < startX + BUTTON_WIDTH) {
-              minecraft.gameMode.handleInventoryButtonClick(menu.containerId, slot.index * 2);
-              return true;
-            // right button is 2i+1
-            } else if (checkX < startX + SLOT_WIDTH) {
-              minecraft.gameMode.handleInventoryButtonClick(menu.containerId, slot.index * 2 + 1);
-              return true;
-            }
+          if (startY <= checkY && checkY < startY + BUTTON_HEIGHT && startX <= checkX && checkX < startX + BUTTON_WIDTH) {
+            minecraft.gameMode.handleInventoryButtonClick(menu.containerId, slot.index * 2 + button);
+            return true;
           }
         }
       }

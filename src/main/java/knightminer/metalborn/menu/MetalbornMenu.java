@@ -113,18 +113,26 @@ public class MetalbornMenu extends BaseMenu {
   @Override
   public boolean clickMenuButton(Player player, int id) {
     // on clicking a plus or minus button, update the tapping/storing value
-    if (id < 20 && metalminds != null) {
-      // index is doubled for this button click
-      MetalmindStack stack = metalminds.getSlot(id / 2);
-      if (stack != null) {
-        int current = stack.getLevel();
-        // last bit is set to indicate plus or minus button
-        if (id % 2 == 1) {
-          stack.setLevel(current > 0 ? 0 : 1);
-        } else {
-          stack.setLevel(current < 0 ? 0 : -1);
-        }
+    if (metalminds != null) {
+      // metalminds button stops all action
+      if (id == 20) {
+        metalminds.stopAll();
         return true;
+      }
+      // other buttons start or stop specific actions
+      if (id < 20) {
+        // index is doubled for this button click
+        MetalmindStack stack = metalminds.getSlot(id / 2);
+        if (stack != null) {
+          int current = stack.getLevel();
+          // last bit is set to indicate plus or minus button
+          if (id % 2 == 1) {
+            stack.setLevel(current > 0 ? 0 : 1);
+          } else {
+            stack.setLevel(current < 0 ? 0 : -1);
+          }
+          return true;
+        }
       }
     }
     return false;
