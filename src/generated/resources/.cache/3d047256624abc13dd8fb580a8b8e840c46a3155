@@ -1,6 +1,7 @@
-// 1.20.1	2025-07-09T02:07:25.9457444	Metalborn Metal Powers
+// 1.20.1	2025-07-09T06:11:59.0812625	Metalborn Metal Powers
 d7c6d772c8dd7f08a57554e849c7dd155a0af879 data/metalborn/metalborn/effects/brass.json
 6531a87740796dcc62fcee563e589bda7bcd6be7 data/metalborn/metalborn/effects/bronze.json
+6ac603e8e9b7e14c4e120d1738300f52359d3a8f data/metalborn/metalborn/effects/constantan.json
 83717ffc07ca3eb5756a57880548e27a34b455fb data/metalborn/metalborn/effects/copper.json
 a427432832ae985005ec2a848ef56c5ef2fa0142 data/metalborn/metalborn/effects/electrum.json
 c58e35bfb25daee8e8c425c279cb945d8cff2765 data/metalborn/metalborn/effects/gold.json

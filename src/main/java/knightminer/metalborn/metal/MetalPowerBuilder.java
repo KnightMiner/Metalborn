@@ -8,9 +8,11 @@ import knightminer.metalborn.json.ConfigEnabledCondition;
 import knightminer.metalborn.metal.effects.MetalEffect;
 import net.minecraft.tags.ItemTags;
 import net.minecraftforge.common.crafting.CraftingHelper;
+import net.minecraftforge.common.crafting.conditions.AndCondition;
 import net.minecraftforge.common.crafting.conditions.ICondition;
 import net.minecraftforge.common.crafting.conditions.OrCondition;
 import slimeknights.mantle.Mantle;
+import slimeknights.mantle.recipe.condition.TagEmptyCondition;
 import slimeknights.mantle.recipe.condition.TagFilledCondition;
 
 import java.util.ArrayList;
@@ -65,6 +67,21 @@ public class MetalPowerBuilder {
       ConfigEnabledCondition.FORCE_INTEGRATION,
       new TagFilledCondition<>(ItemTags.create(Mantle.commonResource("ingots/" + name))),
       new TagFilledCondition<>(ItemTags.create(Mantle.commonResource("nuggets/" + name)))
+    ));
+  }
+
+  /** Sets the metal to be optional based on the ingot and nugget, but only present if the listed metal is *not* present. */
+  public MetalPowerBuilder alternative(String disable) {
+    return condition(new OrCondition(
+      ConfigEnabledCondition.FORCE_INTEGRATION,
+      new AndCondition(
+        new TagEmptyCondition<>(ItemTags.create(Mantle.commonResource("ingots/" + disable))),
+        new TagEmptyCondition<>(ItemTags.create(Mantle.commonResource("nuggets/" + disable))),
+        new OrCondition(
+          new TagFilledCondition<>(ItemTags.create(Mantle.commonResource("ingots/" + name))),
+          new TagFilledCondition<>(ItemTags.create(Mantle.commonResource("nuggets/" + name)))
+        )
+      )
     ));
   }
 

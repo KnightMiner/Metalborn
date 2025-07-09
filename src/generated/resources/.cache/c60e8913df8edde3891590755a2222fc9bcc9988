@@ -1,6 +1,7 @@
-// 1.20.1	2025-07-05T05:01:03.6652205	Tags for minecraft:entity_type mod id metalborn
+// 1.20.1	2025-07-09T06:11:59.0822606	Tags for minecraft:entity_type mod id metalborn
 76c0522664726c09461ad4565b6fba80b4f816b2 data/metalborn/tags/entity_types/targets/brass.json
 8e1b8fbb40b53ff066c79a517ccdc4efe92509a9 data/metalborn/tags/entity_types/targets/bronze.json
+76c0522664726c09461ad4565b6fba80b4f816b2 data/metalborn/tags/entity_types/targets/constantan.json
 0958a192333a95009361b706cd3836093a760177 data/metalborn/tags/entity_types/targets/copper.json
 a3b1b11b4e4acdc60cff0a6636a1ea6abf609520 data/metalborn/tags/entity_types/targets/electrum.json
 13663c3a2cec55d46fe29a2ee9e9d52f6ec600ad data/metalborn/tags/entity_types/targets/gold.json

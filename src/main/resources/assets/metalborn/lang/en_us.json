@@ -64,6 +64,10 @@
   "metal_power.metalborn.brass.stores": "Warmth",
   "metal_power.metalborn.brass.ferring": "Firesoul",
   "metal_power.metalborn.brass.target": "Blazes",
+  "metal_power.metalborn.constantan": "Constantan",
+  "metal_power.metalborn.constantan.stores": "Warmth",
+  "metal_power.metalborn.constantan.ferring": "Firesoul",
+  "metal_power.metalborn.constantan.target": "Blazes",
 
 
   "_group_ores_": "",

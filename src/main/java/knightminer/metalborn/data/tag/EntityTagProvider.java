@@ -35,6 +35,7 @@ public class EntityTagProvider extends EntityTypeTagsProvider {
     tag(MetalIds.electrum).add(EntityType.GUARDIAN, EntityType.ELDER_GUARDIAN);
     // compat hybrid
     tag(MetalIds.brass).add(EntityType.BLAZE);
+    tag(MetalIds.constantan).add(EntityType.BLAZE);
   }
 
   /** Creates a tag for a metal */

@@ -1,0 +1,69 @@
+{
+  "allow_ferring": true,
+  "capacity": 6000,
+  "conditions": [
+    {
+      "type": "forge:or",
+      "values": [
+        {
+          "type": "metalborn:config",
+          "name": "force_integration"
+        },
+        {
+          "type": "forge:and",
+          "values": [
+            {
+              "type": "mantle:tag_empty",
+              "tag": "forge:ingots/brass"
+            },
+            {
+              "type": "mantle:tag_empty",
+              "tag": "forge:nuggets/brass"
+            },
+            {
+              "type": "forge:or",
+              "values": [
+                {
+                  "type": "mantle:tag_filled",
+                  "tag": "forge:ingots/constantan"
+                },
+                {
+                  "type": "mantle:tag_filled",
+                  "tag": "forge:nuggets/constantan"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "feruchemy": [
+    "metalborn:warmth",
+    {
+      "type": "metalborn:attribute",
+      "attribute": "metalborn:warmth",
+      "multiplier": 0.1,
+      "operation": "multiply_total"
+    },
+    {
+      "type": "metalborn:storing",
+      "attribute": "minecraft:generic.attack_damage",
+      "multiplier": 1.0,
+      "operation": "addition",
+      "storing_type": "metalborn:attribute"
+    },
+    {
+      "type": "metalborn:tapping",
+      "attribute": "metalborn:heat_damage",
+      "multiplier": 1.0,
+      "operation": "addition",
+      "tapping_type": "metalborn:attribute"
+    }
+  ],
+  "format": "ticks",
+  "hemalurgy_charge": 10,
+  "index": 12,
+  "name": "constantan",
+  "temperature": 920
+}

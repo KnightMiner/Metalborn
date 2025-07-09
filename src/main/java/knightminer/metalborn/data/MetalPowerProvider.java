@@ -67,8 +67,14 @@ public class MetalPowerProvider extends AbstractMetalPowerProvider {
     metal(MetalIds.electrum).index(10).temperature(760).integration()
       .hemalurgyCharge(8) // guardians are tough creatures
       .feruchemy(AttributeMetalEffect.builder(Registration.DETERMINATION, Operation.MULTIPLY_TOTAL).eachLevel(0.1f));
-    // TODO: zinc
+    // TODO: zinc/nickel
     metal(MetalIds.brass).index(12).temperature(605).integration()
+      .feruchemy(new WarmthMetalEffect())
+      .feruchemy(AttributeMetalEffect.builder(Registration.WARMTH, Operation.MULTIPLY_TOTAL).eachLevel(0.1f))
+      .feruchemy(new StoringMetalEffect(AttributeMetalEffect.builder(Attributes.ATTACK_DAMAGE, Operation.ADDITION).eachLevel(1)))
+      .feruchemy(new TappingMetalEffect(AttributeMetalEffect.builder(Registration.HEAT_DAMAGE, Operation.ADDITION).eachLevel(1)));
+    // constantan is only present if no brass
+    metal(MetalIds.constantan).index(12).temperature(920).alternative("brass")
       .feruchemy(new WarmthMetalEffect())
       .feruchemy(AttributeMetalEffect.builder(Registration.WARMTH, Operation.MULTIPLY_TOTAL).eachLevel(0.1f))
       .feruchemy(new StoringMetalEffect(AttributeMetalEffect.builder(Attributes.ATTACK_DAMAGE, Operation.ADDITION).eachLevel(1)))
