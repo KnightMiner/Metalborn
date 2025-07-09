@@ -45,6 +45,7 @@ public class ItemTagProvider extends ItemTagsProvider {
     metal(Registration.STEEL);
     metal(Registration.BRONZE);
     metal(Registration.ROSE_GOLD);
+    metal(Registration.NICROSIL);
     tag(MetalbornTags.Items.COPPER_NUGGETS).add(Registration.COPPER_NUGGET.get());
     tag(MetalbornTags.Items.NETHERITE_NUGGETS).add(Registration.NETHERITE_NUGGET.get());
     tag(Tags.Items.NUGGETS).addTags(MetalbornTags.Items.COPPER_NUGGETS, MetalbornTags.Items.NETHERITE_NUGGETS);

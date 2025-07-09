@@ -29,7 +29,6 @@ import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.material.Fluid;
-import net.minecraftforge.common.Tags;
 import net.minecraftforge.common.crafting.ConditionalRecipe;
 import net.minecraftforge.common.crafting.conditions.ICondition;
 import net.minecraftforge.common.crafting.conditions.TrueCondition;
@@ -61,6 +60,7 @@ public class RecipeProvider extends net.minecraft.data.recipes.RecipeProvider im
     metalCrafting(consumer, Registration.STEEL, metalFolder);
     metalCrafting(consumer, Registration.BRONZE, metalFolder);
     metalCrafting(consumer, Registration.ROSE_GOLD, metalFolder);
+    metalCrafting(consumer, Registration.NICROSIL, metalFolder);
     packingRecipe(consumer, RecipeCategory.MISC, "ingot", Items.COPPER_INGOT, "nugget", Registration.COPPER_NUGGET, MetalbornTags.Items.COPPER_NUGGETS, metalFolder);
     packingRecipe(consumer, RecipeCategory.MISC, "ingot", Items.NETHERITE_INGOT, "nugget", Registration.NETHERITE_NUGGET, MetalbornTags.Items.NETHERITE_NUGGETS, metalFolder);
 
@@ -105,10 +105,10 @@ public class RecipeProvider extends net.minecraft.data.recipes.RecipeProvider im
       .save(consumer, location("ring"));
     ShapedForgeRecipeBuilder.shaped(Registration.INVESTITURE_RING)
       .pattern("##").pattern("##")
-      .define('#', MetalbornTags.Items.NETHERITE_NUGGETS)
+      .define('#', Registration.NICROSIL.getNuggetTag())
       .cookingRate(1)
       .experience(0.5f)
-      .save(consumer, location("ring_netherite"));
+      .save(consumer, location("ring_nicrosil"));
     ShapedForgeRecipeBuilder.shaped(Registration.UNSEALED_RING)
       .pattern("L#").pattern("##")
       .define('#', MetalIngredient.nugget(MetalFilter.METALMIND))
@@ -126,10 +126,10 @@ public class RecipeProvider extends net.minecraft.data.recipes.RecipeProvider im
       .save(consumer, location("bracer"));
     ShapedForgeRecipeBuilder.shaped(Registration.INVESTITURE_BRACER)
       .pattern("##").pattern("##")
-      .define('#', Tags.Items.INGOTS_NETHERITE)
+      .define('#', Registration.NICROSIL.getIngotTag())
       .cookingRate(4)
       .experience(2f)
-      .save(consumer, location("bracer_netherite"));
+      .save(consumer, location("bracer_nicrosil"));
     ShapedForgeRecipeBuilder.shaped(Registration.SPIKE)
       .pattern(" #").pattern("# ")
       .define('#', MetalIngredient.ingot(MetalFilter.SPIKE))
@@ -167,6 +167,18 @@ public class RecipeProvider extends net.minecraft.data.recipes.RecipeProvider im
       .requires(ingotLike("gold"), 1)
       .requires(ingotLike("copper"), 1)
       .save(consumer, location(alloyFolder + "rose_gold"));
+    // if available, use nickel in the recipe, though craft it without nickel if missing
+    ConditionalRecipe.builder()
+      .addCondition(ingotLikeCondition("nickel"))
+      .addRecipe(ShapelessForgeRecipeBuilder.shapeless(Registration.NICROSIL.getIngotTag(), 4)
+        .requires(ingotLike("nickel"), 2)
+        .requires(ingotLike("tin"), 1)
+        .requires(ingotLike("quartz"), 1)::save)
+      .addCondition(TrueCondition.INSTANCE)
+      .addRecipe(ShapelessForgeRecipeBuilder.shapeless(Registration.NICROSIL.getIngotTag(), 2)
+        .requires(ingotLike("tin"), 1)
+        .requires(ingotLike("quartz"), 1)::save)
+      .build(consumer, location(alloyFolder + "nicrosil"));
     // netherite is normally 4 scrap + 4 gold = 1 ingot
     // this recipe makes it effectively 3 scrap + 3 gold = 1 ingot, a 1 scrap discount!
     ShapelessForgeRecipeBuilder.shapeless(MetalbornTags.Items.NETHERITE_NUGGETS, 3)
@@ -226,10 +238,10 @@ public class RecipeProvider extends net.minecraft.data.recipes.RecipeProvider im
     metalMeltingCasting(consumer, Registration.BRACER, List.of(Registration.INVESTITURE_BRACER), Registration.BRACER_CAST, MetalFilter.METALMIND, ingot * 4,  tinkersFolder);
     metalMeltingCasting(consumer, Registration.SPIKE,  List.of(),                                Registration.SPIKE_CAST,  MetalFilter.SPIKE,     ingot * 2,  tinkersFolder);
     // special metalminds
-    TagKey<Fluid> netherite = FluidTags.create(commonResource("molten_netherite"));
-    int netheriteTemperature = 1250;
-    TinkersMockRecipeBuilder.meltingCasting(consumer, Registration.INVESTITURE_RING,   Registration.RING_CAST,   netherite, nugget * 4, netheriteTemperature, tinkersFolder + "ring/investiture/");
-    TinkersMockRecipeBuilder.meltingCasting(consumer, Registration.INVESTITURE_BRACER, Registration.BRACER_CAST, netherite, ingot * 4,  netheriteTemperature, tinkersFolder + "bracer/investiture/");
+    TagKey<Fluid> nicrosil = FluidTags.create(commonResource("molten_nicrosil"));
+    int nicrosilTemperature = 1100;
+    TinkersMockRecipeBuilder.meltingCasting(consumer, Registration.INVESTITURE_RING,   Registration.RING_CAST,   nicrosil, nugget * 4, nicrosilTemperature, tinkersFolder + "ring/investiture/");
+    TinkersMockRecipeBuilder.meltingCasting(consumer, Registration.INVESTITURE_BRACER, Registration.BRACER_CAST, nicrosil, ingot * 4,  nicrosilTemperature, tinkersFolder + "bracer/investiture/");
 
     // lerasium alloy nugget casting - don't think molten lerasium is the best idea so just do it via composite
     MetalCastingRecipeBuilder.table(Registration.LERASIUM_ALLOY_NUGGET)

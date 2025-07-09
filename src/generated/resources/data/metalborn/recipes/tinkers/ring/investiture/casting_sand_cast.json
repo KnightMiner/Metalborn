@@ -10,10 +10,10 @@
       "modid": "tconstruct"
     }
   ],
-  "cooling_time": 49,
+  "cooling_time": 46,
   "fluid": {
     "amount": 40,
-    "tag": "forge:molten_netherite"
+    "tag": "forge:molten_nicrosil"
   },
   "result": "metalborn:investiture_ring",
   "switch_slots": false

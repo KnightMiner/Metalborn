@@ -98,6 +98,10 @@
   "item.metalborn.rose_gold_ingot": "Rose Gold Ingot",
   "item.metalborn.rose_gold_nugget": "Rose Gold Nugget",
 
+  "block.metalborn.nicrosil_block": "Block of Nicrosil",
+  "item.metalborn.nicrosil_ingot": "Nicrosil Ingot",
+  "item.metalborn.nicrosil_nugget": "Nicrosil Nugget",
+
   "item.metalborn.netherite_nugget": "Netherite Nugget",
 
   "item.metalborn.lerasium_nugget": "Lerasium Nugget",
@@ -111,10 +115,10 @@
 
   "item.metalborn.bracer": "Bracer",
   "item.metalborn.bracer.format": "%s Bracer",
-  "item.metalborn.investiture_bracer": "Netherite Bracer",
+  "item.metalborn.investiture_bracer": "Nicrosil Bracer",
   "item.metalborn.ring": "Ring",
   "item.metalborn.ring.format": "%s Ring",
-  "item.metalborn.investiture_ring": "Netherite Ring",
+  "item.metalborn.investiture_ring": "Nicrosil Ring",
   "item.metalborn.unsealed_ring": "Unsealed Ring",
   "item.metalborn.unsealed_ring.format": "Unsealed %s Ring",
 

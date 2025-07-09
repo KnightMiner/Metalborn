@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:item/generated",
   "textures": {
-    "layer0": "metalborn:metal/item/bracer_metalborn_nicrosil"
+    "layer0": "metalborn:metal/item/nugget_metalborn_nicrosil"
   }
 }

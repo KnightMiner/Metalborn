@@ -10,10 +10,10 @@
       "modid": "tconstruct"
     }
   ],
-  "cooling_time": 147,
+  "cooling_time": 139,
   "fluid": {
     "amount": 360,
-    "tag": "forge:molten_netherite"
+    "tag": "forge:molten_nicrosil"
   },
   "result": "metalborn:investiture_bracer",
   "switch_slots": false

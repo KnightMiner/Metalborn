@@ -1,14 +1,16 @@
-// 1.20.1	2025-07-06T03:59:55.1323866	Tags for minecraft:item mod id metalborn
-15fc259f6c72ba48b51d2ea9d2bf765763770793 data/forge/tags/items/ingots.json
+// 1.20.1	2025-07-08T05:37:21.6523316	Tags for minecraft:item mod id metalborn
+8b9a09fc19e418e011eaab15ab0ad87882e9ccfe data/forge/tags/items/ingots.json
 03cfb4451bfb3c82bfbe118acfb1c55d545d9835 data/forge/tags/items/ingots/bronze.json
+f905ff8061f5a302c2eb26a512041bf66d6ceee3 data/forge/tags/items/ingots/nicrosil.json
 b82e1386d985cef8647105b101ae7ebaeccee644 data/forge/tags/items/ingots/pewter.json
 e7514c66a0e390083199482c0955ff184c6e6f09 data/forge/tags/items/ingots/rose_gold.json
 f55693b37c9cf80ca29a8d91f1986ce9bf920dab data/forge/tags/items/ingots/steel.json
 df4ca4e29f1642104842e775304066f7ea397604 data/forge/tags/items/ingots/tin.json
-7f244aebd1fe0fdc77def65833031c1489ecff8c data/forge/tags/items/nuggets.json
+73233bff4cad9ca7edb3f4ca0b14fbcbca00c370 data/forge/tags/items/nuggets.json
 797e7aa68cda1155014635c424ba4fae6a9eb2fd data/forge/tags/items/nuggets/bronze.json
 96297501f52bc0ed4f61530fdb7322c3c78babf0 data/forge/tags/items/nuggets/copper.json
 153083c83dde50354597232ecb844d923268e973 data/forge/tags/items/nuggets/netherite.json
+19b92e052bd2f40b21b9c7a8715c3a773452acb4 data/forge/tags/items/nuggets/nicrosil.json
 80078e9eae7e60d6fbd9aba430daf0bb33123690 data/forge/tags/items/nuggets/pewter.json
 0c5e712e0458eea79f214c53174656165b0ea9aa data/forge/tags/items/nuggets/rose_gold.json
 a5da29b948d57073e58c4450458e704a54312c10 data/forge/tags/items/nuggets/steel.json
@@ -17,8 +19,9 @@ a5da29b948d57073e58c4450458e704a54312c10 data/forge/tags/items/nuggets/steel.jso
 e7db865097a0fd2f87bbf744923d819788a81996 data/forge/tags/items/ores/tin.json
 7a5b77c21783e5fcfc69215d7ac0599936320d47 data/forge/tags/items/raw_materials.json
 60a76c3a8420c8c474d010eff75ab66bc78f1440 data/forge/tags/items/raw_materials/tin.json
-420be5329580c1597c82b8b6fad382090cac342c data/forge/tags/items/storage_blocks.json
+f0c2b50d52a25ae45c6e771d2af41ee4f015d9cc data/forge/tags/items/storage_blocks.json
 68406cc2638b7acabe6ad75f8f719d1373e34b91 data/forge/tags/items/storage_blocks/bronze.json
+487d3831d7f6c33b9ab599c6028beeee1670fd7a data/forge/tags/items/storage_blocks/nicrosil.json
 cd5b2c9853eed4454b5baadfa42e59b461e32409 data/forge/tags/items/storage_blocks/pewter.json
 98b4f8037e207f94f11e5b6396a5479135d23f88 data/forge/tags/items/storage_blocks/raw_tin.json
 0eb858f023ba3ddbb0a3699de23e92faf0feceb0 data/forge/tags/items/storage_blocks/rose_gold.json

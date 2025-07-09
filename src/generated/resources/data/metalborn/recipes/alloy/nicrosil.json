@@ -1,0 +1,60 @@
+{
+  "type": "forge:conditional",
+  "recipes": [
+    {
+      "conditions": [
+        {
+          "type": "mantle:tag_filled",
+          "tag": "metalborn:ingot_like/nickel"
+        }
+      ],
+      "recipe": {
+        "type": "metalborn:shapeless_forge",
+        "cooking_time": 400,
+        "experience": 1.0,
+        "ingredients": [
+          {
+            "tag": "metalborn:ingot_like/nickel"
+          },
+          {
+            "tag": "metalborn:ingot_like/nickel"
+          },
+          {
+            "tag": "metalborn:ingot_like/tin"
+          },
+          {
+            "tag": "metalborn:ingot_like/quartz"
+          }
+        ],
+        "result": {
+          "count": 4,
+          "tag": "forge:ingots/nicrosil"
+        }
+      }
+    },
+    {
+      "conditions": [
+        {
+          "type": "forge:true"
+        }
+      ],
+      "recipe": {
+        "type": "metalborn:shapeless_forge",
+        "cooking_time": 200,
+        "experience": 1.0,
+        "ingredients": [
+          {
+            "tag": "metalborn:ingot_like/tin"
+          },
+          {
+            "tag": "metalborn:ingot_like/quartz"
+          }
+        ],
+        "result": {
+          "count": 2,
+          "tag": "forge:ingots/nicrosil"
+        }
+      }
+    }
+  ]
+}

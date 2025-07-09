@@ -60,7 +60,7 @@ public class MetalPowerProvider extends AbstractMetalPowerProvider {
       .feruchemy(new EnergyMetalEffect(0.5f, 4f));
 
     // special - does not use standard metal effects but wants capacity and alike
-    metal(InvestitureMetalmindItem.METAL).name("netherite").index(16).temperature(1250).hemalurgyCharge(0);
+    metal(InvestitureMetalmindItem.METAL).name("nicrosil").index(16).temperature(1100).hemalurgyCharge(0);
 
     // compat
     // TODO: silver

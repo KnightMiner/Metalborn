@@ -139,6 +139,7 @@ public class Registration {
   public static final MetalItemObject STEEL     = BLOCKS.registerMetal("steel",     metalBuilder(MapColor.STONE), BLOCK_ITEM, PROPS);
   public static final MetalItemObject BRONZE    = BLOCKS.registerMetal("bronze",    metalBuilder(MapColor.WOOD), BLOCK_ITEM, PROPS);
   public static final MetalItemObject ROSE_GOLD = BLOCKS.registerMetal("rose_gold", metalBuilder(MapColor.TERRACOTTA_WHITE), BLOCK_ITEM, PROPS);
+  public static final MetalItemObject NICROSIL  = BLOCKS.registerMetal("nicrosil",  metalBuilder(MapColor.SNOW), BLOCK_ITEM, PROPS);
 
   // ores
   public static final ItemObject<Block> TIN_ORE = BLOCKS.register("tin_ore", BlockBehaviour.Properties.of().mapColor(MapColor.STONE).instrument(NoteBlockInstrument.BASEDRUM).requiresCorrectToolForDrops().strength(3.0F, 3.0F), BLOCK_ITEM);
@@ -295,6 +296,7 @@ public class Registration {
     accept(output, STEEL);
     accept(output, BRONZE);
     accept(output, ROSE_GOLD);
+    accept(output, NICROSIL);
     // ores
     output.accept(TIN_ORE);
     output.accept(DEEPSLATE_TIN_ORE);

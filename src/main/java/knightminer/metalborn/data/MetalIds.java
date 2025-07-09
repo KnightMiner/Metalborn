@@ -20,6 +20,7 @@ public class MetalIds {
   public static final MetalId roseGold = id("rose_gold");
 
   // textures
+  public static final MetalId nicrosil = id("nicrosil");
   public static final MetalId netherite = id("netherite");
 
   // compat cognitive

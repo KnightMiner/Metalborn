@@ -31,6 +31,7 @@ public class BlockModelProvider extends BlockStateProvider {
     storage(Registration.STEEL, MetalIds.steel);
     storage(Registration.BRONZE, MetalIds.bronze);
     storage(Registration.ROSE_GOLD, MetalIds.roseGold);
+    storage(Registration.NICROSIL, MetalIds.nicrosil);
     ModelFile forge = models().orientableWithBottom(
       "forge",
       resource("block/forge/side"),

@@ -29,6 +29,7 @@ public class BlockTagProvider extends BlockTagsProvider {
     metal(Registration.STEEL, BlockTags.NEEDS_IRON_TOOL, true);
     metal(Registration.BRONZE, BlockTags.NEEDS_IRON_TOOL, false);
     metal(Registration.ROSE_GOLD, BlockTags.NEEDS_IRON_TOOL, false);
+    metal(Registration.NICROSIL, BlockTags.NEEDS_IRON_TOOL, false);
 
     // tin ore
     pickaxe(Registration.TIN_ORE, BlockTags.NEEDS_STONE_TOOL);

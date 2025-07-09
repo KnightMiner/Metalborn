@@ -11,8 +11,8 @@
   },
   "result": {
     "amount": 40,
-    "tag": "forge:molten_netherite"
+    "tag": "forge:molten_nicrosil"
   },
-  "temperature": 1250,
-  "time": 49
+  "temperature": 1100,
+  "time": 46
 }

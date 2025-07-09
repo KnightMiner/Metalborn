@@ -42,6 +42,7 @@ public class ItemModelProvider extends net.minecraftforge.client.model.generator
     metal(Registration.STEEL, MetalIds.steel);
     metal(Registration.BRONZE, MetalIds.bronze);
     metal(Registration.ROSE_GOLD, MetalIds.roseGold);
+    metal(Registration.NICROSIL, MetalIds.nicrosil);
     nugget(Registration.COPPER_NUGGET, MetalIds.copper);
     nugget(Registration.NETHERITE_NUGGET, MetalIds.netherite);
     basicItem(Registration.LERASIUM_NUGGET, "lerasium_nugget");
@@ -56,8 +57,8 @@ public class ItemModelProvider extends net.minecraftforge.client.model.generator
     metal(Registration.RING, "metal/item/ring", false);
     metal(Registration.UNSEALED_RING, "metal/item/ring", false).end().texture("layer1", "item/unsealed_ring_gem");
     // investiture metalminds just use netherite directly
-    metalItem(Registration.INVESTITURE_BRACER, "bracer", MetalIds.netherite);
-    metalItem(Registration.INVESTITURE_RING, "ring", MetalIds.netherite);
+    metalItem(Registration.INVESTITURE_BRACER, "bracer", MetalIds.nicrosil);
+    metalItem(Registration.INVESTITURE_RING, "ring", MetalIds.nicrosil);
     // spikes we want to rotate the in hand model 180 degrees so it points out
     metal(Registration.SPIKE, "metal/item/spike", true).end().transforms()
       .transform(ItemDisplayContext.FIRST_PERSON_LEFT_HAND).rotation(0, -90, -25).translation(1.13f, 3.2f, 1.13f).scale(0.68f, 0.68f, 0.68f).end()
