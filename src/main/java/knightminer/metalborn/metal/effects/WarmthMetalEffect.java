@@ -65,8 +65,11 @@ public record WarmthMetalEffect() implements MetalEffect {
       if (entity.tickCount % 20 == 0) {
         entity.setRemainingFireTicks(entity.getRemainingFireTicks() - 20 * level);
       }
-    }
-    else {
+    } else {
+      // if we are wearing gear that makes us freeze immune, that removes most of the downside to storing
+      if (level > 1 && !entity.canFreeze()) {
+        level = 1;
+      }
       // at level 1, this will keep you frozen but not taking damage
       // at level 2+, this will slowly build up your frozenness over time
       entity.setTicksFrozen(Math.max(entity.getTicksFrozen(), entity.getTicksRequiredToFreeze()) + level * 2 - 1);
