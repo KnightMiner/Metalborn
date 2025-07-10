@@ -354,9 +354,14 @@ public class ActiveMetalminds {
       // if we are active, tick investiture. Doesn't matter if we end up using power as not every power runs every tick
       // TODO: only drain if we have no other source of power
       // TODO: don't drain if the metalminds are all unsealed
+      boolean stopUsing = false;
       if (!investitureStacks.isEmpty()) {
         // only need 1 power to add this effect, and not currently bothering with round-robin draining; just drain the first one first
         resumeInvestiture = updateMetalminds(investitureStacks, true, 1, resumeInvestiture, NO_ACTION);
+        // if we ran out of power this tick, mark that we need to stop using powers, though let us finish this tick
+        if (investitureStacks.isEmpty() && !data.canUse(id)) {
+          stopUsing = true;
+        }
       }
 
       // decide which power to run
@@ -387,6 +392,11 @@ public class ActiveMetalminds {
       }
       if (stored > 0 && !storingStacks.isEmpty()) {
         resumeStoring = updateMetalminds(storingStacks, Boolean.FALSE, stored, resumeStoring, stopStoring);
+      }
+
+      // after running effects, stop using metalminds if requested
+      if (stopUsing) {
+        validateUsable();
       }
 
       // if anything stopped tapping/storing, update the effect
