@@ -12,12 +12,12 @@ import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
 import net.minecraft.commands.arguments.EntityArgument;
 import net.minecraft.network.chat.Component;
-import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
 import org.jetbrains.annotations.Nullable;
 import slimeknights.mantle.command.MantleCommand;
 
 import java.util.Collection;
+import java.util.List;
 
 /** Command for working with metal powers */
 public class FerringCommand {
@@ -50,6 +50,7 @@ public class FerringCommand {
             .executes(context -> setFerring(context, MetalArgument.getPower(context, "metal").id())))))
       // ferring remove <targets>
       .then(Commands.literal("remove")
+        .executes(context -> setFerring(context, MetalId.NONE, List.of(context.getSource().getPlayerOrException())))
         .then(Commands.argument("targets", EntityArgument.players())
           .executes(context -> setFerring(context, MetalId.NONE))));
   }
@@ -75,8 +76,18 @@ public class FerringCommand {
    * @return Number of entities targeted.
    */
   private static int setFerring(CommandContext<CommandSourceStack> context, @Nullable MetalId metal) throws CommandSyntaxException {
+    return setFerring(context, metal, EntityArgument.getPlayers(context, "targets"));
+  }
+
+  /**
+   * Sets the ferring type for the list of players.
+   * @param context  Command context
+   * @param metal    Metal to set, if null will randomly set the metal
+   * @param players  List of players to target
+   * @return Number of entities targeted.
+   */
+  private static int setFerring(CommandContext<CommandSourceStack> context, @Nullable MetalId metal, Collection<? extends Player> players) throws CommandSyntaxException {
     // set metal for each player
-    Collection<ServerPlayer> players = EntityArgument.getPlayers(context, "targets");
     for (Player player : players) {
       // if null, independently choose type for each
       MetalId targetMetal = metal;
