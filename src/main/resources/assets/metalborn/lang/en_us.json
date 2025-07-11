@@ -33,9 +33,9 @@
   "metal_power.metalborn.copper.label": "%s / %s XP",
 
   "metal_power.metalborn.bronze": "Bronze",
-  "metal_power.metalborn.bronze.stores": "Luck",
-  "metal_power.metalborn.bronze.ferring": "Spinner",
-  "metal_power.metalborn.bronze.target": "Illagers",
+  "metal_power.metalborn.bronze.stores": "Reach",
+  "metal_power.metalborn.bronze.ferring": "Sentry",
+  "metal_power.metalborn.bronze.target": "Endermen",
 
   "metal_power.metalborn.gold": "Gold",
   "metal_power.metalborn.gold.stores": "Health",
