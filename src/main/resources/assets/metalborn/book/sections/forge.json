@@ -1,0 +1,14 @@
+[
+  {
+    "name": "crafting",
+    "data": "forge/recipe.json"
+  },
+  {
+    "name": "gui",
+    "data": "forge/gui.json"
+  },
+  {
+    "name": "automation",
+    "data": "forge/automation.json"
+  }
+]

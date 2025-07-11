@@ -1,4 +1,6 @@
-// 1.20.1	2025-07-08T05:37:21.6523316	Tags for minecraft:item mod id metalborn
+// 1.20.1	2025-07-11T01:18:37.2295141	Tags for minecraft:item mod id metalborn
+058157714c08f4d51455b63e4bf6bae3d4ccf02e data/forge/tags/items/books.json
+66dd943100ec84cf0199411516d16e1ab1e350ba data/forge/tags/items/books/guide.json
 8b9a09fc19e418e011eaab15ab0ad87882e9ccfe data/forge/tags/items/ingots.json
 03cfb4451bfb3c82bfbe118acfb1c55d545d9835 data/forge/tags/items/ingots/bronze.json
 f905ff8061f5a302c2eb26a512041bf66d6ceee3 data/forge/tags/items/ingots/nicrosil.json
@@ -47,6 +49,8 @@ e811fea8b06671da251e7fbec4e2614f6f191dbf data/metalborn/tags/items/ingot_like/ni
 a1f720331d641e7f110e85ffcbffcaa6ad50c76b data/metalborn/tags/items/ingot_like/zinc.json
 9be0db2a1aa4a786f5f2e84c21399f2dd66033c5 data/metalborn/tags/items/rings.json
 e638769a051e895e72ace29f7ece44c911555b39 data/metalborn/tags/items/spikes.json
+66dd943100ec84cf0199411516d16e1ab1e350ba data/minecraft/tags/items/bookshelf_books.json
+66dd943100ec84cf0199411516d16e1ab1e350ba data/minecraft/tags/items/lectern_books.json
 e5112bd294f39abdbb42a699b7296ad10b513d21 data/tconstruct/tags/items/casts/gold.json
 cd7bd6c1be35fbdd18192672af2887c00e40ce2b data/tconstruct/tags/items/casts/multi_use.json
 ba7b118fbac4947fa33ce0f68eb8098b59e27781 data/tconstruct/tags/items/casts/red_sand.json

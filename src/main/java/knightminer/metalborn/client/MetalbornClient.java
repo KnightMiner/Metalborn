@@ -2,6 +2,7 @@ package knightminer.metalborn.client;
 
 import com.mojang.blaze3d.platform.InputConstants;
 import knightminer.metalborn.Metalborn;
+import knightminer.metalborn.client.book.MetalbornBook;
 import knightminer.metalborn.core.Registration;
 import knightminer.metalborn.network.ControlPacket;
 import knightminer.metalborn.network.MetalbornNetwork;
@@ -33,7 +34,13 @@ public class MetalbornClient {
 
   /** Runs during mod constructor to register any important client only things */
   public static void onConstruct() {
+    MetalbornBook.init();
     MinecraftForge.EVENT_BUS.addListener(MetalbornClient::clientTick);
+  }
+
+  @SubscribeEvent
+  static void clientSetup(FMLClientSetupEvent event) {
+    MetalbornBook.setupFont();
   }
 
   @SubscribeEvent

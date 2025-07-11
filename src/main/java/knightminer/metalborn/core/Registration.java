@@ -7,6 +7,7 @@ import knightminer.metalborn.block.ForgeBlockEntity;
 import knightminer.metalborn.item.LerasiumAlloyNuggetItem;
 import knightminer.metalborn.item.LerasiumNuggetItem;
 import knightminer.metalborn.item.MetalItem;
+import knightminer.metalborn.item.MetalbornBookItem;
 import knightminer.metalborn.item.SpikeItem;
 import knightminer.metalborn.item.metalmind.InvestitureMetalmindItem;
 import knightminer.metalborn.item.metalmind.MetalmindItem;
@@ -59,6 +60,7 @@ import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.CreativeModeTab.ItemDisplayParameters;
 import net.minecraft.world.item.CreativeModeTab.Output;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.Item.Properties;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.RecipeType;
@@ -129,6 +131,8 @@ public class Registration {
     ATTRIBUTES.register(bus);
     LOOT_CONDITIONS.register(bus);
   }
+
+  public static final ItemObject<Item> METALLIC_ARTS = ITEMS.register("metallic_arts", () -> new MetalbornBookItem(new Properties().stacksTo(1)));
 
   // metals
   public static final ItemObject<Item> COPPER_NUGGET = ITEMS.register("copper_nugget");
@@ -299,6 +303,7 @@ public class Registration {
   private static void addTabItems(ItemDisplayParameters itemDisplayParameters, Output output) {
     Consumer<ItemStack> consumer = output::accept;
 
+    output.accept(METALLIC_ARTS);
     output.accept(FORGE);
 
     // metals

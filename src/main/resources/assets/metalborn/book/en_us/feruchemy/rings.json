@@ -1,0 +1,16 @@
+{
+  "type": "mantle:showcase",
+  "title": "Rings",
+  "item": [
+    {
+      "type": "metalborn:metal_item",
+      "item": "metalborn:ring",
+      "filter": "metalmind"
+    },
+    { "item": "metalborn:investiture_ring" }
+  ],
+  "text": [
+    { "text": "Rings are the most basic type of metalmind created in the metal forge. They are capable of storing a small amount of power, typically around 5 minutes. While they do not store a lot of power, they do make it easier to store or tap a lot of power at once for stronger effects." },
+    { "text": "It is possible to wear up to 8 rings at once.", "paragraph": true }
+  ]
+}

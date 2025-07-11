@@ -1,0 +1,15 @@
+{
+  "type": "mantle:showcase",
+  "title": "Bracers",
+  "item": [
+    {
+      "type": "metalborn:metal_item",
+      "item": "metalborn:bracer",
+      "filter": "metalmind"
+    },
+    { "item": "metalborn:investiture_bracer" }
+  ],
+  "text": [
+    { "text": "Bracers can be created in the metal forge to store large amounts of power, typically around 50 minutes. Due to their size, its only possible to wear 2 of them, but the duration makes up for it." }
+  ]
+}

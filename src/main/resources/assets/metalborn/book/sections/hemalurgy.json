@@ -1,0 +1,14 @@
+[
+  {
+    "name": "overview",
+    "data": "hemalurgy/overview.json"
+  },
+  {
+    "name": "spikes",
+    "data": "hemalurgy/spikes.json"
+  },
+  {
+    "name": "gui",
+    "data": "hemalurgy/gui.json"
+  }
+]

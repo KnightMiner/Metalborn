@@ -35,6 +35,12 @@ public class ItemTagProvider extends ItemTagsProvider {
     copy(Tags.Blocks.STORAGE_BLOCKS, Tags.Items.STORAGE_BLOCKS);
     copy(Tags.Blocks.ORES, Tags.Items.ORES);
 
+    // book item
+    tag(ItemTags.LECTERN_BOOKS).add(Registration.METALLIC_ARTS.get());
+    tag(ItemTags.BOOKSHELF_BOOKS).add(Registration.METALLIC_ARTS.get());
+    tag(MetalbornTags.Items.GUIDEBOOKS).add(Registration.METALLIC_ARTS.get());
+    tag(MetalbornTags.Items.BOOKS).addTag(MetalbornTags.Items.GUIDEBOOKS);
+
     // inventory
     tag(Registration.BRACERS).add(Registration.BRACER.get(), Registration.INVESTITURE_BRACER.get());
     tag(Registration.RINGS).add(Registration.RING.get(), Registration.INVESTITURE_RING.get(), Registration.UNSEALED_RING.get());

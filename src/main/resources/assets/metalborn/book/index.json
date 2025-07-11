@@ -1,0 +1,37 @@
+[
+  {
+    "name": "forge",
+    "data": "sections/forge.json",
+    "icon": {
+      "item": "metalborn:forge"
+    }
+  },
+  {
+    "name": "feruchemy",
+    "data": "sections/feruchemy.json",
+    "icon": {
+      "item": {
+        "type": "forge:nbt",
+        "item": "metalborn:ring",
+        "nbt": {
+          "metal": "metalborn:pewter",
+          "amount": 2000
+        }
+      }
+    }
+  },
+  {
+    "name": "hemalurgy",
+    "data": "sections/hemalurgy.json",
+    "icon": {
+      "item": {
+        "type": "forge:nbt",
+        "item": "metalborn:spike",
+        "nbt": {
+          "metal": "metalborn:gold",
+          "full": true
+        }
+      }
+    }
+  }
+]

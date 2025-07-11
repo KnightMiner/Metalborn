@@ -1,0 +1,26 @@
+[
+  {
+    "name": "ferrings",
+    "data": "feruchemy/ferrings.json"
+  },
+  {
+    "name": "gui",
+    "data": "feruchemy/gui.json"
+  },
+  {
+    "name": "gui2",
+    "data": "feruchemy/gui2.json"
+  },
+  {
+    "name": "rings",
+    "data": "feruchemy/rings.json"
+  },
+  {
+    "name": "bracers",
+    "data": "feruchemy/bracers.json"
+  },
+  {
+    "name": "unsealed",
+    "data": "feruchemy/unsealed.json"
+  }
+]

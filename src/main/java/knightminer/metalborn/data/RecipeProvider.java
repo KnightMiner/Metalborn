@@ -16,6 +16,7 @@ import net.minecraft.data.PackOutput;
 import net.minecraft.data.recipes.FinishedRecipe;
 import net.minecraft.data.recipes.RecipeCategory;
 import net.minecraft.data.recipes.ShapedRecipeBuilder;
+import net.minecraft.data.recipes.ShapelessRecipeBuilder;
 import net.minecraft.data.recipes.SimpleCookingRecipeBuilder;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.FluidTags;
@@ -54,6 +55,12 @@ public class RecipeProvider extends net.minecraft.data.recipes.RecipeProvider im
 
   @Override
   protected void buildRecipes(Consumer<FinishedRecipe> consumer) {
+    ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, Registration.METALLIC_ARTS)
+      .requires(Items.BOOK)
+      .requires(Registration.TIN.getIngotTag())
+      .unlockedBy("has_tin", has(Registration.TIN.getIngotTag()))
+      .save(consumer, location("metallic_arts"));
+
     String metalFolder = "metal/";
     metalCrafting(consumer, Registration.TIN, metalFolder);
     metalCrafting(consumer, Registration.PEWTER, metalFolder);

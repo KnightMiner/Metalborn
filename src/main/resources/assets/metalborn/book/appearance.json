@@ -1,0 +1,10 @@
+{
+  "title": "Metalic Arts",
+  "subtitle": "by Lestibournes",
+  "coverColor": 0xC3DFE6,
+  "arrowColor": 0x89A5AC,
+  "slotColor": 0xACC8CF,
+  "drawSectionListText": true,
+  "centerPageTitles": true,
+  "drawFourColumnIndex": false
+}
