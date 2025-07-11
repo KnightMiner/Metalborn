@@ -1,7 +1,8 @@
-package knightminer.metalborn.metal.effects;
+package knightminer.metalborn.metal.effects.specialized;
 
 import knightminer.metalborn.Metalborn;
 import knightminer.metalborn.metal.MetalPower;
+import knightminer.metalborn.metal.effects.MetalEffect;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.network.chat.Component;

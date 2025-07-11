@@ -1,8 +1,9 @@
-package knightminer.metalborn.metal.effects;
+package knightminer.metalborn.metal.effects.general;
 
 import com.mojang.datafixers.util.Function6;
 import knightminer.metalborn.Metalborn;
 import knightminer.metalborn.metal.MetalPower;
+import knightminer.metalborn.metal.effects.MetalEffect;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.CommonComponents;
 import net.minecraft.network.chat.Component;

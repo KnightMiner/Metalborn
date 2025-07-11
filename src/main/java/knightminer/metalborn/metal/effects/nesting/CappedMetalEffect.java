@@ -1,6 +1,7 @@
-package knightminer.metalborn.metal.effects;
+package knightminer.metalborn.metal.effects.nesting;
 
 import knightminer.metalborn.metal.MetalPower;
+import knightminer.metalborn.metal.effects.MetalEffect;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.LivingEntity;
 import slimeknights.mantle.data.loadable.primitive.IntLoadable;

@@ -1,4 +1,4 @@
-package knightminer.metalborn.metal.effects;
+package knightminer.metalborn.metal.effects.general;
 
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
