@@ -161,7 +161,7 @@ public class MetalbornHandler {
             // reset invulnerable time to 0 for the main attack
             target.invulnerableTime = 0;
             target.setSecondsOnFire((int) heatDamage);
-          } else {
+          } else if (fakeFire) {
             target.setSecondsOnFire(0);
           }
         }
