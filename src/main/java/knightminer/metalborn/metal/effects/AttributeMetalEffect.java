@@ -80,6 +80,16 @@ public record AttributeMetalEffect(
   }
 
   @Override
+  public int onTap(MetalPower power, LivingEntity entity, int level) {
+    return multiplier != 0 ? level : 1;
+  }
+
+  @Override
+  public int onStore(MetalPower power, LivingEntity entity, int level) {
+    return multiplier != 0 ? level : 1;
+  }
+
+  @Override
   public void getTooltip(MetalPower power, LivingEntity entity, int level, List<Component> tooltip) {
     // this code is recreated from the ItemStack attribute tooltip logic
     double value = base + level * multiplier;
@@ -131,6 +141,11 @@ public record AttributeMetalEffect(
     /** Builds with the given base and multiplier */
     public AttributeMetalEffect build(float base, float multiplier) {
       return new AttributeMetalEffect(unique, attribute, operation, base, multiplier, swapColors);
+    }
+
+    /** Builds with the given flat level */
+    public AttributeMetalEffect flat(int value) {
+      return build(value, 0);
     }
 
     /** Builds with the given value each level */
