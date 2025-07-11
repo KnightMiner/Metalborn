@@ -1,5 +1,6 @@
 package knightminer.metalborn.metal;
 
+import knightminer.metalborn.Metalborn;
 import net.minecraft.data.CachedOutput;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.PackOutput.Target;
@@ -29,6 +30,13 @@ public abstract class AbstractMetalPowerProvider extends GenericDataProvider {
   @Override
   public CompletableFuture<?> run(CachedOutput cache) {
     addMetals();
-    return allOf(metals.entrySet().stream().map(entry -> saveJson(cache, entry.getKey(), entry.getValue().serialize())));
+    return allOf(metals.entrySet().stream().map(entry -> {
+      try {
+        return saveJson(cache, entry.getKey(), entry.getValue().serialize());
+      } catch (Exception e) {
+        Metalborn.LOG.error("Failed to serialize metal {}", entry.getKey(), e);
+        throw e;
+      }
+    }));
   }
 }
