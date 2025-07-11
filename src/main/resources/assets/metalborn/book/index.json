@@ -33,5 +33,15 @@
         }
       }
     }
+  },
+  {
+    "name": "metals",
+    "icon": {
+      "item": "metalborn:tin_ingot"
+    },
+    "data": "no-load",
+    "extraData": { "metalborn:metals": {
+      "path": "metals"
+    }}
   }
 ]

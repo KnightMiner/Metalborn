@@ -1,0 +1,15 @@
+{
+  "metalminds": [
+    { "item": "metalborn:investiture_bracer" },
+    { "item": "metalborn:investiture_ring" }
+  ],
+  "storing": [
+    "Temporarily removes ferring power",
+    "Metalmind filled with matching power",
+    "Can use nicrosil regardless of powers"
+  ],
+  "tapping": [
+    "May use stored power",
+    "Can tap regardless of who filled"
+  ]
+}
