@@ -22,7 +22,11 @@ public class MetalbornBook {
 
   /** Adds all book related sections */
   public static void init() {
+    // pages
+    BookLoader.registerPageType(MetalContent.ID, MetalContent.class);
+
     // padding needs to be last to ensure page counts are right
+    BOOK.addTransformer(MetalInjectingTransformer.INSTANCE);
     BOOK.addTransformer(BookTransformer.paddingTransformer());
   }
 

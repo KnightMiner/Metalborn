@@ -10,6 +10,7 @@ import knightminer.metalborn.item.MetalItem;
 import knightminer.metalborn.item.MetalbornBookItem;
 import knightminer.metalborn.item.SpikeItem;
 import knightminer.metalborn.item.metalmind.InvestitureMetalmindItem;
+import knightminer.metalborn.item.metalmind.Metalmind;
 import knightminer.metalborn.item.metalmind.MetalmindItem;
 import knightminer.metalborn.item.metalmind.PowerMetalmindItem;
 import knightminer.metalborn.item.metalmind.UnsealedMetalmindItem;
@@ -155,8 +156,13 @@ public class Registration {
   public static final ItemObject<Item> RAW_TIN = ITEMS.register("raw_tin");
 
   // metal item tags
+  /** List of metalminds to display in the book, should implement {@link MetalItem} */
+  public static final TagKey<Item> METALMINDS = itemTag("metalminds");
+  /** Valid items for the bracer slot. Should implement {@link Metalmind} */
   public static final TagKey<Item> BRACERS = itemTag("bracers");
+  /** Valid items for the ring slots. Should implement {@link Metalmind} */
   public static final TagKey<Item> RINGS = itemTag("rings");
+  /** Valid items for the ring slots. Should implement {@link knightminer.metalborn.item.Spike} */
   public static final TagKey<Item> SPIKES = itemTag("spikes");
 
   // metal items

@@ -41,7 +41,7 @@ public class SpikeItem extends Item implements MetalItem, Spike {
   // translation keys
   private static final String KEY_CHARGE = Metalborn.key("item", "spike.charge");
   private static final String KEY_STEALS = Metalborn.key("item", "spike.steals");
-  private static final String KEY_TARGET = Metalborn.key("item", "spike.target");
+  public static final String KEY_TARGET = Metalborn.key("item", "spike.target");
   private static final Component FULLY_CHARGED = Metalborn.component("item", "spike.charge.full").withStyle(ChatFormatting.GRAY);
   // weapon properties
   private static final float ATTACK_DAMAGE = 2;
@@ -70,6 +70,11 @@ public class SpikeItem extends Item implements MetalItem, Spike {
 
 
   /* Spike */
+
+  @Override
+  public boolean canUseMetal(MetalPower metal) {
+    return metal != MetalPower.DEFAULT && metal.hemalurgyCharge() > 0 && !metal.feruchemy().isEmpty();
+  }
 
   @Override
   public MetalId getMetal(ItemStack stack) {

@@ -218,6 +218,16 @@
   "gui.metalborn.forge": "Metal Forge",
   "jei.metalborn.forge": "Metal Forging",
 
+
+  "_group_book_": "",
+
+  "book.metalborn.metal.tapping": "Tapping Per Metalmind:",
+  "book.metalborn.metal.storing": "Storing Per Metalmind:",
+  "book.metalborn.metal.ferring": "Ferring: %s",
+
+
+  "_group_commands_": "",
+
   "command.metalborn.ferring.get": "%s is a %s ferring (ID %s)",
   "command.metalborn.ferring.set.single": "Set ferring type for %s to %s (ID %s)",
   "command.metalborn.ferring.set.multiple": "Set ferring type on %s players to %s (ID %s)",

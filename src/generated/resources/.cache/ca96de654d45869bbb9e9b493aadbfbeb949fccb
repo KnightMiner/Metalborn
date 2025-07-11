@@ -1,4 +1,4 @@
-// 1.20.1	2025-07-11T01:18:37.2295141	Tags for minecraft:item mod id metalborn
+// 1.20.1	2025-07-11T04:42:23.2296858	Tags for minecraft:item mod id metalborn
 058157714c08f4d51455b63e4bf6bae3d4ccf02e data/forge/tags/items/books.json
 66dd943100ec84cf0199411516d16e1ab1e350ba data/forge/tags/items/books/guide.json
 8b9a09fc19e418e011eaab15ab0ad87882e9ccfe data/forge/tags/items/ingots.json
@@ -47,6 +47,7 @@ e811fea8b06671da251e7fbec4e2614f6f191dbf data/metalborn/tags/items/ingot_like/ni
 2e9d8ff13339b9e3a252ed3748a58b49585ac2d0 data/metalborn/tags/items/ingot_like/silver.json
 398b903658b869cb7a0523e23b3a32a634c3be1c data/metalborn/tags/items/ingot_like/tin.json
 a1f720331d641e7f110e85ffcbffcaa6ad50c76b data/metalborn/tags/items/ingot_like/zinc.json
+e0c0741d39a1b25b845aed61a90109fdea665c5a data/metalborn/tags/items/metalminds.json
 9be0db2a1aa4a786f5f2e84c21399f2dd66033c5 data/metalborn/tags/items/rings.json
 e638769a051e895e72ace29f7ece44c911555b39 data/metalborn/tags/items/spikes.json
 66dd943100ec84cf0199411516d16e1ab1e350ba data/minecraft/tags/items/bookshelf_books.json

@@ -42,6 +42,16 @@ public interface MetalItem extends ItemLike {
     return stack;
   }
 
+  /** {@return true if the metal is usable by this metal item} */
+  default boolean canUseMetal(MetalId metal) {
+    return canUseMetal(MetalManager.INSTANCE.get(metal));
+  }
+
+  /** {@return true if the metal is usable by this metal item} */
+  default boolean canUseMetal(MetalPower metal) {
+    return metal != MetalPower.DEFAULT && !metal.feruchemy().isEmpty();
+  }
+
   /** Creates a stack with the given metal ID */
   default ItemStack withMetal(MetalId id) {
     ItemStack stack = new ItemStack(this);
@@ -87,7 +97,7 @@ public interface MetalItem extends ItemLike {
   /** Adds all metal variants to the consumer */
   default void addVariants(Consumer<ItemStack> consumer) {
     for (MetalPower power : MetalManager.INSTANCE.getSortedPowers()) {
-      if (!power.feruchemy().isEmpty()) {
+      if (canUseMetal(power)) {
         consumer.accept(withMetal(power.id()));
       }
     }

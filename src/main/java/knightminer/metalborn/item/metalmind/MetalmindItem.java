@@ -25,7 +25,7 @@ import java.util.List;
 public abstract class MetalmindItem extends Item implements Metalmind {
   // translation keys
   private static final String KEY_AMOUNT = Metalborn.key("item", "metalmind.amount");
-  protected static final String KEY_STORES = Metalborn.key("item", "metalmind.stores");
+  public static final String KEY_STORES = Metalborn.key("item", "metalmind.stores");
   private static final String KEY_OWNER = Metalborn.key("item", "metalmind.owner");
   private static final Component UNKNOWN_OWNER = Component.translatable(KEY_OWNER, Metalborn.component("item", "metalmind.owner.unknown").withStyle(ChatFormatting.RED)).withStyle(ChatFormatting.GRAY);
   private static final Component UNKEYED = Component.translatable(KEY_OWNER, Metalborn.component("item", "metalmind.owner.none").withStyle(ChatFormatting.ITALIC)).withStyle(ChatFormatting.GRAY);
