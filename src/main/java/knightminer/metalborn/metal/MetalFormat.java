@@ -41,7 +41,7 @@ public enum MetalFormat {
 
   private static final String KEY_NO_LABEL = key("gui", "amount.no_label");
   private static final String KEY_SECONDS = key("gui", "amount.seconds");
-  private static final DecimalFormat SINGLE_DECIMAL = new DecimalFormat("#,###.#", DecimalFormatSymbols.getInstance(Locale.US));
+  private static final DecimalFormat SINGLE_DECIMAL = new DecimalFormat("#,##0.0", DecimalFormatSymbols.getInstance(Locale.US));
 
   /** Formats the given value and capacity */
   public abstract Component format(MetalId metal, int value, int capacity);
