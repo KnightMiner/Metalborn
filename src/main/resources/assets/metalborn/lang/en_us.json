@@ -65,6 +65,15 @@
   "metal_power.metalborn.electrum.ferring": "Pinnacle",
   "metal_power.metalborn.electrum.target": "Guardians",
 
+  "metal_power.metalborn.zinc": "Zinc",
+  "metal_power.metalborn.zinc.stores": "Stealth",
+  "metal_power.metalborn.zinc.ferring": "Sparker",
+  "metal_power.metalborn.zinc.target": "Silverfish",
+  "metal_power.metalborn.nickel": "Nickel",
+  "metal_power.metalborn.nickel.stores": "Stealth",
+  "metal_power.metalborn.nickel.ferring": "Sparker",
+  "metal_power.metalborn.nickel.target": "Silverfish",
+
   "metal_power.metalborn.brass": "Brass",
   "metal_power.metalborn.brass.stores": "Warmth",
   "metal_power.metalborn.brass.ferring": "Firesoul",
@@ -160,6 +169,7 @@
   "attribute.name.metalborn.looting_boost": "Looting",
   "attribute.name.metalborn.determination": "Determination",
   "attribute.name.metalborn.warmth": "Warmth",
+  "attribute.name.metalborn.visibility_multiplier": "Visibility",
 
   "attribute.name.metalborn.heat_damage": "Heat Damage",
   "death.attack.metalborn.melee_heat": "%1$s was burned to death by %2$s",

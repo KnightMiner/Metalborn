@@ -216,6 +216,8 @@ public class Registration {
   public static final RegistryObject<Attribute> WARMTH  = ATTRIBUTES.register("warmth", 1, 0, 2, true);
   /** Applies bonus damage to melee attacks in the form of a fiery attack. */
   public static final RegistryObject<Attribute> HEAT_DAMAGE  = ATTRIBUTES.register("heat_damage", 0, 0, 1024, true);
+  /** Changes visibility as seen by monsters. */
+  public static final RegistryObject<Attribute> VISIBILITY_MULTIPLIER = ATTRIBUTES.registerMultiplier("visibility_multiplier", false);
 
   // Tinkers' Construct compat
   public static final CastItemObject BRACER_CAST = ITEMS.registerCast("bracer");
@@ -282,6 +284,7 @@ public class Registration {
     addToAll(event, DETERMINATION);
     addToAll(event, WARMTH);
     addToAll(event, HEAT_DAMAGE);
+    addToAll(event, VISIBILITY_MULTIPLIER);
   }
 
   /** Adds an attribute to all entities */

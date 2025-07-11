@@ -1,0 +1,74 @@
+{
+  "allow_ferring": true,
+  "capacity": 6000,
+  "conditions": [
+    {
+      "type": "forge:or",
+      "values": [
+        {
+          "type": "metalborn:config",
+          "name": "force_integration"
+        },
+        {
+          "type": "mantle:tag_filled",
+          "tag": "forge:ingots/zinc"
+        },
+        {
+          "type": "mantle:tag_filled",
+          "tag": "forge:nuggets/zinc"
+        }
+      ]
+    }
+  ],
+  "feruchemy": [
+    {
+      "type": "metalborn:storing",
+      "capped": {
+        "type": "metalborn:attribute",
+        "attribute": "metalborn:visibility_multiplier",
+        "multiplier": -1.0,
+        "operation": "multiply_total",
+        "swap_colors": true
+      },
+      "level": 4,
+      "storing_type": "metalborn:capped"
+    },
+    {
+      "type": "metalborn:tapping",
+      "capped": {
+        "type": "metalborn:attribute",
+        "attribute": "metalborn:visibility_multiplier",
+        "multiplier": -0.25,
+        "operation": "multiply_total",
+        "swap_colors": true
+      },
+      "level": 3,
+      "tapping_type": "metalborn:capped"
+    },
+    {
+      "type": "metalborn:offset",
+      "amount": 3,
+      "offset": {
+        "type": "metalborn:storing_status_effect",
+        "always_store": false,
+        "base": 1,
+        "effect": "minecraft:glowing"
+      }
+    },
+    {
+      "type": "metalborn:offset",
+      "amount": 3,
+      "offset": {
+        "type": "metalborn:tapping_status_effect",
+        "always_store": true,
+        "base": 1,
+        "effect": "minecraft:invisibility"
+      }
+    }
+  ],
+  "format": "ticks",
+  "hemalurgy_charge": 15,
+  "index": 11,
+  "name": "zinc",
+  "temperature": 420
+}

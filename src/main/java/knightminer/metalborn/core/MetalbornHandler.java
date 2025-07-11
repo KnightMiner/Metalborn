@@ -20,6 +20,7 @@ import net.minecraftforge.event.TickEvent.Phase;
 import net.minecraftforge.event.TickEvent.PlayerTickEvent;
 import net.minecraftforge.event.entity.living.LivingAttackEvent;
 import net.minecraftforge.event.entity.living.LivingDropsEvent;
+import net.minecraftforge.event.entity.living.LivingEvent.LivingVisibilityEvent;
 import net.minecraftforge.event.entity.living.LivingExperienceDropEvent;
 import net.minecraftforge.event.entity.living.LivingFallEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
@@ -209,6 +210,14 @@ public class MetalbornHandler {
       }
 
       event.setAmount(damage);
+    }
+  }
+
+  @SubscribeEvent
+  static void livingVisibility(LivingVisibilityEvent event) {
+    double visibility = event.getEntity().getAttributeValue(Registration.VISIBILITY_MULTIPLIER.get());
+    if (visibility != 1) {
+      event.modifyVisibility(visibility);
     }
   }
 }

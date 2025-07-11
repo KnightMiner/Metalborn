@@ -5,10 +5,12 @@ import knightminer.metalborn.item.metalmind.InvestitureMetalmindItem;
 import knightminer.metalborn.metal.AbstractMetalPowerProvider;
 import knightminer.metalborn.metal.MetalFormat;
 import knightminer.metalborn.metal.effects.AttributeMetalEffect;
+import knightminer.metalborn.metal.effects.CappedMetalEffect;
 import knightminer.metalborn.metal.effects.EnergyMetalEffect;
 import knightminer.metalborn.metal.effects.ExperienceMetalEffect;
 import knightminer.metalborn.metal.effects.HealMetalEffect;
 import knightminer.metalborn.metal.effects.MobEffectMetalEffect;
+import knightminer.metalborn.metal.effects.OffsetMetalEffect;
 import knightminer.metalborn.metal.effects.StoringMetalEffect;
 import knightminer.metalborn.metal.effects.TappingMetalEffect;
 import knightminer.metalborn.metal.effects.UpdateHealthEffect;
@@ -71,6 +73,27 @@ public class MetalPowerProvider extends AbstractMetalPowerProvider {
     metal(MetalIds.electrum).index(10).temperature(760).integration()
       .hemalurgyCharge(8) // guardians are tough creatures
       .feruchemy(AttributeMetalEffect.builder(Registration.DETERMINATION, Operation.MULTIPLY_TOTAL).eachLevel(0.1f));
+
+    metal(MetalIds.zinc).index(11).temperature(420).integration().hemalurgyCharge(15)
+      // when storing, go from 100% (default) to 200% ... 500%
+      .feruchemy(new StoringMetalEffect(new CappedMetalEffect(4, AttributeMetalEffect.builder(Registration.VISIBILITY_MULTIPLIER, Operation.MULTIPLY_TOTAL).swapColors().eachLevel(-1))))
+      // when tapping, go from 100% (default) to 75% ... 0%
+      .feruchemy(new TappingMetalEffect(new CappedMetalEffect(3, AttributeMetalEffect.builder(Registration.VISIBILITY_MULTIPLIER, Operation.MULTIPLY_TOTAL).swapColors().eachLevel(-0.25f))))
+      // when storing, apply glowing at level 4
+      .feruchemy(new OffsetMetalEffect(3, MobEffectMetalEffect.storing(MobEffects.GLOWING).flat(1)))
+      // when storing, apply invisibility at level 4
+      .feruchemy(new OffsetMetalEffect(3, MobEffectMetalEffect.tapping(MobEffects.INVISIBILITY).alwaysStore().flat(1)));
+    // nickel is only present if no zinc
+    metal(MetalIds.nickel).index(11).temperature(950).alternative("zinc").hemalurgyCharge(15)
+      // when storing, go from 100% (default) to 200% ... 500%
+      .feruchemy(new StoringMetalEffect(new CappedMetalEffect(4, AttributeMetalEffect.builder(Registration.VISIBILITY_MULTIPLIER, Operation.MULTIPLY_TOTAL).swapColors().eachLevel(-1))))
+      // when tapping, go from 100% (default) to 75% ... 0%
+      .feruchemy(new TappingMetalEffect(new CappedMetalEffect(3, AttributeMetalEffect.builder(Registration.VISIBILITY_MULTIPLIER, Operation.MULTIPLY_TOTAL).swapColors().eachLevel(-0.25f))))
+      // when storing, apply glowing at level 4
+      .feruchemy(new OffsetMetalEffect(3, MobEffectMetalEffect.storing(MobEffects.GLOWING).flat(1)))
+      // when storing, apply invisibility at level 4
+      .feruchemy(new OffsetMetalEffect(3, MobEffectMetalEffect.tapping(MobEffects.INVISIBILITY).alwaysStore().flat(1)));
+
     metal(MetalIds.brass).index(12).temperature(605).integration()
       .feruchemy(new WarmthMetalEffect())
       .feruchemy(AttributeMetalEffect.builder(Registration.WARMTH, Operation.MULTIPLY_TOTAL).eachLevel(0.1f))
