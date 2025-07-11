@@ -175,6 +175,7 @@
   "metal_effect.metalborn.saturation.store": "Causes %s exhaustion per second",
   "metal_effect.metalborn.warmth.heat": "Increases heat by %s each second",
   "metal_effect.metalborn.warmth.cold": "Decreases heat by %s each second",
+  "metal_effect.metalborn.apply_effect": "Grants %s",
 
   "gui.metalborn.metalminds.effects": "Feruchemy Effects:",
   "gui.metalborn.metalminds.none": "No active metalminds",

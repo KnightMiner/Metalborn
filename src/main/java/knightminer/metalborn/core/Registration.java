@@ -30,6 +30,7 @@ import knightminer.metalborn.metal.effects.EnergyMetalEffect;
 import knightminer.metalborn.metal.effects.ExperienceMetalEffect;
 import knightminer.metalborn.metal.effects.HealMetalEffect;
 import knightminer.metalborn.metal.effects.MetalEffect;
+import knightminer.metalborn.metal.effects.MobEffectMetalEffect;
 import knightminer.metalborn.metal.effects.StoringMetalEffect;
 import knightminer.metalborn.metal.effects.TappingMetalEffect;
 import knightminer.metalborn.metal.effects.UpdateHealthEffect;
@@ -236,6 +237,8 @@ public class Registration {
       MetalEffect.REGISTRY.register(resource("update_health"), UpdateHealthEffect.LOADER);
       MetalEffect.REGISTRY.register(resource("energy"), EnergyMetalEffect.LOADER);
       MetalEffect.REGISTRY.register(resource("warmth"), WarmthMetalEffect.LOADER);
+      MetalEffect.REGISTRY.register(resource("storing_status_effect"), MobEffectMetalEffect.StoringEffect.LOADER);
+      MetalEffect.REGISTRY.register(resource("tapping_status_effect"), MobEffectMetalEffect.TappingEffect.LOADER);
       // ingredients
       CraftingHelper.register(MetalIngredient.ID, MetalIngredient.SERIALIZER);
       CraftingHelper.register(MetalItemIngredient.ID, MetalItemIngredient.SERIALIZER);
