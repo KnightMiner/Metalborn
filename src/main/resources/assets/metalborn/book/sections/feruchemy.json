@@ -1,15 +1,15 @@
 [
   {
-    "name": "ferrings",
-    "data": "feruchemy/ferrings.json"
-  },
-  {
     "name": "gui",
     "data": "feruchemy/gui.json"
   },
   {
     "name": "gui2",
     "data": "feruchemy/gui2.json"
+  },
+  {
+    "name": "ferrings",
+    "data": "feruchemy/ferrings.json"
   },
   {
     "name": "rings",

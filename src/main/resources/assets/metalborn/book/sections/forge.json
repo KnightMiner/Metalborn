@@ -10,5 +10,17 @@
   {
     "name": "automation",
     "data": "forge/automation.json"
+  },
+  {
+    "name": "tinkers",
+    "data": "forge/tinkers.json",
+    "condition": {
+      "type": "forge:mod_loaded",
+      "modid": "tconstruct"
+    }
+  },
+  {
+    "type": "mantle:right_padding",
+    "data": "no-load"
   }
 ]

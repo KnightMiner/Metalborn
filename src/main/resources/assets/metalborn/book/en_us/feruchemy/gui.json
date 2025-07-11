@@ -7,7 +7,7 @@
     "height": 82
   },
   "text": [
-    { "text": "Once you know your power, to access feruchemy you can open the metalmind UI with [M]." },
+    { "text": "To access feruchemy you can open the metalmind UI with [M]." },
     { "text": "In this UI, you can equip metalminds, though it will only be usable if you have access to that power.", "paragraph": true }
   ]
 }
