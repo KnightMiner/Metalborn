@@ -8,11 +8,13 @@ import knightminer.metalborn.metal.effects.AttributeMetalEffect;
 import knightminer.metalborn.metal.effects.EnergyMetalEffect;
 import knightminer.metalborn.metal.effects.ExperienceMetalEffect;
 import knightminer.metalborn.metal.effects.HealMetalEffect;
+import knightminer.metalborn.metal.effects.MobEffectMetalEffect;
 import knightminer.metalborn.metal.effects.StoringMetalEffect;
 import knightminer.metalborn.metal.effects.TappingMetalEffect;
 import knightminer.metalborn.metal.effects.UpdateHealthEffect;
 import knightminer.metalborn.metal.effects.WarmthMetalEffect;
 import net.minecraft.data.PackOutput;
+import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier.Operation;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraftforge.common.ForgeMod;
@@ -37,21 +39,19 @@ public class MetalPowerProvider extends AbstractMetalPowerProvider {
       .feruchemy(AttributeMetalEffect.builder(Attributes.MOVEMENT_SPEED, Operation.MULTIPLY_TOTAL).eachLevel(0.1f))
       .feruchemy(AttributeMetalEffect.builder(Attributes.ATTACK_SPEED, Operation.MULTIPLY_TOTAL).eachLevel(0.05f))
       .feruchemy(AttributeMetalEffect.builder(Registration.MINING_SPEED_MULTIPLIER, Operation.MULTIPLY_TOTAL).eachLevel(0.1f));
-    metal(MetalIds.tin).index(3).temperature(225)
-      .feruchemy(AttributeMetalEffect.builder(ForgeMod.ENTITY_REACH, Operation.ADDITION).eachLevel(0.25f))
-      .feruchemy(AttributeMetalEffect.builder(ForgeMod.BLOCK_REACH, Operation.ADDITION).eachLevel(0.25f));
+    metal(MetalIds.tin).index(3).temperature(225).capacity(MetalFormat.SECONDS, 5 * 60)
+      .feruchemy(MobEffectMetalEffect.storing(MobEffects.BLINDNESS).flat(1))
+      .feruchemy(MobEffectMetalEffect.tapping(MobEffects.NIGHT_VISION).duration(230).flat(1));
     metal(MetalIds.pewter).index(4).temperature(400)
       .feruchemy(AttributeMetalEffect.builder(Attributes.ATTACK_DAMAGE, Operation.ADDITION).eachLevel(1))
       .feruchemy(AttributeMetalEffect.builder(Attributes.MAX_HEALTH, Operation.ADDITION).eachLevel(2))
       .feruchemy(UpdateHealthEffect.INSTANCE);
-    metal(MetalIds.copper).index(5).temperature(500)
+    metal(MetalIds.copper).index(5).temperature(500).hemalurgyCharge(20)
       .capacity(MetalFormat.METAL, 100) // about 8 levels
       .feruchemy(new ExperienceMetalEffect(1));
-    metal(MetalIds.bronze).index(6).temperature(700)
-      .feruchemy(AttributeMetalEffect.builder(Attributes.LUCK, Operation.ADDITION).eachLevel(0.5f))
-      .feruchemy(AttributeMetalEffect.builder(Registration.EXPERIENCE_MULTIPLIER, Operation.MULTIPLY_TOTAL).eachLevel(0.1f))
-      .feruchemy(new TappingMetalEffect(AttributeMetalEffect.builder(Registration.LOOTING_BOOST, Operation.ADDITION).eachLevel(0.25f)))
-      .feruchemy(new StoringMetalEffect(AttributeMetalEffect.builder(Registration.DROP_CHANCE, Operation.MULTIPLY_TOTAL).eachLevel(0.1f)));
+    metal(MetalIds.bronze).index(6).temperature(700).hemalurgyCharge(5)
+      .feruchemy(AttributeMetalEffect.builder(ForgeMod.ENTITY_REACH, Operation.ADDITION).eachLevel(0.25f))
+      .feruchemy(AttributeMetalEffect.builder(ForgeMod.BLOCK_REACH, Operation.ADDITION).eachLevel(0.5f));
     metal(MetalIds.gold).index(7).temperature(700)
       .capacity(MetalFormat.METAL, 40) // 2 full health bars
       .feruchemy(new HealMetalEffect(100));
@@ -63,11 +63,14 @@ public class MetalPowerProvider extends AbstractMetalPowerProvider {
     metal(InvestitureMetalmindItem.METAL).name("nicrosil").index(16).temperature(1100).hemalurgyCharge(0);
 
     // compat
-    // TODO: silver
+    metal(MetalIds.silver).index(9).temperature(790).integration().hemalurgyCharge(10)
+      .feruchemy(AttributeMetalEffect.builder(Attributes.LUCK, Operation.ADDITION).eachLevel(0.5f))
+      .feruchemy(AttributeMetalEffect.builder(Registration.EXPERIENCE_MULTIPLIER, Operation.MULTIPLY_TOTAL).eachLevel(0.1f))
+      .feruchemy(new TappingMetalEffect(AttributeMetalEffect.builder(Registration.LOOTING_BOOST, Operation.ADDITION).eachLevel(0.25f)))
+      .feruchemy(new StoringMetalEffect(AttributeMetalEffect.builder(Registration.DROP_CHANCE, Operation.MULTIPLY_TOTAL).eachLevel(0.1f)));
     metal(MetalIds.electrum).index(10).temperature(760).integration()
       .hemalurgyCharge(8) // guardians are tough creatures
       .feruchemy(AttributeMetalEffect.builder(Registration.DETERMINATION, Operation.MULTIPLY_TOTAL).eachLevel(0.1f));
-    // TODO: zinc/nickel
     metal(MetalIds.brass).index(12).temperature(605).integration()
       .feruchemy(new WarmthMetalEffect())
       .feruchemy(AttributeMetalEffect.builder(Registration.WARMTH, Operation.MULTIPLY_TOTAL).eachLevel(0.1f))

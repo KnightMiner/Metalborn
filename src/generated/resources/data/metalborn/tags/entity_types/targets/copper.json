@@ -1,8 +1,9 @@
 {
   "values": [
-    "minecraft:pillager",
-    "minecraft:vindicator",
-    "minecraft:illusioner",
-    "minecraft:witch"
+    "minecraft:slime",
+    {
+      "id": "#forge:slimes",
+      "required": false
+    }
   ]
 }

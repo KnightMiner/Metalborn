@@ -9,6 +9,7 @@ import net.minecraft.data.tags.EntityTypeTagsProvider;
 import net.minecraft.world.entity.EntityType;
 import net.minecraftforge.common.data.ExistingFileHelper;
 import org.jetbrains.annotations.Nullable;
+import slimeknights.mantle.Mantle;
 
 import java.util.concurrent.CompletableFuture;
 
@@ -26,12 +27,13 @@ public class EntityTagProvider extends EntityTypeTagsProvider {
     tag(MetalIds.tin).add(EntityType.SKELETON, EntityType.STRAY);
     tag(MetalIds.pewter).add(EntityType.CREEPER);
     // cognitive
-    tag(MetalIds.copper).add(EntityType.PILLAGER, EntityType.VINDICATOR, EntityType.ILLUSIONER, EntityType.WITCH);
-    tag(MetalIds.bronze).add(EntityType.ENDERMAN, EntityType.ENDERMITE);
+    tag(MetalIds.copper).add(EntityType.SLIME).addOptionalTag(Mantle.commonResource("slimes"));
+    tag(MetalIds.bronze).add(EntityType.ENDERMAN);
     // hybrid
     tag(MetalIds.gold).add(EntityType.PIGLIN, EntityType.PIGLIN_BRUTE, EntityType.ZOMBIFIED_PIGLIN);
     tag(MetalIds.roseGold).add(EntityType.ZOMBIE, EntityType.ZOMBIE_VILLAGER, EntityType.HUSK);
     // compat cognitive
+    tag(MetalIds.silver).add(EntityType.PILLAGER, EntityType.VINDICATOR, EntityType.ILLUSIONER, EntityType.WITCH);
     tag(MetalIds.electrum).add(EntityType.GUARDIAN, EntityType.ELDER_GUARDIAN);
     // compat hybrid
     tag(MetalIds.brass).add(EntityType.BLAZE);

@@ -17,7 +17,7 @@
   "metal_power.metalborn.steel.target": "Spiders",
 
   "metal_power.metalborn.tin": "Tin",
-  "metal_power.metalborn.tin.stores": "Reach",
+  "metal_power.metalborn.tin.stores": "Sight",
   "metal_power.metalborn.tin.ferring": "Windwhisperer",
   "metal_power.metalborn.tin.target": "Skeletons",
 
@@ -29,13 +29,13 @@
   "metal_power.metalborn.copper": "Copper",
   "metal_power.metalborn.copper.stores": "Experience",
   "metal_power.metalborn.copper.ferring": "Archivist",
-  "metal_power.metalborn.copper.target": "Illagers",
+  "metal_power.metalborn.copper.target": "Slimes",
   "metal_power.metalborn.copper.label": "%s / %s XP",
 
   "metal_power.metalborn.bronze": "Bronze",
   "metal_power.metalborn.bronze.stores": "Luck",
   "metal_power.metalborn.bronze.ferring": "Spinner",
-  "metal_power.metalborn.bronze.target": "Ender",
+  "metal_power.metalborn.bronze.target": "Illagers",
 
   "metal_power.metalborn.gold": "Gold",
   "metal_power.metalborn.gold.stores": "Health",
@@ -54,6 +54,11 @@
   "metal_power.metalborn.investiture.ferring": "Soulbearer",
   "metal_power.metalborn.investiture.target": "None",
 
+
+  "metal_power.metalborn.silver": "Silver",
+  "metal_power.metalborn.silver.stores": "Luck",
+  "metal_power.metalborn.silver.ferring": "Spinner",
+  "metal_power.metalborn.silver.target": "Illagers",
 
   "metal_power.metalborn.electrum": "Electrum",
   "metal_power.metalborn.electrum.stores": "Determination",

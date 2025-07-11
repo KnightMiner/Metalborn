@@ -4,33 +4,19 @@
   "feruchemy": [
     {
       "type": "metalborn:attribute",
-      "attribute": "minecraft:generic.luck",
-      "multiplier": 0.5,
+      "attribute": "forge:entity_reach",
+      "multiplier": 0.25,
       "operation": "addition"
     },
     {
       "type": "metalborn:attribute",
-      "attribute": "metalborn:experience_multiplier",
-      "multiplier": 0.1,
-      "operation": "multiply_total"
-    },
-    {
-      "type": "metalborn:tapping",
-      "attribute": "metalborn:looting_boost",
-      "multiplier": 0.25,
-      "operation": "addition",
-      "tapping_type": "metalborn:attribute"
-    },
-    {
-      "type": "metalborn:storing",
-      "attribute": "metalborn:drop_chance",
-      "multiplier": 0.1,
-      "operation": "multiply_total",
-      "storing_type": "metalborn:attribute"
+      "attribute": "forge:block_reach",
+      "multiplier": 0.5,
+      "operation": "addition"
     }
   ],
   "format": "ticks",
-  "hemalurgy_charge": 10,
+  "hemalurgy_charge": 5,
   "index": 6,
   "name": "bronze",
   "temperature": 700

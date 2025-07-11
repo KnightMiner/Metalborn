@@ -1,0 +1,56 @@
+{
+  "allow_ferring": true,
+  "capacity": 6000,
+  "conditions": [
+    {
+      "type": "forge:or",
+      "values": [
+        {
+          "type": "metalborn:config",
+          "name": "force_integration"
+        },
+        {
+          "type": "mantle:tag_filled",
+          "tag": "forge:ingots/silver"
+        },
+        {
+          "type": "mantle:tag_filled",
+          "tag": "forge:nuggets/silver"
+        }
+      ]
+    }
+  ],
+  "feruchemy": [
+    {
+      "type": "metalborn:attribute",
+      "attribute": "minecraft:generic.luck",
+      "multiplier": 0.5,
+      "operation": "addition"
+    },
+    {
+      "type": "metalborn:attribute",
+      "attribute": "metalborn:experience_multiplier",
+      "multiplier": 0.1,
+      "operation": "multiply_total"
+    },
+    {
+      "type": "metalborn:tapping",
+      "attribute": "metalborn:looting_boost",
+      "multiplier": 0.25,
+      "operation": "addition",
+      "tapping_type": "metalborn:attribute"
+    },
+    {
+      "type": "metalborn:storing",
+      "attribute": "metalborn:drop_chance",
+      "multiplier": 0.1,
+      "operation": "multiply_total",
+      "storing_type": "metalborn:attribute"
+    }
+  ],
+  "format": "ticks",
+  "hemalurgy_charge": 10,
+  "index": 9,
+  "name": "silver",
+  "temperature": 790
+}
