@@ -5,6 +5,7 @@ import knightminer.metalborn.Metalborn;
 import knightminer.metalborn.core.Registration;
 import knightminer.metalborn.item.MetalItem;
 import knightminer.metalborn.item.SpikeItem;
+import knightminer.metalborn.item.metalmind.Metalmind;
 import knightminer.metalborn.metal.MetalId;
 import knightminer.metalborn.metal.MetalManager;
 import knightminer.metalborn.metal.MetalPower;
@@ -106,7 +107,11 @@ public class MetalContent extends PageContent {
       MetalPower power = getPower();
       metalminds = IngredientData.getItemStackData(RegistryHelper.getTagValueStream(BuiltInRegistries.ITEM, Registration.METALMINDS).flatMap(item -> {
         if (item instanceof MetalItem metalItem && metalItem.canUseMetal(power)) {
-          return Stream.of(metalItem.withMetal(power.id()));
+          ItemStack stack = metalItem.withMetal(power.id());
+          if (item instanceof Metalmind metalmind) {
+            metalmind.setAmount(stack, null, metalmind.getCapacity(stack) / 2, null);
+          }
+          return Stream.of(stack);
         }
         return Stream.empty();
       }).collect(Collectors.<ItemStack, NonNullList<ItemStack>>toCollection(NonNullList::create)));
@@ -120,7 +125,9 @@ public class MetalContent extends PageContent {
       SpikeItem spike = Registration.SPIKE.get();
       MetalPower power = getPower();
       if (spike.canUseMetal(power)) {
-        spikes = IngredientData.getItemStackData(spike.withMetal(power.id()));
+        ItemStack stack = spike.withMetal(power.id());
+        spike.setCharge(stack, spike.getMaxCharge(stack) / 2);
+        spikes = IngredientData.getItemStackData(stack);
       } else {
         spikes = IngredientData.getItemStackData(NonNullList.createWithCapacity(0));
       }
