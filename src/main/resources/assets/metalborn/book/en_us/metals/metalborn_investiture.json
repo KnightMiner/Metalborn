@@ -1,7 +1,15 @@
 {
   "metalminds": [
-    { "item": "metalborn:investiture_bracer" },
-    { "item": "metalborn:investiture_ring" }
+    {
+      "type": "forge:nbt",
+      "item": "metalborn:investiture_bracer",
+      "nbt": { "amount": 30000 }
+    },
+    {
+      "type": "forge:nbt",
+      "item": "metalborn:investiture_ring",
+      "nbt": { "amount": 3000 }
+    }
   ],
   "storing": [
     "Temporarily removes ferring power",

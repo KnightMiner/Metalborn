@@ -1,7 +1,9 @@
 {
-  "title": "Metalic Arts",
+  "title": "Metallic Arts",
   "subtitle": "by Lestibournes",
+  "coverTexture": "metalborn:book/images/cover.png",
   "coverColor": 0xC3DFE6,
+  "coverTextColor": 0xD0F4FC,
   "arrowColor": 0x89A5AC,
   "slotColor": 0xACC8CF,
   "drawSectionListText": true,

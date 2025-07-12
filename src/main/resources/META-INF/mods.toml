@@ -8,7 +8,7 @@ version="${version}"
 displayName="Metalborn"
 displayURL="https://github.com/KnightMiner/Metalborn"
 # logoFile="examplemod.png"
-credits="Brandon Sanderson, writer of Mistborn, created the magic that inspired this mod."
+credits="Brandon Sanderson, writer of Mistborn, created the magic that inspired this mod. Isaac Stewart created the symbols used on the cover of the in game guidebook 'Metallic Arts'."
 authors="KnightMiner"
 description='''
 Metalborn adds in Feruchemy, which allows storing attributes in metal, making you temporarily weaker. Those attributes can later be tapped to boost your power.
