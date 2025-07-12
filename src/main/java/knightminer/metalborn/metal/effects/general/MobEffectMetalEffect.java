@@ -118,7 +118,7 @@ public interface MobEffectMetalEffect extends MetalEffect {
 
     @Override
     public void onChange(MetalPower power, LivingEntity entity, int level, int previous) {
-      if (level < 0 && previous >= 0) {
+      if (level <= 0 && previous > 0) {
         removeEffect(entity);
       }
     }
