@@ -25,8 +25,6 @@ public class LerasiumAlloyNuggetItem extends ConsumableItem implements MetalItem
     MetalId metal = MetalItem.getMetal(stack);
     if (metal != MetalId.NONE) {
       MetalbornData.getData(entity).setFerringType(metal);
-      // TODO: play a message here?
-      // TODO: clear hemalurgic effects for this metal
     }
   }
 

@@ -13,7 +13,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
-/** Item which can be consumed to randomly change ferring type and cure hemalurgic effects */
+/** Item which can be consumed to randomly change ferring type */
 public class LerasiumNuggetItem extends ConsumableItem {
   private static final Component ON_EAT = Metalborn.component("item", "lerasium_nugget.on_consume").withStyle(ChatFormatting.GRAY);
 
@@ -24,7 +24,6 @@ public class LerasiumNuggetItem extends ConsumableItem {
   @Override
   protected void onEat(ItemStack stack, LivingEntity entity) {
     MetalbornData.getData(entity).setFerringType(MetalManager.INSTANCE.getRandomFerring(entity.getRandom()).id());
-    // TODO: remove all heamlurgic effects
   }
 
   @Override

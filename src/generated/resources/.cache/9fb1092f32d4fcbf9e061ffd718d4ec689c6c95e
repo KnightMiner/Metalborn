@@ -1,4 +1,4 @@
-// 1.20.1	2025-07-11T01:18:37.233549	Recipes
+// 1.20.1	2025-07-12T04:55:36.7503559	Recipes
 8720e146ed87c91433b7b556aee5d6a5390111ee data/metalborn/advancements/recipes/decorations/forge.json
 c4a47c50fae1f0fb9b1d0ad265dd630473918dd7 data/metalborn/advancements/recipes/misc/metallic_arts.json
 6bb6018bc3fcaf2326b259cddc674cf97cd5f90a data/metalborn/advancements/recipes/misc/metal/bronze_block_from_ingots.json
@@ -57,6 +57,7 @@ e7c79524226c777fd027696a35dcd0489f7b3680 data/metalborn/recipes/metal/bronze_ing
 9fcfb5b63280b28df034adfc57fe7bee472652fb data/metalborn/recipes/metal/copper_ingot_from_nuggets.json
 dfe6ead02143a5b1d3b6491dd566ef035d5349d0 data/metalborn/recipes/metal/copper_nugget_from_ingot.json
 96ed71a6138ca921727b588de0d2851b15ec2059 data/metalborn/recipes/metal/lerasium_alloy.json
+3c3bdd81a121abb18e2331c58fb04ec8e7bb5b06 data/metalborn/recipes/metal/lerasium_nicrosil_alloy.json
 1ae43954b83cdf688bf2c17646d6601761bfd951 data/metalborn/recipes/metal/netherite_ingot_from_nuggets.json
 1588bc1590c5e50c3ac1ad3317d28716ddfb1c69 data/metalborn/recipes/metal/netherite_nugget_from_ingot.json
 85b9d98d209f4c7c54b6b3e976a5470eca4cc65e data/metalborn/recipes/metal/nicrosil_block_from_ingots.json
@@ -102,6 +103,7 @@ fa3b10970e471066b71ded5af2d9a327ded465e8 data/metalborn/recipes/tinkers/bracer/i
 5e327885e6230bc771d1b2afd41082ac4889bce9 data/metalborn/recipes/tinkers/bracer/melting.json
 57529fb20fd61a65cdcb0d90bc8518faa3d1a866 data/metalborn/recipes/tinkers/bracer/part_builder.json
 db886aa04459e406bca069a9a264ea068bde37a4 data/metalborn/recipes/tinkers/lerasium_alloy_nugget_casting.json
+b1ce544f3f467e96ca6c5e7ea2464ce82e71ce14 data/metalborn/recipes/tinkers/lerasium_nicrosil_nugget_casting.json
 94b00a41e316c00949faebc83aae22deafbb79c8 data/metalborn/recipes/tinkers/ring/casting_gold_cast.json
 c3685f20ed0eef9807898914d5092ed5dae57bdb data/metalborn/recipes/tinkers/ring/casting_sand_cast.json
 d3e2fa39c937b10b7762691c6ad2959c0eaaf986 data/metalborn/recipes/tinkers/ring/cast/gold_casting.json

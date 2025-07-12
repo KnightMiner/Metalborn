@@ -140,6 +140,7 @@ public class Registration {
   public static final ItemObject<Item> NETHERITE_NUGGET = ITEMS.register("netherite_nugget");
   public static final ItemObject<LerasiumNuggetItem> LERASIUM_NUGGET = ITEMS.register("lerasium_nugget", () -> new LerasiumNuggetItem(new Item.Properties()));
   public static final ItemObject<LerasiumAlloyNuggetItem> LERASIUM_ALLOY_NUGGET = ITEMS.register("lerasium_alloy_nugget", () -> new LerasiumAlloyNuggetItem(new Item.Properties()));
+  public static final ItemObject<LerasiumNuggetItem> LERASIUM_NICROSIL_NUGGET = ITEMS.register("lerasium_nicrosil_nugget", () -> new LerasiumNuggetItem(new Item.Properties()));
 
   // unique
   public static final MetalItemObject TIN       = BLOCKS.registerMetal("tin",       metalBuilder(MapColor.ICE), BLOCK_ITEM, PROPS);
@@ -337,6 +338,7 @@ public class Registration {
     // lerasium
     output.accept(LERASIUM_NUGGET);
     accept(consumer, LERASIUM_ALLOY_NUGGET);
+    output.accept(LERASIUM_NICROSIL_NUGGET);
 
     // Tinkers' Construct compat
     if (ModList.get().isLoaded(Metalborn.TINKERS)) {

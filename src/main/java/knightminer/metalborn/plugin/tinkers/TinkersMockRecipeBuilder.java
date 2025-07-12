@@ -77,6 +77,12 @@ public class TinkersMockRecipeBuilder {
     consumer.accept(new CastingTableRecipe(casts.withSuffix("gold_casting"), itemIngredient, true, true, GOLD_INGOT, GOLD_INGOT_TIME, ItemOutput.fromItem(cast.get())));
   }
 
+  /** Creates recipe to cast the given item */
+  public static <T extends ItemLike & IdAwareObject> void casting(Consumer<FinishedRecipe> consumer, T item, Ingredient cast, TagKey<Fluid> fluid, int amount, int temperature, String path) {
+    int time = calcTimeForAmount(temperature, amount);
+    consumer.accept(new CastingTableRecipe(item.getId().withPath(path), cast, true, false, FluidIngredient.of(fluid, amount), time, ItemOutput.fromItem(item)));
+  }
+
   /** Creates recipes for melting and casting the given item */
   public static <T extends ItemLike & IdAwareObject> void meltingCasting(Consumer<FinishedRecipe> consumer, T item, CastItemObject cast, TagKey<Fluid> fluid, int amount, int temperature, String prefix) {
     ResourceLocation root = item.getId().withPath(prefix);

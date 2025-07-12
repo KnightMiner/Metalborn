@@ -131,6 +131,7 @@
   "item.metalborn.lerasium_alloy_nugget": "Lerasium Alloy Nugget",
   "item.metalborn.lerasium_alloy_nugget.format": "Lerasium-%s Nugget",
   "item.metalborn.lerasium_alloy_nugget.on_consume": "Eat to become a %s ferring",
+  "item.metalborn.lerasium_nicrosil_nugget": "Lerasium-Nicrosil Nugget",
 
 
   "_group_metal_": "",

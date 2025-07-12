@@ -1,0 +1,14 @@
+{
+  "type": "metalborn:metal_shapeless_forge",
+  "cooking_time": 100,
+  "experience": 2.0,
+  "ingredients": [
+    {
+      "item": "metalborn:lerasium_nugget"
+    },
+    {
+      "tag": "forge:nuggets/nicrosil"
+    }
+  ],
+  "result": "metalborn:lerasium_nicrosil_nugget"
+}

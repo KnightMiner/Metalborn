@@ -1,0 +1,8 @@
+{
+  "parent": "forge:item/default",
+  "loader": "mantle:item_layer",
+  "textures": {
+    "layer0": "metalborn:item/lerasium_nugget",
+    "layer1": "metalborn:metal/item/nugget_overlay_metalborn_nicrosil"
+  }
+}
