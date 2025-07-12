@@ -85,17 +85,16 @@ public class RecipeProvider extends net.minecraft.data.recipes.RecipeProvider im
     packingRecipe(consumer, RecipeCategory.MISC, "raw_block", Registration.RAW_TIN_BLOCK, "raw", Registration.RAW_TIN, MetalbornTags.Items.RAW_TIN, metalFolder);
 
     // lerasium alloy nuggets
-    ShapelessForgeRecipeBuilder.shapeless(Registration.LERASIUM_ALLOY_NUGGET, 1)
+    ShapelessForgeRecipeBuilder.shapeless(Registration.LERASIUM_ALLOY_NUGGET, 2)
       .requires(Registration.LERASIUM_NUGGET)
       .requires(MetalIngredient.nugget(MetalFilter.METALMIND))
       .metal()
       .cookingRate(1)
       .experience(2f)
       .save(consumer, location(metalFolder + "lerasium_alloy"));
-    ShapelessForgeRecipeBuilder.shapeless(Registration.LERASIUM_NICROSIL_NUGGET, 1)
+    ShapelessForgeRecipeBuilder.shapeless(Registration.LERASIUM_NICROSIL_NUGGET, 2)
       .requires(Registration.LERASIUM_NUGGET)
       .requires(Registration.NICROSIL.getNuggetTag())
-      .metal()
       .cookingRate(1)
       .experience(2f)
       .save(consumer, location(metalFolder + "lerasium_nicrosil_alloy"));
@@ -264,11 +263,6 @@ public class RecipeProvider extends net.minecraft.data.recipes.RecipeProvider im
       .setAmount(nugget)
       .save(consumer, wrap(Registration.LERASIUM_ALLOY_NUGGET, tinkersFolder, "_casting"));
     TinkersMockRecipeBuilder.casting(consumer, Registration.LERASIUM_NICROSIL_NUGGET, Ingredient.of(Registration.LERASIUM_NUGGET), nicrosil, nugget, nicrosilTemperature, tinkersFolder + "lerasium_nicrosil_nugget_casting");
-    MetalCastingRecipeBuilder.table(Registration.UNSEALED_RING)
-      .setCast(Ingredient.of(Registration.LERASIUM_ALLOY_NUGGET), true)
-      .setFilter(MetalFilter.METALMIND)
-      .setAmount(nugget * 2)
-      .save(consumer, wrap(Registration.UNSEALED_RING, tinkersFolder, "_casting"));
   }
 
 

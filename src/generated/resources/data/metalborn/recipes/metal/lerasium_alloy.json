@@ -12,5 +12,8 @@
       "shape": "nugget"
     }
   ],
-  "result": "metalborn:lerasium_alloy_nugget"
+  "result": {
+    "count": 2,
+    "item": "metalborn:lerasium_alloy_nugget"
+  }
 }
