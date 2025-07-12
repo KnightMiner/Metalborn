@@ -9,8 +9,8 @@ import com.mojang.brigadier.exceptions.DynamicCommandExceptionType;
 import com.mojang.brigadier.exceptions.SimpleCommandExceptionType;
 import knightminer.metalborn.Metalborn;
 import knightminer.metalborn.core.MetalbornData;
-import knightminer.metalborn.item.SpikeItem;
-import knightminer.metalborn.item.metalmind.MetalmindItem;
+import knightminer.metalborn.item.Spike;
+import knightminer.metalborn.item.metalmind.Metalmind;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
 import net.minecraft.commands.arguments.EntityArgument;
@@ -97,7 +97,7 @@ public class MetalmindCommand {
           // must have item
           ItemStack stack = target.getMainHandItem();
           if (!stack.isEmpty()) {
-            if (stack.getItem() instanceof MetalmindItem metalmind) {
+            if (stack.getItem() instanceof Metalmind metalmind) {
               // if no size given, fill or empty max
               int toUpdate = amount;
               if (amount == -1) {
@@ -150,7 +150,7 @@ public class MetalmindCommand {
           ItemStack stack = target.getMainHandItem();
           if (!stack.isEmpty()) {
             // if filling spikes, we need a spike
-            if (stack.getItem() instanceof SpikeItem spike) {
+            if (stack.getItem() instanceof Spike spike) {
               int toFill = amount;
               // if no size given, fill max
               if (toFill == -1) {

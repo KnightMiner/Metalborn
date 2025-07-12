@@ -5,6 +5,7 @@ import knightminer.metalborn.metal.MetalId;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import org.jetbrains.annotations.Nullable;
 
 /** Interface of various methods available to metalmind items */
 public interface Metalmind {
@@ -58,6 +59,11 @@ public interface Metalmind {
     return true;
   }
 
+  /** Gets the capacity for this metalmind */
+  default int getCapacity(ItemStack stack) {
+    return 0;
+  }
+
   /**
    * Fills the metalmind by the given amount.
    * @param stack   Stack being filled.
@@ -79,6 +85,9 @@ public interface Metalmind {
   default int drain(ItemStack stack, Player player, int amount, MetalbornData data) {
     return 0;
   }
+
+  /** Sets the amount on the stack */
+  default void setAmount(ItemStack stack, @Nullable Player player, int amount, @Nullable MetalbornData data) {}
 
   /** Default metalmind instance */
   Metalmind EMPTY = new Metalmind() {

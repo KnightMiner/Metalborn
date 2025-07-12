@@ -82,11 +82,12 @@ public class SpikeItem extends Item implements MetalItem, Spike {
   }
 
   /** Gets the amount of charge needed to be full */
+  @Override
   public int getMaxCharge(ItemStack stack) {
     return MetalManager.INSTANCE.get(getMetal(stack)).hemalurgyCharge();
   }
 
-  /** Sets the charge on the spike */
+  @Override
   public int setCharge(ItemStack stack, int amount) {
     // zero amount? clean up NBT
     if (amount <= 0) {

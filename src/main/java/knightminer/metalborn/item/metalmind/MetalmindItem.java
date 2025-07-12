@@ -66,6 +66,7 @@ public abstract class MetalmindItem extends Item implements Metalmind {
   }
 
   /** Sets the amount on the stack */
+  @Override
   public void setAmount(ItemStack stack, @Nullable Player player, int amount, @Nullable MetalbornData data) {
     // if amount is 0, empty it out
     if (amount <= 0) {
@@ -87,7 +88,7 @@ public abstract class MetalmindItem extends Item implements Metalmind {
     }
   }
 
-  /** Gets the capacity for this metalmind */
+  @Override
   public abstract int getCapacity(ItemStack stack);
 
   @Override

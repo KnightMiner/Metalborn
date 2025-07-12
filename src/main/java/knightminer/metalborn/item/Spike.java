@@ -10,6 +10,21 @@ public interface Spike {
     return MetalId.NONE;
   }
 
+  /**
+   * Sets the charge on the spike to the given amount.
+   * @param stack  Spike stack
+   * @param amount Amount to set. Must be between 0 and the max charge.
+   * @return Amount actually set.
+   */
+  default int setCharge(ItemStack stack, int amount) {
+    return 0;
+  }
+
+  /** Gets the amount of charge needed to be full */
+  default int getMaxCharge(ItemStack stack) {
+    return 0;
+  }
+
   /** Checks if the spike is currently filled, and thus usable */
   default boolean isFull(ItemStack stack) {
     return false;
