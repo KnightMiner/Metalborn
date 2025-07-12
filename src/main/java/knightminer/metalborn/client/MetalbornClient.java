@@ -39,11 +39,6 @@ public class MetalbornClient {
   }
 
   @SubscribeEvent
-  static void clientSetup(FMLClientSetupEvent event) {
-    MetalbornBook.setupFont();
-  }
-
-  @SubscribeEvent
   static void registerReloadListeners(RegisterClientReloadListenersEvent event) {
     event.registerReloadListener(PaletteListManager.INSTANCE);
   }

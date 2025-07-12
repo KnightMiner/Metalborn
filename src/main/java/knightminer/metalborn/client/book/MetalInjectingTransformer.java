@@ -7,19 +7,19 @@ import knightminer.metalborn.Metalborn;
 import knightminer.metalborn.core.Registration;
 import knightminer.metalborn.metal.MetalManager;
 import knightminer.metalborn.metal.MetalPower;
-import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.GsonHelper;
 import net.minecraft.world.item.ItemStack;
 import slimeknights.mantle.client.book.data.BookData;
 import slimeknights.mantle.client.book.data.PageData;
 import slimeknights.mantle.client.book.data.SectionData;
+import slimeknights.mantle.client.book.data.content.ContentPageIconList;
+import slimeknights.mantle.client.book.data.content.ContentPageIconList.PageWithIcon;
 import slimeknights.mantle.client.book.transformer.BookTransformer;
 import slimeknights.mantle.client.screen.book.element.ItemElement;
 import slimeknights.mantle.client.screen.book.element.SizedBookElement;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 /** Transformer that injects all metal power pages into the book */
@@ -43,8 +43,6 @@ public class MetalInjectingTransformer extends BookTransformer {
     }
   }
 
-  private record MetalPage(SizedBookElement icon, PageData page) {}
-
   /** Adds the metal pages to the section */
   private void addPages(SectionData section, JsonElement element) {
     JsonObject json = GsonHelper.convertToJsonObject(element, KEY.toString());
@@ -56,7 +54,7 @@ public class MetalInjectingTransformer extends BookTransformer {
     }
 
     // create pages for each power
-    List<MetalPage> newPages = new ArrayList<>();
+    List<PageWithIcon> newPages = new ArrayList<>();
     for (MetalPower power : powers) {
       // start building the page
       ResourceLocation name = power.id();
@@ -88,7 +86,7 @@ public class MetalInjectingTransformer extends BookTransformer {
 
       // build the icon
       SizedBookElement icon = new ItemElement(0, 0, 1f, displayStacks);
-      newPages.add(new MetalPage(icon, newPage));
+      newPages.add(new PageWithIcon(icon, newPage));
     }
 
     // add the pages and the indexes
@@ -98,13 +96,6 @@ public class MetalInjectingTransformer extends BookTransformer {
       section.parent.strings.get(String.format("%s.subtext", section.name)));
 
     // add all pages
-    Iterator<ContentPageIconList> indexes = listPages.iterator();
-    ContentPageIconList overview = indexes.next();
-    for (MetalPage page : newPages) {
-      section.pages.add(page.page);
-      while (!overview.addLink(page.icon, Component.literal(page.page.getTitle()), page.page)) {
-        overview = indexes.next();
-      }
-    }
+    ContentPageIconList.addPages(section, listPages, newPages);
   }
 }

@@ -8,5 +8,6 @@
   "slotColor": 0xACC8CF,
   "drawSectionListText": true,
   "centerPageTitles": true,
-  "drawFourColumnIndex": false
+  "drawFourColumnIndex": false,
+  "uniformFont": true
 }

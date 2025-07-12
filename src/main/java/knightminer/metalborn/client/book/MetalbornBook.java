@@ -1,9 +1,6 @@
 package knightminer.metalborn.client.book;
 
 import knightminer.metalborn.Metalborn;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.Font;
-import net.minecraft.client.gui.font.FontManager;
 import slimeknights.mantle.client.book.BookLoader;
 import slimeknights.mantle.client.book.BookScreenOpener;
 import slimeknights.mantle.client.book.data.BookData;
@@ -28,11 +25,5 @@ public class MetalbornBook {
     // padding needs to be last to ensure page counts are right
     BOOK.addTransformer(MetalInjectingTransformer.INSTANCE);
     BOOK.addTransformer(BookTransformer.paddingTransformer());
-  }
-
-  /** Called during client setup to set the unicode font to the book */
-  public static void setupFont() {
-    FontManager resourceManager = Minecraft.getInstance().fontManager;
-    BOOK.fontRenderer = new Font(rl -> resourceManager.fontSets.get(Minecraft.UNIFORM_FONT), false);
   }
 }
