@@ -8,6 +8,6 @@
   },
   "text": [
     { "text": "To access feruchemy you can open the metalmind UI with [M]." },
-    { "text": "In this UI, you can equip metalminds, though it will only be usable if you have access to that power.", "paragraph": true }
+    { "text": "In this UI, you can equip metalminds, though it will only be usable if you have access to that power and it was not filled by someone else.", "paragraph": true }
   ]
 }

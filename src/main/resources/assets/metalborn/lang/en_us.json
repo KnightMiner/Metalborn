@@ -149,7 +149,7 @@
   "item.metalborn.metalmind.stores": "Stores: %s",
   "item.metalborn.metalmind.investiture": "Investiture: %s",
   "item.metalborn.metalmind.amount": "Stored: %s",
-  "item.metalborn.metalmind.owner": "Owner: %s",
+  "item.metalborn.metalmind.owner": "Identity: %s",
   "item.metalborn.metalmind.owner.none": "Unkeyed",
   "item.metalborn.metalmind.owner.unknown": "Unknown",
 
