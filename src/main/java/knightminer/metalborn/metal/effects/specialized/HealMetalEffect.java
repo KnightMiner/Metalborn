@@ -9,6 +9,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.LivingEntity;
 import slimeknights.mantle.data.loadable.primitive.IntLoadable;
 import slimeknights.mantle.data.loadable.record.RecordLoadable;
+import slimeknights.mantle.util.CombatHelper;
 import slimeknights.mantle.util.TranslationHelper;
 
 import java.util.List;
@@ -44,7 +45,7 @@ public record HealMetalEffect(int delay) implements MetalEffect {
   public int onStore(MetalPower power, LivingEntity entity, int level) {
     int frequency = delay / level;
     if (frequency == 0 || entity.tickCount % frequency == 1 && entity.getHealth() > 1) {
-      if (entity.hurt(Registration.makeSource(entity.level(), Registration.METAL_HURT), 1)) {
+      if (entity.hurt(CombatHelper.damageSource(entity.level(), Registration.METAL_HURT), 1)) {
         // on storing, you have to actually lose health to gain something
         return 1;
       }

@@ -18,6 +18,7 @@ import net.minecraft.world.entity.ai.attributes.AttributeModifier.Operation;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.item.ItemStack;
 import slimeknights.mantle.data.loadable.Loadables;
+import slimeknights.mantle.util.CombatHelper;
 
 import java.util.List;
 import java.util.UUID;
@@ -149,7 +150,7 @@ public class SpikeInventory extends MetalInventory<SpikeStack> {
       }
       // you get hurt when adding or removing a spike
       if (!entity.level().isClientSide && (wasEmpty != stack.isEmpty() || !oldMetal.equals(this.metal))) {
-        entity.hurt(Registration.makeSource(entity.level(), Registration.ADD_SPIKE), HEALTH_PER_SPIKE);
+        entity.hurt(CombatHelper.damageSource(entity.level(), Registration.ADD_SPIKE), HEALTH_PER_SPIKE);
       }
     }
 

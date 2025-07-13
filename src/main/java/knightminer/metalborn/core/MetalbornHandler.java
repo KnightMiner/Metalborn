@@ -34,6 +34,7 @@ import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus;
+import slimeknights.mantle.util.CombatHelper;
 
 import java.util.Collection;
 
@@ -158,7 +159,7 @@ public class MetalbornHandler {
             target.setSecondsOnFire(1);
           }
           // hurt them
-          if (target.hurt(Registration.makeSource(Registration.MELEE_HEAT, attacker), (float) heatDamage)) {
+          if (target.hurt(CombatHelper.damageSource(Registration.MELEE_HEAT, attacker), (float) heatDamage)) {
             // reset invulnerable time to 0 for the main attack
             target.invulnerableTime = 0;
             target.setSecondsOnFire((int) heatDamage);

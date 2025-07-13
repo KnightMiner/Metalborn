@@ -315,7 +315,7 @@ public class SpikeItem extends Item implements MetalItem, Spike {
         }
       }
       // hurt the target regardless of stabbing success
-      entity.hurt(Registration.makeSource(level, Registration.MAKE_SPIKE), 10);
+      entity.hurt(CombatHelper.damageSource(level, Registration.MAKE_SPIKE), 10);
     }
     return stack;
   }
