@@ -85,6 +85,7 @@ public class RecipeProvider extends net.minecraft.data.recipes.RecipeProvider im
     packingRecipe(consumer, RecipeCategory.MISC, "raw_block", Registration.RAW_TIN_BLOCK, "raw", Registration.RAW_TIN, MetalbornTags.Items.RAW_TIN, metalFolder);
 
     // lerasium alloy nuggets
+    /* TODO: decide what I want to do with lerasium
     ShapelessForgeRecipeBuilder.shapeless(Registration.LERASIUM_ALLOY_NUGGET, 2)
       .requires(Registration.LERASIUM_NUGGET)
       .requires(MetalIngredient.nugget(MetalFilter.METALMIND))
@@ -98,6 +99,7 @@ public class RecipeProvider extends net.minecraft.data.recipes.RecipeProvider im
       .cookingRate(1)
       .experience(2f)
       .save(consumer, location(metalFolder + "lerasium_nicrosil_alloy"));
+     */
 
     // forge
     ShapedRecipeBuilder.shaped(RecipeCategory.DECORATIONS, Registration.FORGE)
@@ -122,14 +124,7 @@ public class RecipeProvider extends net.minecraft.data.recipes.RecipeProvider im
       .cookingRate(1)
       .experience(0.5f)
       .save(consumer, location("ring_nicrosil"));
-    ShapedForgeRecipeBuilder.shaped(Registration.UNSEALED_RING)
-      .pattern("L#").pattern("##")
-      .define('#', MetalIngredient.nugget(MetalFilter.METALMIND))
-      .define('L', Registration.LERASIUM_NUGGET)
-      .metal()
-      .cookingRate(1)
-      .experience(0.5f)
-      .save(consumer, location("ring_unsealed"));
+    // TODO: unsealed ring crafting
     ShapedForgeRecipeBuilder.shaped(Registration.BRACER)
       .pattern("##").pattern("##")
       .define('#', MetalIngredient.ingot(MetalFilter.METALMIND))
@@ -257,12 +252,14 @@ public class RecipeProvider extends net.minecraft.data.recipes.RecipeProvider im
     TinkersMockRecipeBuilder.meltingCasting(consumer, Registration.INVESTITURE_BRACER, Registration.BRACER_CAST, nicrosil, ingot * 4,  nicrosilTemperature, tinkersFolder + "bracer/investiture/");
 
     // lerasium alloy nugget casting - don't think molten lerasium is the best idea so just do it via composite
+    /* TODO: decide what I want to do with lerasium
     MetalCastingRecipeBuilder.table(Registration.LERASIUM_ALLOY_NUGGET)
       .setCast(Ingredient.of(Registration.LERASIUM_NUGGET), true)
       .setFilter(MetalFilter.METALMIND)
       .setAmount(nugget)
       .save(consumer, wrap(Registration.LERASIUM_ALLOY_NUGGET, tinkersFolder, "_casting"));
     TinkersMockRecipeBuilder.casting(consumer, Registration.LERASIUM_NICROSIL_NUGGET, Ingredient.of(Registration.LERASIUM_NUGGET), nicrosil, nugget, nicrosilTemperature, tinkersFolder + "lerasium_nicrosil_nugget_casting");
+    */
   }
 
 
