@@ -5,9 +5,9 @@ import knightminer.metalborn.block.ForgeInventory;
 import knightminer.metalborn.core.Registration;
 import knightminer.metalborn.item.MetalItem;
 import knightminer.metalborn.item.SpikeItem;
+import knightminer.metalborn.json.recipe.ForgeRecipe;
 import knightminer.metalborn.menu.ForgeMenu;
 import knightminer.metalborn.metal.MetalId;
-import knightminer.metalborn.json.recipe.ForgeRecipe;
 import mezz.jei.api.IModPlugin;
 import mezz.jei.api.JeiPlugin;
 import mezz.jei.api.ingredients.subtypes.IIngredientSubtypeInterpreter;
@@ -39,7 +39,7 @@ public class JEIPlugin implements IModPlugin {
       return id == MetalId.NONE ? IIngredientSubtypeInterpreter.NONE : id.toString();
     };
 
-    registration.registerSubtypeInterpreter(Registration.LERASIUM_ALLOY_NUGGET.asItem(), metal);
+    registration.registerSubtypeInterpreter(Registration.CHANGE_FERRING.asItem(), metal);
     registration.registerSubtypeInterpreter(Registration.BRACER.asItem(), metal);
     registration.registerSubtypeInterpreter(Registration.RING.asItem(), metal);
     registration.registerSubtypeInterpreter(Registration.UNSEALED_RING.asItem(), metal);

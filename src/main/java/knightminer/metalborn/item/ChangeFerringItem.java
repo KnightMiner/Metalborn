@@ -14,10 +14,15 @@ import org.jetbrains.annotations.Nullable;
 import java.util.List;
 
 /** Item which on consumption changes your ferring type */
-public class LerasiumAlloyNuggetItem extends ConsumableItem implements MetalItem {
-  private static final String KEY_EAT = Metalborn.key("item", "lerasium_alloy_nugget.on_consume");
-  public LerasiumAlloyNuggetItem(Properties props) {
+public class ChangeFerringItem extends ConsumableItem implements MetalItem {
+  private static final String KEY_EAT = Metalborn.key("item", "change_ferring.on_consume");
+  public ChangeFerringItem(Properties props) {
     super(props);
+  }
+
+  @Override
+  public boolean isFoil(ItemStack stack) {
+    return true;
   }
 
   @Override

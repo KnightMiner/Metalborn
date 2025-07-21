@@ -20,7 +20,6 @@ public class SpriteSourceProvider extends net.minecraftforge.common.data.SpriteS
     atlas(BLOCKS_ATLAS)
       .addSource(new ExtendablePalettedPermutations(
         List.of(
-          resource("metal/item/nugget_overlay"),
           resource("metal/item/bracer"),
           resource("metal/item/ring"),
           resource("metal/item/spike")

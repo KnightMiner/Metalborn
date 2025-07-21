@@ -1,11 +1,22 @@
 {
   "values": [
+    "unknown",
+
     "metalborn:steel",
     "metalborn:tin",
     "metalborn:pewter",
+
     "metalborn:copper",
     "metalborn:bronze",
     "metalborn:rose_gold",
+
+    "metalborn:silver",
+    "metalborn:electrum",
+    "metalborn:zinc",
+    "metalborn:brass",
+    "metalborn:nickel",
+    "metalborn:constantan",
+
     "metalborn:nicrosil",
     "metalborn:netherite"
   ]

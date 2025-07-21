@@ -14,11 +14,16 @@ import org.jetbrains.annotations.Nullable;
 import java.util.List;
 
 /** Item which can be consumed to randomly change ferring type */
-public class LerasiumNuggetItem extends ConsumableItem {
-  private static final Component ON_EAT = Metalborn.component("item", "lerasium_nugget.on_consume").withStyle(ChatFormatting.GRAY);
+public class RandomFerringItem extends ConsumableItem {
+  private static final Component ON_EAT = Metalborn.component("item", "random_ferring.on_consume").withStyle(ChatFormatting.GRAY);
 
-  public LerasiumNuggetItem(Properties props) {
+  public RandomFerringItem(Properties props) {
     super(props);
+  }
+
+  @Override
+  public boolean isFoil(ItemStack stack) {
+    return true;
   }
 
   @Override

@@ -1,11 +1,13 @@
 package knightminer.metalborn.data.client;
 
 import knightminer.metalborn.Metalborn;
+import knightminer.metalborn.client.model.MetalShapeModelBuilder;
 import knightminer.metalborn.client.model.PalettedModelBuilder;
 import knightminer.metalborn.core.Registration;
 import knightminer.metalborn.data.MetalIds;
 import knightminer.metalborn.item.MetalItem;
 import knightminer.metalborn.metal.MetalId;
+import knightminer.metalborn.metal.MetalShape;
 import knightminer.metalborn.util.CastItemObject;
 import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceLocation;
@@ -15,7 +17,6 @@ import net.minecraftforge.client.model.generators.ItemModelBuilder;
 import net.minecraftforge.client.model.generators.ModelFile.UncheckedModelFile;
 import net.minecraftforge.client.model.generators.ModelProvider;
 import net.minecraftforge.common.data.ExistingFileHelper;
-import slimeknights.mantle.client.model.builder.MantleItemLayerBuilder;
 import slimeknights.mantle.data.loadable.Loadables;
 import slimeknights.mantle.registration.object.IdAwareObject;
 import slimeknights.mantle.registration.object.ItemObject;
@@ -48,21 +49,13 @@ public class ItemModelProvider extends net.minecraftforge.client.model.generator
     nugget(Registration.COPPER_NUGGET, MetalIds.copper);
     nugget(Registration.NETHERITE_NUGGET, MetalIds.netherite);
 
-    // TODO: lerasium nugget?
-    // basicItem(Registration.LERASIUM_NUGGET, "lerasium_nugget");
-    // lerasium alloy wants to have a mixture of the two colors so it's not mistaken for a normal nugget, so part is untinted
-    customModel(Registration.LERASIUM_ALLOY_NUGGET, false)
-      .texture("layer0", "item/lerasium_nugget")
-      .texture("layer1", "metal/item/nugget_overlay")
-      .customLoader(PalettedModelBuilder::new)
-      .normal()
-      .paletted(FERUCHEMY_METALS, MetalItem.TAG_METAL);
-    // lerasium nicrosil alloy just adds the nicrosil layer on top
-    existingFileHelper.trackGenerated(Metalborn.resource("metal/item/nugget_overlay_metalborn_nicrosil"), ModelProvider.TEXTURE);
-    customModel(Registration.LERASIUM_NICROSIL_NUGGET, false)
-      .texture("layer0", "item/lerasium_nugget")
-      .texture("layer1", "metal/item/nugget_overlay_metalborn_nicrosil")
-      .customLoader(MantleItemLayerBuilder::new); // using mantle item layer as it handles multiple layers without z-fighting
+    // ferring nuggets
+    nugget(Registration.RANDOM_FERRING, MetalIds.nicrosil);
+    customModel(Registration.CHANGE_FERRING, false)
+      .texture("texture", "metal/item/nugget")
+      .customLoader(MetalShapeModelBuilder::new)
+      .shape(MetalShape.NUGGET)
+      .paletteList(resource("metals/nuggets"));
 
     // metalminds
     metal(Registration.BRACER, "metal/item/bracer", true);

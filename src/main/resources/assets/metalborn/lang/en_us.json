@@ -126,12 +126,11 @@
 
   "item.metalborn.netherite_nugget": "Netherite Nugget",
 
-  "item.metalborn.lerasium_nugget": "Lerasium Nugget",
-  "item.metalborn.lerasium_nugget.on_consume": "Eat to become a random ferring",
-  "item.metalborn.lerasium_alloy_nugget": "Lerasium Alloy Nugget",
-  "item.metalborn.lerasium_alloy_nugget.format": "Lerasium-%s Nugget",
-  "item.metalborn.lerasium_alloy_nugget.on_consume": "Eat to become a %s ferring",
-  "item.metalborn.lerasium_nicrosil_nugget": "Lerasium-Nicrosil Nugget",
+  "item.metalborn.random_ferring": "Invested Nicrosil Nugget",
+  "item.metalborn.random_ferring.on_consume": "Eat to become a random ferring",
+  "item.metalborn.change_ferring": "Invested Nugget",
+  "item.metalborn.change_ferring.format": "Invested %s Nugget",
+  "item.metalborn.change_ferring.on_consume": "Eat to become a %s ferring",
 
 
   "_group_metal_": "",

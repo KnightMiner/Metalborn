@@ -81,7 +81,7 @@ public class MetalInjectingTransformer extends BookTransformer {
       // set fluid effect properties into the page
       List<ItemStack> displayStacks = MetalContent.getItems(power.ingot());
       if (displayStacks.isEmpty()) {
-        displayStacks = List.of(Registration.LERASIUM_ALLOY_NUGGET.get().withMetal(power.id()));
+        displayStacks = List.of(Registration.CHANGE_FERRING.get().withMetal(power.id()));
       }
 
       // build the icon

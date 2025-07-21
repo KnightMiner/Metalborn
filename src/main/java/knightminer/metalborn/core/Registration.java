@@ -4,10 +4,10 @@ package knightminer.metalborn.core;
 import knightminer.metalborn.Metalborn;
 import knightminer.metalborn.block.ForgeBlock;
 import knightminer.metalborn.block.ForgeBlockEntity;
-import knightminer.metalborn.item.LerasiumAlloyNuggetItem;
-import knightminer.metalborn.item.LerasiumNuggetItem;
+import knightminer.metalborn.item.ChangeFerringItem;
 import knightminer.metalborn.item.MetalItem;
 import knightminer.metalborn.item.MetalbornBookItem;
+import knightminer.metalborn.item.RandomFerringItem;
 import knightminer.metalborn.item.SpikeItem;
 import knightminer.metalborn.item.metalmind.InvestitureMetalmindItem;
 import knightminer.metalborn.item.metalmind.Metalmind;
@@ -72,6 +72,7 @@ import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.NoteBlockInstrument;
 import net.minecraft.world.level.material.MapColor;
 import net.minecraft.world.level.storage.loot.predicates.LootItemConditionType;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.crafting.CraftingHelper;
 import net.minecraftforge.event.entity.EntityAttributeModificationEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
@@ -79,10 +80,12 @@ import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
+import net.minecraftforge.registries.MissingMappingsEvent;
 import net.minecraftforge.registries.RegisterEvent;
 import net.minecraftforge.registries.RegistryObject;
 import org.jetbrains.annotations.ApiStatus.Internal;
 import slimeknights.mantle.recipe.helper.LoadableRecipeSerializer;
+import slimeknights.mantle.registration.RegistrationHelper;
 import slimeknights.mantle.registration.deferred.BlockDeferredRegister;
 import slimeknights.mantle.registration.deferred.BlockEntityTypeDeferredRegister;
 import slimeknights.mantle.registration.deferred.MenuTypeDeferredRegister;
@@ -120,6 +123,7 @@ public class Registration {
     IEventBus bus = FMLJavaModLoadingContext.get().getModEventBus();
     bus.addListener(Registration::registerMisc);
     bus.addListener(Registration::addAttributes);
+    MinecraftForge.EVENT_BUS.addListener(Registration::missingMappings);
     BLOCKS.register(bus);
     BLOCK_ENTITIES.register(bus);
     ITEMS.register(bus);
@@ -135,9 +139,8 @@ public class Registration {
   // metals
   public static final ItemObject<Item> COPPER_NUGGET = ITEMS.register("copper_nugget");
   public static final ItemObject<Item> NETHERITE_NUGGET = ITEMS.register("netherite_nugget");
-  //public static final ItemObject<LerasiumNuggetItem> LERASIUM_NUGGET = ITEMS.register("lerasium_nugget", () -> new LerasiumNuggetItem(new Item.Properties()));
-  public static final ItemObject<LerasiumAlloyNuggetItem> LERASIUM_ALLOY_NUGGET = ITEMS.register("lerasium_alloy_nugget", () -> new LerasiumAlloyNuggetItem(new Item.Properties()));
-  public static final ItemObject<LerasiumNuggetItem> LERASIUM_NICROSIL_NUGGET = ITEMS.register("lerasium_nicrosil_nugget", () -> new LerasiumNuggetItem(new Item.Properties()));
+  public static final ItemObject<RandomFerringItem> RANDOM_FERRING = ITEMS.register("random_ferring", () -> new RandomFerringItem(new Item.Properties()));
+  public static final ItemObject<ChangeFerringItem> CHANGE_FERRING = ITEMS.register("change_ferring", () -> new ChangeFerringItem(new Item.Properties()));
 
   // unique
   public static final MetalItemObject TIN       = BLOCKS.registerMetal("tin",       metalBuilder(MapColor.ICE), BLOCK_ITEM, PROPS);
@@ -303,6 +306,15 @@ public class Registration {
     }
   }
 
+  /** Handles registry renames */
+  private static void missingMappings(MissingMappingsEvent event) {
+    RegistrationHelper.handleMissingMappings(event, MOD_ID, Registries.ITEM, name -> switch (name) {
+      case "lerasium_alloy_nugget" -> CHANGE_FERRING.get();
+      case "lerasium_nicrosil_nugget" -> RANDOM_FERRING.get();
+      default -> null;
+    });
+  }
+
   /** Adds all items to the creative tab */
   private static void addTabItems(ItemDisplayParameters itemDisplayParameters, Output output) {
     Consumer<ItemStack> consumer = output::accept;
@@ -332,10 +344,9 @@ public class Registration {
     accept(consumer, SPIKE);
     // unsealed metalminds
     accept(consumer, UNSEALED_RING);
-    // lerasium
-    //output.accept(LERASIUM_NUGGET);
-    accept(consumer, LERASIUM_ALLOY_NUGGET);
-    output.accept(LERASIUM_NICROSIL_NUGGET);
+    // ferring nuggets
+    output.accept(RANDOM_FERRING);
+    accept(consumer, CHANGE_FERRING);
 
     // Tinkers' Construct compat
     if (ModList.get().isLoaded(Metalborn.TINKERS)) {
