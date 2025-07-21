@@ -97,7 +97,7 @@ public class PalettedItemModel implements IUnbakedGeometry<PalettedItemModel> {
     }
 
     /** Fetches all permutation data for the baked model */
-    private BakedPermutationData bake(ResourceManager manager, Material material, Function<Material, TextureAtlasSprite> spriteGetter) {
+    BakedPermutationData bake(ResourceManager manager, Material material, Function<Material, TextureAtlasSprite> spriteGetter) {
       // if this texture is not permuted, just cache the sprite
       if (list == null || key.isEmpty()) {
         return new BakedPermutationData("", spriteGetter.apply(material), Map.of());
@@ -112,7 +112,7 @@ public class PalettedItemModel implements IUnbakedGeometry<PalettedItemModel> {
   }
 
   /** List of all textures being used for the given variant */
-  private record BakedPermutationData(String key, TextureAtlasSprite defaultTexture, Map<String,TextureAtlasSprite> textures) {
+  record BakedPermutationData(String key, TextureAtlasSprite defaultTexture, Map<String,TextureAtlasSprite> textures) {
     /** Gets the texture for the given variant */
     public TextureAtlasSprite getTexture(String variant) {
       if (variant.isEmpty()) {
@@ -123,7 +123,7 @@ public class PalettedItemModel implements IUnbakedGeometry<PalettedItemModel> {
   }
 
   /** Override handler and model baker for the permutation item model */
-  private static class PermutatedItemOverrides extends ItemOverrides {
+  static class PermutatedItemOverrides extends ItemOverrides {
     /** Model variant cache */
     private final Map<String,BakedModel> cache = new HashMap<>();
     /** List of textures to use */
@@ -132,7 +132,7 @@ public class PalettedItemModel implements IUnbakedGeometry<PalettedItemModel> {
     private final ModelState modelTransform;
     private final RenderTypeGroup renderTypes;
 
-    private PermutatedItemOverrides(IGeometryBakingContext context, List<BakedPermutationData> permutations, ModelState modelTransform, RenderTypeGroup renderTypes) {
+    protected PermutatedItemOverrides(IGeometryBakingContext context, List<BakedPermutationData> permutations, ModelState modelTransform, RenderTypeGroup renderTypes) {
       this.context = context;
       this.permutations = permutations;
       this.modelTransform = modelTransform;
@@ -142,7 +142,7 @@ public class PalettedItemModel implements IUnbakedGeometry<PalettedItemModel> {
     // TODO: do we need nested overrides at all?
 
     /** Bakes a model with the given item data */
-    private BakedModel bake(ItemOverrides overrides, List<String> itemData) {
+    BakedModel bake(ItemOverrides overrides, List<String> itemData) {
       record QuadGroup(RenderTypeGroup renderType, Collection<BakedQuad> quads) {}
       ReversedListBuilder<QuadGroup> quadBuilder = new ReversedListBuilder<>();
       ItemLayerPixels pixels = permutations.size() == 1 ? null : new ItemLayerPixels();

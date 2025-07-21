@@ -4,6 +4,7 @@ import com.mojang.blaze3d.platform.InputConstants;
 import knightminer.metalborn.Metalborn;
 import knightminer.metalborn.client.book.MetalbornBook;
 import knightminer.metalborn.client.model.ExtendablePalettedPermutations;
+import knightminer.metalborn.client.model.MetalShapeModel;
 import knightminer.metalborn.client.model.PaletteListManager;
 import knightminer.metalborn.client.model.PalettedItemModel;
 import knightminer.metalborn.core.Registration;
@@ -54,6 +55,7 @@ public class MetalbornClient {
   @SubscribeEvent
   static void registerModelLoaders(ModelEvent.RegisterGeometryLoaders event) {
     event.register("paletted", PalettedItemModel.LOADER);
+    event.register("metal_shape", MetalShapeModel.LOADER);
   }
 
   @SubscribeEvent
