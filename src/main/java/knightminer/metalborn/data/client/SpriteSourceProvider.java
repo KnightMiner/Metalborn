@@ -1,7 +1,7 @@
 package knightminer.metalborn.data.client;
 
 import knightminer.metalborn.Metalborn;
-import knightminer.metalborn.client.ExtendablePalettedPermutations;
+import knightminer.metalborn.client.model.ExtendablePalettedPermutations;
 import net.minecraft.data.PackOutput;
 import net.minecraftforge.common.data.ExistingFileHelper;
 

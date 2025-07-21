@@ -1,7 +1,7 @@
 package knightminer.metalborn.data.client;
 
 import knightminer.metalborn.Metalborn;
-import knightminer.metalborn.client.PalettedModelBuilder;
+import knightminer.metalborn.client.model.PalettedModelBuilder;
 import knightminer.metalborn.core.Registration;
 import knightminer.metalborn.data.MetalIds;
 import knightminer.metalborn.item.MetalItem;
@@ -22,7 +22,7 @@ import slimeknights.mantle.registration.object.ItemObject;
 import slimeknights.mantle.registration.object.MetalItemObject;
 
 import static knightminer.metalborn.Metalborn.resource;
-import static knightminer.metalborn.client.PalettedItemModel.toSuffix;
+import static knightminer.metalborn.client.model.PalettedItemModel.toSuffix;
 
 /** Data generator for all item models in this mod */
 public class ItemModelProvider extends net.minecraftforge.client.model.generators.ItemModelProvider {

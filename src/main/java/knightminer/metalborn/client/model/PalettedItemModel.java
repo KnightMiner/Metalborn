@@ -1,4 +1,4 @@
-package knightminer.metalborn.client;
+package knightminer.metalborn.client.model;
 
 import com.mojang.math.Transformation;
 import net.minecraft.client.Minecraft;
@@ -38,7 +38,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
 
-/** Item model that permutes  */
+/** Item model that permutes variants based on a resource location in NBT */
 public class PalettedItemModel implements IUnbakedGeometry<PalettedItemModel> {
   /** Loader instance for this model */
   public static final IGeometryLoader<PalettedItemModel> LOADER = (json, context) -> new PalettedItemModel(PermutationData.LIST_LOADABLE.getIfPresent(json, "palette"));

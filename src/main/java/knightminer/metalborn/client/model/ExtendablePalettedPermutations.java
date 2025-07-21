@@ -1,7 +1,8 @@
-package knightminer.metalborn.client;
+package knightminer.metalborn.client.model;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import knightminer.metalborn.client.MetalbornClient;
 import net.minecraft.client.renderer.texture.atlas.SpriteSourceType;
 import net.minecraft.client.renderer.texture.atlas.sources.PalettedPermutations;
 import net.minecraft.resources.ResourceLocation;
