@@ -42,7 +42,7 @@ public class MetalPowerProvider extends AbstractMetalPowerProvider {
       .feruchemy(AttributeMetalEffect.builder(Attributes.ATTACK_SPEED, Operation.MULTIPLY_TOTAL).eachLevel(0.05f))
       .feruchemy(AttributeMetalEffect.builder(Registration.MINING_SPEED_MULTIPLIER, Operation.MULTIPLY_TOTAL).eachLevel(0.1f));
     metal(MetalIds.tin).index(3).temperature(225).capacity(MetalFormat.SECONDS, 5 * 60)
-      .feruchemy(MobEffectMetalEffect.storing(MobEffects.BLINDNESS).flat(1))
+      .feruchemy(MobEffectMetalEffect.storing(MobEffects.BLINDNESS).duration(60).flat(1))
       .feruchemy(MobEffectMetalEffect.tapping(MobEffects.NIGHT_VISION).duration(230).flat(1));
     metal(MetalIds.pewter).index(4).temperature(400)
       .feruchemy(AttributeMetalEffect.builder(Attributes.ATTACK_DAMAGE, Operation.ADDITION).eachLevel(1))

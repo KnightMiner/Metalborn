@@ -6,6 +6,7 @@
       "type": "metalborn:storing_status_effect",
       "always_store": false,
       "base": 1,
+      "duration": 60,
       "effect": "minecraft:blindness"
     },
     {
