@@ -4,8 +4,8 @@ import knightminer.metalborn.Metalborn;
 import knightminer.metalborn.core.Registration;
 import knightminer.metalborn.data.tag.MetalbornTags;
 import knightminer.metalborn.json.ingredient.IngredientWithMetal.MetalFilter;
-import knightminer.metalborn.json.ingredient.MetalIngredient;
 import knightminer.metalborn.json.ingredient.MetalItemIngredient;
+import knightminer.metalborn.json.ingredient.MetalShapeIngredient;
 import knightminer.metalborn.json.recipe.ShapedForgeRecipeBuilder;
 import knightminer.metalborn.json.recipe.ShapelessForgeRecipeBuilder;
 import knightminer.metalborn.plugin.tinkers.MetalCastingRecipeBuilder;
@@ -113,7 +113,7 @@ public class RecipeProvider extends net.minecraft.data.recipes.RecipeProvider im
     // metal items
     ShapedForgeRecipeBuilder.shaped(Registration.RING)
       .pattern("##").pattern("##")
-      .define('#', MetalIngredient.nugget(MetalFilter.METALMIND))
+      .define('#', MetalShapeIngredient.nugget(MetalFilter.METALMIND))
       .metal()
       .cookingRate(1)
       .experience(0.5f)
@@ -127,7 +127,7 @@ public class RecipeProvider extends net.minecraft.data.recipes.RecipeProvider im
     // TODO: unsealed ring crafting
     ShapedForgeRecipeBuilder.shaped(Registration.BRACER)
       .pattern("##").pattern("##")
-      .define('#', MetalIngredient.ingot(MetalFilter.METALMIND))
+      .define('#', MetalShapeIngredient.ingot(MetalFilter.METALMIND))
       .metal()
       .cookingRate(4)
       .experience(2f)
@@ -140,7 +140,7 @@ public class RecipeProvider extends net.minecraft.data.recipes.RecipeProvider im
       .save(consumer, location("bracer_nicrosil"));
     ShapedForgeRecipeBuilder.shaped(Registration.SPIKE)
       .pattern(" #").pattern("# ")
-      .define('#', MetalIngredient.ingot(MetalFilter.SPIKE))
+      .define('#', MetalShapeIngredient.ingot(MetalFilter.SPIKE))
       .metal()
       .cookingRate(4) // you get 4 spikes per fuel usage, but you really want hoppers since they are unstackable
       .experience(1f)

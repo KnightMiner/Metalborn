@@ -15,8 +15,8 @@ import knightminer.metalborn.item.metalmind.MetalmindItem;
 import knightminer.metalborn.item.metalmind.PowerMetalmindItem;
 import knightminer.metalborn.item.metalmind.UnsealedMetalmindItem;
 import knightminer.metalborn.json.ConfigEnabledCondition;
-import knightminer.metalborn.json.ingredient.MetalIngredient;
 import knightminer.metalborn.json.ingredient.MetalItemIngredient;
+import knightminer.metalborn.json.ingredient.MetalShapeIngredient;
 import knightminer.metalborn.json.loot.ApplyDropChanceLootModifier;
 import knightminer.metalborn.json.loot.HasLootContextSetCondition;
 import knightminer.metalborn.json.recipe.ForgeRecipe;
@@ -257,7 +257,7 @@ public class Registration {
       MetalEffect.REGISTRY.register(resource("energy"), EnergyMetalEffect.LOADER);
       MetalEffect.REGISTRY.register(resource("warmth"), WarmthMetalEffect.LOADER);
       // ingredients
-      CraftingHelper.register(MetalIngredient.ID, MetalIngredient.SERIALIZER);
+      CraftingHelper.register(MetalShapeIngredient.ID, MetalShapeIngredient.SERIALIZER);
       CraftingHelper.register(MetalItemIngredient.ID, MetalItemIngredient.SERIALIZER);
       CraftingHelper.register(ConfigEnabledCondition.Serializer.INSTANCE);
 

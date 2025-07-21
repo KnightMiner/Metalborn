@@ -22,26 +22,26 @@ import java.util.Collection;
 import java.util.stream.Stream;
 
 /** Ingredient matching a metal. Does not match a metal item with NBT metal. */
-public class MetalIngredient extends AbstractIngredient implements IngredientWithMetal {
-  public static final ResourceLocation ID = Metalborn.resource("metal");
+public class MetalShapeIngredient extends AbstractIngredient implements IngredientWithMetal {
+  public static final ResourceLocation ID = Metalborn.resource("metal_shape");
 
   /** Shape to match, if null then any shape is valid */
   private final MetalShape shape;
   private final MetalFilter filter;
-  private MetalIngredient(MetalShape shape, MetalFilter filter) {
+  private MetalShapeIngredient(MetalShape shape, MetalFilter filter) {
     super(Stream.of(new MetalValue(shape, filter)));
     this.filter = filter;
     this.shape = shape;
   }
 
   /** Creates an ingredient matching ingots */
-  public static MetalIngredient ingot(MetalFilter filter) {
-    return new MetalIngredient(MetalShape.INGOT, filter);
+  public static MetalShapeIngredient ingot(MetalFilter filter) {
+    return new MetalShapeIngredient(MetalShape.INGOT, filter);
   }
 
   /** Creates an ingredient matching nuggets */
-  public static MetalIngredient nugget(MetalFilter filter) {
-    return new MetalIngredient(MetalShape.NUGGET, filter);
+  public static MetalShapeIngredient nugget(MetalFilter filter) {
+    return new MetalShapeIngredient(MetalShape.NUGGET, filter);
   }
 
   @Override
@@ -72,7 +72,7 @@ public class MetalIngredient extends AbstractIngredient implements IngredientWit
   }
 
   @Override
-  public IIngredientSerializer<MetalIngredient> getSerializer() {
+  public IIngredientSerializer<MetalShapeIngredient> getSerializer() {
     return SERIALIZER;
   }
 
@@ -121,30 +121,30 @@ public class MetalIngredient extends AbstractIngredient implements IngredientWit
 
     @Override
     public JsonObject serialize() {
-      return MetalIngredient.serialize(shape, filter);
+      return MetalShapeIngredient.serialize(shape, filter);
     }
   }
 
   /** Serializer instance */
-  public static final IIngredientSerializer<MetalIngredient> SERIALIZER = new IIngredientSerializer<>() {
+  public static final IIngredientSerializer<MetalShapeIngredient> SERIALIZER = new IIngredientSerializer<>() {
     @Override
-    public MetalIngredient parse(JsonObject json) {
-      return new MetalIngredient(
+    public MetalShapeIngredient parse(JsonObject json) {
+      return new MetalShapeIngredient(
         MetalShape.LOADABLE.getIfPresent(json, "shape"),
         MetalFilter.LOADABLE.getOrDefault(json, "filter", MetalFilter.ANY)
       );
     }
 
     @Override
-    public MetalIngredient parse(FriendlyByteBuf buffer) {
-      return new MetalIngredient(
+    public MetalShapeIngredient parse(FriendlyByteBuf buffer) {
+      return new MetalShapeIngredient(
         MetalShape.LOADABLE.decode(buffer),
         MetalFilter.LOADABLE.decode(buffer)
       );
     }
 
     @Override
-    public void write(FriendlyByteBuf buffer, MetalIngredient ingredient) {
+    public void write(FriendlyByteBuf buffer, MetalShapeIngredient ingredient) {
       MetalShape.LOADABLE.encode(buffer, ingredient.shape);
       MetalFilter.LOADABLE.encode(buffer, ingredient.filter);
     }

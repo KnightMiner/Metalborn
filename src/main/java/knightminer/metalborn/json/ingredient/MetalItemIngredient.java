@@ -24,7 +24,7 @@ import java.util.stream.Stream;
 
 /**
  * Ingredient that displays all metal variants for an item.
- * @see MetalIngredient
+ * @see MetalShapeIngredient
  */
 public class MetalItemIngredient extends AbstractIngredient implements IngredientWithMetal {
   public static final ResourceLocation ID = Metalborn.resource("metal_item");

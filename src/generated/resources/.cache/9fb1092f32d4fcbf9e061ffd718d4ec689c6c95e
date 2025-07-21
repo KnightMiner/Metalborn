@@ -1,4 +1,4 @@
-// 1.20.1	2025-07-16T23:27:06.3047308	Recipes
+// 1.20.1	2025-07-21T02:42:29.643266	Recipes
 8720e146ed87c91433b7b556aee5d6a5390111ee data/metalborn/advancements/recipes/decorations/forge.json
 c4a47c50fae1f0fb9b1d0ad265dd630473918dd7 data/metalborn/advancements/recipes/misc/metallic_arts.json
 6bb6018bc3fcaf2326b259cddc674cf97cd5f90a data/metalborn/advancements/recipes/misc/metal/bronze_block_from_ingots.json
@@ -46,7 +46,7 @@ e8482a36b74b19f3b8869351d40ba88b3b5cebdc data/metalborn/recipes/alloy/bronze.jso
 f727dce642f2edc80c8bae5a257d1c78eb411abb data/metalborn/recipes/alloy/pewter.json
 a523af0c0f1281a5721697258bfa7b2c6ad0a09d data/metalborn/recipes/alloy/rose_gold.json
 23cfc654dc6e41521cc012f4404f43e32a6753de data/metalborn/recipes/alloy/steel.json
-ad4224edb9cedddc220276c55b934b61e84e3b3d data/metalborn/recipes/bracer.json
+9d1086ff72b00e04c3b873db07e2df83b13d4689 data/metalborn/recipes/bracer.json
 2b6f5d5975d3c7a1a5cc2e95820c8a8823bbe5a7 data/metalborn/recipes/bracer_nicrosil.json
 0b2095a1a534a6a2ce3fad4e1e337cbd36f5e243 data/metalborn/recipes/forge.json
 de63b715888064447ad4d70000991ee7acde4329 data/metalborn/recipes/metallic_arts.json
@@ -82,9 +82,9 @@ d6745f60ee4e3322b56b2dbac7cbff755b17d644 data/metalborn/recipes/metal/tin_ingot_
 bf547ca76f177c959591936996c722780d3eadd3 data/metalborn/recipes/metal/tin_ingot_from_nuggets.json
 0273b2b256af9e6167228d986be4bcd08fdbce49 data/metalborn/recipes/metal/tin_ingot_smelting.json
 37fa407ff4f2be2337e5642375a00deebe002f4c data/metalborn/recipes/metal/tin_nugget_from_ingot.json
-8c7f1cce9fc7ee6a2ced8d0faf26f5b088b5b54d data/metalborn/recipes/ring.json
+700884da4fbaef427f76bda0e8e132acbbea9af8 data/metalborn/recipes/ring.json
 4210bf2e46c4dd869455be70de706d24d63686eb data/metalborn/recipes/ring_nicrosil.json
-5ab6f359d24df8d074594b0f42ebcdea59591cd4 data/metalborn/recipes/spike.json
+583a4a9e50fab8f9160d65adcab8df189656a814 data/metalborn/recipes/spike.json
 2c23616591df675ad143c939d5dbc9ef50e995db data/metalborn/recipes/tinkers/bracer/casting_gold_cast.json
 cfdad03d190238cdbbf7cd0ba5db47833489d08e data/metalborn/recipes/tinkers/bracer/casting_sand_cast.json
 829d223c6a9ae520f1d23390f84b9fbd436eaf1b data/metalborn/recipes/tinkers/bracer/cast/gold_casting.json

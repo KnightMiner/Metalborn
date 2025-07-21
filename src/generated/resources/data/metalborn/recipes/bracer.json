@@ -4,7 +4,7 @@
   "experience": 2.0,
   "key": {
     "#": {
-      "type": "metalborn:metal",
+      "type": "metalborn:metal_shape",
       "filter": "metalmind",
       "shape": "ingot"
     }

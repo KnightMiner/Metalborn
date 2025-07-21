@@ -3,7 +3,7 @@ package knightminer.metalborn.json.recipe;
 import com.google.common.collect.Sets;
 import com.google.gson.JsonObject;
 import knightminer.metalborn.core.Registration;
-import knightminer.metalborn.json.ingredient.MetalIngredient;
+import knightminer.metalborn.json.ingredient.MetalShapeIngredient;
 import net.minecraft.data.recipes.FinishedRecipe;
 import net.minecraft.data.recipes.ShapedRecipeBuilder;
 import net.minecraft.resources.ResourceLocation;
@@ -82,7 +82,7 @@ public class ShapedForgeRecipeBuilder extends AbstractForgeRecipeBuilder<ShapedF
     }
   }
 
-  /** Makes this a metal recipe, setting the output metal based on input ingredients. Should have at least one {@link MetalIngredient} for best results. */
+  /** Makes this a metal recipe, setting the output metal based on input ingredients. Should have at least one {@link MetalShapeIngredient} for best results. */
   public ShapedForgeRecipeBuilder metal() {
     this.serializer = Registration.METAL_SHAPED_FORGE.get();
     return this;

@@ -1,6 +1,6 @@
 package knightminer.metalborn.json.recipe;
 
-import knightminer.metalborn.json.ingredient.MetalIngredient;
+import knightminer.metalborn.json.ingredient.MetalShapeIngredient;
 import net.minecraft.core.NonNullList;
 import net.minecraft.data.recipes.FinishedRecipe;
 import net.minecraft.resources.ResourceLocation;
@@ -76,7 +76,7 @@ public class ShapelessForgeRecipeBuilder extends AbstractForgeRecipeBuilder<Shap
     return requires(tag, 1);
   }
 
-  /** Makes this a metal recipe, setting the output metal based on input ingredients. Should have at least one {@link MetalIngredient} for best results. */
+  /** Makes this a metal recipe, setting the output metal based on input ingredients. Should have at least one {@link MetalShapeIngredient} for best results. */
   public ShapelessForgeRecipeBuilder metal() {
     this.metal = true;
     return this;
