@@ -5,17 +5,14 @@ import com.google.gson.JsonObject;
 import knightminer.metalborn.Metalborn;
 import knightminer.metalborn.metal.MetalManager;
 import knightminer.metalborn.metal.MetalPower;
+import knightminer.metalborn.metal.MetalShape;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.tags.TagKey;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraftforge.common.Tags;
 import net.minecraftforge.common.crafting.AbstractIngredient;
 import net.minecraftforge.common.crafting.IIngredientSerializer;
 import org.jetbrains.annotations.Nullable;
-import slimeknights.mantle.data.loadable.primitive.EnumLoadable;
 import slimeknights.mantle.util.RegistryHelper;
 
 import java.util.Collection;
@@ -51,7 +48,7 @@ public class MetalShapeIngredient extends AbstractIngredient implements Ingredie
 
   /** Gets the metal matched by the given stack */
   public MetalPower getMetal(ItemStack stack) {
-    if (shape == null || stack.is(shape.tag)) {
+    if (shape == null || stack.is(shape.getTag())) {
       MetalPower power = MetalManager.INSTANCE.fromIngotOrNugget(stack.getItem());
       if (power != MetalPower.DEFAULT && filter.test(power)) {
         return power;
@@ -93,19 +90,6 @@ public class MetalShapeIngredient extends AbstractIngredient implements Ingredie
     return json;
   }
 
-  /** Represents different shapes of common metal items */
-  private enum MetalShape {
-    INGOT(Tags.Items.INGOTS),
-    NUGGET(Tags.Items.NUGGETS);
-
-    public static final EnumLoadable<MetalShape> LOADABLE = new EnumLoadable<>(MetalShape.class);
-
-    private final TagKey<Item> tag;
-    MetalShape(TagKey<Item> tag) {
-      this.tag = tag;
-    }
-  }
-
   /** Ingredient value for a metal */
   private record MetalValue(MetalShape shape, MetalFilter filter) implements Value {
     @SuppressWarnings("deprecation")
@@ -114,7 +98,7 @@ public class MetalShapeIngredient extends AbstractIngredient implements Ingredie
       return MetalManager.INSTANCE.getSortedPowers()
         .stream()
         .filter(filter)
-        .flatMap(power -> RegistryHelper.getTagValueStream(BuiltInRegistries.ITEM, shape == MetalShape.INGOT ? power.ingot() : power.nugget()))
+        .flatMap(power -> RegistryHelper.getTagValueStream(BuiltInRegistries.ITEM, power.tag(shape)))
         .map(ItemStack::new)
         .toList();
     }

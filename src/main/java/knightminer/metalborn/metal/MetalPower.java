@@ -109,6 +109,14 @@ public record MetalPower(
     return matchesIngot(item) || matchesNugget(item);
   }
 
+  /** Gets the tag for the given metal shape */
+  public TagKey<Item> tag(MetalShape shape) {
+    return switch (shape) {
+      case INGOT -> ingot;
+      case NUGGET -> nugget;
+    };
+  }
+
   /** {@return true if this fluid matches the metal} */
   @SuppressWarnings("deprecation")
   public boolean matches(Fluid fluid) {
