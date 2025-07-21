@@ -19,11 +19,10 @@ import slimeknights.mantle.data.loadable.primitive.EnumLoadable;
 import slimeknights.mantle.util.RegistryHelper;
 
 import java.util.Collection;
-import java.util.function.Predicate;
 import java.util.stream.Stream;
 
 /** Ingredient matching a metal. Does not match a metal item with NBT metal. */
-public class MetalIngredient extends AbstractIngredient {
+public class MetalIngredient extends AbstractIngredient implements IngredientWithMetal {
   public static final ResourceLocation ID = Metalborn.resource("metal");
 
   /** Shape to match, if null then any shape is valid */
@@ -45,7 +44,7 @@ public class MetalIngredient extends AbstractIngredient {
     return new MetalIngredient(MetalShape.NUGGET, filter);
   }
 
-  /** Gets the filter for this ingredient */
+  @Override
   public MetalFilter getFilter() {
     return filter;
   }
@@ -105,36 +104,6 @@ public class MetalIngredient extends AbstractIngredient {
     MetalShape(TagKey<Item> tag) {
       this.tag = tag;
     }
-  }
-
-  /** Filter on allowed metals */
-  public enum MetalFilter implements Predicate<MetalPower> {
-    ANY {
-      @Override
-      public boolean test(MetalPower metalPower) {
-        return true;
-      }
-    },
-    NATURAL_FERRING {
-      @Override
-      public boolean test(MetalPower power) {
-        return power.ferring();
-      }
-    },
-    METALMIND {
-      @Override
-      public boolean test(MetalPower power) {
-        return !power.feruchemy().isEmpty();
-      }
-    },
-    SPIKE {
-      @Override
-      public boolean test(MetalPower power) {
-        return power.hemalurgyCharge() > 0 && !power.feruchemy().isEmpty();
-      }
-    };
-
-    public static final EnumLoadable<MetalFilter> LOADABLE = new EnumLoadable<>(MetalFilter.class);
   }
 
   /** Ingredient value for a metal */

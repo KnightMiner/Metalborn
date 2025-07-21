@@ -2,8 +2,8 @@ package knightminer.metalborn.json.recipe;
 
 import knightminer.metalborn.core.Registration;
 import knightminer.metalborn.item.MetalItem;
-import knightminer.metalborn.json.ingredient.MetalIngredient;
-import knightminer.metalborn.json.ingredient.MetalIngredient.MetalFilter;
+import knightminer.metalborn.json.ingredient.IngredientWithMetal;
+import knightminer.metalborn.json.ingredient.IngredientWithMetal.MetalFilter;
 import knightminer.metalborn.metal.MetalId;
 import knightminer.metalborn.metal.MetalManager;
 import knightminer.metalborn.metal.MetalPower;
@@ -36,7 +36,7 @@ public class MetalShapedForgeRecipe extends ShapedForgeRecipe {
   /** Finds the first metal ingredient in the input list */
   static Predicate<MetalPower> getMetalFilter(List<Ingredient> ingredients) {
     Set<MetalFilter> filters = ingredients.stream().flatMap(ingredient -> {
-      if (ingredient instanceof MetalIngredient metal) {
+      if (ingredient instanceof IngredientWithMetal metal) {
         return Stream.of(metal.getFilter());
       }
       return Stream.empty();
@@ -74,7 +74,15 @@ public class MetalShapedForgeRecipe extends ShapedForgeRecipe {
     for (int i = 0; i < inventory.getContainerSize(); i++) {
       ItemStack stack = inventory.getItem(i);
       if (!stack.isEmpty()) {
-        MetalPower power = MetalManager.INSTANCE.fromIngotOrNugget(stack.getItem());
+        MetalPower power;
+        // map metal items to the metal in NBT
+        if (stack.getItem() instanceof MetalItem) {
+          power = MetalManager.INSTANCE.get(MetalItem.getMetal(stack));
+        } else {
+          // other items try to do a tag match on ingot or nugget
+          power = MetalManager.INSTANCE.fromIngotOrNugget(stack.getItem());
+        }
+        // if we found something, work with it
         if (power != MetalPower.DEFAULT && metal.test(power)) {
           // first match is set
           if (firstId == null) {
@@ -117,7 +125,7 @@ public class MetalShapedForgeRecipe extends ShapedForgeRecipe {
     // search for metal ingredients
     for (int i = 0; i < ingredients.size(); i++) {
       Ingredient ingredient = ingredients.get(i);
-      if (ingredient instanceof MetalIngredient) {
+      if (ingredient instanceof IngredientWithMetal) {
         // if we have not yet found an ingredient, use this one for our input stacks
         if (inputExample == null) {
           indices.add(i);

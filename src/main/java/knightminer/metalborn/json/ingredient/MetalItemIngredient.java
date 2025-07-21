@@ -6,7 +6,6 @@ import it.unimi.dsi.fastutil.ints.IntArrayList;
 import it.unimi.dsi.fastutil.ints.IntList;
 import knightminer.metalborn.Metalborn;
 import knightminer.metalborn.item.MetalItem;
-import knightminer.metalborn.json.ingredient.MetalIngredient.MetalFilter;
 import knightminer.metalborn.metal.MetalManager;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.FriendlyByteBuf;
@@ -27,7 +26,7 @@ import java.util.stream.Stream;
  * Ingredient that displays all metal variants for an item.
  * @see MetalIngredient
  */
-public class MetalItemIngredient extends AbstractIngredient {
+public class MetalItemIngredient extends AbstractIngredient implements IngredientWithMetal {
   public static final ResourceLocation ID = Metalborn.resource("metal_item");
 
   /** Item for serializing and testing */
@@ -49,6 +48,10 @@ public class MetalItemIngredient extends AbstractIngredient {
     return new MetalItemIngredient(item.asItem(), filter);
   }
 
+  @Override
+  public MetalFilter getFilter() {
+    return filter;
+  }
 
   @Override
   public boolean test(@Nullable ItemStack stack) {

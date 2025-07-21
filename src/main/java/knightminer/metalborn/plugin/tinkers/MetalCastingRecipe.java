@@ -1,10 +1,10 @@
 package knightminer.metalborn.plugin.tinkers;
 
 import knightminer.metalborn.item.MetalItem;
+import knightminer.metalborn.json.ingredient.IngredientWithMetal.MetalFilter;
 import knightminer.metalborn.metal.MetalId;
 import knightminer.metalborn.metal.MetalManager;
 import knightminer.metalborn.metal.MetalPower;
-import knightminer.metalborn.json.ingredient.MetalIngredient.MetalFilter;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;

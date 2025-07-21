@@ -5,7 +5,7 @@ import com.google.gson.JsonObject;
 import knightminer.metalborn.data.MetalIds;
 import knightminer.metalborn.data.tag.MetalbornTags;
 import knightminer.metalborn.item.MetalItem;
-import knightminer.metalborn.json.ingredient.MetalIngredient.MetalFilter;
+import knightminer.metalborn.json.ingredient.IngredientWithMetal.MetalFilter;
 import knightminer.metalborn.json.ingredient.MetalItemIngredient;
 import knightminer.metalborn.util.CastItemObject;
 import net.minecraft.data.recipes.FinishedRecipe;
