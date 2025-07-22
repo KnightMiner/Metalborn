@@ -67,6 +67,17 @@ public class MetalShapedForgeRecipe extends ShapedForgeRecipe {
     return metalFilter;
   }
 
+  /** Gets the metal power from the given stack */
+  private static MetalPower getMetal(ItemStack stack) {
+    // map metal items to the metal in NBT
+    if (stack.getItem() instanceof MetalItem) {
+      return MetalManager.INSTANCE.get(MetalItem.getMetal(stack));
+    } else {
+      // other items try to do a tag match on ingot or nugget
+      return MetalManager.INSTANCE.fromIngotOrNugget(stack.getItem());
+    }
+  }
+
   /** Finds the metal in the given grid */
   static MetalId findMetal(CraftingContainer inventory, Predicate<MetalPower> metal) {
     // ensure same metal is in all slots
@@ -74,15 +85,8 @@ public class MetalShapedForgeRecipe extends ShapedForgeRecipe {
     for (int i = 0; i < inventory.getContainerSize(); i++) {
       ItemStack stack = inventory.getItem(i);
       if (!stack.isEmpty()) {
-        MetalPower power;
-        // map metal items to the metal in NBT
-        if (stack.getItem() instanceof MetalItem) {
-          power = MetalManager.INSTANCE.get(MetalItem.getMetal(stack));
-        } else {
-          // other items try to do a tag match on ingot or nugget
-          power = MetalManager.INSTANCE.fromIngotOrNugget(stack.getItem());
-        }
-        // if we found something, work with it
+        // if we found a metal, work with it
+        MetalPower power = getMetal(stack);
         if (power != MetalPower.DEFAULT && metal.test(power)) {
           // first match is set
           if (firstId == null) {
@@ -148,7 +152,7 @@ public class MetalShapedForgeRecipe extends ShapedForgeRecipe {
         .map(power -> MetalItem.setMetal(result.copy(), power.id())).toList();
     } else {
       displayResults = Arrays.stream(inputExample)
-        .map(stack -> MetalItem.setMetal(result.copy(), MetalManager.INSTANCE.fromIngotOrNugget(stack.getItem()).id()))
+        .map(stack -> MetalItem.setMetal(result.copy(), getMetal(stack).id()))
         .toList();
     }
     return new JEIInfo(linkedInputs, displayResults);
