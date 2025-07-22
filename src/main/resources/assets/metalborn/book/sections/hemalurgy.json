@@ -10,5 +10,13 @@
   {
     "name": "gui",
     "data": "hemalurgy/gui.json"
+  },
+  {
+    "name": "random_ferring",
+    "data": "hemalurgy/random_ferring.json"
+  },
+  {
+    "name": "change_ferring",
+    "data": "hemalurgy/change_ferring.json"
   }
 ]
