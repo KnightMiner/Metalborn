@@ -17,6 +17,7 @@ import knightminer.metalborn.data.tag.BlockTagProvider;
 import knightminer.metalborn.data.tag.DamageTypeTagProvider;
 import knightminer.metalborn.data.tag.EntityTagProvider;
 import knightminer.metalborn.data.tag.ItemTagProvider;
+import knightminer.metalborn.data.tag.MenuTagProvider;
 import knightminer.metalborn.metal.MetalManager;
 import knightminer.metalborn.network.MetalbornNetwork;
 import knightminer.metalborn.plugin.tinkers.TinkersPlugin;
@@ -103,6 +104,7 @@ public class Metalborn {
     generator.addProvider(server, new ItemTagProvider(packOutput, lookupProvider, blockTags.contentsGetter(), existingFileHelper));
     generator.addProvider(server, new DamageTypeTagProvider(packOutput, datapackRegistry.getRegistryProvider(), existingFileHelper));
     generator.addProvider(server, new EntityTagProvider(packOutput, lookupProvider, existingFileHelper));
+    generator.addProvider(server, new MenuTagProvider(packOutput, lookupProvider, existingFileHelper));
     // client
     generator.addProvider(client, new ItemModelProvider(packOutput, existingFileHelper));
     generator.addProvider(client, new BlockModelProvider(packOutput, existingFileHelper));
