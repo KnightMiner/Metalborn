@@ -1,6 +1,7 @@
 package knightminer.metalborn.item.metalmind;
 
 import knightminer.metalborn.core.MetalbornData;
+import knightminer.metalborn.item.Fillable;
 import knightminer.metalborn.metal.MetalId;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Player;
@@ -8,7 +9,7 @@ import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.Nullable;
 
 /** Interface of various methods available to metalmind items */
-public interface Metalmind {
+public interface Metalmind extends Fillable {
   /** Checks if the two stacks have the same power */
   default boolean isSamePower(ItemStack stack1, ItemStack stack2) {
     return true;
@@ -55,9 +56,13 @@ public interface Metalmind {
   }
 
   /** Checks if the metalmind is currently full (and thus cannot store) */
+  @Override
   default boolean isFull(ItemStack stack) {
     return true;
   }
+
+  @Override
+  default void setFull(ItemStack stack) {}
 
   /** Gets the capacity for this metalmind */
   default int getCapacity(ItemStack stack) {

@@ -155,6 +155,12 @@ public abstract class MetalmindItem extends Item implements Metalmind {
     }
   }
 
+  @Override
+  public void setFull(ItemStack stack) {
+    CompoundTag tag = stack.getOrCreateTag();
+    tag.putInt(TAG_AMOUNT, getCapacity(stack));
+  }
+
   /** Fills this stack from the source stack. Exists to allow overriding. */
   protected int fillFrom(ItemStack stack, Player player, ItemStack source, MetalbornData data) {
     return fill(stack, player, getAmount(source), data);

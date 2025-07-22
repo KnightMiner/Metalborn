@@ -4,7 +4,7 @@ import knightminer.metalborn.metal.MetalId;
 import net.minecraft.world.item.ItemStack;
 
 /** Interface of various methods available to spikes */
-public interface Spike {
+public interface Spike extends Fillable {
   /** Gets the metal type for this spike */
   default MetalId getMetal(ItemStack stack) {
     return MetalId.NONE;
@@ -26,8 +26,14 @@ public interface Spike {
   }
 
   /** Checks if the spike is currently filled, and thus usable */
+  @Override
   default boolean isFull(ItemStack stack) {
     return false;
+  }
+
+  @Override
+  default void setFull(ItemStack stack) {
+    setCharge(stack, getMaxCharge(stack));
   }
 
   /**

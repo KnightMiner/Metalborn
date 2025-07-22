@@ -1,0 +1,20 @@
+{
+  "type": "metalborn:shapeless_forge",
+  "cooking_time": 200,
+  "experience": 3.0,
+  "ingredients": [
+    {
+      "tag": "forge:nuggets/nicrosil"
+    },
+    {
+      "type": "metalborn:fillable",
+      "match": {
+        "type": "metalborn:metal_item",
+        "filter": "spike",
+        "item": "metalborn:spike"
+      },
+      "when": "filled"
+    }
+  ],
+  "result": "metalborn:random_ferring"
+}

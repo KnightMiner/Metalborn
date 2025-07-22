@@ -15,6 +15,7 @@ import knightminer.metalborn.item.metalmind.MetalmindItem;
 import knightminer.metalborn.item.metalmind.PowerMetalmindItem;
 import knightminer.metalborn.item.metalmind.UnsealedMetalmindItem;
 import knightminer.metalborn.json.ConfigEnabledCondition;
+import knightminer.metalborn.json.ingredient.FillableIngredient;
 import knightminer.metalborn.json.ingredient.MetalItemIngredient;
 import knightminer.metalborn.json.ingredient.MetalShapeIngredient;
 import knightminer.metalborn.json.loot.ApplyDropChanceLootModifier;
@@ -262,6 +263,7 @@ public class Registration {
       // ingredients
       CraftingHelper.register(MetalShapeIngredient.ID, MetalShapeIngredient.SERIALIZER);
       CraftingHelper.register(MetalItemIngredient.ID, MetalItemIngredient.SERIALIZER);
+      CraftingHelper.register(FillableIngredient.ID, FillableIngredient.SERIALIZER);
       CraftingHelper.register(ConfigEnabledCondition.Serializer.INSTANCE);
 
     // creative tabs

@@ -3,6 +3,7 @@ package knightminer.metalborn.data;
 import knightminer.metalborn.Metalborn;
 import knightminer.metalborn.core.Registration;
 import knightminer.metalborn.data.tag.MetalbornTags;
+import knightminer.metalborn.json.ingredient.FillableIngredient;
 import knightminer.metalborn.json.ingredient.IngredientWithMetal.MetalFilter;
 import knightminer.metalborn.json.ingredient.MetalItemIngredient;
 import knightminer.metalborn.json.ingredient.MetalShapeIngredient;
@@ -84,22 +85,20 @@ public class RecipeProvider extends net.minecraft.data.recipes.RecipeProvider im
     }
     packingRecipe(consumer, RecipeCategory.MISC, "raw_block", Registration.RAW_TIN_BLOCK, "raw", Registration.RAW_TIN, MetalbornTags.Items.RAW_TIN, metalFolder);
 
-    // lerasium alloy nuggets
-    /* TODO: decide what I want to do with lerasium
-    ShapelessForgeRecipeBuilder.shapeless(Registration.LERASIUM_ALLOY_NUGGET, 2)
-      .requires(Registration.LERASIUM_NUGGET)
-      .requires(MetalIngredient.nugget(MetalFilter.METALMIND))
-      .metal()
-      .cookingRate(1)
-      .experience(2f)
-      .save(consumer, location(metalFolder + "lerasium_alloy"));
-    ShapelessForgeRecipeBuilder.shapeless(Registration.LERASIUM_NICROSIL_NUGGET, 2)
-      .requires(Registration.LERASIUM_NUGGET)
+    // ferring nuggets
+    ShapelessForgeRecipeBuilder.shapeless(Registration.RANDOM_FERRING)
       .requires(Registration.NICROSIL.getNuggetTag())
-      .cookingRate(1)
-      .experience(2f)
-      .save(consumer, location(metalFolder + "lerasium_nicrosil_alloy"));
-     */
+      .requires(FillableIngredient.filled(MetalItemIngredient.of(Registration.SPIKE, MetalFilter.SPIKE)))
+      .cookingRate(2)
+      .experience(3f)
+      .save(consumer, location(metalFolder + "random_ferring"));
+    ShapelessForgeRecipeBuilder.shapeless(Registration.CHANGE_FERRING)
+      .requires(MetalbornTags.Items.NETHERITE_NUGGETS)
+      .requires(FillableIngredient.filled(MetalItemIngredient.of(Registration.SPIKE, MetalFilter.SPIKE)))
+      .metal()
+      .cookingRate(2)
+      .experience(3f)
+      .save(consumer, location(metalFolder + "change_ferring"));
 
     // forge
     ShapedRecipeBuilder.shaped(RecipeCategory.DECORATIONS, Registration.FORGE)
@@ -251,15 +250,9 @@ public class RecipeProvider extends net.minecraft.data.recipes.RecipeProvider im
     TinkersMockRecipeBuilder.meltingCasting(consumer, Registration.INVESTITURE_RING,   Registration.RING_CAST,   nicrosil, nugget * 4, nicrosilTemperature, tinkersFolder + "ring/investiture/");
     TinkersMockRecipeBuilder.meltingCasting(consumer, Registration.INVESTITURE_BRACER, Registration.BRACER_CAST, nicrosil, ingot * 4,  nicrosilTemperature, tinkersFolder + "bracer/investiture/");
 
-    // lerasium alloy nugget casting - don't think molten lerasium is the best idea so just do it via composite
-    /* TODO: decide what I want to do with lerasium
-    MetalCastingRecipeBuilder.table(Registration.LERASIUM_ALLOY_NUGGET)
-      .setCast(Ingredient.of(Registration.LERASIUM_NUGGET), true)
-      .setFilter(MetalFilter.METALMIND)
-      .setAmount(nugget)
-      .save(consumer, wrap(Registration.LERASIUM_ALLOY_NUGGET, tinkersFolder, "_casting"));
-    TinkersMockRecipeBuilder.casting(consumer, Registration.LERASIUM_NICROSIL_NUGGET, Ingredient.of(Registration.LERASIUM_NUGGET), nicrosil, nugget, nicrosilTemperature, tinkersFolder + "lerasium_nicrosil_nugget_casting");
-    */
+    // nuggets to change ferring type
+    // TODO: change ferring nugget
+    TinkersMockRecipeBuilder.casting(consumer, Registration.RANDOM_FERRING, FillableIngredient.filled(MetalItemIngredient.of(Registration.SPIKE, MetalFilter.SPIKE)), nicrosil, nugget, nicrosilTemperature, tinkersFolder + "random_ferring_casting");
   }
 
 

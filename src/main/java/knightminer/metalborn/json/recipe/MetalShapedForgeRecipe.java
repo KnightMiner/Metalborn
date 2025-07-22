@@ -2,6 +2,7 @@ package knightminer.metalborn.json.recipe;
 
 import knightminer.metalborn.core.Registration;
 import knightminer.metalborn.item.MetalItem;
+import knightminer.metalborn.json.ingredient.FillableIngredient;
 import knightminer.metalborn.json.ingredient.IngredientWithMetal;
 import knightminer.metalborn.json.ingredient.IngredientWithMetal.MetalFilter;
 import knightminer.metalborn.metal.MetalId;
@@ -33,10 +34,18 @@ public class MetalShapedForgeRecipe extends ShapedForgeRecipe {
     super(id, width, height, grid, result, experience, cookingTime);
   }
 
+  /** Fetches the ingredient outside the fillable ingredient */
+  private static Ingredient unwrap(Ingredient ingredient) {
+    if (ingredient instanceof FillableIngredient fillable) {
+      return fillable.getInner();
+    }
+    return ingredient;
+  }
+
   /** Finds the first metal ingredient in the input list */
   static Predicate<MetalPower> getMetalFilter(List<Ingredient> ingredients) {
     Set<MetalFilter> filters = ingredients.stream().flatMap(ingredient -> {
-      if (ingredient instanceof IngredientWithMetal metal) {
+      if (unwrap(ingredient) instanceof IngredientWithMetal metal) {
         return Stream.of(metal.getFilter());
       }
       return Stream.empty();
@@ -129,7 +138,7 @@ public class MetalShapedForgeRecipe extends ShapedForgeRecipe {
     // search for metal ingredients
     for (int i = 0; i < ingredients.size(); i++) {
       Ingredient ingredient = ingredients.get(i);
-      if (ingredient instanceof IngredientWithMetal) {
+      if (unwrap(ingredient) instanceof IngredientWithMetal) {
         // if we have not yet found an ingredient, use this one for our input stacks
         if (inputExample == null) {
           indices.add(i);
