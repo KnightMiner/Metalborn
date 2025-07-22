@@ -11,6 +11,7 @@
       "nbt": { "amount": 3000 }
     }
   ],
+  "spikes": "metalborn:investiture_spike",
   "storing": [
     "Temporarily removes ferring power",
     "Metalmind filled with matching power",

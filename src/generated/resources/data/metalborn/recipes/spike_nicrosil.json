@@ -1,0 +1,15 @@
+{
+  "type": "metalborn:shaped_forge",
+  "cooking_time": 400,
+  "experience": 1.0,
+  "key": {
+    "#": {
+      "tag": "forge:ingots/nicrosil"
+    }
+  },
+  "pattern": [
+    " #",
+    "# "
+  ],
+  "result": "metalborn:investiture_spike"
+}

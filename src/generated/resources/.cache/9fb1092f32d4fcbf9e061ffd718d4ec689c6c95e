@@ -1,4 +1,4 @@
-// 1.20.1	2025-07-21T21:39:28.2001805	Recipes
+// 1.20.1	2025-07-21T22:37:07.7783698	Recipes
 8720e146ed87c91433b7b556aee5d6a5390111ee data/metalborn/advancements/recipes/decorations/forge.json
 c4a47c50fae1f0fb9b1d0ad265dd630473918dd7 data/metalborn/advancements/recipes/misc/metallic_arts.json
 6bb6018bc3fcaf2326b259cddc674cf97cd5f90a data/metalborn/advancements/recipes/misc/metal/bronze_block_from_ingots.json
@@ -87,6 +87,7 @@ bf547ca76f177c959591936996c722780d3eadd3 data/metalborn/recipes/metal/tin_ingot_
 700884da4fbaef427f76bda0e8e132acbbea9af8 data/metalborn/recipes/ring.json
 4210bf2e46c4dd869455be70de706d24d63686eb data/metalborn/recipes/ring_nicrosil.json
 583a4a9e50fab8f9160d65adcab8df189656a814 data/metalborn/recipes/spike.json
+f80dc14fc2ce469ef3f97f6c59fbdc712ccc55cb data/metalborn/recipes/spike_nicrosil.json
 2c23616591df675ad143c939d5dbc9ef50e995db data/metalborn/recipes/tinkers/bracer/casting_gold_cast.json
 cfdad03d190238cdbbf7cd0ba5db47833489d08e data/metalborn/recipes/tinkers/bracer/casting_sand_cast.json
 829d223c6a9ae520f1d23390f84b9fbd436eaf1b data/metalborn/recipes/tinkers/bracer/cast/gold_casting.json
@@ -126,5 +127,8 @@ b3801ed82b447438e20a8bbbfbcc6a82cb5472a4 data/metalborn/recipes/tinkers/spike/ca
 106733a8a49d79524ca39da48902caec930fdb23 data/metalborn/recipes/tinkers/spike/cast/sand_builder.json
 bff744a62625340374653c44ed97cbecdd9ec645 data/metalborn/recipes/tinkers/spike/cast/sand_builder_block.json
 49e1bd654d6857e69de45107feb91d2bff7c349f data/metalborn/recipes/tinkers/spike/cast/sand_molding.json
+c17d2aedac8a80ece0d4a17616cefd59753fde50 data/metalborn/recipes/tinkers/spike/investiture/casting_gold_cast.json
+0c271a4b70555e196819ce6f24f3c571e9810cd3 data/metalborn/recipes/tinkers/spike/investiture/casting_sand_cast.json
+f6bd18583c8767643124edf5a95f90e84d809998 data/metalborn/recipes/tinkers/spike/investiture/melting.json
 d14c09571724e65925450673d4b4e699b720cc96 data/metalborn/recipes/tinkers/spike/melting.json
 7608ca21e6713c2e7030a28520eb5c76f1cbb79d data/metalborn/recipes/tinkers/spike/part_builder.json

@@ -1,0 +1,18 @@
+{
+  "type": "tconstruct:melting",
+  "conditions": [
+    {
+      "type": "forge:mod_loaded",
+      "modid": "tconstruct"
+    }
+  ],
+  "ingredient": {
+    "item": "metalborn:investiture_spike"
+  },
+  "result": {
+    "amount": 180,
+    "tag": "forge:molten_nicrosil"
+  },
+  "temperature": 1100,
+  "time": 98
+}

@@ -54,6 +54,12 @@ public class JEIPlugin implements IModPlugin {
       }
       return type;
     });
+    registration.registerSubtypeInterpreter(Registration.INVESTITURE_SPIKE.asItem(), (stack, context) -> {
+      if (((SpikeItem)stack.getItem()).isFull(stack)) {
+        return MetalItem.getMetal(stack).toString();
+      }
+      return IIngredientSubtypeInterpreter.NONE;
+    });
   }
 
   @Override

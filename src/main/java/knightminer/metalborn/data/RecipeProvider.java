@@ -144,6 +144,12 @@ public class RecipeProvider extends net.minecraft.data.recipes.RecipeProvider im
       .cookingRate(4) // you get 4 spikes per fuel usage, but you really want hoppers since they are unstackable
       .experience(1f)
       .save(consumer, location("spike"));
+    ShapedForgeRecipeBuilder.shaped(Registration.INVESTITURE_SPIKE)
+      .pattern(" #").pattern("# ")
+      .define('#', Registration.NICROSIL.getIngotTag())
+      .cookingRate(4) // you get 4 spikes per fuel usage, but you really want hoppers since they are unstackable
+      .experience(1f)
+      .save(consumer, location("spike_nicrosil"));
 
     // alloys
     String alloyFolder = "alloy/";
@@ -249,6 +255,7 @@ public class RecipeProvider extends net.minecraft.data.recipes.RecipeProvider im
     int nicrosilTemperature = 1100;
     TinkersMockRecipeBuilder.meltingCasting(consumer, Registration.INVESTITURE_RING,   Registration.RING_CAST,   nicrosil, nugget * 4, nicrosilTemperature, tinkersFolder + "ring/investiture/");
     TinkersMockRecipeBuilder.meltingCasting(consumer, Registration.INVESTITURE_BRACER, Registration.BRACER_CAST, nicrosil, ingot * 4,  nicrosilTemperature, tinkersFolder + "bracer/investiture/");
+    TinkersMockRecipeBuilder.meltingCasting(consumer, Registration.INVESTITURE_SPIKE,  Registration.SPIKE_CAST,  nicrosil, ingot * 2,  nicrosilTemperature, tinkersFolder + "spike/investiture/");
 
     // nuggets to change ferring type
     TagKey<Fluid> netherite = FluidTags.create(commonResource("molten_netherite"));

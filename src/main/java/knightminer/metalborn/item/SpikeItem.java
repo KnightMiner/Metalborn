@@ -5,7 +5,6 @@ import com.google.common.collect.Multimap;
 import knightminer.metalborn.Metalborn;
 import knightminer.metalborn.core.Config;
 import knightminer.metalborn.core.MetalbornData;
-import knightminer.metalborn.core.Registration;
 import knightminer.metalborn.item.metalmind.MetalmindItem;
 import knightminer.metalborn.metal.MetalId;
 import knightminer.metalborn.metal.MetalManager;
@@ -25,7 +24,6 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
-import net.minecraft.world.item.UseAnim;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.Nullable;
 import slimeknights.mantle.util.CombatHelper;
@@ -39,16 +37,16 @@ import static knightminer.metalborn.item.metalmind.MetalmindItem.TAG_AMOUNT;
 /** Represents a hemalurgic spike, which can be filled with power from monsters */
 public class SpikeItem extends Item implements MetalItem, Spike {
   // translation keys
-  private static final String KEY_CHARGE = Metalborn.key("item", "spike.charge");
-  private static final String KEY_STEALS = Metalborn.key("item", "spike.steals");
+  protected static final String KEY_CHARGE = Metalborn.key("item", "spike.charge");
+  protected static final String KEY_STEALS = Metalborn.key("item", "spike.steals");
   public static final String KEY_TARGET = Metalborn.key("item", "spike.target");
-  private static final Component FULLY_CHARGED = Metalborn.component("item", "spike.charge.full").withStyle(ChatFormatting.GRAY);
+  protected static final Component FULLY_CHARGED = Metalborn.component("item", "spike.charge.full").withStyle(ChatFormatting.GRAY);
   // weapon properties
   private static final float ATTACK_DAMAGE = 2;
   private static final float ATTACK_SPEED = 2;
   // NBT keys
   /** Tag marking a spike as full. Ensures datapack changes don't change a spike's fullness. */
-  private static final String TAG_FULL = "full";
+  protected static final String TAG_FULL = "full";
 
   /** Attribute modifiers for this as a weapon */
   private static final Multimap<Attribute,AttributeModifier> DEFAULT_MODIFIERS;
@@ -131,7 +129,7 @@ public class SpikeItem extends Item implements MetalItem, Spike {
     if (tag.getBoolean(TAG_FULL)) {
       return 0;
     }
-    int maxCharge = MetalManager.INSTANCE.get(getMetal(stack)).hemalurgyCharge();
+    int maxCharge = getMaxCharge(stack);
     int stored = MetalmindItem.getAmount(stack);
     int updated = stored + amount;
     if (updated >= maxCharge) {
@@ -237,7 +235,7 @@ public class SpikeItem extends Item implements MetalItem, Spike {
 
   @Override
   public boolean hurtEnemy(ItemStack stack, LivingEntity target, LivingEntity attacker) {
-    if (stack.getCount() == 1) {
+    if (stack.getCount() == 1 && !isFull(stack)) {
       MetalId metal = getMetal(stack);
       if (metal != MetalId.NONE && metal.equals(MetalManager.INSTANCE.fromTarget(target.getType()).id())) {
         if (target.isDeadOrDying()) {
@@ -269,13 +267,7 @@ public class SpikeItem extends Item implements MetalItem, Spike {
       }
       return InteractionResultHolder.consume(stack);
     }
-    // if the spike is not full, main hand lets you fill it from yourself
-    // though offhand must be empty to perform this technique, for the sake of dual wielding spikes
-    if (stack.getCount() > 1 || !player.getOffhandItem().isEmpty() || getMetal(stack) == MetalId.NONE) {
-      return InteractionResultHolder.pass(stack);
-    }
-    player.startUsingItem(hand);
-    return InteractionResultHolder.consume(stack);
+    return InteractionResultHolder.pass(stack);
   }
 
   @Override
@@ -287,36 +279,5 @@ public class SpikeItem extends Item implements MetalItem, Spike {
       }
     }
     return InteractionResult.PASS;
-  }
-
-  @Override
-  public int getUseDuration(ItemStack pStack) {
-    return 32;
-  }
-
-  @Override
-  public UseAnim getUseAnimation(ItemStack pStack) {
-    return UseAnim.SPEAR;
-  }
-
-  @Override
-  public ItemStack finishUsingItem(ItemStack stack, Level level, LivingEntity entity) {
-    if (!level.isClientSide) {
-      // if the metal matches, fully fill the spike
-      MetalId spike = getMetal(stack);
-      if (spike != MetalId.NONE) {
-        MetalbornData data = MetalbornData.getData(entity);
-        MetalId target = data.getFerringType();
-        if (spike.equals(target)) {
-          data.setFerringType(MetalId.NONE);
-          CompoundTag tag = stack.getOrCreateTag();
-          tag.putBoolean(TAG_FULL, true);
-          tag.remove(TAG_AMOUNT);
-        }
-      }
-      // hurt the target regardless of stabbing success
-      entity.hurt(CombatHelper.damageSource(level, Registration.MAKE_SPIKE), 10);
-    }
-    return stack;
   }
 }

@@ -1,0 +1,20 @@
+{
+  "type": "tconstruct:casting_table",
+  "cast": {
+    "tag": "metalborn:casts/spike_single_use"
+  },
+  "cast_consumed": true,
+  "conditions": [
+    {
+      "type": "forge:mod_loaded",
+      "modid": "tconstruct"
+    }
+  ],
+  "cooling_time": 98,
+  "fluid": {
+    "amount": 180,
+    "tag": "forge:molten_nicrosil"
+  },
+  "result": "metalborn:investiture_spike",
+  "switch_slots": false
+}

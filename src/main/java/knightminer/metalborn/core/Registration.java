@@ -5,6 +5,7 @@ import knightminer.metalborn.Metalborn;
 import knightminer.metalborn.block.ForgeBlock;
 import knightminer.metalborn.block.ForgeBlockEntity;
 import knightminer.metalborn.item.ChangeFerringItem;
+import knightminer.metalborn.item.InvestitureSpikeItem;
 import knightminer.metalborn.item.MetalItem;
 import knightminer.metalborn.item.MetalbornBookItem;
 import knightminer.metalborn.item.RandomFerringItem;
@@ -177,6 +178,7 @@ public class Registration {
   public static final ItemObject<InvestitureMetalmindItem> INVESTITURE_RING = ITEMS.register("investiture_ring", () -> new InvestitureMetalmindItem(new Item.Properties().stacksTo(8), 1));
   // spikes
   public static final ItemObject<SpikeItem> SPIKE = ITEMS.register("spike", () -> new SpikeItem(new Item.Properties().stacksTo(1)));
+  public static final ItemObject<InvestitureSpikeItem> INVESTITURE_SPIKE = ITEMS.register("investiture_spike", () -> new InvestitureSpikeItem(new Item.Properties().stacksTo(1)));
 
   // metal forge
   public static final ItemObject<ForgeBlock> FORGE = BLOCKS.register("forge", () -> new ForgeBlock(BlockBehaviour.Properties.of().mapColor(MapColor.STONE).instrument(NoteBlockInstrument.BASEDRUM).requiresCorrectToolForDrops().strength(3.5F).lightLevel(s -> s.getValue(BlockStateProperties.LIT) ? 13 : 0)), BLOCK_ITEM);
@@ -348,6 +350,7 @@ public class Registration {
     accept(consumer, BRACER);
     output.accept(INVESTITURE_BRACER);
     accept(consumer, SPIKE);
+    accept(consumer, INVESTITURE_SPIKE);
     // unsealed metalminds
     accept(consumer, UNSEALED_RING);
     // ferring nuggets

@@ -61,13 +61,17 @@ public class ItemModelProvider extends net.minecraftforge.client.model.generator
     metal(Registration.BRACER, "metal/item/bracer", true);
     metal(Registration.RING, "metal/item/ring", false);
     metal(Registration.UNSEALED_RING, "metal/item/ring", false).end().texture("layer1", "item/unsealed_ring_gem");
-    // investiture metalminds just use netherite directly
+    // investiture items just use nicrosil directly
     metalItem(Registration.INVESTITURE_BRACER, "bracer", MetalIds.nicrosil);
     metalItem(Registration.INVESTITURE_RING, "ring", MetalIds.nicrosil);
     // spikes we want to rotate the in hand model 180 degrees so it points out
     metal(Registration.SPIKE, "metal/item/spike", true).end().transforms()
       .transform(ItemDisplayContext.FIRST_PERSON_LEFT_HAND).rotation(0, -90, -25).translation(1.13f, 3.2f, 1.13f).scale(0.68f, 0.68f, 0.68f).end()
       .transform(ItemDisplayContext.FIRST_PERSON_RIGHT_HAND).rotation(0, 90, 25).translation(1.13f, 3.2f, 1.13f).scale(0.68f, 0.68f, 0.68f).end();
+    existingFileHelper.trackGenerated(Metalborn.resource("metal/item/spike_metalborn_nicrosil"), ModelProvider.TEXTURE);
+    // can't use metal item as we want the handheld transforms
+    withExistingParent(Registration.INVESTITURE_SPIKE.getId().getPath(), "item/handheld")
+      .texture("layer0", "metal/item/spike_metalborn_nicrosil");
 
     // tinkers' compat
     cast(Registration.RING_CAST);

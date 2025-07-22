@@ -52,7 +52,7 @@
   "metal_power.metalborn.investiture": "Nicrosil",
   "metal_power.metalborn.investiture.stores": "Investiture",
   "metal_power.metalborn.investiture.ferring": "Soulbearer",
-  "metal_power.metalborn.investiture.target": "None",
+  "metal_power.metalborn.investiture.target": "Players",
 
 
   "metal_power.metalborn.silver": "Silver",
@@ -161,6 +161,7 @@
   "item.metalborn.spike.target": "Target: %s",
   "item.metalborn.spike.charge": "Charge: %s / %s",
   "item.metalborn.spike.charge.full": "Fully Charged",
+  "item.metalborn.investiture_spike": "Nicrosil Spike",
 
   "item.metalborn.ferring.matches": "You feel this metal pulling on you slightly.",
   "item.metalborn.ferring.mismatches": "You do not feel anything from this metal.",
