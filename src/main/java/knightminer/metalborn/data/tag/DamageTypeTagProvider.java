@@ -33,6 +33,7 @@ public class DamageTypeTagProvider extends DamageTypeTagsProvider {
 
   @Override
   protected void addTags(Provider provider) {
+    tag(DamageTypeTags.BYPASSES_ARMOR).add(METAL_HURT, ADD_SPIKE, MAKE_SPIKE);
     tag(DamageTypeTags.BYPASSES_COOLDOWN).add(METAL_HURT, ADD_SPIKE, MAKE_SPIKE);
     tag(DamageTypeTags.BYPASSES_EFFECTS).add(METAL_HURT, ADD_SPIKE, MAKE_SPIKE);
     tag(DamageTypeTags.IS_FIRE).add(MELEE_HEAT);
