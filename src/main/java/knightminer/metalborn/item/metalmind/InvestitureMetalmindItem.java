@@ -170,4 +170,20 @@ public class InvestitureMetalmindItem extends MetalmindItem implements MetalItem
     int amount = getAmount(stack);
     appendAmount(METAL, amount, tooltip);
   }
+
+
+  /* Color */
+
+  @Override
+  public int getBarColor(ItemStack stack) {
+    return getColor(getMetal(stack));
+  }
+
+  /** Gets the color for the given metal ID */
+  public static int getColor(MetalId metal) {
+    if (FMLEnvironment.dist == Dist.CLIENT && metal != MetalId.NONE) {
+      return MetalColorManager.INSTANCE.getColor(metal);
+    }
+    return -1;
+  }
 }

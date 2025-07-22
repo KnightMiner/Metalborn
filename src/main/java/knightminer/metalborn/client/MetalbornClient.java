@@ -45,6 +45,7 @@ public class MetalbornClient {
   @SubscribeEvent
   static void registerReloadListeners(RegisterClientReloadListenersEvent event) {
     event.registerReloadListener(PaletteListManager.INSTANCE);
+    event.registerReloadListener(MetalColorManager.INSTANCE);
   }
 
   @SubscribeEvent
