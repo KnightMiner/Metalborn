@@ -208,6 +208,10 @@ public class Registration {
   public static final RegistryObject<RecipeSerializer<?>> METAL_CASTING_TABLE = RegistryObject.create(resource("metal_casting_table"), ForgeRegistries.RECIPE_SERIALIZERS);
   /** Serializer ID for the metal melting recipe, added via the Tinkers' Construct plugin */
   public static final RegistryObject<RecipeSerializer<?>> METAL_MELTING = RegistryObject.create(resource("metal_melting"), ForgeRegistries.RECIPE_SERIALIZERS);
+  /** Serializer ID for the copy metal basin casting recipe, added via the Tinkers' Construct plugin */
+  public static final RegistryObject<RecipeSerializer<?>> COPY_METAL_BASIN = RegistryObject.create(resource("copy_metal_basin"), ForgeRegistries.RECIPE_SERIALIZERS);
+  /** Serializer ID for the copy metal table casting recipe, added via the Tinkers' Construct plugin */
+  public static final RegistryObject<RecipeSerializer<?>> COPY_METAL_TABLE = RegistryObject.create(resource("copy_metal_table"), ForgeRegistries.RECIPE_SERIALIZERS);
 
   // attributes
   /** Multiplier on the distance you can safely fall without damage */

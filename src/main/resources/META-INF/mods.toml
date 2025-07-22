@@ -31,3 +31,9 @@ Metalborn adds in Feruchemy, which allows storing attributes in metal, making yo
     versionRange="${mantle_range}"
     ordering="NONE"
     side="BOTH"
+[[dependencies.metalborn]]
+    modId="tconstruct"
+    mandatory=false
+    versionRange="${tinkers_range}"
+    ordering="NONE"
+    side="BOTH"

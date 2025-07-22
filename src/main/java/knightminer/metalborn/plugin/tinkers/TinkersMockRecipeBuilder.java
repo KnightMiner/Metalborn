@@ -2,6 +2,7 @@ package knightminer.metalborn.plugin.tinkers;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
+import knightminer.metalborn.core.Registration;
 import knightminer.metalborn.data.MetalIds;
 import knightminer.metalborn.data.tag.MetalbornTags;
 import knightminer.metalborn.item.MetalItem;
@@ -74,13 +75,13 @@ public class TinkersMockRecipeBuilder {
     consumer.accept(new MoldingRecipe(casts.withSuffix("red_sand_molding"), RED_SAND_CASTS, itemIngredient, redSandCast));
 
     // make gold casts from casting
-    consumer.accept(new CastingTableRecipe(casts.withSuffix("gold_casting"), itemIngredient, true, true, GOLD_INGOT, GOLD_INGOT_TIME, ItemOutput.fromItem(cast.get())));
+    consumer.accept(new CastingTableRecipe(casts.withSuffix("gold_casting"), itemIngredient, true, true, GOLD_INGOT, GOLD_INGOT_TIME, ItemOutput.fromItem(cast.get()), false));
   }
 
   /** Creates recipe to cast the given item */
-  public static <T extends ItemLike & IdAwareObject> void casting(Consumer<FinishedRecipe> consumer, T item, Ingredient cast, TagKey<Fluid> fluid, int amount, int temperature, String path) {
+  public static <T extends ItemLike & IdAwareObject> void casting(Consumer<FinishedRecipe> consumer, T item, boolean copyMetal, Ingredient cast, TagKey<Fluid> fluid, int amount, int temperature, String path) {
     int time = calcTimeForAmount(temperature, amount);
-    consumer.accept(new CastingTableRecipe(item.getId().withPath(path), cast, true, false, FluidIngredient.of(fluid, amount), time, ItemOutput.fromItem(item)));
+    consumer.accept(new CastingTableRecipe(item.getId().withPath(path), cast, true, false, FluidIngredient.of(fluid, amount), time, ItemOutput.fromItem(item), copyMetal));
   }
 
   /** Creates recipes for melting and casting the given item */
@@ -88,8 +89,8 @@ public class TinkersMockRecipeBuilder {
     ResourceLocation root = item.getId().withPath(prefix);
     consumer.accept(new MeltingRecipe(root.withSuffix("melting"), Ingredient.of(item), FluidOutput.fromTag(fluid, amount), temperature));
     int time = calcTimeForAmount(temperature, amount);
-    consumer.accept(new CastingTableRecipe(root.withSuffix("casting_gold_cast"), Ingredient.of(cast.getMultiUseTag()),  false, false, FluidIngredient.of(fluid, amount), time, ItemOutput.fromItem(item)));
-    consumer.accept(new CastingTableRecipe(root.withSuffix("casting_sand_cast"), Ingredient.of(cast.getSingleUseTag()), true,  false, FluidIngredient.of(fluid, amount), time, ItemOutput.fromItem(item)));
+    consumer.accept(new CastingTableRecipe(root.withSuffix("casting_gold_cast"), Ingredient.of(cast.getMultiUseTag()),  false, false, FluidIngredient.of(fluid, amount), time, ItemOutput.fromItem(item), false));
+    consumer.accept(new CastingTableRecipe(root.withSuffix("casting_sand_cast"), Ingredient.of(cast.getSingleUseTag()), true,  false, FluidIngredient.of(fluid, amount), time, ItemOutput.fromItem(item), false));
   }
 
   /** Common logic for a mock recipe */
@@ -102,10 +103,15 @@ public class TinkersMockRecipeBuilder {
     /** Gets the recipe type ID */
     String getTypeId();
 
+    /** Gets the recipe type location */
+    default String getTypeLocation() {
+      return TINKERS + ':' + getTypeId();
+    }
+
     @Override
     default JsonObject serializeRecipe() {
       JsonObject json = new JsonObject();
-      json.addProperty("type", TINKERS + ':' + getTypeId());
+      json.addProperty("type", getTypeLocation());
       json.add("conditions", MOD_LOADED_CONDITION);
       this.serializeRecipeData(json);
       return json;
@@ -195,10 +201,18 @@ public class TinkersMockRecipeBuilder {
   }
 
   /** Creates a casting table recipe with the given properties */
-  private record CastingTableRecipe(ResourceLocation getId, Ingredient cast, boolean castConsumed, boolean switchSlots, FluidIngredient fluid, int time, ItemOutput result) implements MockRecipe {
+  private record CastingTableRecipe(ResourceLocation getId, Ingredient cast, boolean castConsumed, boolean switchSlots, FluidIngredient fluid, int time, ItemOutput result, boolean copyMetal) implements MockRecipe {
     @Override
     public String getTypeId() {
       return "casting_table";
+    }
+
+    @Override
+    public String getTypeLocation() {
+      if (copyMetal) {
+        return Registration.COPY_METAL_TABLE.getId().toString();
+      }
+      return MockRecipe.super.getTypeLocation();
     }
 
     @Override

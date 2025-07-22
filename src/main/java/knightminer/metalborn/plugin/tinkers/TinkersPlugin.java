@@ -28,6 +28,8 @@ public class TinkersPlugin {
       ForgeRegistries.RECIPE_SERIALIZERS.register(Registration.METAL_CASTING_BASIN.getId(), LoadableRecipeSerializer.of(MetalCastingRecipe.LOADER, TinkerRecipeTypes.CASTING_BASIN));
       ForgeRegistries.RECIPE_SERIALIZERS.register(Registration.METAL_CASTING_TABLE.getId(), LoadableRecipeSerializer.of(MetalCastingRecipe.LOADER, TinkerRecipeTypes.CASTING_TABLE));
       ForgeRegistries.RECIPE_SERIALIZERS.register(Registration.METAL_MELTING.getId(), LoadableRecipeSerializer.of(MetalMeltingRecipe.LOADER));
+      ForgeRegistries.RECIPE_SERIALIZERS.register(Registration.COPY_METAL_BASIN.getId(), LoadableRecipeSerializer.of(CopyMetalCastingRecipe.LOADER, TinkerRecipeTypes.CASTING_BASIN));
+      ForgeRegistries.RECIPE_SERIALIZERS.register(Registration.COPY_METAL_TABLE.getId(), LoadableRecipeSerializer.of(CopyMetalCastingRecipe.LOADER, TinkerRecipeTypes.CASTING_TABLE));
     }
   }
 }

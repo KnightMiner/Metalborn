@@ -138,7 +138,8 @@ tasks.named('processResources', ProcessResources).configure {
       'loader_range': loader_range,
       'minecraft_range': minecraft_range,
       'forge_range': forge_range,
-      'mantle_range': mantle_range
+      'mantle_range': mantle_range,
+      'tinkers_range': tinkers_range
     ]
     inputs.properties replaceProperties
 
