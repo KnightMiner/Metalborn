@@ -121,6 +121,12 @@ public class SpikeItem extends Item implements MetalItem, Spike {
   }
 
   @Override
+  public boolean isEmpty(ItemStack stack) {
+    CompoundTag tag = stack.getTag();
+    return tag != null && !tag.getBoolean(TAG_FULL) && tag.getInt(TAG_AMOUNT) == 0;
+  }
+
+  @Override
   public int fill(ItemStack stack, int amount) {
     if (amount <= 0) {
       return 0;

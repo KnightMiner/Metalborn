@@ -7,6 +7,9 @@ public interface Fillable {
   /** Checks if the item is currently full */
   boolean isFull(ItemStack stack);
 
+  /** Checks if the item is currently empty */
+  boolean isEmpty(ItemStack stack);
+
   /** Fills the item stack */
   void setFull(ItemStack stack);
 }

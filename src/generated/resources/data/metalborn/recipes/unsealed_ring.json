@@ -1,0 +1,29 @@
+{
+  "type": "metalborn:metal_shapeless_forge",
+  "cooking_time": 400,
+  "experience": 0.5,
+  "ingredients": [
+    {
+      "tag": "forge:nuggets/netherite"
+    },
+    {
+      "type": "metalborn:fillable",
+      "match": {
+        "type": "metalborn:metal_item",
+        "filter": "metalmind",
+        "item": "metalborn:ring"
+      },
+      "when": "empty"
+    },
+    {
+      "type": "metalborn:fillable",
+      "match": {
+        "type": "metalborn:metal_item",
+        "filter": "metalmind",
+        "item": "metalborn:investiture_ring"
+      },
+      "when": "filled"
+    }
+  ],
+  "result": "metalborn:unsealed_ring"
+}

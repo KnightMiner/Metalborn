@@ -40,6 +40,11 @@ public class FillableIngredient extends AbstractIngredient {
     return new FillableIngredient(inner, FillState.NOT_FILLED);
   }
 
+  /** Creates an ingredient matching stacks with no power */
+  public static FillableIngredient empty(Ingredient inner) {
+    return new FillableIngredient(inner, FillState.EMPTY);
+  }
+
   /** Gets the ingredient nested inside */
   public Ingredient getInner() {
     return inner;
@@ -116,6 +121,12 @@ public class FillableIngredient extends AbstractIngredient {
       @Override
       public boolean test(Fillable fillable, ItemStack stack) {
         return !fillable.isFull(stack);
+      }
+    },
+    EMPTY {
+      @Override
+      public boolean test(Fillable fillable, ItemStack stack) {
+        return fillable.isEmpty(stack);
       }
     };
 

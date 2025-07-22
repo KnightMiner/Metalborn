@@ -346,9 +346,9 @@ public class Registration {
     output.accept(RAW_TIN_BLOCK);
     // metalminds
     accept(consumer, RING);
-    output.accept(INVESTITURE_RING);
+    accept(consumer, INVESTITURE_RING);
     accept(consumer, BRACER);
-    output.accept(INVESTITURE_BRACER);
+    accept(consumer, INVESTITURE_BRACER);
     accept(consumer, SPIKE);
     accept(consumer, INVESTITURE_SPIKE);
     // unsealed metalminds

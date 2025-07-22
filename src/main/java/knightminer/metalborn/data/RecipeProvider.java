@@ -123,7 +123,6 @@ public class RecipeProvider extends net.minecraft.data.recipes.RecipeProvider im
       .cookingRate(1)
       .experience(0.5f)
       .save(consumer, location("ring_nicrosil"));
-    // TODO: unsealed ring crafting
     ShapedForgeRecipeBuilder.shaped(Registration.BRACER)
       .pattern("##").pattern("##")
       .define('#', MetalShapeIngredient.ingot(MetalFilter.METALMIND))
@@ -150,6 +149,16 @@ public class RecipeProvider extends net.minecraft.data.recipes.RecipeProvider im
       .cookingRate(4) // you get 4 spikes per fuel usage, but you really want hoppers since they are unstackable
       .experience(1f)
       .save(consumer, location("spike_nicrosil"));
+
+    // unsealed is crafted from a full nicrosil metalmind and a matching empty metalmind
+    ShapelessForgeRecipeBuilder.shapeless(Registration.UNSEALED_RING)
+      .requires(MetalbornTags.Items.NETHERITE_NUGGETS)
+      .requires(FillableIngredient.empty(MetalItemIngredient.of(Registration.RING, MetalFilter.METALMIND)))
+      .requires(FillableIngredient.filled(MetalItemIngredient.of(Registration.INVESTITURE_RING, MetalFilter.METALMIND)))
+      .metal()
+      .cookingRate(4)
+      .experience(0.5f)
+      .save(consumer, location("unsealed_ring"));
 
     // alloys
     String alloyFolder = "alloy/";

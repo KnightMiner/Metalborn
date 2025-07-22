@@ -3,6 +3,7 @@ package knightminer.metalborn.plugin.jei;
 import knightminer.metalborn.Metalborn;
 import knightminer.metalborn.block.ForgeInventory;
 import knightminer.metalborn.core.Registration;
+import knightminer.metalborn.item.Fillable;
 import knightminer.metalborn.item.MetalItem;
 import knightminer.metalborn.item.SpikeItem;
 import knightminer.metalborn.json.recipe.ForgeRecipe;
@@ -54,12 +55,17 @@ public class JEIPlugin implements IModPlugin {
       }
       return type;
     });
-    registration.registerSubtypeInterpreter(Registration.INVESTITURE_SPIKE.asItem(), (stack, context) -> {
-      if (((SpikeItem)stack.getItem()).isFull(stack)) {
+
+    // only set variant on investiture items if full
+    IIngredientSubtypeInterpreter<ItemStack> investiture = (stack, context) -> {
+      if (((Fillable)stack.getItem()).isFull(stack)) {
         return MetalItem.getMetal(stack).toString();
       }
       return IIngredientSubtypeInterpreter.NONE;
-    });
+    };
+    registration.registerSubtypeInterpreter(Registration.INVESTITURE_RING.asItem(), investiture);
+    registration.registerSubtypeInterpreter(Registration.INVESTITURE_BRACER.asItem(), investiture);
+    registration.registerSubtypeInterpreter(Registration.INVESTITURE_SPIKE.asItem(), investiture);
   }
 
   @Override

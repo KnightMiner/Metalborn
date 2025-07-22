@@ -51,6 +51,7 @@ public interface Metalmind extends Fillable {
   }
 
   /** Checks if the metalmind is currently empty (and thus cannot tap) */
+  @Override
   default boolean isEmpty(ItemStack stack) {
     return true;
   }

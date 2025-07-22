@@ -1,4 +1,4 @@
-// 1.20.1	2025-07-21T22:37:07.7783698	Recipes
+// 1.20.1	2025-07-22T00:17:03.9858212	Recipes
 8720e146ed87c91433b7b556aee5d6a5390111ee data/metalborn/advancements/recipes/decorations/forge.json
 c4a47c50fae1f0fb9b1d0ad265dd630473918dd7 data/metalborn/advancements/recipes/misc/metallic_arts.json
 6bb6018bc3fcaf2326b259cddc674cf97cd5f90a data/metalborn/advancements/recipes/misc/metal/bronze_block_from_ingots.json
@@ -132,3 +132,4 @@ c17d2aedac8a80ece0d4a17616cefd59753fde50 data/metalborn/recipes/tinkers/spike/in
 f6bd18583c8767643124edf5a95f90e84d809998 data/metalborn/recipes/tinkers/spike/investiture/melting.json
 d14c09571724e65925450673d4b4e699b720cc96 data/metalborn/recipes/tinkers/spike/melting.json
 7608ca21e6713c2e7030a28520eb5c76f1cbb79d data/metalborn/recipes/tinkers/spike/part_builder.json
+b16083ea078b144edd39731f0352871c744d3e64 data/metalborn/recipes/unsealed_ring.json

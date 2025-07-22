@@ -32,6 +32,11 @@ public interface Spike extends Fillable {
   }
 
   @Override
+  default boolean isEmpty(ItemStack stack) {
+    return false;
+  }
+
+  @Override
   default void setFull(ItemStack stack) {
     setCharge(stack, getMaxCharge(stack));
   }
