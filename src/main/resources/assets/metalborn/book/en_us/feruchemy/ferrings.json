@@ -2,7 +2,7 @@
   "type": "mantle:showcase",
   "title": "Ferrings",
   "item": {
-    "type": "metalborn:metal",
+    "type": "metalborn:metal_shape",
     "shape": "nugget",
     "filter": "natural_ferring"
   },
