@@ -1,0 +1,50 @@
+{
+  "type": "forge:conditional",
+  "recipes": [
+    {
+      "conditions": [
+        {
+          "type": "mantle:tag_filled",
+          "tag": "forge:ingots/aluminum"
+        }
+      ],
+      "recipe": {
+        "type": "metalborn:shaped_forge",
+        "cooking_time": 400,
+        "experience": 2.0,
+        "key": {
+          "#": {
+            "tag": "forge:ingots/aluminum"
+          }
+        },
+        "pattern": [
+          "##",
+          "##"
+        ],
+        "result": "metalborn:identity_bracer"
+      }
+    },
+    {
+      "conditions": [
+        {
+          "type": "forge:true"
+        }
+      ],
+      "recipe": {
+        "type": "metalborn:shaped_forge",
+        "cooking_time": 400,
+        "experience": 2.0,
+        "key": {
+          "#": {
+            "tag": "forge:gems/quartz"
+          }
+        },
+        "pattern": [
+          "##",
+          "##"
+        ],
+        "result": "metalborn:identity_bracer"
+      }
+    }
+  ]
+}

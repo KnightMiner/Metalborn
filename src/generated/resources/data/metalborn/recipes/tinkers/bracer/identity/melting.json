@@ -1,0 +1,50 @@
+{
+  "type": "forge:conditional",
+  "conditions": [
+    {
+      "type": "forge:mod_loaded",
+      "modid": "tconstruct"
+    }
+  ],
+  "recipes": [
+    {
+      "conditions": [
+        {
+          "type": "mantle:tag_filled",
+          "tag": "forge:ingots/aluminum"
+        }
+      ],
+      "recipe": {
+        "type": "tconstruct:melting",
+        "ingredient": {
+          "item": "metalborn:identity_bracer"
+        },
+        "result": {
+          "amount": 360,
+          "tag": "forge:molten_aluminum"
+        },
+        "temperature": 425,
+        "time": 94
+      }
+    },
+    {
+      "conditions": [
+        {
+          "type": "forge:true"
+        }
+      ],
+      "recipe": {
+        "type": "tconstruct:melting",
+        "ingredient": {
+          "item": "metalborn:identity_bracer"
+        },
+        "result": {
+          "amount": 50,
+          "tag": "tconstruct:molten_quartz"
+        },
+        "temperature": 637,
+        "time": 41
+      }
+    }
+  ]
+}

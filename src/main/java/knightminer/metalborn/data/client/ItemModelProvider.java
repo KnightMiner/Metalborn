@@ -6,6 +6,7 @@ import knightminer.metalborn.client.model.PalettedModelBuilder;
 import knightminer.metalborn.core.Registration;
 import knightminer.metalborn.data.MetalIds;
 import knightminer.metalborn.item.MetalItem;
+import knightminer.metalborn.item.metalmind.IdentityMetalmindItem;
 import knightminer.metalborn.metal.MetalId;
 import knightminer.metalborn.metal.MetalShape;
 import knightminer.metalborn.util.CastItemObject;
@@ -64,6 +65,8 @@ public class ItemModelProvider extends net.minecraftforge.client.model.generator
     // investiture items just use nicrosil directly
     metalItem(Registration.INVESTITURE_BRACER, "bracer", MetalIds.nicrosil);
     metalItem(Registration.INVESTITURE_RING, "ring", MetalIds.nicrosil);
+    metalItem(Registration.IDENTITY_BRACER, "bracer", IdentityMetalmindItem.QUARTZ);
+    metalItem(Registration.IDENTITY_RING, "ring", IdentityMetalmindItem.QUARTZ);
     // spikes we want to rotate the in hand model 180 degrees so it points out
     metal(Registration.SPIKE, "metal/item/spike", true).end().transforms()
       .transform(ItemDisplayContext.FIRST_PERSON_LEFT_HAND).rotation(0, -90, -25).translation(1.13f, 3.2f, 1.13f).scale(0.68f, 0.68f, 0.68f).end()

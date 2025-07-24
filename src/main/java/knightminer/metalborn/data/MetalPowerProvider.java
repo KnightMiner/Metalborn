@@ -1,6 +1,7 @@
 package knightminer.metalborn.data;
 
 import knightminer.metalborn.core.Registration;
+import knightminer.metalborn.item.metalmind.IdentityMetalmindItem;
 import knightminer.metalborn.item.metalmind.InvestitureMetalmindItem;
 import knightminer.metalborn.json.ConfigEnabledCondition;
 import knightminer.metalborn.metal.AbstractMetalPowerProvider;
@@ -22,9 +23,11 @@ import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier.Operation;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraftforge.common.ForgeMod;
+import net.minecraftforge.common.crafting.conditions.AndCondition;
 import net.minecraftforge.common.crafting.conditions.OrCondition;
 import org.jetbrains.annotations.ApiStatus.Internal;
 import slimeknights.mantle.Mantle;
+import slimeknights.mantle.recipe.condition.TagEmptyCondition;
 import slimeknights.mantle.recipe.condition.TagFilledCondition;
 
 /** Adds powers from metalborn to the mod */
@@ -66,6 +69,15 @@ public class MetalPowerProvider extends AbstractMetalPowerProvider {
       .capacity(MetalFormat.METAL, 40) // 2 full food bars
       .feruchemy(new EnergyMetalEffect(0.5f, 4f));
 
+    // identity - fallback to quartz if aluminum is not present
+    metal(IdentityMetalmindItem.ALUMINUM).name("aluminum").condition(new OrCondition(
+      new TagFilledCondition<>(ItemTags.create(Mantle.commonResource("ingots/aluminum"))),
+      new TagFilledCondition<>(ItemTags.create(Mantle.commonResource("nuggets/aluminum")))
+    )).index(13).temperature(425).hemalurgyCharge(0);
+    metal(IdentityMetalmindItem.QUARTZ).name("quartz").condition(new AndCondition(
+      new TagEmptyCondition<>(ItemTags.create(Mantle.commonResource("ingots/aluminum"))),
+      new TagEmptyCondition<>(ItemTags.create(Mantle.commonResource("nuggets/aluminum")))
+    )).index(13).temperature(637).hemalurgyCharge(0);
     // special - does not use standard metal effects but wants capacity and alike
     metal(InvestitureMetalmindItem.METAL).name("nicrosil").index(16).temperature(1100).hemalurgyCharge(0);
 

@@ -3,6 +3,7 @@ package knightminer.metalborn.core.inventory;
 import knightminer.metalborn.Metalborn;
 import knightminer.metalborn.core.MetalbornCapability;
 import knightminer.metalborn.core.inventory.MetalmindInventory.MetalmindStack;
+import knightminer.metalborn.item.metalmind.MetalmindItem;
 import knightminer.metalborn.metal.MetalId;
 import knightminer.metalborn.metal.MetalManager;
 import knightminer.metalborn.metal.MetalPower;
@@ -10,6 +11,7 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.packs.resources.ResourceManagerReloadListener;
 import net.minecraft.world.entity.player.Player;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -18,6 +20,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.ListIterator;
 import java.util.Map;
+import java.util.UUID;
 import java.util.function.Function;
 import java.util.function.IntConsumer;
 
@@ -41,6 +44,8 @@ public class ActiveMetalminds {
 
   /** Reference to the parent object */
   private final MetalbornCapability data;
+  /** Reference to the parent player */
+  private final Player player;
 
   /** Map of all active metal powers */
   private final Map<MetalId, ActiveMetalmind> active = new LinkedHashMap<>();
@@ -51,12 +56,25 @@ public class ActiveMetalminds {
   private final List<MetalmindStack> storingFerring = new ArrayList<>();
   /** Last index that received power from our ferring type */
   private int lastFerringIndex = 0;
+
+  /** Reference to the metalminds currently receiving our identity */
+  private final List<MetalmindStack> storingIdentity = new ArrayList<>();
+  /** Last index that received our identity */
+  private int lastIdentityIndex = 0;
+  /** Stack containing the identity we are tapping */
+  private MetalmindStack tappingIdentity = null;
+  /** Current identity we are tapping */
+  private UUID identityUUID = null;
+  /** Name of current identity we are tapping */
+  private String identityName = "";
+
   /** Indices containing unsealed metalminds */
   private final int[] unsealedIndices = new int[MAX_UNSEALED];
 
   public ActiveMetalminds(MetalbornCapability data, Player player) {
     this.data = data;
-    this.constructor = id -> new ActiveMetalmind(player, id);
+    this.player = player;
+    this.constructor = ActiveMetalmind::new;
     Arrays.fill(unsealedIndices, -1);
   }
 
@@ -69,7 +87,7 @@ public class ActiveMetalminds {
   public void onRemoved(MetalId metal) {
     ActiveMetalmind metalmind = active.get(metal);
     if (metalmind != null) {
-      metalmind.validateUsable();
+      metalmind.checkPowerUsable();
     }
   }
 
@@ -113,6 +131,85 @@ public class ActiveMetalminds {
   }
 
 
+  /* Identity */
+
+  /** Validates all metalminds are still usable after identity changes. */
+  private void identityChange() {
+    validateList(storingFerring);
+    for (ActiveMetalmind active : active.values()) {
+      active.checkInvestiture();
+      active.checkPowerUsable();
+    }
+  }
+
+  /** Gets the identity for the entity */
+  @Nullable
+  public UUID getIdentity() {
+    // if tapping an identity metalmind, thats our identity
+    if (identityUUID != null) {
+      return identityUUID;
+    }
+    // if storing our identity, we have none (null). If not storing, use our true identity
+    if (storingIdentity.isEmpty()) {
+      return player.getUUID();
+    }
+    return null;
+  }
+
+  /** Gets the name of our current identity */
+  public String getIdentityName() {
+    if (identityUUID != null) {
+      return identityName;
+    }
+    // if storing our identity, we have none (""). If not storing, use our true identity
+    if (storingIdentity.isEmpty()) {
+      return player.getGameProfile().getName();
+    }
+    return "";
+  }
+
+  /** Checks if we are allowed to store identity at the passed stack */
+  public boolean canTapIdentity(MetalmindStack stack) {
+    return tappingIdentity == null || tappingIdentity == stack;
+  }
+
+  /** Updates the stack that is tapping identity */
+  public void updateTappingIdentity(MetalmindStack stack, @Nullable UUID uuid, String name) {
+    // if that stack is currently tapping, update things
+    if (tappingIdentity == null || tappingIdentity == stack) {
+      if (uuid == null) {
+        tappingIdentity = null;
+        identityUUID = null;
+        identityName = "";
+      } else {
+        tappingIdentity = stack;
+        identityUUID = uuid;
+        identityName = name;
+      }
+      identityChange();
+    }
+  }
+
+  /** Called to start storing identity in the given stack */
+  public void startStoringIdentity(MetalmindStack stack) {
+    boolean lostIdentity = identityUUID == null && storingIdentity.isEmpty();
+    storingIdentity.add(stack);
+    // lost our identity, might no longer be able to store or tap
+    if (lostIdentity) {
+      identityChange();
+    }
+  }
+
+  /** Stops storing identity from the given stack */
+  public void stopStoringIdentity(MetalmindStack stack) {
+    storingIdentity.remove(stack);
+    // gained an identity, might no longer be able to store
+    if (identityUUID == null && storingIdentity.isEmpty()) {
+      identityChange();
+    }
+  }
+
+
   /* Unsealed */
 
   /** Checks if we can use an unsealed metalmind at the given index */
@@ -153,6 +250,29 @@ public class ActiveMetalminds {
     if (!storingFerring.isEmpty()) {
       lastFerringIndex = updateMetalminds(storingFerring, false, 1, lastFerringIndex, NO_ACTION);
     }
+    // keep track of whether our identity changed
+    boolean changedIdentity = false;
+    // tick the identity we are tapping
+    if (tappingIdentity != null) {
+      tappingIdentity.drain(1);
+      if (tappingIdentity.level == 0) {
+        changedIdentity = true;
+        tappingIdentity = null;
+        identityUUID = null;
+        identityName = "";
+      }
+    }
+    // tick the identity we are storing
+    if (!storingIdentity.isEmpty()) {
+      lastIdentityIndex = updateMetalminds(storingIdentity, false, 1, lastIdentityIndex, NO_ACTION);
+      if (identityUUID == null && storingIdentity.isEmpty()) {
+        changedIdentity = true;
+      }
+    }
+    // if either changed our identity, we may need to update
+    if (changedIdentity) {
+      identityChange();
+    }
   }
 
   /** Clears all active metalminds */
@@ -163,6 +283,10 @@ public class ActiveMetalminds {
       metalmind.clear();
     }
     storingFerring.clear();
+    tappingIdentity = null;
+    storingIdentity.clear();
+    identityUUID = null;
+    identityName = "";
   }
 
 
@@ -171,6 +295,18 @@ public class ActiveMetalminds {
   /** Appends tooltip for all active effects */
   public boolean getTooltip(List<Component> tooltip) {
     tooltip.add(METALMIND_EFFECTS);
+    
+    // list identity
+    if (identityUUID != null) {
+      if (identityName.isEmpty()) {
+        tooltip.add(MetalmindItem.UNKNOWN_OWNER);
+      } else {
+        tooltip.add(MetalmindItem.ownerComponent(identityName));
+      }
+    } else if (!storingIdentity.isEmpty()) {
+      tooltip.add(MetalmindItem.UNKEYED);
+    }
+
     // storing power to use investiture
     if (!storingFerring.isEmpty()) {
       tooltip.add(Component.translatable(KEY_FERRING_STORE, data.getFerringType().getStores()).withStyle(ChatFormatting.RED));
@@ -187,9 +323,23 @@ public class ActiveMetalminds {
     return true;
   }
 
+  /** Ensures everything in the list is still usable. */
+  private static int validateList(List<MetalmindStack> list) {
+    int change = 0;
+    Iterator<MetalmindStack> iterator = list.iterator();
+    while (iterator.hasNext()) {
+      MetalmindStack stack = iterator.next();
+      if (!stack.canUse().isValid(stack.level)) {
+        change += stack.level;
+        stack.level = 0;
+        iterator.remove();
+      }
+    }
+    return change;
+  }
+
   /** Keeps track of data for a single type of power */
   public class ActiveMetalmind {
-    private final Player player;
     /** ID for this effect */
     private final MetalId id;
 
@@ -223,8 +373,7 @@ public class ActiveMetalminds {
     /** Consumer for stopping storing a metalmind */
     private final IntConsumer stopStoring = oldLevel -> storing += oldLevel;
 
-    public ActiveMetalmind(Player player, MetalId id) {
-      this.player = player;
+    public ActiveMetalmind(MetalId id) {
       this.id = id;
     }
 
@@ -260,23 +409,13 @@ public class ActiveMetalminds {
       refreshEffect();
     }
 
-    /** Ensures everything in the list is still usable. */
-    private static int validateList(List<MetalmindStack> list) {
-      int change = 0;
-      Iterator<MetalmindStack> iterator = list.iterator();
-      while (iterator.hasNext()) {
-        MetalmindStack stack = iterator.next();
-        if (!stack.canUse().isValid(stack.level)) {
-          change += stack.level;
-          stack.level = 0;
-          iterator.remove();
-        }
-      }
-      return change;
+    /** Removes any active investiture that is no longer usable */
+    private void checkInvestiture() {
+      validateList(investitureStacks);
     }
 
     /** Removes any active powers which are no longer usable. */
-    private void validateUsable() {
+    private void checkPowerUsable() {
       tapping -= validateList(tappingStacks);
       storing += validateList(storingStacks);
       refreshEffect();
@@ -336,7 +475,7 @@ public class ActiveMetalminds {
     public void revokePower(MetalmindStack stack) {
       investitureStacks.remove(stack);
       if (investitureStacks.isEmpty() && !data.canUse(id)) {
-        validateUsable();
+        checkPowerUsable();
       }
     }
 
@@ -396,7 +535,7 @@ public class ActiveMetalminds {
 
       // after running effects, stop using metalminds if requested
       if (stopUsing) {
-        validateUsable();
+        checkPowerUsable();
       }
 
       // if anything stopped tapping/storing, update the effect

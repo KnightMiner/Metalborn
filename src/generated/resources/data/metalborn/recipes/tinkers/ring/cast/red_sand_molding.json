@@ -15,9 +15,14 @@
       "filter": "metalmind",
       "item": "metalborn:ring"
     },
-    {
-      "item": "metalborn:investiture_ring"
-    }
+    [
+      {
+        "item": "metalborn:investiture_ring"
+      },
+      {
+        "item": "metalborn:identity_ring"
+      }
+    ]
   ],
   "result": "metalborn:ring_red_sand_cast"
 }

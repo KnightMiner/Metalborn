@@ -1,0 +1,54 @@
+{
+  "type": "forge:conditional",
+  "conditions": [
+    {
+      "type": "forge:mod_loaded",
+      "modid": "tconstruct"
+    }
+  ],
+  "recipes": [
+    {
+      "conditions": [
+        {
+          "type": "mantle:tag_filled",
+          "tag": "forge:ingots/aluminum"
+        }
+      ],
+      "recipe": {
+        "type": "tconstruct:casting_table",
+        "cast": {
+          "tag": "metalborn:casts/bracer_multi_use"
+        },
+        "cast_consumed": false,
+        "cooling_time": 94,
+        "fluid": {
+          "amount": 360,
+          "tag": "forge:molten_aluminum"
+        },
+        "result": "metalborn:identity_bracer",
+        "switch_slots": false
+      }
+    },
+    {
+      "conditions": [
+        {
+          "type": "forge:true"
+        }
+      ],
+      "recipe": {
+        "type": "tconstruct:casting_table",
+        "cast": {
+          "tag": "metalborn:casts/bracer_multi_use"
+        },
+        "cast_consumed": false,
+        "cooling_time": 41,
+        "fluid": {
+          "amount": 50,
+          "tag": "tconstruct:molten_quartz"
+        },
+        "result": "metalborn:identity_bracer",
+        "switch_slots": false
+      }
+    }
+  ]
+}

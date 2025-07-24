@@ -12,6 +12,7 @@ import knightminer.metalborn.util.CastItemObject;
 import net.minecraft.data.recipes.FinishedRecipe;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.FluidTags;
+import net.minecraft.tags.ItemTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
@@ -20,11 +21,14 @@ import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraftforge.common.crafting.CompoundIngredient;
+import net.minecraftforge.common.crafting.ConditionalRecipe;
 import net.minecraftforge.common.crafting.CraftingHelper;
 import net.minecraftforge.common.crafting.conditions.ICondition;
 import net.minecraftforge.common.crafting.conditions.ModLoadedCondition;
+import net.minecraftforge.common.crafting.conditions.TrueCondition;
 import org.jetbrains.annotations.Nullable;
-import slimeknights.mantle.Mantle;
+import slimeknights.mantle.recipe.condition.TagFilledCondition;
+import slimeknights.mantle.recipe.data.ConsumerWrapperBuilder;
 import slimeknights.mantle.recipe.helper.FluidOutput;
 import slimeknights.mantle.recipe.helper.ItemOutput;
 import slimeknights.mantle.recipe.ingredient.FluidIngredient;
@@ -35,6 +39,7 @@ import java.util.List;
 import java.util.function.Consumer;
 
 import static knightminer.metalborn.Metalborn.TINKERS;
+import static slimeknights.mantle.Mantle.commonResource;
 
 /** Helpers for datagenning Tinkers' Construct recipes without adding Tinkers' as a datagen dependency. */
 public class TinkersMockRecipeBuilder {
@@ -45,7 +50,7 @@ public class TinkersMockRecipeBuilder {
   /** Input for the red sand cast part builder recipe */
   private static final Ingredient RED_SAND_CASTS = Ingredient.of(MetalbornTags.Items.RED_SAND_CASTS);
   /** Input for casting a gold cast */
-  private static final FluidIngredient GOLD_INGOT = FluidIngredient.of(FluidTags.create(Mantle.commonResource("molten_gold")), 90);
+  private static final FluidIngredient GOLD_INGOT = FluidIngredient.of(FluidTags.create(commonResource("molten_gold")), 90);
   /** Time for casting a gold cast */
   private static final int GOLD_INGOT_TIME = 57;
   /** Material ID for copper, the one part builder metalmind recipe */
@@ -93,6 +98,59 @@ public class TinkersMockRecipeBuilder {
     consumer.accept(new CastingTableRecipe(root.withSuffix("casting_sand_cast"), Ingredient.of(cast.getSingleUseTag()), true,  false, FluidIngredient.of(fluid, amount), time, ItemOutput.fromItem(item), false));
   }
 
+  /** Creates recipes for melting and casting the given identity metal item */
+  public static <T extends ItemLike & IdAwareObject> void identityMeltingCasting(Consumer<FinishedRecipe> consumer, T item, CastItemObject cast, int aluminum, int quartz, String prefix) {
+    TagKey<Fluid> aluminumTag = FluidTags.create(commonResource("molten_aluminum"));
+    int aluminumTemperature = 425;
+    TagKey<Fluid> quartzTag = FluidTags.create(new ResourceLocation(TINKERS, "molten_quartz"));
+    int quartzTemperature = 637;
+
+    // all recipes we plan to add will be conditioned on tinkers
+    consumer = ConsumerWrapperBuilder.wrap().addCondition(new ModLoadedCondition(TINKERS)).build(consumer);
+    addConditions = false;
+    ResourceLocation root = item.getId().withPath(prefix);
+
+    // if aluminum ingots are present, we use the aluminum recipes
+    ICondition condition = new TagFilledCondition<>(ItemTags.create(commonResource("ingots/aluminum")));
+
+    // melting
+    Ingredient metalItem = Ingredient.of(item);
+    ConditionalRecipe.builder()
+      .addCondition(condition)
+      .addRecipe(new MeltingRecipe(COPPER, metalItem, FluidOutput.fromTag(aluminumTag, aluminum), aluminumTemperature))
+      .addCondition(TrueCondition.INSTANCE)
+      .addRecipe(new MeltingRecipe(COPPER, metalItem, FluidOutput.fromTag(quartzTag, quartz), quartzTemperature))
+      .build(consumer, root.withSuffix("melting"));
+
+    // casting
+    int aluminumTime = calcTimeForAmount(aluminumTemperature, aluminum);
+    int quartzTime = calcTimeForAmount(quartzTemperature, quartz);
+    FluidIngredient aluminumIngredient = FluidIngredient.of(aluminumTag, aluminum);
+    FluidIngredient quartzIngredient = FluidIngredient.of(quartzTag, quartz);
+    ItemOutput result = ItemOutput.fromItem(item);
+    // gold cast
+    Ingredient goldCast = Ingredient.of(cast.getMultiUseTag());
+    ConditionalRecipe.builder()
+      .addCondition(condition)
+      .addRecipe(new CastingTableRecipe(COPPER, goldCast,false, false, aluminumIngredient, aluminumTime, result, false))
+      .addCondition(TrueCondition.INSTANCE)
+      .addRecipe(new CastingTableRecipe(COPPER, goldCast,false, false, quartzIngredient, quartzTime, result, false))
+      .build(consumer, root.withSuffix("casting_gold_cast"));
+    // sand cast
+    Ingredient sandCast = Ingredient.of(cast.getSingleUseTag());
+    ConditionalRecipe.builder()
+      .addCondition(condition)
+      .addRecipe(new CastingTableRecipe(COPPER, sandCast, true, false, aluminumIngredient, aluminumTime, result, false))
+      .addCondition(TrueCondition.INSTANCE)
+      .addRecipe(new CastingTableRecipe(COPPER, sandCast, true, false, quartzIngredient, quartzTime, result, false))
+      .build(consumer, root.withSuffix("casting_sand_cast"));
+
+    addConditions = true;
+  }
+
+  // simplest way to prevent the condition for the condition recipe, which will add it another way
+  private static boolean addConditions = true;
+
   /** Common logic for a mock recipe */
   private interface MockRecipe extends FinishedRecipe {
     @Override
@@ -112,7 +170,9 @@ public class TinkersMockRecipeBuilder {
     default JsonObject serializeRecipe() {
       JsonObject json = new JsonObject();
       json.addProperty("type", getTypeLocation());
-      json.add("conditions", MOD_LOADED_CONDITION);
+      if (addConditions) {
+        json.add("conditions", MOD_LOADED_CONDITION);
+      }
       this.serializeRecipeData(json);
       return json;
     }

@@ -16,6 +16,7 @@ import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.Style;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.tags.ItemTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
@@ -59,6 +60,11 @@ public class MetalContent extends PageContent {
   @Nullable
   private transient MetalPower power;
 
+  /** Tag ID to use for display ingots */
+  private ResourceLocation ingot = null;
+  /** Tag to use for display ingots */
+  private transient TagKey<Item> ingotTag;
+
   /** List of metalmind items to display */
   @Nullable
   public IngredientData metalminds;
@@ -92,6 +98,18 @@ public class MetalContent extends PageContent {
       power = MetalManager.INSTANCE.get(getMetal());
     }
     return power;
+  }
+
+  /** Gets the tag to display the ingots for this page */
+  public TagKey<Item> getIngotTag() {
+    if (ingotTag == null) {
+      if (ingot == null) {
+        ingotTag = getPower().ingot();
+      } else {
+        ingotTag = ItemTags.create((ingot));
+      }
+    }
+    return ingotTag;
   }
 
   /** Sets the power from the injector */
@@ -175,7 +193,7 @@ public class MetalContent extends PageContent {
 
     // add metal items around header
     MetalPower power = getPower();
-    List<ItemStack> items = getItems(power.ingot());
+    List<ItemStack> items = getItems(getIngotTag());
     if (!items.isEmpty()) {
       list.add(new ItemElement(-2, 0, 1f, items));
     }

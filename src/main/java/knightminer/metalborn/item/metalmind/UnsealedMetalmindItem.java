@@ -15,7 +15,7 @@ public class UnsealedMetalmindItem extends PowerMetalmindItem {
   @Override
   public Usable canUse(ItemStack stack, int index, Player player, MetalbornData data) {
     // must have a metal, and be the owner. No need to be able to use the metal
-    return MetalItem.getMetal(stack) != MetalId.NONE && data.canUseUnsealed(index) && isOwner(stack, player, data) ? Usable.ALWAYS : Usable.NEVER;
+    return MetalItem.getMetal(stack) != MetalId.NONE && data.canUseUnsealed(index) ? checkIdentity(stack, data) : Usable.NEVER;
   }
 
   @Override

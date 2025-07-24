@@ -30,6 +30,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.UUID;
 
 /** Capability containing all data related to metalborn status. Includes ferring type, tapping/storing, metalminds, spikes, and alike. */
 public class MetalbornCapability implements ICapabilitySerializable<CompoundTag>, MetalbornData, Runnable {
@@ -169,6 +170,68 @@ public class MetalbornCapability implements ICapabilitySerializable<CompoundTag>
   }
 
 
+  /* Identity */
+
+  @Nullable
+  @Override
+  public UUID getIdentity() {
+    return activeMetalminds.getIdentity();
+  }
+
+  @Override
+  public String getIdentityName() {
+    return activeMetalminds.getIdentityName();
+  }
+
+  @Override
+  public boolean canTapIdentity(int index) {
+    // if not in a slot, just say yes
+    if (index == -1) {
+      return true;
+    }
+    // check that the slot is the active slot, or we aren't tapping
+    MetalmindStack stack = metalminds.getSlot(index);
+    return stack != null && activeMetalminds.canTapIdentity(stack);
+  }
+
+  @Override
+  public void updateTappingIdentity(int index, @Nullable UUID uuid, String name) {
+    MetalmindStack stack = metalminds.getSlot(index);
+    if (stack != null) {
+      activeMetalminds.updateTappingIdentity(stack, uuid, name);
+    }
+  }
+
+  @Override
+  public void startStoringIdentity(int index) {
+    MetalmindStack stack = metalminds.getSlot(index);
+    if (stack != null) {
+      activeMetalminds.startStoringIdentity(stack);
+    }
+  }
+
+  @Override
+  public void stopStoringIdentity(int index) {
+    MetalmindStack stack = metalminds.getSlot(index);
+    if (stack != null) {
+      activeMetalminds.stopStoringIdentity(stack);
+    }
+  }
+
+
+  /* Breath */
+
+  @Override
+  public float getLastWalkDistance() {
+    return lastWalkDistance;
+  }
+
+  @Override
+  public void setLastWalkDistance(float lastWalkDistance) {
+    this.lastWalkDistance = lastWalkDistance;
+  }
+
+
   /* Unsealed */
 
   @Override
@@ -223,19 +286,6 @@ public class MetalbornCapability implements ICapabilitySerializable<CompoundTag>
     activeMetalminds.clear();
     metalminds.clear();
     spikes.clear();
-  }
-
-
-  /* Walking */
-
-  @Override
-  public float getLastWalkDistance() {
-    return lastWalkDistance;
-  }
-
-  @Override
-  public void setLastWalkDistance(float lastWalkDistance) {
-    this.lastWalkDistance = lastWalkDistance;
   }
   
 

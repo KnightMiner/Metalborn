@@ -49,6 +49,15 @@
   "metal_power.metalborn.rose_gold.target": "Zombies",
   "metal_power.metalborn.rose_gold.label": "%s / %s energy",
 
+  "metal_power.metalborn.aluminum": "Aluminum",
+  "metal_power.metalborn.aluminum.stores": "Identity",
+  "metal_power.metalborn.aluminum.ferring": "Trueself",
+  "metal_power.metalborn.aluminum.target": "Players",
+  "metal_power.metalborn.quartz": "Quartz",
+  "metal_power.metalborn.quartz.stores": "Identity",
+  "metal_power.metalborn.quartz.ferring": "Trueself",
+  "metal_power.metalborn.quartz.target": "Players",
+
   "metal_power.metalborn.investiture": "Nicrosil",
   "metal_power.metalborn.investiture.stores": "Investiture",
   "metal_power.metalborn.investiture.ferring": "Soulbearer",
@@ -143,9 +152,14 @@
   "item.metalborn.bracer": "Bracer",
   "item.metalborn.bracer.format": "%s Bracer",
   "item.metalborn.investiture_bracer": "Nicrosil Bracer",
+  "item.metalborn.identity_bracer.aluminum": "Aluminum Bracer",
+  "item.metalborn.identity_bracer.quartz": "Quartz Bracer",
+
   "item.metalborn.ring": "Ring",
   "item.metalborn.ring.format": "%s Ring",
   "item.metalborn.investiture_ring": "Nicrosil Ring",
+  "item.metalborn.identity_ring.aluminum": "Aluminum Ring",
+  "item.metalborn.identity_ring.quartz": "Quartz Ring",
   "item.metalborn.unsealed_ring": "Unsealed Ring",
   "item.metalborn.unsealed_ring.format": "Unsealed %s Ring",
 

@@ -112,8 +112,6 @@ public class RecipeProvider extends net.minecraft.data.recipes.RecipeProvider im
       .save(consumer, location("forge"));
 
     // metal items
-    TagKey<Item> aluminumNugget = ItemTags.create(commonResource("nuggets/aluminum"));
-    TagKey<Item> aluminumIngot = ingot("aluminum");
     // rings
     ShapedForgeRecipeBuilder.shaped(Registration.RING)
       .pattern("##").pattern("##")
@@ -128,9 +126,24 @@ public class RecipeProvider extends net.minecraft.data.recipes.RecipeProvider im
       .cookingRate(1)
       .experience(0.5f)
       .save(consumer, location("ring/nicrosil"));
+    // identity uses quartz if no aluminum
+    TagKey<Item> aluminumNugget = ItemTags.create(commonResource("nuggets/aluminum"));
+    ConditionalRecipe.builder()
+      .addCondition(new TagFilledCondition<>(aluminumNugget))
+      .addRecipe(ShapedForgeRecipeBuilder.shaped(Registration.IDENTITY_RING)
+          .pattern("##").pattern("##")
+          .define('#', aluminumNugget)
+          .cookingRate(1)
+          .experience(0.5f)::save)
+      .addCondition(TrueCondition.INSTANCE)
+      .addRecipe(ShapelessForgeRecipeBuilder.shapeless(Registration.IDENTITY_RING, 2)
+        .requires(Tags.Items.GEMS_QUARTZ) // 1 quartz by itself for 2 rings is close enough to 4 nuggets, 1/8 instead of 1/9
+        .cookingRate(2)
+        .experience(1.0f)::save)
+        .build(consumer, location("ring/identity"));
     // if no duralumin is registered, nugget version of alloying makes a ring
     ShapelessForgeRecipeBuilder.shapeless(Registration.RING.get().withMetal(MetalIds.duralumin))
-      .requires(ItemTags.create(commonResource("nuggets/aluminum")), 3)
+      .requires(aluminumNugget, 3)
       .requires(MetalbornTags.Items.COPPER_NUGGETS, 1)
       .cookingRate(1)
       .experience(0.5f)
@@ -149,6 +162,21 @@ public class RecipeProvider extends net.minecraft.data.recipes.RecipeProvider im
       .cookingRate(4)
       .experience(2f)
       .save(consumer, location("bracer/nicrosil"));
+    // identity uses quartz if no aluminum
+    ConditionalRecipe.builder()
+      .addCondition(ingotCondition("aluminum"))
+      .addRecipe(ShapedForgeRecipeBuilder.shaped(Registration.IDENTITY_BRACER)
+        .pattern("##").pattern("##")
+        .define('#', ingot("aluminum"))
+        .cookingRate(4)
+        .experience(2f)::save)
+      .addCondition(TrueCondition.INSTANCE)
+      .addRecipe(ShapedForgeRecipeBuilder.shaped(Registration.IDENTITY_BRACER)
+        .pattern("##").pattern("##")
+        .define('#', Tags.Items.GEMS_QUARTZ)
+        .cookingRate(4)
+        .experience(2f)::save)
+      .build(consumer, location("bracer/identity"));
     // if no duralumin is registered, its alloying recipe makes bracers
     ICondition noDuralumin = new TagEmptyCondition<>(ingot("duralumin"));
     ShapelessForgeRecipeBuilder.shapeless(Registration.BRACER.get().withMetal(MetalIds.duralumin))
@@ -290,15 +318,18 @@ public class RecipeProvider extends net.minecraft.data.recipes.RecipeProvider im
     int ingot = 90;
     int nugget = 10;
     // standard metal items
-    metalMeltingCasting(consumer, Registration.RING,   List.of(Registration.INVESTITURE_RING),   Registration.RING_CAST,   MetalFilter.METALMIND, nugget * 4, tinkersFolder);
-    metalMeltingCasting(consumer, Registration.BRACER, List.of(Registration.INVESTITURE_BRACER), Registration.BRACER_CAST, MetalFilter.METALMIND, ingot * 4,  tinkersFolder);
-    metalMeltingCasting(consumer, Registration.SPIKE,  List.of(Registration.INVESTITURE_SPIKE),  Registration.SPIKE_CAST,  MetalFilter.SPIKE,     ingot * 2,  tinkersFolder);
+    metalMeltingCasting(consumer, Registration.RING,   List.of(Registration.INVESTITURE_RING,   Registration.IDENTITY_RING),   Registration.RING_CAST,   MetalFilter.METALMIND, nugget * 4, tinkersFolder);
+    metalMeltingCasting(consumer, Registration.BRACER, List.of(Registration.INVESTITURE_BRACER, Registration.IDENTITY_BRACER), Registration.BRACER_CAST, MetalFilter.METALMIND, ingot * 4,  tinkersFolder);
+    metalMeltingCasting(consumer, Registration.SPIKE,  List.of(Registration.INVESTITURE_SPIKE), Registration.SPIKE_CAST,  MetalFilter.SPIKE,     ingot * 2,  tinkersFolder);
     // special metalminds
     TagKey<Fluid> nicrosil = FluidTags.create(commonResource("molten_nicrosil"));
     int nicrosilTemperature = 1100;
     TinkersMockRecipeBuilder.meltingCasting(consumer, Registration.INVESTITURE_RING,   Registration.RING_CAST,   nicrosil, nugget * 4, nicrosilTemperature, tinkersFolder + "ring/investiture/");
     TinkersMockRecipeBuilder.meltingCasting(consumer, Registration.INVESTITURE_BRACER, Registration.BRACER_CAST, nicrosil, ingot * 4,  nicrosilTemperature, tinkersFolder + "bracer/investiture/");
     TinkersMockRecipeBuilder.meltingCasting(consumer, Registration.INVESTITURE_SPIKE,  Registration.SPIKE_CAST,  nicrosil, ingot * 2,  nicrosilTemperature, tinkersFolder + "spike/investiture/");
+    // identity may be quartz and may be aluminum based on loaded content
+    TinkersMockRecipeBuilder.identityMeltingCasting(consumer, Registration.IDENTITY_RING,   Registration.RING_CAST,   nugget * 4, 400, tinkersFolder + "ring/identity/");
+    TinkersMockRecipeBuilder.identityMeltingCasting(consumer, Registration.IDENTITY_BRACER, Registration.BRACER_CAST, ingot * 4,   50, tinkersFolder + "bracer/identity/");
 
     // nuggets to change ferring type
     TagKey<Fluid> netherite = FluidTags.create(commonResource("molten_netherite"));

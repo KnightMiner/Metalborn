@@ -27,7 +27,7 @@ import static knightminer.metalborn.item.MetalItem.getMetal;
 public class InvestitureMetalmindItem extends MetalmindItem implements MetalItem {
   public static final MetalId METAL = new MetalId(Metalborn.MOD_ID, "investiture");
   private static final String KEY_INVESTITURE = Metalborn.key("item", "metalmind.investiture");
-  private static final Component STORES = Component.translatable(KEY_STORES, METAL.getStores().withStyle(ChatFormatting.GREEN)).withStyle(ChatFormatting.GRAY);
+  private static final Component STORES = makeStores(METAL);
 
   public InvestitureMetalmindItem(Properties props, int capacityMultiplier) {
     super(props, capacityMultiplier);

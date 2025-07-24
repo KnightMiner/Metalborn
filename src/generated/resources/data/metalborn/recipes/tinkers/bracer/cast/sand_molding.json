@@ -15,9 +15,14 @@
       "filter": "metalmind",
       "item": "metalborn:bracer"
     },
-    {
-      "item": "metalborn:investiture_bracer"
-    }
+    [
+      {
+        "item": "metalborn:investiture_bracer"
+      },
+      {
+        "item": "metalborn:identity_bracer"
+      }
+    ]
   ],
   "result": "metalborn:bracer_sand_cast"
 }

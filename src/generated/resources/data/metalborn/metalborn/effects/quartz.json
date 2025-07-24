@@ -1,0 +1,22 @@
+{
+  "capacity": 6000,
+  "conditions": [
+    {
+      "type": "forge:and",
+      "values": [
+        {
+          "type": "mantle:tag_empty",
+          "tag": "forge:ingots/aluminum"
+        },
+        {
+          "type": "mantle:tag_empty",
+          "tag": "forge:nuggets/aluminum"
+        }
+      ]
+    }
+  ],
+  "format": "ticks",
+  "index": 13,
+  "name": "quartz",
+  "temperature": 637
+}

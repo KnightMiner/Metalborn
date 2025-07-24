@@ -4,7 +4,6 @@ import knightminer.metalborn.core.MetalbornData;
 import knightminer.metalborn.item.MetalItem;
 import knightminer.metalborn.metal.MetalId;
 import knightminer.metalborn.metal.MetalManager;
-import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -50,7 +49,7 @@ public class PowerMetalmindItem extends MetalmindItem implements MetalItem {
   public Usable canUse(ItemStack stack, int index, Player player, MetalbornData data) {
     // must have a metal, be able to use it, and be the owner
     MetalId metal = getMetal(stack);
-    return metal != MetalId.NONE && data.canUse(metal) && isOwner(stack, player, data) ? Usable.ALWAYS : Usable.NEVER;
+    return metal != MetalId.NONE && data.canUse(metal) ? checkIdentity(stack, data) : Usable.NEVER;
   }
 
   @Override
@@ -62,7 +61,7 @@ public class PowerMetalmindItem extends MetalmindItem implements MetalItem {
   @Override
   protected boolean isTransferrable(ItemStack destination, ItemStack source) {
     // any power metalmind is fine, as long as the metals match (which isSamePower checks)
-    return source.getItem() instanceof PowerMetalmindItem && isSamePower(destination, source);
+    return source.getItem() instanceof PowerMetalmindItem && isSamePower(destination, source) && isSameIdentity(destination, source);
   }
 
 
@@ -81,7 +80,7 @@ public class PowerMetalmindItem extends MetalmindItem implements MetalItem {
         MetalItem.appendMetalId(metal, tooltip);
       }
       // stores
-      tooltip.add(Component.translatable(KEY_STORES, metal.getStores().withStyle(ChatFormatting.GREEN)).withStyle(ChatFormatting.GRAY));
+      tooltip.add(makeStores(metal));
 
       // amount
       int amount = getAmount(stack);

@@ -10,6 +10,7 @@ import knightminer.metalborn.item.MetalItem;
 import knightminer.metalborn.item.MetalbornBookItem;
 import knightminer.metalborn.item.RandomFerringItem;
 import knightminer.metalborn.item.SpikeItem;
+import knightminer.metalborn.item.metalmind.IdentityMetalmindItem;
 import knightminer.metalborn.item.metalmind.InvestitureMetalmindItem;
 import knightminer.metalborn.item.metalmind.Metalmind;
 import knightminer.metalborn.item.metalmind.MetalmindItem;
@@ -173,9 +174,12 @@ public class Registration {
   public static final ItemObject<PowerMetalmindItem> BRACER = ITEMS.register("bracer", () -> new PowerMetalmindItem(new Item.Properties().stacksTo(8), 10));
   public static final ItemObject<PowerMetalmindItem> RING = ITEMS.register("ring", () -> new PowerMetalmindItem(new Item.Properties().stacksTo(8), 1));
   public static final ItemObject<PowerMetalmindItem> UNSEALED_RING = ITEMS.register("unsealed_ring", () -> new UnsealedMetalmindItem(new Item.Properties().stacksTo(8), 1));
-  // special metalminds
+  // investiture metalminds
   public static final ItemObject<InvestitureMetalmindItem> INVESTITURE_BRACER = ITEMS.register("investiture_bracer", () -> new InvestitureMetalmindItem(new Item.Properties().stacksTo(8), 10));
   public static final ItemObject<InvestitureMetalmindItem> INVESTITURE_RING = ITEMS.register("investiture_ring", () -> new InvestitureMetalmindItem(new Item.Properties().stacksTo(8), 1));
+  // identity metalminds
+  public static final ItemObject<IdentityMetalmindItem> IDENTITY_BRACER = ITEMS.register("identity_bracer", () -> new IdentityMetalmindItem(new Item.Properties().stacksTo(8), 10));
+  public static final ItemObject<IdentityMetalmindItem> IDENTITY_RING = ITEMS.register("identity_ring", () -> new IdentityMetalmindItem(new Item.Properties().stacksTo(8), 1));
   // spikes
   public static final ItemObject<SpikeItem> SPIKE = ITEMS.register("spike", () -> new SpikeItem(new Item.Properties().stacksTo(1)));
   public static final ItemObject<InvestitureSpikeItem> INVESTITURE_SPIKE = ITEMS.register("investiture_spike", () -> new InvestitureSpikeItem(new Item.Properties().stacksTo(1)));
@@ -349,8 +353,10 @@ public class Registration {
     output.accept(RAW_TIN_BLOCK);
     // metalminds
     accept(consumer, RING);
+    output.accept(IDENTITY_RING);
     accept(consumer, INVESTITURE_RING);
     accept(consumer, BRACER);
+    output.accept(IDENTITY_BRACER);
     accept(consumer, INVESTITURE_BRACER);
     accept(consumer, SPIKE);
     accept(consumer, INVESTITURE_SPIKE);

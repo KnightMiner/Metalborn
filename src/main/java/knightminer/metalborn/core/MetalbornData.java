@@ -8,9 +8,11 @@ import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.common.util.INBTSerializable;
 import org.jetbrains.annotations.ApiStatus.NonExtendable;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.UUID;
 
 /** Base interface for metalborn capability. Allows having a read only empty instance and a writable player instance */
 @NonExtendable
@@ -56,6 +58,49 @@ public interface MetalbornData extends INBTSerializable<CompoundTag> {
 
   /** Called to stop granting a power from the given index */
   default void revokePower(MetalId metal, int index) {}
+
+
+  /* Identity */
+
+  /** Gets the identity of the entity */
+  @Nullable
+  default UUID getIdentity() {
+    return null;
+  }
+
+  /** Gets the name of the entity based on the identity */
+  default String getIdentityName() {
+    return "";
+  }
+
+  /** Checks if identity may be tapped at the given index */
+  default boolean canTapIdentity(int index) {
+    return false;
+  }
+
+  /**
+   * Updates the identity being tapped
+   *
+   * @param index Index to tap.
+   * @param uuid  New identity. Set to null to stop tapping identity.
+   * @param name  Name of the new identity. Unused if {@code uuid} is null.
+   */
+  default void updateTappingIdentity(int index, @Nullable UUID uuid, String name) {}
+
+  /** Starts tapping identity at the given index */
+  default void startStoringIdentity(int index) {}
+
+  /** Stops tapping identity at the given index */
+  default void stopStoringIdentity(int index) {}
+
+
+  /* Breath */
+
+  default float getLastWalkDistance() {
+    return 0;
+  }
+
+  default void setLastWalkDistance(float value) {}
 
 
   /* Unsealed */
@@ -110,15 +155,6 @@ public interface MetalbornData extends INBTSerializable<CompoundTag> {
 
   /** Called client side to clear old data when the inventory is opened */
   default void clear() {}
-
-
-  /* Breath */
-
-  default float getLastWalkDistance() {
-    return 0;
-  }
-
-  default void setLastWalkDistance(float value) {}
 
 
   /** Empty instance for defaulting data related methods */

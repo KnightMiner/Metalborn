@@ -1,0 +1,49 @@
+{
+  "type": "forge:conditional",
+  "recipes": [
+    {
+      "conditions": [
+        {
+          "type": "mantle:tag_filled",
+          "tag": "forge:nuggets/aluminum"
+        }
+      ],
+      "recipe": {
+        "type": "metalborn:shaped_forge",
+        "cooking_time": 100,
+        "experience": 0.5,
+        "key": {
+          "#": {
+            "tag": "forge:nuggets/aluminum"
+          }
+        },
+        "pattern": [
+          "##",
+          "##"
+        ],
+        "result": "metalborn:identity_ring"
+      }
+    },
+    {
+      "conditions": [
+        {
+          "type": "forge:true"
+        }
+      ],
+      "recipe": {
+        "type": "metalborn:shapeless_forge",
+        "cooking_time": 200,
+        "experience": 1.0,
+        "ingredients": [
+          {
+            "tag": "forge:gems/quartz"
+          }
+        ],
+        "result": {
+          "count": 2,
+          "item": "metalborn:identity_ring"
+        }
+      }
+    }
+  ]
+}

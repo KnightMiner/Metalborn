@@ -4,6 +4,7 @@ import knightminer.metalborn.Metalborn;
 import knightminer.metalborn.core.MetalbornData;
 import knightminer.metalborn.metal.MetalId;
 import knightminer.metalborn.metal.MetalManager;
+import knightminer.metalborn.metal.MetalPower;
 import net.minecraft.ChatFormatting;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
@@ -20,6 +21,8 @@ import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
+import java.util.Objects;
+import java.util.UUID;
 
 /** Common logic for a metalmind, with or without metal variants. */
 public abstract class MetalmindItem extends Item implements Metalmind {
@@ -27,12 +30,12 @@ public abstract class MetalmindItem extends Item implements Metalmind {
   private static final String KEY_AMOUNT = Metalborn.key("item", "metalmind.amount");
   public static final String KEY_STORES = Metalborn.key("item", "metalmind.stores");
   private static final String KEY_OWNER = Metalborn.key("item", "metalmind.owner");
-  private static final Component UNKNOWN_OWNER = Component.translatable(KEY_OWNER, Metalborn.component("item", "metalmind.owner.unknown").withStyle(ChatFormatting.RED)).withStyle(ChatFormatting.GRAY);
-  private static final Component UNKEYED = Component.translatable(KEY_OWNER, Metalborn.component("item", "metalmind.owner.none").withStyle(ChatFormatting.ITALIC)).withStyle(ChatFormatting.GRAY);
+  public static final Component UNKNOWN_OWNER = ownerComponent(Metalborn.component("item", "metalmind.owner.unknown").withStyle(ChatFormatting.RED));
+  public static final Component UNKEYED = ownerComponent(Metalborn.component("item", "metalmind.owner.none").withStyle(ChatFormatting.ITALIC));
   // NBT keys
   public static final String TAG_AMOUNT = "amount";
-  protected static final String TAG_OWNER = "owner";
-  protected static final String TAG_OWNER_NAME = "owner_name";
+  public static final String TAG_OWNER = "owner";
+  public static final String TAG_OWNER_NAME = "owner_name";
 
   /** Amount to multiply capacity by, for larger metalminds */
   protected final int capacityMultiplier;
@@ -42,15 +45,42 @@ public abstract class MetalmindItem extends Item implements Metalmind {
     this.capacityMultiplier = capacityMultiplier;
   }
 
-  /** Checks if the given player is the owner of this metalmind */
-  @SuppressWarnings("unused")  // keeping around for potential future feature
-  protected static boolean isOwner(ItemStack stack, Player player, MetalbornData data) {
+
+  /* Identity */
+
+  /** Checks if the given player has the same identity as this metalmind */
+  protected static Usable matchesIdentity(ItemStack stack, MetalbornData data) {
+    UUID identity = data.getIdentity();
     CompoundTag tag = stack.getTag();
-    if (tag != null && getAmount(stack) > 0 && tag.hasUUID(TAG_OWNER)) {
-      // TODO: identity shenanigans?
-      return tag.getUUID(TAG_OWNER).equals(player.getUUID());
+    if (tag != null && tag.hasUUID(TAG_OWNER)) {
+      // identity must match that inside the metalmind to use
+      return identity != null && identity.equals(tag.getUUID(TAG_OWNER)) ? Usable.ALWAYS : Usable.NEVER;
     }
-    return true;
+    // no identity stored? tapping is always fine but storing is only fine if we also lack identity; no overwriting identity
+    return identity == null ? Usable.ALWAYS : Usable.TAPPING;
+  }
+
+  /** Checks if the given player can use this metalmind */
+  protected static Usable checkIdentity(ItemStack stack, MetalbornData data) {
+    // if empty, identity is always valid
+    return getAmount(stack) == 0 ? Usable.ALWAYS : matchesIdentity(stack, data);
+  }
+
+  /** Gets the identity of the given metalmind */
+  @Nullable
+  protected static UUID getIdentity(ItemStack stack) {
+    CompoundTag tag = stack.getTag();
+    if (tag != null && tag.hasUUID(TAG_OWNER)) {
+      return tag.getUUID(TAG_OWNER);
+    }
+    return null;
+  }
+
+  /** Checks if the two stacks contain the same identity, or one of them has no identity */
+  protected static boolean isSameIdentity(ItemStack stack1, ItemStack stack2) {
+    // either being empty means it the same as we can fill one from the other
+    // otherwise, need UUIDs to match
+    return getAmount(stack1) == 0 || getAmount(stack2) == 0 || Objects.equals(getIdentity(stack1), getIdentity(stack2));
   }
 
 
@@ -113,8 +143,11 @@ public abstract class MetalmindItem extends Item implements Metalmind {
 
   /** Called when the metalmind is first filled to set any relevant data */
   protected void startFillingMetalmind(CompoundTag tag, Player player, MetalbornData data) {
-    tag.putUUID(TAG_OWNER, player.getUUID());
-    tag.putString(TAG_OWNER_NAME, player.getGameProfile().getName());
+    UUID identity = data.getIdentity();
+    if (identity != null) {
+      tag.putUUID(TAG_OWNER, identity);
+      tag.putString(TAG_OWNER_NAME, data.getIdentityName());
+    }
   }
 
   @Override
@@ -131,8 +164,7 @@ public abstract class MetalmindItem extends Item implements Metalmind {
       return 0;
     }
 
-    // set owner if it's missing and we have identity
-    // TODO: should we set identity on storing in an unkeyed metalmind?
+    // set any data set when you first start storing
     CompoundTag tag = stack.getOrCreateTag();
     if (stored == 0) {
       startFillingMetalmind(tag, player, data);
@@ -199,9 +231,7 @@ public abstract class MetalmindItem extends Item implements Metalmind {
    * @param source      Stack of unknown item giving power. Validation should make it instanceof MetalmindItem by the end.
    * @return true if power can be transferred from {@code held} into {@code stack}
    */
-  protected boolean isTransferrable(ItemStack destination, ItemStack source) {
-    return destination.getItem() == source.getItem() && getAmount(destination) > 0 && isSamePower(destination, source);
-  }
+  protected abstract boolean isTransferrable(ItemStack destination, ItemStack source);
 
   @Override
   public boolean overrideOtherStackedOnMe(ItemStack stack, ItemStack held, Slot slot, ClickAction action, Player player, SlotAccess access) {
@@ -210,7 +240,7 @@ public abstract class MetalmindItem extends Item implements Metalmind {
       MetalmindItem other = (MetalmindItem) held.getItem();
       MetalbornData data = MetalbornData.getData(player);
       // ensure both are usable (e.g. no identity issues)
-      if (canUse(stack, -1, player, data).canStore() && other.canUse(held, -1, player, data).canTap()) {
+      if (getAmount(held) > 0 && canUse(stack, -1, player, data).canStore() && other.canUse(held, -1, player, data).canTap()) {
         // attempt transfer
         int filled = fillFrom(stack, player, held, data);
         if (filled > 0) {
@@ -262,9 +292,29 @@ public abstract class MetalmindItem extends Item implements Metalmind {
 
   /* Tooltip */
 
+  /** Makes the component for the "Stores: " tooltip text */
+  public static Component makeStores(MetalId metal) {
+    return Component.translatable(KEY_STORES, metal.getStores().withStyle(ChatFormatting.GREEN)).withStyle(ChatFormatting.GRAY);
+  }
+
+  /** Appends the current amount to the tooltip */
+  protected void appendAmount(MetalPower power, int amount, List<Component> tooltip) {
+    tooltip.add(Component.translatable(KEY_AMOUNT, power.format(amount, capacityMultiplier)).withStyle(ChatFormatting.GRAY));
+  }
+
   /** Appends the current amount to the tooltip */
   protected void appendAmount(MetalId metal, int amount, List<Component> tooltip) {
-    tooltip.add(Component.translatable(KEY_AMOUNT, MetalManager.INSTANCE.get(metal).format(amount, capacityMultiplier)).withStyle(ChatFormatting.GRAY));
+    appendAmount(MetalManager.INSTANCE.get(metal), amount, tooltip);
+  }
+
+  /** Gets the name of the owner */
+  public static Component ownerComponent(Component name) {
+    return Component.translatable(KEY_OWNER, name).withStyle(ChatFormatting.GRAY);
+  }
+
+  /** Gets the name of the owner */
+  public static Component ownerComponent(String name) {
+    return ownerComponent(Component.literal(name).withStyle(ChatFormatting.GOLD));
   }
 
   /** Appends the owner to the tooltip */
@@ -272,7 +322,7 @@ public abstract class MetalmindItem extends Item implements Metalmind {
     CompoundTag tag = stack.getTag();
     if (tag != null) {
       if (tag.contains(TAG_OWNER_NAME, Tag.TAG_STRING)) {
-        tooltip.add(Component.translatable(KEY_OWNER, Component.literal(tag.getString(TAG_OWNER_NAME)).withStyle(ChatFormatting.GOLD)).withStyle(ChatFormatting.GRAY));
+        tooltip.add(ownerComponent(tag.getString(TAG_OWNER_NAME)));
       } else if (tag.hasUUID(TAG_OWNER)) {
         tooltip.add(UNKNOWN_OWNER);
       } else {

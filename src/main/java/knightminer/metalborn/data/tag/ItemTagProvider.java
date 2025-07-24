@@ -43,8 +43,8 @@ public class ItemTagProvider extends ItemTagsProvider {
 
     // inventory
     tag(Registration.METALMINDS).add(Registration.BRACER.get(), Registration.RING.get());
-    tag(Registration.BRACERS).add(Registration.BRACER.get(), Registration.INVESTITURE_BRACER.get());
-    tag(Registration.RINGS).add(Registration.RING.get(), Registration.INVESTITURE_RING.get(), Registration.UNSEALED_RING.get());
+    tag(Registration.BRACERS).add(Registration.BRACER.get(), Registration.INVESTITURE_BRACER.get(), Registration.IDENTITY_BRACER.get());
+    tag(Registration.RINGS).add(Registration.RING.get(), Registration.INVESTITURE_RING.get(), Registration.IDENTITY_RING.get(), Registration.UNSEALED_RING.get());
     tag(Registration.SPIKES).add(Registration.SPIKE.get(), Registration.INVESTITURE_SPIKE.get());
 
     metal(Registration.TIN);

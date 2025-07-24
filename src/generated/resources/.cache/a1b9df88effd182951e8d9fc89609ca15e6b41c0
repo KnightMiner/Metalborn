@@ -1,4 +1,4 @@
-// 1.20.1	2025-07-21T21:58:20.2410867	Item Models: metalborn
+// 1.20.1	2025-07-24T04:37:35.4579242	Item Models: metalborn
 4dc7437e56be8a51858b985325aa1570e1f93125 assets/metalborn/models/item/bracer.json
 3c460b164754a3c0cfa46b79b0e3c3ccfb209045 assets/metalborn/models/item/bracer_gold_cast.json
 52b97c6dd950b6f560ab7d36946c354c5f99180d assets/metalborn/models/item/bracer_red_sand_cast.json
@@ -7,6 +7,8 @@ e2eccae23e22d05c1832c9de4b99ef8fc915e13f assets/metalborn/models/item/bracer_san
 57256b75590c4b4f2b4ec572a1338e13b49b2bb8 assets/metalborn/models/item/bronze_nugget.json
 fa868387819f0bb1e95b80c31a7ae8165a4b9410 assets/metalborn/models/item/change_ferring.json
 eed68e86ae8578312b813454b280a9d33497dd8d assets/metalborn/models/item/copper_nugget.json
+6c5faab329133d31f5d06fa589a67c32de047869 assets/metalborn/models/item/identity_bracer.json
+e88557079d1e141beb6ee00848eaf99bf36b7bc4 assets/metalborn/models/item/identity_ring.json
 e4731996004c6d29ece3d5cb07f5668a9ccf46ef assets/metalborn/models/item/investiture_bracer.json
 1fd633f8ce4dc856cdf2c53895a408e426e259f3 assets/metalborn/models/item/investiture_ring.json
 83a281da4b5389c24ec5d037d21e9097947a3a0d assets/metalborn/models/item/investiture_spike.json

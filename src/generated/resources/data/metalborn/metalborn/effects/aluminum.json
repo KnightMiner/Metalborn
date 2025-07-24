@@ -1,0 +1,22 @@
+{
+  "capacity": 6000,
+  "conditions": [
+    {
+      "type": "forge:or",
+      "values": [
+        {
+          "type": "mantle:tag_filled",
+          "tag": "forge:ingots/aluminum"
+        },
+        {
+          "type": "mantle:tag_filled",
+          "tag": "forge:nuggets/aluminum"
+        }
+      ]
+    }
+  ],
+  "format": "ticks",
+  "index": 13,
+  "name": "aluminum",
+  "temperature": 425
+}
