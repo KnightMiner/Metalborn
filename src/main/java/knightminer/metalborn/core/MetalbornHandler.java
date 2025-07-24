@@ -9,6 +9,7 @@ import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffects;
+import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
@@ -19,6 +20,7 @@ import net.minecraftforge.event.AddReloadListenerEvent;
 import net.minecraftforge.event.TickEvent.Phase;
 import net.minecraftforge.event.TickEvent.PlayerTickEvent;
 import net.minecraftforge.event.entity.living.LivingAttackEvent;
+import net.minecraftforge.event.entity.living.LivingBreatheEvent;
 import net.minecraftforge.event.entity.living.LivingDropsEvent;
 import net.minecraftforge.event.entity.living.LivingEvent.LivingVisibilityEvent;
 import net.minecraftforge.event.entity.living.LivingExperienceDropEvent;
@@ -219,6 +221,66 @@ public class MetalbornHandler {
     double visibility = event.getEntity().getAttributeValue(Registration.VISIBILITY_MULTIPLIER.get());
     if (visibility != 1) {
       event.modifyVisibility(visibility);
+    }
+  }
+
+  @SubscribeEvent
+  static void livingTick(PlayerTickEvent event) {
+    if (event.phase == Phase.START) {
+      MetalbornData.getData(event.player).setLastWalkDistance(event.player.walkDistO);
+    }
+  }
+
+  @SubscribeEvent(priority = EventPriority.LOW)
+  static void livingBreathe(LivingBreatheEvent event) {
+    LivingEntity entity = event.getEntity();
+    if (entity.getType() != EntityType.PLAYER) {
+      return;
+    }
+    double respiration = entity.getAttributeValue(Registration.RESPIRATION.get());
+    if (respiration == 0) {
+      return;
+    }
+    // not underwater
+    if (event.canBreathe()) {
+      // if positive, simply increase air supply faster
+      if (respiration > 0) {
+        event.setRefillAirAmount(Math.min((int) (event.getRefillAirAmount() + respiration), entity.getMaxAirSupply() - entity.getAirSupply()));
+
+      // if walking or running, lose air
+      } else if (entity.walkDist - MetalbornData.getData(entity).getLastWalkDistance() > entity.getSpeed()) {
+        event.setCanRefillAir(false);
+        event.setCanBreathe(false);
+        // sprinting is the same above ground and underwater. Just walking is only half as bad as underwater.
+        if (!entity.isSprinting()) {
+          respiration /= 2;
+        }
+        // make air last shorter based on level
+        if (entity.getRandom().nextFloat() * (1 - respiration) > 1) {
+          event.setConsumeAirAmount(event.getConsumeAirAmount() + 1);
+        }
+      } else {
+        // when not moving, can refill air, but it gets slower the more we store breath
+        int refill = Math.max(0, (int) (event.getRefillAirAmount() + respiration));
+        event.setRefillAirAmount(refill);
+        if (refill <= 0) {
+          event.setCanRefillAir(false);
+        }
+      }
+    } else {
+      // underwater
+      if (respiration > 0) {
+        // make air last longer
+        int decreaseAir = event.getConsumeAirAmount();
+        if (decreaseAir > 0 && entity.getRandom().nextFloat() * (respiration + 1) > 1) {
+          event.setConsumeAirAmount(decreaseAir - 1);
+        }
+      } else {
+        // make air last shorter
+        if (entity.getRandom().nextFloat() * (1 - respiration) > 1) {
+          event.setConsumeAirAmount(event.getConsumeAirAmount() + 1);
+        }
+      }
     }
   }
 }

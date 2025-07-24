@@ -236,6 +236,8 @@ public class Registration {
   public static final RegistryObject<Attribute> HEAT_DAMAGE  = ATTRIBUTES.register("heat_damage", 0, 0, 1024, true);
   /** Changes visibility as seen by monsters. */
   public static final RegistryObject<Attribute> VISIBILITY_MULTIPLIER = ATTRIBUTES.registerMultiplier("visibility_multiplier", false);
+  /** Makes it easier or harder for the entity to breath. */
+  public static final RegistryObject<Attribute> RESPIRATION = ATTRIBUTES.register("respiration", 0, -10, 10, true);
 
   // Tinkers' Construct compat
   public static final CastItemObject BRACER_CAST = ITEMS.registerCast("bracer");
@@ -296,6 +298,7 @@ public class Registration {
     event.add(EntityType.PLAYER, MINING_SPEED_MULTIPLIER.get());
     event.add(EntityType.PLAYER, LOOTING_BOOST.get());
     event.add(EntityType.PLAYER, EXPERIENCE_MULTIPLIER.get());
+    event.add(EntityType.PLAYER, RESPIRATION.get());
     // general attributes
     addToAll(event, KNOCKBACK_MULTIPLIER);
     addToAll(event, FALL_DISTANCE_MULTIPLIER);

@@ -1,15 +1,16 @@
-// 1.20.1	2025-07-11T00:20:05.509937	Tags for minecraft:entity_type mod id metalborn
+// 1.20.1	2025-07-24T00:20:17.5800576	Tags for minecraft:entity_type mod id metalborn
 76c0522664726c09461ad4565b6fba80b4f816b2 data/metalborn/tags/entity_types/targets/brass.json
 6f8bc3eb93347d4d15c38a3b7cfbd2b796ac201c data/metalborn/tags/entity_types/targets/bronze.json
 76c0522664726c09461ad4565b6fba80b4f816b2 data/metalborn/tags/entity_types/targets/constantan.json
 b0db6482ab418ed97bf5b365bf432f894402d942 data/metalborn/tags/entity_types/targets/copper.json
+938693c0d925c28b546fc000571541b1f61e42c1 data/metalborn/tags/entity_types/targets/duralumin.json
 a3b1b11b4e4acdc60cff0a6636a1ea6abf609520 data/metalborn/tags/entity_types/targets/electrum.json
 13663c3a2cec55d46fe29a2ee9e9d52f6ec600ad data/metalborn/tags/entity_types/targets/gold.json
 aa698766e67caa09a21e02e1c5187060f51cbb48 data/metalborn/tags/entity_types/targets/iron.json
-938693c0d925c28b546fc000571541b1f61e42c1 data/metalborn/tags/entity_types/targets/nickel.json
+a15d44b6e4cb2744c21fd173d65bb9858de283b1 data/metalborn/tags/entity_types/targets/nickel.json
 da9ec5f7ed64a0d225e00ee60b8e6d6408b431fb data/metalborn/tags/entity_types/targets/pewter.json
 82053daa300f581865ee639d7c5b293aa4a14e96 data/metalborn/tags/entity_types/targets/rose_gold.json
 0958a192333a95009361b706cd3836093a760177 data/metalborn/tags/entity_types/targets/silver.json
 9047c80c99c20b1b1628e0607ebb961e5d274d39 data/metalborn/tags/entity_types/targets/steel.json
 52c5dc3bb3cd7549415d3f88963c61fcecbe268d data/metalborn/tags/entity_types/targets/tin.json
-938693c0d925c28b546fc000571541b1f61e42c1 data/metalborn/tags/entity_types/targets/zinc.json
+a15d44b6e4cb2744c21fd173d65bb9858de283b1 data/metalborn/tags/entity_types/targets/zinc.json

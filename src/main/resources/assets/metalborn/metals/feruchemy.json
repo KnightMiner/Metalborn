@@ -14,11 +14,13 @@
     
     "metalborn:silver",
     "metalborn:electrum",
+    "metalborn:duralumin",
+
     "metalborn:zinc",
     "metalborn:brass",
     "metalborn:nickel",
     "metalborn:constantan",
-    
+
     "metalborn:nicrosil"
   ]
 }

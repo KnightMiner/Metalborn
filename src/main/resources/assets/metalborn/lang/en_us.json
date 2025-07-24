@@ -65,14 +65,19 @@
   "metal_power.metalborn.electrum.ferring": "Pinnacle",
   "metal_power.metalborn.electrum.target": "Guardians",
 
+  "metal_power.metalborn.duralumin": "Duralumin",
+  "metal_power.metalborn.duralumin.stores": "Stealth",
+  "metal_power.metalborn.duralumin.ferring": "Connector",
+  "metal_power.metalborn.duralumin.target": "Silverfish",
+
   "metal_power.metalborn.zinc": "Zinc",
-  "metal_power.metalborn.zinc.stores": "Stealth",
-  "metal_power.metalborn.zinc.ferring": "Sparker",
-  "metal_power.metalborn.zinc.target": "Silverfish",
+  "metal_power.metalborn.zinc.stores": "Breath",
+  "metal_power.metalborn.zinc.ferring": "Gasper",
+  "metal_power.metalborn.zinc.target": "Drowned",
   "metal_power.metalborn.nickel": "Nickel",
-  "metal_power.metalborn.nickel.stores": "Stealth",
-  "metal_power.metalborn.nickel.ferring": "Sparker",
-  "metal_power.metalborn.nickel.target": "Silverfish",
+  "metal_power.metalborn.nickel.stores": "Breath",
+  "metal_power.metalborn.nickel.ferring": "Gasper",
+  "metal_power.metalborn.nickel.target": "Drowned",
 
   "metal_power.metalborn.brass": "Brass",
   "metal_power.metalborn.brass.stores": "Warmth",
@@ -175,6 +180,7 @@
   "attribute.name.metalborn.determination": "Determination",
   "attribute.name.metalborn.warmth": "Warmth",
   "attribute.name.metalborn.visibility_multiplier": "Visibility",
+  "attribute.name.metalborn.respiration": "Respiration",
 
   "attribute.name.metalborn.heat_damage": "Heat Damage",
   "death.attack.metalborn.melee_heat": "%1$s was burned to death by %2$s",

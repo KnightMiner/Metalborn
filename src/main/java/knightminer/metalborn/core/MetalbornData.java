@@ -112,6 +112,15 @@ public interface MetalbornData extends INBTSerializable<CompoundTag> {
   default void clear() {}
 
 
+  /* Breath */
+
+  default float getLastWalkDistance() {
+    return 0;
+  }
+
+  default void setLastWalkDistance(float value) {}
+
+
   /** Empty instance for defaulting data related methods */
   MetalbornData EMPTY = new MetalbornData() {
     @Override

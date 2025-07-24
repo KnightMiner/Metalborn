@@ -36,10 +36,12 @@ public class EntityTagProvider extends EntityTypeTagsProvider {
     tag(MetalIds.silver).add(EntityType.PILLAGER, EntityType.VINDICATOR, EntityType.ILLUSIONER, EntityType.WITCH);
     tag(MetalIds.electrum).add(EntityType.GUARDIAN, EntityType.ELDER_GUARDIAN);
     // compat hybrid
-    tag(MetalIds.zinc).add(EntityType.SILVERFISH);
-    tag(MetalIds.nickel).add(EntityType.SILVERFISH);
+    tag(MetalIds.zinc).add(EntityType.DROWNED);
+    tag(MetalIds.nickel).add(EntityType.DROWNED);
     tag(MetalIds.brass).add(EntityType.BLAZE);
     tag(MetalIds.constantan).add(EntityType.BLAZE);
+    // compat spiritual
+    tag(MetalIds.duralumin).add(EntityType.SILVERFISH);
   }
 
   /** Creates a tag for a metal */

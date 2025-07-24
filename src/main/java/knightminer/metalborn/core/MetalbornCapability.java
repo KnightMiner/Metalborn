@@ -54,6 +54,8 @@ public class MetalbornCapability implements ICapabilitySerializable<CompoundTag>
   private final MetalmindInventory metalminds;
   /** Inventory of all spikes */
   private final SpikeInventory spikes;
+  /** Copy of {@link Entity#walkDistO} for usage in ticking logic since it gets cleared at start of tick. */
+  private float lastWalkDistance = 0;
 
   private MetalbornCapability(Player player) {
     this.player = player;
@@ -223,6 +225,19 @@ public class MetalbornCapability implements ICapabilitySerializable<CompoundTag>
     spikes.clear();
   }
 
+
+  /* Walking */
+
+  @Override
+  public float getLastWalkDistance() {
+    return lastWalkDistance;
+  }
+
+  @Override
+  public void setLastWalkDistance(float lastWalkDistance) {
+    this.lastWalkDistance = lastWalkDistance;
+  }
+  
 
   /* Capability logic */
 
