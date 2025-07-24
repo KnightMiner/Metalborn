@@ -1,0 +1,32 @@
+{
+  "type": "metalborn:shapeless_forge",
+  "conditions": [
+    {
+      "type": "mantle:tag_empty",
+      "tag": "forge:ingots/duralumin"
+    }
+  ],
+  "cooking_time": 400,
+  "experience": 2.0,
+  "ingredients": [
+    {
+      "tag": "forge:ingots/aluminum"
+    },
+    {
+      "tag": "forge:ingots/aluminum"
+    },
+    {
+      "tag": "forge:ingots/aluminum"
+    },
+    {
+      "tag": "forge:nuggets/copper"
+    }
+  ],
+  "result": {
+    "count": 1,
+    "item": "metalborn:bracer",
+    "nbt": {
+      "metal": "metalborn:duralumin"
+    }
+  }
+}

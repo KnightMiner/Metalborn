@@ -6,6 +6,7 @@ import net.minecraft.data.recipes.FinishedRecipe;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.ItemLike;
 import slimeknights.mantle.recipe.helper.ItemOutput;
@@ -25,6 +26,11 @@ public class ShapelessForgeRecipeBuilder extends AbstractForgeRecipeBuilder<Shap
   /** Creates a new builder instance */
   public static ShapelessForgeRecipeBuilder shapeless(ItemOutput result) {
     return new ShapelessForgeRecipeBuilder(result);
+  }
+
+  /** Creates a new builder instance */
+  public static ShapelessForgeRecipeBuilder shapeless(ItemStack result) {
+    return shapeless(ItemOutput.fromStack(result));
   }
 
   /** Creates a new builder instance */

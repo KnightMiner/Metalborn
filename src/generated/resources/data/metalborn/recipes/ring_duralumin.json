@@ -1,0 +1,32 @@
+{
+  "type": "metalborn:shapeless_forge",
+  "conditions": [
+    {
+      "type": "mantle:tag_empty",
+      "tag": "forge:nuggets/duralumin"
+    }
+  ],
+  "cooking_time": 100,
+  "experience": 0.5,
+  "ingredients": [
+    {
+      "tag": "forge:nuggets/aluminum"
+    },
+    {
+      "tag": "forge:nuggets/aluminum"
+    },
+    {
+      "tag": "forge:nuggets/aluminum"
+    },
+    {
+      "tag": "forge:nuggets/copper"
+    }
+  ],
+  "result": {
+    "count": 1,
+    "item": "metalborn:ring",
+    "nbt": {
+      "metal": "metalborn:duralumin"
+    }
+  }
+}

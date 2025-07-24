@@ -74,6 +74,7 @@ public class ItemTagProvider extends ItemTagsProvider {
     addIngotLike(MetalIds.zinc, false);
     addIngotLike(MetalIds.nickel, false);
     addIngotLike(MetalIds.silver, false);
+    addIngotLike("aluminum", false);
     addIngotLike("cobalt", false);
 
     // netherite scrap is weird as its not fully tagged, but we can deal with that

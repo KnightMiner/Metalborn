@@ -9,6 +9,7 @@ import net.minecraft.data.recipes.ShapedRecipeBuilder;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.level.ItemLike;
@@ -38,6 +39,11 @@ public class ShapedForgeRecipeBuilder extends AbstractForgeRecipeBuilder<ShapedF
   /** Creates a new builder instance */
   public static ShapedForgeRecipeBuilder shaped(ItemOutput result) {
     return new ShapedForgeRecipeBuilder(result);
+  }
+
+  /** Creates a new builder instance */
+  public static ShapedForgeRecipeBuilder shaped(ItemStack result) {
+    return shaped(ItemOutput.fromStack(result));
   }
 
   /** Creates a new builder instance */

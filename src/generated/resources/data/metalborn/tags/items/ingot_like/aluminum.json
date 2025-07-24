@@ -1,0 +1,16 @@
+{
+  "values": [
+    {
+      "id": "#forge:ingots/aluminum",
+      "required": false
+    },
+    {
+      "id": "#forge:raw_materials/aluminum",
+      "required": false
+    },
+    {
+      "id": "#forge:ores/aluminum",
+      "required": false
+    }
+  ]
+}
