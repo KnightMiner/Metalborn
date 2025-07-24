@@ -11,17 +11,21 @@ import knightminer.metalborn.Metalborn;
 import knightminer.metalborn.core.MetalbornData;
 import knightminer.metalborn.item.Spike;
 import knightminer.metalborn.item.metalmind.Metalmind;
+import knightminer.metalborn.item.metalmind.MetalmindItem;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
 import net.minecraft.commands.arguments.EntityArgument;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import org.jetbrains.annotations.Nullable;
 import slimeknights.mantle.command.MantleCommand;
 
 import java.util.Collection;
 import java.util.List;
 import java.util.Locale;
+import java.util.UUID;
 
 /** Command for filling and draining metalminds and spikes */
 public class MetalmindCommand {
@@ -40,6 +44,9 @@ public class MetalmindCommand {
   // Failure for nothing happening
   private static final SimpleCommandExceptionType NO_ACTION_METALMIND = new SimpleCommandExceptionType(Metalborn.component("command", "metalmind.error.no_action"));
   private static final SimpleCommandExceptionType NO_ACTION_SPIKE = new SimpleCommandExceptionType(Metalborn.component("command", "spike.error.no_action"));
+  private static final SimpleCommandExceptionType NO_ACTION_IDENTITY = new SimpleCommandExceptionType(Metalborn.component("command", "identity.error.no_action"));
+  /** UUID for fake player Sazed, used for testing identity. */
+  private static final UUID SAZED = UUID.fromString("b0b6dbd9-8cbf-4897-8267-591fc275a9c6");
 
   /**
    * Registers this sub command with the root command
@@ -51,10 +58,41 @@ public class MetalmindCommand {
       .then(subCommand(MetalType.METALMIND, Operation.FILL))
       .then(subCommand(MetalType.METALMIND, Operation.DRAIN))
       .then(subCommand(MetalType.METALMIND, Operation.SET)));
+
     // spike fill|set [targets] [amount]
     root.then(Commands.literal("spike").requires(sender -> sender.hasPermission(MantleCommand.PERMISSION_GAME_COMMANDS))
       .then(subCommand(MetalType.SPIKE, Operation.FILL))
       .then(subCommand(MetalType.SPIKE, Operation.SET)));
+
+    // identity set [identity] [targets]
+    // identity clear|sazed [targets]
+    root.then(Commands.literal("identity").requires(sender -> sender.hasPermission(MantleCommand.PERMISSION_GAME_COMMANDS))
+      .then(Commands.literal("set")
+        // sets the identity for yourself to yourself
+        .executes(context -> {
+          Player player = context.getSource().getPlayerOrException();
+          return setIdentity(context, List.of(player), player);
+        })
+        // sets identity for yourself to listed player
+        .then(Commands.argument("identity", EntityArgument.player())
+          .executes(context -> setIdentityToArgument(context, List.of(context.getSource().getPlayerOrException())))
+          // sets identity on targets to listed player
+          .then(Commands.argument("targets", EntityArgument.players())
+            .executes(context -> setIdentityToArgument(context, EntityArgument.getPlayers(context, "targets"))))))
+      // clears identity
+      .then(Commands.literal("clear")
+        // on the sender
+        .executes(context -> setSenderIdentity(context, null, "unkeyed"))
+        // on the list of targets
+        .then(Commands.argument("targets", EntityArgument.players())
+          .executes(context -> setTargetIdentity(context, null, "unkeyed"))))
+      // makes identity sazed
+      .then(Commands.literal("sazed")
+        // on the sender
+        .executes(context -> setSenderIdentity(context, SAZED, "Sazed"))
+        // on the list of targets
+        .then(Commands.argument("targets", EntityArgument.players())
+          .executes(context -> setTargetIdentity(context, SAZED, "Sazed")))));
   }
 
   /** Adds a subcommand for the given metal type and operation */
@@ -134,7 +172,7 @@ public class MetalmindCommand {
           throw NO_ACTION_METALMIND.create();
         }
         // if only one target, simpler message
-        sendSuccess(context, "metalmind.", targets, successes, op, amount);
+        sendSuccess(context, "metalmind.", targets, successes, op, amount == -1 ? null : amount);
         return successes;
       }
     },
@@ -183,7 +221,7 @@ public class MetalmindCommand {
         if (successes == 0) {
           throw NO_ACTION_SPIKE.create();
         }
-        sendSuccess(context, "spike.", targets, successes, op, amount);
+        sendSuccess(context, "spike.", targets, successes, op, amount == -1 ? null : amount);
         return successes;
       }
     };
@@ -198,17 +236,84 @@ public class MetalmindCommand {
   }
 
   /** Displays the success message */
-  private static void sendSuccess(CommandContext<CommandSourceStack> context, String variant, Collection<? extends Player> targets, int successes, Operation op, int amount) {
+  private static void sendSuccess(CommandContext<CommandSourceStack> context, String variant, Collection<? extends Player> targets, int successes, Operation op, @Nullable Object value) {
     CommandSourceStack source = context.getSource();
     if (successes == 1) {
       // 1 target gets detailed message
-      source.sendSuccess(() -> Component.translatable(KEY_PREFIX + variant + KEY_SINGLE + op.getName(), targets.iterator().next().getDisplayName(), amount), true);
-    } else if (amount == -1) {
+      source.sendSuccess(() -> Component.translatable(KEY_PREFIX + variant + KEY_SINGLE + op.getName(), targets.iterator().next().getDisplayName(), value), true);
+    } else if (value == null) {
       // with multiple targets, can't display -1 so just say full or empty
       source.sendSuccess(() -> Component.translatable(KEY_PREFIX + variant + KEY_MULTIPLE + op.getNoSize(), successes), true);
     } else {
       // multiple targets and amount works
-      source.sendSuccess(() -> Component.translatable(KEY_PREFIX + variant + KEY_MULTIPLE + op.getName(), successes, amount), true);
+      source.sendSuccess(() -> Component.translatable(KEY_PREFIX + variant + KEY_MULTIPLE + op.getName(), successes, value), true);
     }
+  }
+
+
+  /* Identity */
+
+  /** Sets the identity on the list of targets to the argument player */
+  private static int setIdentityToArgument(CommandContext<CommandSourceStack> context, Collection<? extends Player> targets) throws CommandSyntaxException {
+    return setIdentity(context, targets, EntityArgument.getPlayer(context, "identity"));
+  }
+
+  /** Sets the identity on the list of targets to the given player */
+  private static int setIdentity(CommandContext<CommandSourceStack> context, Collection<? extends Player> targets, Player player) throws CommandSyntaxException {
+    return setIdentity(context, targets, player.getUUID(), player.getGameProfile().getName());
+  }
+
+  /** Sets the identity on the list of targets in the argument to the given player */
+  private static int setSenderIdentity(CommandContext<CommandSourceStack> context, @Nullable UUID uuid, String name) throws CommandSyntaxException {
+    return setIdentity(context, List.of(context.getSource().getPlayerOrException()), uuid, name);
+  }
+
+  /** Sets the identity on the list of targets in the argument to the given player */
+  private static int setTargetIdentity(CommandContext<CommandSourceStack> context, @Nullable UUID uuid, String name) throws CommandSyntaxException {
+    return setIdentity(context, EntityArgument.getPlayers(context, "targets"), uuid, name);
+  }
+
+  /** Sets the identity on the list of targets */
+  private static int setIdentity(CommandContext<CommandSourceStack> context, Collection<? extends Player> targets, @Nullable UUID uuid, String name) throws CommandSyntaxException {
+    // will error immediately with a more useful error if only a single target
+    boolean single = targets.size() == 1;
+    int successes = 0;
+    // apply effect to each entity
+    for (Player target : targets) {
+      // must have item
+      ItemStack stack = target.getMainHandItem();
+      if (!stack.isEmpty()) {
+        if (stack.getItem() instanceof Metalmind) {
+          // null means remove owner
+          if (uuid == null) {
+            CompoundTag tag = stack.getTag();
+            if (tag != null) {
+              tag.remove(MetalmindItem.TAG_OWNER);
+              tag.remove(MetalmindItem.TAG_OWNER_NAME);
+              if (tag.isEmpty()) {
+                stack.setTag(null);
+              }
+            }
+          } else {
+            // nonnull means set owner
+            CompoundTag tag = stack.getOrCreateTag();
+            tag.putUUID(MetalmindItem.TAG_OWNER, uuid);
+            tag.putString(MetalmindItem.TAG_OWNER_NAME, name);
+          }
+          successes++;
+        } else if (single) {
+          throw ERROR_NO_METALMIND.create(stack.getItem().getName(stack).getString());
+        }
+      } else if (single) {
+        throw ERROR_NO_ITEM.create(target);
+      }
+    }
+
+    // if nothing changed, throw
+    if (successes == 0) {
+      throw NO_ACTION_IDENTITY.create();
+    }
+    sendSuccess(context, "identity.", targets, successes, Operation.SET, name);
+    return successes;
   }
 }

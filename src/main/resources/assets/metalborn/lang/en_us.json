@@ -270,6 +270,9 @@
   "command.metalborn.spike.success.multiple.set": "Set %s target's spike charge to %s.",
   "command.metalborn.spike.success.multiple.full": "Filled %s target's metalmind completely.",
 
+  "command.metalborn.identity.success.single.set": "Set %s's metalmind identity to %s.",
+  "command.metalborn.identity.success.multiple.set": "Set %s target's metalmind identity to %s.",
+
   "command.metalborn.error.itemless": "%s is not holding any item.",
   "command.metalborn.metalmind.error.not_metalmind": "%s is not a valid metalmind.",
   "command.metalborn.metalmind.no_action": "No target had a metalmind in their hand.",
