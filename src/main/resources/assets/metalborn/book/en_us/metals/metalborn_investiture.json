@@ -18,7 +18,6 @@
     "Can use nicrosil regardless of powers"
   ],
   "tapping": [
-    "May use stored power",
-    "Can tap regardless of who filled"
+    "Grants access to stored ferring power"
   ]
 }

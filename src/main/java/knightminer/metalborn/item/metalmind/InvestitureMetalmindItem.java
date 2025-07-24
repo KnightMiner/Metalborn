@@ -80,7 +80,8 @@ public class InvestitureMetalmindItem extends MetalmindItem implements MetalItem
   public Usable canUse(ItemStack stack, int index, Player player, MetalbornData data) {
     // index is -1 when asking from the context of the inveotry, in that case just always say its usable
     // allows us to transfer investiture between different nicrosil metalminds of the same type even if we can't fill one
-    return index == -1 || canFill(data.getFerringType(), getMetal(stack), getAmount(stack)) ? Usable.ALWAYS : Usable.TAPPING;
+    Usable identity = checkIdentity(stack, data);
+    return Usable.from(identity.canTap(), identity.canStore() && (index == -1 || canFill(data.getFerringType(), getMetal(stack), getAmount(stack))));
   }
 
   @Override
@@ -123,8 +124,8 @@ public class InvestitureMetalmindItem extends MetalmindItem implements MetalItem
 
   @Override
   protected void startFillingMetalmind(CompoundTag tag, Player player, MetalbornData data) {
+    super.startFillingMetalmind(tag, player, data);
     // onUpdate already ensured this is a valid ferring type, so just store it
-    // note we don't store identity for investiture metalminds
     tag.putString(MetalItem.TAG_METAL, data.getFerringType().toString());
   }
 
@@ -153,7 +154,7 @@ public class InvestitureMetalmindItem extends MetalmindItem implements MetalItem
   @Override
   protected boolean isTransferrable(ItemStack destination, ItemStack source) {
     // any investiture metalmind is fine, as long as the power being stored matches (which isSamePower handles)
-    return source.getItem() instanceof InvestitureMetalmindItem && isSamePower(destination, source);
+    return source.getItem() instanceof InvestitureMetalmindItem && isSamePower(destination, source) && isSameIdentity(destination, source);
   }
 
 
@@ -175,6 +176,11 @@ public class InvestitureMetalmindItem extends MetalmindItem implements MetalItem
     // amount
     int amount = getAmount(stack);
     appendAmount(METAL, amount, tooltip);
+
+    // owner
+    if (amount > 0) {
+      appendOwner(stack, tooltip);
+    }
   }
 
 
