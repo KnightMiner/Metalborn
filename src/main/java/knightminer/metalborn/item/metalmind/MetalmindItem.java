@@ -31,8 +31,8 @@ public abstract class MetalmindItem extends Item implements Metalmind {
   private static final Component UNKEYED = Component.translatable(KEY_OWNER, Metalborn.component("item", "metalmind.owner.none").withStyle(ChatFormatting.ITALIC)).withStyle(ChatFormatting.GRAY);
   // NBT keys
   public static final String TAG_AMOUNT = "amount";
-  private static final String TAG_OWNER = "owner";
-  private static final String TAG_OWNER_NAME = "owner_name";
+  protected static final String TAG_OWNER = "owner";
+  protected static final String TAG_OWNER_NAME = "owner_name";
 
   /** Amount to multiply capacity by, for larger metalminds */
   protected final int capacityMultiplier;
@@ -206,11 +206,11 @@ public abstract class MetalmindItem extends Item implements Metalmind {
   @Override
   public boolean overrideOtherStackedOnMe(ItemStack stack, ItemStack held, Slot slot, ClickAction action, Player player, SlotAccess access) {
     // we can transfer a single metalmind of power into the slot stack, provided its the same power
-    if (held.getCount() == 1 && action == ClickAction.SECONDARY && isTransferrable(stack, held) && slot.allowModification(player)) {
+    if (held.getCount() == 1 && action == ClickAction.SECONDARY && slot.allowModification(player) && isTransferrable(stack, held)) {
       MetalmindItem other = (MetalmindItem) held.getItem();
       MetalbornData data = MetalbornData.getData(player);
       // ensure both are usable (e.g. no identity issues)
-      if (canUse(stack, -1, player, data) && other.canUse(held, -1, player, data)) {
+      if (canUse(stack, -1, player, data).canStore() && other.canUse(held, -1, player, data).canTap()) {
         // attempt transfer
         int filled = fillFrom(stack, player, held, data);
         if (filled > 0) {
@@ -231,7 +231,7 @@ public abstract class MetalmindItem extends Item implements Metalmind {
   public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
     // attempt to wear the metalmind, requires a free slot
     ItemStack stack = player.getItemInHand(hand);
-    if (canUse(stack, player)) {
+    if (canUse(stack, player) != Usable.NEVER) {
       if (!level.isClientSide) {
         MetalbornData.getData(player).equip(stack);
       }

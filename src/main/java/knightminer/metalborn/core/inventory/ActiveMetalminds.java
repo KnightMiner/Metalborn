@@ -42,7 +42,7 @@ public class ActiveMetalminds {
   /** Reference to the parent object */
   private final MetalbornCapability data;
 
-  /** Map of all active effects */
+  /** Map of all active metal powers */
   private final Map<MetalId, ActiveMetalmind> active = new LinkedHashMap<>();
   /** Constructor for adding new effects */
   private final Function<MetalId, ActiveMetalmind> constructor;
@@ -76,7 +76,7 @@ public class ActiveMetalminds {
 
   /* Investiture */
 
-  /** Checks if the ferring power can be stored at the given index */
+  /** Checks if the ferring power is being stored */
   public boolean isStoringFerring() {
     return !storingFerring.isEmpty();
   }
@@ -266,7 +266,7 @@ public class ActiveMetalminds {
       Iterator<MetalmindStack> iterator = list.iterator();
       while (iterator.hasNext()) {
         MetalmindStack stack = iterator.next();
-        if (!stack.canUse()) {
+        if (!stack.canUse().isValid(stack.level)) {
           change += stack.level;
           stack.level = 0;
           iterator.remove();

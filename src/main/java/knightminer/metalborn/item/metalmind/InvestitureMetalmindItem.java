@@ -70,9 +70,17 @@ public class InvestitureMetalmindItem extends MetalmindItem implements MetalItem
     return MetalManager.INSTANCE.get(METAL).capacity() * capacityMultiplier;
   }
 
+  /** Checks if we are allowed to fill the given metalmind */
+  private static boolean canFill(MetalId ferring, MetalId metalmind, int amount) {
+    // must have a ferring type, and it must match the type we are storing (or we have no current type)
+    return ferring.isPresent() && (amount == 0 || metalmind == MetalId.NONE || metalmind.equals(ferring));
+  }
+
   @Override
-  public boolean canUse(ItemStack stack, int index, Player player, MetalbornData data) {
-    return true;
+  public Usable canUse(ItemStack stack, int index, Player player, MetalbornData data) {
+    // index is -1 when asking from the context of the inveotry, in that case just always say its usable
+    // allows us to transfer investiture between different nicrosil metalminds of the same type even if we can't fill one
+    return index == -1 || canFill(data.getFerringType(), getMetal(stack), getAmount(stack)) ? Usable.ALWAYS : Usable.TAPPING;
   }
 
   @Override
@@ -98,9 +106,7 @@ public class InvestitureMetalmindItem extends MetalmindItem implements MetalItem
     // store the ferring if the type matches
     if (newLevel < 0 && oldLevel >= 0) {
       MetalId ferringType = data.getFerringType();
-      int amount = getAmount(stack);
-      // must have a ferring type, and it must match the type we are storing (or we have no current type)
-      if (ferringType.isPresent() && (amount == 0 || metalId == MetalId.NONE || ferringType.equals(metalId))) {
+      if (canFill(ferringType, metalId, getAmount(stack))) {
         data.storeFerring(index);
         return true;
       }

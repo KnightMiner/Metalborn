@@ -47,10 +47,10 @@ public class PowerMetalmindItem extends MetalmindItem implements MetalItem {
   }
 
   @Override
-  public boolean canUse(ItemStack stack, int index, Player player, MetalbornData data) {
+  public Usable canUse(ItemStack stack, int index, Player player, MetalbornData data) {
     // must have a metal, be able to use it, and be the owner
     MetalId metal = getMetal(stack);
-    return metal != MetalId.NONE && data.canUse(metal) && isOwner(stack, player, data);
+    return metal != MetalId.NONE && data.canUse(metal) && isOwner(stack, player, data) ? Usable.ALWAYS : Usable.NEVER;
   }
 
   @Override

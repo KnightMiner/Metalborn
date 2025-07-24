@@ -2,6 +2,7 @@ package knightminer.metalborn.client;
 
 import knightminer.metalborn.Metalborn;
 import knightminer.metalborn.core.MetalbornData;
+import knightminer.metalborn.item.metalmind.Metalmind.Usable;
 import knightminer.metalborn.menu.MetalbornMenu;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.gui.GuiGraphics;
@@ -37,20 +38,20 @@ public class MetalbornScreen extends AbstractContainerScreen<MetalbornMenu> {
   /** V index for hovered button */
   private static final int HOVER_OFFSET = BUTTON_HEIGHT;
   /** V index for storing button */
-  private static final int STORING_V = 2 * BUTTON_HEIGHT;
+  private static final int STORING_V = 4 * BUTTON_HEIGHT;
   /** V index for tapping button */
-  private static final int TAPPING_V = 4 * BUTTON_HEIGHT;
+  private static final int TAPPING_V = 6 * BUTTON_HEIGHT;
 
   /** X coordinate for metalmind button */
   private static final int METALMIND_X = 47;
   /** Y coordinate for info buttons */
   private static final int INFO_Y = 67;
   /** V coordinate for metalmind hover */
-  private static final int METALMIND_HOVER_V = 30;
+  private static final int METALMIND_HOVER_V = 40;
   /** X coordinate for spike button */
   private static final int SPIKE_X = 117;
   /** V coordinate for spike hover */
-  private static final int SPIKE_HOVER_V = 42;
+  private static final int SPIKE_HOVER_V = 52;
   /** Size of the info icons */
   private static final int INFO_SIZE = 12;
 
@@ -89,7 +90,11 @@ public class MetalbornScreen extends AbstractContainerScreen<MetalbornMenu> {
     mouseX -= leftPos;
     mouseY -= topPos;
     for (Slot slot : menu.getMetalmindSlots()) {
-      if (slot.hasItem() && menu.canUse(slot.index)) {
+      if (!slot.hasItem()) {
+        continue;
+      }
+      Usable usable = menu.canUse(slot.index);
+      if (usable != Usable.NEVER) {
         // draw backgrounds, always needed
         int startX = slot.x - 1;
         int startY = slot.y + 17;
@@ -106,7 +111,11 @@ public class MetalbornScreen extends AbstractContainerScreen<MetalbornMenu> {
 
         // if hovering, offset V index
         if (startY <= mouseY && mouseY < startY + BUTTON_HEIGHT && startX <= mouseX && mouseX < startX + BUTTON_WIDTH) {
-          v += HOVER_OFFSET;
+          if (level == 0) {
+            v += HOVER_OFFSET * usable.ordinal();
+          } else {
+            v += HOVER_OFFSET;
+          }
         }
         // draw the button
         graphics.blit(TEXTURE, startX, startY, ELEMENT_U, v, BUTTON_WIDTH, BUTTON_HEIGHT);
@@ -132,16 +141,30 @@ public class MetalbornScreen extends AbstractContainerScreen<MetalbornMenu> {
     int checkX = mouseX - leftPos;
     int checkY = mouseY - topPos;
     for (Slot slot : menu.getMetalmindSlots()) {
-      if (slot.hasItem() && menu.canUse(slot.index)) {
-        int startX = slot.x - 1;
-        int startY = slot.y + 17;
-        if (startY <= checkY && checkY < startY + BUTTON_HEIGHT && startX <= checkX && checkX < startX + BUTTON_WIDTH) {
+      // check location and slot filled first, its fastest
+      int startX = slot.x - 1;
+      int startY = slot.y + 17;
+      if (startY <= checkY && checkY < startY + BUTTON_HEIGHT && startX <= checkX && checkX < startX + BUTTON_WIDTH && slot.hasItem()) {
+        Usable usable = menu.canUse(slot.index);
+        if (usable != Usable.NEVER) {
           int level = menu.getMetalmindLevel(slot.index);
           Component stores = menu.getStores(slot.index);
-          graphics.renderComponentTooltip(font, List.of(
-            Component.translatable(level < 0 ? KEY_STORE_STOP : KEY_STORE_START, stores),
-            Component.translatable(level > 0 ? KEY_TAP_STOP : KEY_TAP_START, stores)
-          ), mouseX, mouseY);
+          List<Component> tooltip = new ArrayList<>(2);
+          // if storing, suggest stopping
+          if (level < 0) {
+            tooltip.add(Component.translatable(KEY_STORE_STOP, stores));
+          // not storing and can? suggest doing so
+          } else if (usable.canStore()) {
+            tooltip.add(Component.translatable(KEY_STORE_START, stores));
+          }
+          // if tapping, suggest stopping
+          if (level > 0) {
+            tooltip.add(Component.translatable(KEY_TAP_STOP, stores));
+          // not tapping and can? suggest doing so
+          } else if (usable.canTap()) {
+            tooltip.add(Component.translatable(KEY_TAP_START, stores));
+          }
+          graphics.renderComponentTooltip(font, tooltip, mouseX, mouseY);
         }
       }
     }
@@ -179,10 +202,23 @@ public class MetalbornScreen extends AbstractContainerScreen<MetalbornMenu> {
 
       // check if we clicked any slot button
       for (Slot slot : menu.getMetalmindSlots()) {
-        if (slot.hasItem() && menu.canUse(slot.index)) {
-          int startX = slot.x - 1;
-          int startY = slot.y + 17;
-          if (startY <= checkY && checkY < startY + BUTTON_HEIGHT && startX <= checkX && checkX < startX + BUTTON_WIDTH) {
+        int startX = slot.x - 1;
+        int startY = slot.y + 17;
+        // check mouse inside next as its fastest, and slot having an item
+        if (startY <= checkY && checkY < startY + BUTTON_HEIGHT && startX <= checkX && checkX < startX + BUTTON_WIDTH && slot.hasItem()) {
+          // must be usable
+          Usable usable = menu.canUse(slot.index);
+          int level = menu.getMetalmindLevel(slot.index);
+          // if we are actively fill or tapping, either button will cancel, though one might reverse
+          if (level != 0 || (button == 0 ? usable.canStore() : usable.canTap())) {
+            // if tapping, and we can't store, map the storing button to stop tapping
+            if (level > 0 && button == 0 && !usable.canStore()) {
+              button = 1;
+            }
+            // if storing, and we can't tap, map the tapping button to stop storing
+            if (level < 0 && button == 1 && !usable.canTap()) {
+              button = 0;
+            }
             minecraft.gameMode.handleInventoryButtonClick(menu.containerId, slot.index * 2 + button);
             return true;
           }

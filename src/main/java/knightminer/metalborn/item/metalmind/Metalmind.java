@@ -21,7 +21,7 @@ public interface Metalmind extends Fillable {
   }
 
   /** Checks if the given player can use this metalmind */
-  default boolean canUse(ItemStack stack, Player player) {
+  default Usable canUse(ItemStack stack, Player player) {
     return canUse(stack, -1, player, MetalbornData.getData(player));
   }
 
@@ -32,8 +32,8 @@ public interface Metalmind extends Fillable {
    * @param player Player attempting to use the metalmind.
    * @param data   Metalborn data.
    */
-  default boolean canUse(ItemStack stack, int index, Player player, MetalbornData data) {
-    return false;
+  default Usable canUse(ItemStack stack, int index, Player player, MetalbornData data) {
+    return Usable.NEVER;
   }
 
   /**
@@ -98,8 +98,50 @@ public interface Metalmind extends Fillable {
   /** Default metalmind instance */
   Metalmind EMPTY = new Metalmind() {
     @Override
-    public boolean canUse(ItemStack stack, Player player) {
-      return false;
+    public Usable canUse(ItemStack stack, Player player) {
+      return Usable.NEVER;
     }
   };
+
+  /** Enum return for {@link #canUse(ItemStack, int, Player, MetalbornData)} */
+  enum Usable {
+    /** Metalmind cannot be used */
+    NEVER,
+    /** Can tap metalmind, but not store */
+    TAPPING,
+    /** Can store in metalmind, but not tap */
+    STORING,
+    /** Can both store and tap metalmind */
+    ALWAYS;
+
+    /** Converts a pair of booleans into a usable value */
+    public static Usable from(boolean canTap, boolean canStore) {
+      if (canTap) {
+        return canStore ? ALWAYS : TAPPING;
+      } else {
+        return canStore ? STORING : NEVER;
+      }
+    }
+
+    /** Metalmind can be tapped */
+    public boolean canTap() {
+      return this == ALWAYS || this == TAPPING;
+    }
+
+    /** Can store in metalmind */
+    public boolean canStore() {
+      return this == ALWAYS || this == STORING;
+    }
+
+    /** Checks if the level is valid for this usable state. */
+    public boolean isValid(int level) {
+      if (level > 0) {
+        return canTap();
+      }
+      if (level < 0) {
+        return canStore();
+      }
+      return true;
+    }
+  }
 }

@@ -7,6 +7,7 @@ import knightminer.metalborn.core.Registration;
 import knightminer.metalborn.core.inventory.MetalmindInventory;
 import knightminer.metalborn.core.inventory.MetalmindInventory.MetalmindStack;
 import knightminer.metalborn.core.inventory.SpikeInventory;
+import knightminer.metalborn.item.metalmind.Metalmind.Usable;
 import knightminer.metalborn.metal.MetalId;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.chat.Component;
@@ -175,13 +176,13 @@ public class MetalbornMenu extends BaseMenu {
   }
 
   /** Gets the metal for the given slot */
-  public boolean canUse(int slot) {
+  public Usable canUse(int slot) {
     if (metalminds != null) {
       MetalmindStack stack = metalminds.getSlot(slot);
       if (stack != null) {
         return stack.canUse();
       }
     }
-    return false;
+    return Usable.NEVER;
   }
 }

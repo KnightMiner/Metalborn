@@ -4,6 +4,7 @@ import knightminer.metalborn.core.MetalbornData;
 import knightminer.metalborn.core.Registration;
 import knightminer.metalborn.core.inventory.MetalmindInventory.MetalmindStack;
 import knightminer.metalborn.item.metalmind.Metalmind;
+import knightminer.metalborn.item.metalmind.Metalmind.Usable;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.network.chat.Component;
@@ -104,7 +105,7 @@ public class MetalmindInventory extends MetalInventory<MetalmindStack> implement
     }
 
     /** Returns true if this metalmind is usable by the player */
-    public boolean canUse() {
+    public Usable canUse() {
       return metalmind.canUse(stack, index, player, data);
     }
 
@@ -136,7 +137,7 @@ public class MetalmindInventory extends MetalInventory<MetalmindStack> implement
     /** Updates the level on the stack */
     public void setLevel(int newLevel) {
       // ensure the metalmind is actually usable to change the level
-      if (!canUse()) {
+      if (!canUse().isValid(newLevel)) {
         newLevel = 0;
       }
       // if the metalmind is empty, no tapping
@@ -209,7 +210,7 @@ public class MetalmindInventory extends MetalInventory<MetalmindStack> implement
 
     /** Refreshes the stack in the active metalmind list */
     private void refresh() {
-      if (level != 0 && canUse()) {
+      if (level != 0 && canUse().isValid(level)) {
         if (!onUpdate(level, 0)) {
           level = 0;
         }
