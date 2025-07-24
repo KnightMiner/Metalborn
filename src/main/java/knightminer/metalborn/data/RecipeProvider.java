@@ -292,7 +292,7 @@ public class RecipeProvider extends net.minecraft.data.recipes.RecipeProvider im
     // standard metal items
     metalMeltingCasting(consumer, Registration.RING,   List.of(Registration.INVESTITURE_RING),   Registration.RING_CAST,   MetalFilter.METALMIND, nugget * 4, tinkersFolder);
     metalMeltingCasting(consumer, Registration.BRACER, List.of(Registration.INVESTITURE_BRACER), Registration.BRACER_CAST, MetalFilter.METALMIND, ingot * 4,  tinkersFolder);
-    metalMeltingCasting(consumer, Registration.SPIKE,  List.of(),                                Registration.SPIKE_CAST,  MetalFilter.SPIKE,     ingot * 2,  tinkersFolder);
+    metalMeltingCasting(consumer, Registration.SPIKE,  List.of(Registration.INVESTITURE_SPIKE),  Registration.SPIKE_CAST,  MetalFilter.SPIKE,     ingot * 2,  tinkersFolder);
     // special metalminds
     TagKey<Fluid> nicrosil = FluidTags.create(commonResource("molten_nicrosil"));
     int nicrosilTemperature = 1100;

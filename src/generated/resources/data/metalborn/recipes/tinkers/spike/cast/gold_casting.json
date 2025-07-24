@@ -1,10 +1,15 @@
 {
   "type": "tconstruct:casting_table",
-  "cast": {
-    "type": "metalborn:metal_item",
-    "filter": "spike",
-    "item": "metalborn:spike"
-  },
+  "cast": [
+    {
+      "type": "metalborn:metal_item",
+      "filter": "spike",
+      "item": "metalborn:spike"
+    },
+    {
+      "item": "metalborn:investiture_spike"
+    }
+  ],
   "cast_consumed": true,
   "conditions": [
     {

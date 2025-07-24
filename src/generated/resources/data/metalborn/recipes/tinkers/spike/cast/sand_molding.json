@@ -9,10 +9,15 @@
   "material": {
     "tag": "tconstruct:casts/sand"
   },
-  "pattern": {
-    "type": "metalborn:metal_item",
-    "filter": "spike",
-    "item": "metalborn:spike"
-  },
+  "pattern": [
+    {
+      "type": "metalborn:metal_item",
+      "filter": "spike",
+      "item": "metalborn:spike"
+    },
+    {
+      "item": "metalborn:investiture_spike"
+    }
+  ],
   "result": "metalborn:spike_sand_cast"
 }
