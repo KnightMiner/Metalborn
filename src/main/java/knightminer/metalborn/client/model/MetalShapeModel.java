@@ -120,6 +120,7 @@ public class MetalShapeModel implements IUnbakedGeometry<MetalShapeModel> {
 
           // cache what we found for next time; if we found nothing this caches the default variant
           variants.put(value, override);
+          return override;
         }
       }
       return model;
