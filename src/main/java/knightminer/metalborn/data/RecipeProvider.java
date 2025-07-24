@@ -93,14 +93,14 @@ public class RecipeProvider extends net.minecraft.data.recipes.RecipeProvider im
       .requires(FillableIngredient.filled(MetalItemIngredient.of(Registration.SPIKE, MetalFilter.SPIKE)))
       .cookingRate(2)
       .experience(3f)
-      .save(consumer, location(metalFolder + "random_ferring"));
+      .save(consumer);
     ShapelessForgeRecipeBuilder.shapeless(Registration.CHANGE_FERRING)
       .requires(MetalbornTags.Items.NETHERITE_NUGGETS)
       .requires(FillableIngredient.filled(MetalItemIngredient.of(Registration.SPIKE, MetalFilter.SPIKE)))
       .metal()
       .cookingRate(2)
       .experience(3f)
-      .save(consumer, location(metalFolder + "change_ferring"));
+      .save(consumer);
 
     // forge
     ShapedRecipeBuilder.shaped(RecipeCategory.DECORATIONS, Registration.FORGE)
@@ -121,20 +121,20 @@ public class RecipeProvider extends net.minecraft.data.recipes.RecipeProvider im
       .metal()
       .cookingRate(1)
       .experience(0.5f)
-      .save(consumer, location("ring"));
+      .save(consumer, location("ring/metal"));
     ShapedForgeRecipeBuilder.shaped(Registration.INVESTITURE_RING)
       .pattern("##").pattern("##")
       .define('#', Registration.NICROSIL.getNuggetTag())
       .cookingRate(1)
       .experience(0.5f)
-      .save(consumer, location("ring_nicrosil"));
+      .save(consumer, location("ring/nicrosil"));
     // if no duralumin is registered, nugget version of alloying makes a ring
     ShapelessForgeRecipeBuilder.shapeless(Registration.RING.get().withMetal(MetalIds.duralumin))
       .requires(ItemTags.create(commonResource("nuggets/aluminum")), 3)
       .requires(MetalbornTags.Items.COPPER_NUGGETS, 1)
       .cookingRate(1)
       .experience(0.5f)
-      .save(withCondition(consumer, new TagEmptyCondition<>(ItemTags.create(commonResource("nuggets/duralumin")))), location("ring_duralumin"));
+      .save(withCondition(consumer, new TagEmptyCondition<>(ItemTags.create(commonResource("nuggets/duralumin")))), location("ring/duralumin"));
     // bracers
     ShapedForgeRecipeBuilder.shaped(Registration.BRACER)
       .pattern("##").pattern("##")
@@ -142,13 +142,13 @@ public class RecipeProvider extends net.minecraft.data.recipes.RecipeProvider im
       .metal()
       .cookingRate(4)
       .experience(2f)
-      .save(consumer, location("bracer"));
+      .save(consumer, location("bracer/metal"));
     ShapedForgeRecipeBuilder.shaped(Registration.INVESTITURE_BRACER)
       .pattern("##").pattern("##")
       .define('#', Registration.NICROSIL.getIngotTag())
       .cookingRate(4)
       .experience(2f)
-      .save(consumer, location("bracer_nicrosil"));
+      .save(consumer, location("bracer/nicrosil"));
     // if no duralumin is registered, its alloying recipe makes bracers
     ICondition noDuralumin = new TagEmptyCondition<>(ingot("duralumin"));
     ShapelessForgeRecipeBuilder.shapeless(Registration.BRACER.get().withMetal(MetalIds.duralumin))
@@ -156,7 +156,7 @@ public class RecipeProvider extends net.minecraft.data.recipes.RecipeProvider im
       .requires(MetalbornTags.Items.COPPER_NUGGETS, 1)
       .cookingRate(4)
       .experience(2f)
-      .save(withCondition(consumer, noDuralumin), location("bracer_duralumin"));
+      .save(withCondition(consumer, noDuralumin), location("bracer/duralumin"));
     // spikes
     ShapedForgeRecipeBuilder.shaped(Registration.SPIKE)
       .pattern(" #").pattern("# ")
@@ -164,13 +164,13 @@ public class RecipeProvider extends net.minecraft.data.recipes.RecipeProvider im
       .metal()
       .cookingRate(4) // you get 4 spikes per fuel usage, but you really want hoppers since they are unstackable
       .experience(1f)
-      .save(consumer, location("spike"));
+      .save(consumer, location("spike/metal"));
     ShapedForgeRecipeBuilder.shaped(Registration.INVESTITURE_SPIKE)
       .pattern(" #").pattern("# ")
       .define('#', Registration.NICROSIL.getIngotTag())
       .cookingRate(4)
       .experience(1f)
-      .save(consumer, location("spike_nicrosil"));
+      .save(consumer, location("spike/nicrosil"));
     // if no duralumin is registered, create its spike with a close enough 1:1 recipe
     ShapedForgeRecipeBuilder.shaped(Registration.SPIKE.get().withMetal(MetalIds.duralumin))
       .pattern(" a").pattern("c ")
@@ -178,7 +178,7 @@ public class RecipeProvider extends net.minecraft.data.recipes.RecipeProvider im
       .define('a', ingot("aluminum"))
       .cookingRate(4)
       .experience(1f)
-      .save(withCondition(consumer, noDuralumin), location("spike_duralumin"));
+      .save(withCondition(consumer, noDuralumin), location("spike/duralumin"));
 
     // unsealed is crafted from a full nicrosil metalmind and a matching empty metalmind
     ShapelessForgeRecipeBuilder.shapeless(Registration.UNSEALED_RING)
@@ -188,7 +188,7 @@ public class RecipeProvider extends net.minecraft.data.recipes.RecipeProvider im
       .metal()
       .cookingRate(4)
       .experience(0.5f)
-      .save(consumer, location("unsealed_ring"));
+      .save(consumer, location("ring/unsealed"));
 
     // alloys
     String alloyFolder = "alloy/";
