@@ -18,6 +18,7 @@ import slimeknights.mantle.data.loadable.record.RecordLoadable;
 import slimeknights.mantle.recipe.IMultiRecipe;
 import slimeknights.mantle.recipe.helper.ItemOutput;
 import slimeknights.mantle.recipe.helper.LoadableRecipeSerializer;
+import slimeknights.mantle.recipe.helper.TagPreference;
 import slimeknights.mantle.recipe.helper.TypeAwareRecipeSerializer;
 import slimeknights.mantle.recipe.ingredient.FluidIngredient;
 import slimeknights.tconstruct.library.recipe.casting.AbstractCastingRecipe;
@@ -131,7 +132,7 @@ public class MetalCastingRecipe extends AbstractCastingRecipe implements IMultiR
       Ingredient cast = getCast();
       List<ItemStack> castItems = Arrays.asList(cast.getItems());
       multiRecipes = MetalManager.INSTANCE.getSortedPowers().stream()
-        .filter(power -> power.temperature() > 0 && filter.test(power))
+        .filter(power -> power.temperature() > 0 && filter.test(power) && TagPreference.getPreference(power.fluid()).isPresent())
         .map(power -> {
           List<FluidStack> fluids = ((FluidIngredient)FluidIngredient.of(power.fluid(), amount)).getFluids();
           return new DisplayCastingRecipe(
