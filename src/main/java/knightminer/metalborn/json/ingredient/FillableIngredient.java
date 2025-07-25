@@ -136,6 +136,11 @@ public class FillableIngredient extends AbstractIngredient {
         CompoundTag tag = stack.getTag();
         return fillable.isFull(stack) && (tag == null || !tag.hasUUID(MetalmindItem.TAG_OWNER));
       }
+
+      @Override
+      public ItemStack apply(ItemStack stack) {
+        return FILLED.apply(stack);
+      }
     };
 
     public static final Loadable<FillState> LOADABLE = new EnumLoadable<>(FillState.class);
