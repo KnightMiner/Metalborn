@@ -1,0 +1,14 @@
+{
+  "type": "metalborn:blasting_metal_recycling",
+  "cooking_time": 400,
+  "experience": 0.5,
+  "ingredient": {
+    "type": "metalborn:metal_item",
+    "filter": "metalmind",
+    "item": "metalborn:bracer"
+  },
+  "result": {
+    "amount": 4,
+    "shape": "ingot"
+  }
+}

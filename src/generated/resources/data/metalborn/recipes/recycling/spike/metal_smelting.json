@@ -1,0 +1,14 @@
+{
+  "type": "metalborn:smelting_metal_recycling",
+  "cooking_time": 400,
+  "experience": 0.5,
+  "ingredient": {
+    "type": "metalborn:metal_item",
+    "filter": "spike",
+    "item": "metalborn:spike"
+  },
+  "result": {
+    "amount": 2,
+    "shape": "ingot"
+  }
+}

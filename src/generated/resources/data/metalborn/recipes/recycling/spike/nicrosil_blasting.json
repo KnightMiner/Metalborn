@@ -1,0 +1,13 @@
+{
+  "type": "metalborn:blasting",
+  "category": "misc",
+  "cooking_time": 200,
+  "experience": 0.5,
+  "ingredient": {
+    "item": "metalborn:investiture_spike"
+  },
+  "result": {
+    "count": 2,
+    "tag": "forge:ingots/nicrosil"
+  }
+}

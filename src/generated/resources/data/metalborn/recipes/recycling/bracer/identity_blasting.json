@@ -1,0 +1,46 @@
+{
+  "type": "forge:conditional",
+  "recipes": [
+    {
+      "conditions": [
+        {
+          "type": "mantle:tag_filled",
+          "tag": "forge:ingots/aluminum"
+        }
+      ],
+      "recipe": {
+        "type": "metalborn:blasting",
+        "category": "misc",
+        "cooking_time": 400,
+        "experience": 0.5,
+        "ingredient": {
+          "item": "metalborn:identity_bracer"
+        },
+        "result": {
+          "count": 4,
+          "tag": "forge:ingots/aluminum"
+        }
+      }
+    },
+    {
+      "conditions": [
+        {
+          "type": "forge:true"
+        }
+      ],
+      "recipe": {
+        "type": "metalborn:blasting",
+        "category": "misc",
+        "cooking_time": 400,
+        "experience": 0.5,
+        "ingredient": {
+          "item": "metalborn:identity_bracer"
+        },
+        "result": {
+          "count": 4,
+          "item": "minecraft:quartz"
+        }
+      }
+    }
+  ]
+}

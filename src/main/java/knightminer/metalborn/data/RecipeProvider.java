@@ -8,8 +8,11 @@ import knightminer.metalborn.json.ingredient.FillableIngredient.FillState;
 import knightminer.metalborn.json.ingredient.IngredientWithMetal.MetalFilter;
 import knightminer.metalborn.json.ingredient.MetalItemIngredient;
 import knightminer.metalborn.json.ingredient.MetalShapeIngredient;
+import knightminer.metalborn.json.recipe.cooking.CookingMetalRecyclingBuilder;
+import knightminer.metalborn.json.recipe.cooking.CookingRecipeBuilder;
 import knightminer.metalborn.json.recipe.forge.ShapedForgeRecipeBuilder;
 import knightminer.metalborn.json.recipe.forge.ShapelessForgeRecipeBuilder;
+import knightminer.metalborn.metal.MetalShape;
 import knightminer.metalborn.plugin.tinkers.MetalCastingRecipeBuilder;
 import knightminer.metalborn.plugin.tinkers.MetalMeltingRecipeBuilder;
 import knightminer.metalborn.plugin.tinkers.TinkersMockRecipeBuilder;
@@ -313,6 +316,55 @@ public class RecipeProvider extends net.minecraft.data.recipes.RecipeProvider im
     // TODO: consider slime metals
 
 
+    // recycling - all done in the furnace and blast furnace
+    String recyclingFolder = "recycling/";
+    recycle(consumer, Registration.BRACER, MetalFilter.METALMIND, MetalShape.INGOT,  4, recyclingFolder + "bracer/metal");
+    recycle(consumer, Registration.RING,   MetalFilter.METALMIND, MetalShape.NUGGET, 4, recyclingFolder + "ring/metal");
+    recycle(consumer, Registration.SPIKE,  MetalFilter.SPIKE,     MetalShape.INGOT,  2, recyclingFolder + "spike/metal");
+    recycle(consumer, Registration.INVESTITURE_BRACER, Registration.NICROSIL.getIngotTag(),  4, recyclingFolder + "bracer/nicrosil");
+    recycle(consumer, Registration.INVESTITURE_RING,   Registration.NICROSIL.getNuggetTag(), 4, recyclingFolder + "ring/nicrosil");
+    recycle(consumer, Registration.INVESTITURE_SPIKE,  Registration.NICROSIL.getIngotTag(),  2, recyclingFolder + "spike/nicrosil");
+
+    // identity is a pain as it has two possibilities, so recycle into the one present
+    // identity bracer
+    CookingRecipeBuilder<?> quartzBuilder = CookingRecipeBuilder.builder(Items.QUARTZ, 4)
+      .requires(Registration.IDENTITY_BRACER)
+      .experience(0.5f)
+      .cookingTime(800)
+      .unlockedBy("has_item", has(Registration.IDENTITY_BRACER));
+    CookingRecipeBuilder<?> aluminumBuilder = CookingRecipeBuilder.builder(ingot("aluminum"), 4)
+      .requires(Registration.IDENTITY_BRACER)
+      .experience(0.5f)
+      .cookingTime(800)
+      .unlockedBy("has_item", has(Registration.IDENTITY_BRACER));
+    // just need any RL to pass into the builder, will get ignored
+    ResourceLocation dummy = new ResourceLocation("dummy");
+    ICondition condition = ingotCondition("aluminum");
+    // smelting
+    ConditionalRecipe.builder()
+      .addCondition(condition)
+      .addRecipe(c -> aluminumBuilder.save(c, dummy))
+      .addCondition(TrueCondition.INSTANCE)
+      .addRecipe(c -> quartzBuilder.save(c, dummy))
+      .build(consumer, location(recyclingFolder + "bracer/identity_smelting"));
+    // blasting
+    ConditionalRecipe.builder()
+      .addCondition(condition)
+      .addRecipe(c -> aluminumBuilder.saveBlasting(c, dummy))
+      .addCondition(TrueCondition.INSTANCE)
+      .addRecipe(c -> quartzBuilder.saveBlasting(c, dummy))
+      .build(consumer, location(recyclingFolder + "bracer/identity_blasting"));
+
+    // identity ring - no nuggets here so just go conditional recipes for aluminum
+    Consumer<FinishedRecipe> aluminumRecycle = withCondition(consumer, aluminumNuggetCondition);
+    CookingRecipeBuilder.builder(aluminumNugget, 4)
+      .requires(Registration.IDENTITY_RING)
+      .experience(0.5f)
+      .cookingTime(800)
+      .unlockedBy("has_item", has(Registration.IDENTITY_RING))
+      .saveBlasting(aluminumRecycle, location(recyclingFolder + "ring/identity_blasting"))
+      .save(aluminumRecycle, location(recyclingFolder + "ring/identity_smelting"));
+
     // Tinkers' Construct melting and casting
     String tinkersFolder = "tinkers/";
 
@@ -385,5 +437,26 @@ public class RecipeProvider extends net.minecraft.data.recipes.RecipeProvider im
 
     // cast creation
     TinkersMockRecipeBuilder.castRecipes(consumer, result, otherItems, cast, filter, Math.max(1, amount / 90), folder);
+  }
+
+  /** Creates a metal item recycling recipe pair for the given inputs */
+  private void recycle(Consumer<FinishedRecipe> consumer, ItemLike item, MetalFilter filter, MetalShape shape, int amount, String prefix) {
+    CookingMetalRecyclingBuilder.builder(shape, amount)
+      .requires(MetalItemIngredient.of(item, filter))
+      .experience(0.5f)
+      .cookingTime(200 * amount)
+      .saveBlasting(consumer, location(prefix + "_blasting"))
+      .save(consumer, location(prefix + "_smelting"));
+  }
+
+  /** Creates item recycling recipe pair for the given inputs */
+  private void recycle(Consumer<FinishedRecipe> consumer, ItemLike item, TagKey<Item> result, int amount, String prefix) {
+    CookingRecipeBuilder.builder(result, amount)
+      .requires(item)
+      .experience(0.5f)
+      .cookingTime(200 * amount)
+      .unlockedBy("has_item", has(item))
+      .saveBlasting(consumer, location(prefix + "_blasting"))
+      .save(consumer, location(prefix + "_smelting"));
   }
 }

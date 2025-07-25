@@ -13,7 +13,7 @@ import static knightminer.metalborn.json.recipe.forge.ForgeRecipe.DEFAULT_COOKIN
 public abstract class AbstractForgeRecipeBuilder<T extends AbstractForgeRecipeBuilder<T>> extends AbstractRecipeBuilder<T> {
   protected final ItemOutput result;
   protected float experience = 1.0f;
-  private int cookingTime = 0;
+  protected int cookingTime = 0;
 
   protected AbstractForgeRecipeBuilder(ItemOutput result) {
     this.result = result;

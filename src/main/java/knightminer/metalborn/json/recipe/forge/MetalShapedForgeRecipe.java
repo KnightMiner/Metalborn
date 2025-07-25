@@ -34,7 +34,7 @@ public class MetalShapedForgeRecipe extends ShapedForgeRecipe {
   }
 
   /** Fetches the ingredient outside the fillable ingredient */
-  private static Ingredient unwrap(Ingredient ingredient) {
+  public static Ingredient unwrap(Ingredient ingredient) {
     if (ingredient instanceof FillableIngredient fillable) {
       return fillable.getInner();
     }

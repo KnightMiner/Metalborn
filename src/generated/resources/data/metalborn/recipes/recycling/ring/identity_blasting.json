@@ -1,0 +1,19 @@
+{
+  "type": "metalborn:blasting",
+  "category": "misc",
+  "conditions": [
+    {
+      "type": "mantle:tag_filled",
+      "tag": "forge:nuggets/aluminum"
+    }
+  ],
+  "cooking_time": 400,
+  "experience": 0.5,
+  "ingredient": {
+    "item": "metalborn:identity_ring"
+  },
+  "result": {
+    "count": 4,
+    "tag": "forge:nuggets/aluminum"
+  }
+}
