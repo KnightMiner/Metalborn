@@ -65,7 +65,7 @@ public class MetalmindCommand {
       .then(subCommand(MetalType.SPIKE, Operation.SET)));
 
     // identity set [identity] [targets]
-    // identity clear|sazed [targets]
+    // identity unkey|sazed [targets]
     root.then(Commands.literal("identity").requires(sender -> sender.hasPermission(MantleCommand.PERMISSION_GAME_COMMANDS))
       .then(Commands.literal("set")
         // sets the identity for yourself to yourself
@@ -79,8 +79,8 @@ public class MetalmindCommand {
           // sets identity on targets to listed player
           .then(Commands.argument("targets", EntityArgument.players())
             .executes(context -> setIdentityToArgument(context, EntityArgument.getPlayers(context, "targets"))))))
-      // clears identity
-      .then(Commands.literal("clear")
+      // clears identity (makes it unkeyed)
+      .then(Commands.literal("unkey")
         // on the sender
         .executes(context -> setSenderIdentity(context, null, "unkeyed"))
         // on the list of targets
