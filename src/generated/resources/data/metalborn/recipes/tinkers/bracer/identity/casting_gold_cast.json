@@ -41,9 +41,9 @@
           "tag": "metalborn:casts/bracer_multi_use"
         },
         "cast_consumed": false,
-        "cooling_time": 41,
+        "cooling_time": 115,
         "fluid": {
-          "amount": 50,
+          "amount": 400,
           "tag": "tconstruct:molten_quartz"
         },
         "result": "metalborn:identity_bracer",

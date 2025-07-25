@@ -382,8 +382,8 @@ public class RecipeProvider extends net.minecraft.data.recipes.RecipeProvider im
     TinkersMockRecipeBuilder.meltingCasting(consumer, Registration.INVESTITURE_BRACER, Registration.BRACER_CAST, nicrosil, ingot * 4,  nicrosilTemperature, tinkersFolder + "bracer/investiture/");
     TinkersMockRecipeBuilder.meltingCasting(consumer, Registration.INVESTITURE_SPIKE,  Registration.SPIKE_CAST,  nicrosil, ingot * 2,  nicrosilTemperature, tinkersFolder + "spike/investiture/");
     // identity may be quartz and may be aluminum based on loaded content
-    TinkersMockRecipeBuilder.identityMeltingCasting(consumer, Registration.IDENTITY_RING,   Registration.RING_CAST,   nugget * 4, 400, tinkersFolder + "ring/identity/");
-    TinkersMockRecipeBuilder.identityMeltingCasting(consumer, Registration.IDENTITY_BRACER, Registration.BRACER_CAST, ingot * 4,   50, tinkersFolder + "bracer/identity/");
+    TinkersMockRecipeBuilder.identityMeltingCasting(consumer, Registration.IDENTITY_RING,   Registration.RING_CAST,   nugget * 4, 50, tinkersFolder + "ring/identity/");
+    TinkersMockRecipeBuilder.identityMeltingCasting(consumer, Registration.IDENTITY_BRACER, Registration.BRACER_CAST, ingot * 4, 400, tinkersFolder + "bracer/identity/");
 
     // nuggets to change ferring type
     TagKey<Fluid> netherite = FluidTags.create(commonResource("molten_netherite"));

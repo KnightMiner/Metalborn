@@ -39,11 +39,11 @@
           "item": "metalborn:identity_ring"
         },
         "result": {
-          "amount": 400,
+          "amount": 50,
           "tag": "tconstruct:molten_quartz"
         },
         "temperature": 637,
-        "time": 115
+        "time": 41
       }
     }
   ]

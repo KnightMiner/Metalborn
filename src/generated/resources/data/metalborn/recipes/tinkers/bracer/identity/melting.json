@@ -39,11 +39,11 @@
           "item": "metalborn:identity_bracer"
         },
         "result": {
-          "amount": 50,
+          "amount": 400,
           "tag": "tconstruct:molten_quartz"
         },
         "temperature": 637,
-        "time": 41
+        "time": 115
       }
     }
   ]
