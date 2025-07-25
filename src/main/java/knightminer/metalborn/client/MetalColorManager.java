@@ -50,8 +50,8 @@ public class MetalColorManager implements ISafeManagerReloadListener {
   }
 
   /** Gets the color for the given metal */
-  public int getColor(ResourceLocation metal) {
-    return colors.getOrDefault(metal, -1);
+  public int getColor(ResourceLocation metal, int defaultColor) {
+    return colors.getOrDefault(metal, defaultColor);
   }
 
   /** Converts an ARGB color to a ABGR color or vice versa */

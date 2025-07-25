@@ -185,6 +185,7 @@ public class InvestitureMetalmindItem extends MetalmindItem implements MetalItem
 
 
   /* Color */
+  private static final int DEFAULT_COLOR = 0xFFD9E6DC;
 
   @Override
   public int getBarColor(ItemStack stack) {
@@ -194,8 +195,8 @@ public class InvestitureMetalmindItem extends MetalmindItem implements MetalItem
   /** Gets the color for the given metal ID */
   public static int getColor(MetalId metal) {
     if (FMLEnvironment.dist == Dist.CLIENT && metal != MetalId.NONE) {
-      return MetalColorManager.INSTANCE.getColor(metal);
+      return MetalColorManager.INSTANCE.getColor(metal, DEFAULT_COLOR);
     }
-    return -1;
+    return DEFAULT_COLOR;
   }
 }
