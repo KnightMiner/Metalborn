@@ -5,7 +5,7 @@ import slimeknights.mantle.data.loadable.primitive.EnumLoadable;
 
 import java.util.function.Predicate;
 
-/** Interface for {@link knightminer.metalborn.json.recipe.MetalShapedForgeRecipe} and {@link knightminer.metalborn.json.recipe.MetalShapelessForgeRecipe} to get the filter used by ingredients. */
+/** Interface for {@link knightminer.metalborn.json.recipe.forge.MetalShapedForgeRecipe} and {@link knightminer.metalborn.json.recipe.forge.MetalShapelessForgeRecipe} to get the filter used by ingredients. */
 public interface IngredientWithMetal {
   /** Gets the filter for this ingredient */
   MetalFilter getFilter();

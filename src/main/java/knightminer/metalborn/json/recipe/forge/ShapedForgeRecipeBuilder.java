@@ -1,4 +1,4 @@
-package knightminer.metalborn.json.recipe;
+package knightminer.metalborn.json.recipe.forge;
 
 import com.google.common.collect.Sets;
 import com.google.gson.JsonObject;

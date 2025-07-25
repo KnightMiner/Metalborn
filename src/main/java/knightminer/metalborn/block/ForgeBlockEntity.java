@@ -4,7 +4,7 @@ import it.unimi.dsi.fastutil.objects.Object2IntMap;
 import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
 import knightminer.metalborn.Metalborn;
 import knightminer.metalborn.core.Registration;
-import knightminer.metalborn.json.recipe.ForgeRecipe;
+import knightminer.metalborn.json.recipe.forge.ForgeRecipe;
 import knightminer.metalborn.menu.ForgeMenu;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;

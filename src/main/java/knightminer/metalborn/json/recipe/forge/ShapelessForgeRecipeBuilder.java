@@ -1,4 +1,4 @@
-package knightminer.metalborn.json.recipe;
+package knightminer.metalborn.json.recipe.forge;
 
 import knightminer.metalborn.json.ingredient.MetalShapeIngredient;
 import net.minecraft.core.NonNullList;

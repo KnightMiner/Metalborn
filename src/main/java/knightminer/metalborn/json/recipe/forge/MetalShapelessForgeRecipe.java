@@ -1,8 +1,8 @@
-package knightminer.metalborn.json.recipe;
+package knightminer.metalborn.json.recipe.forge;
 
 import knightminer.metalborn.core.Registration;
 import knightminer.metalborn.item.MetalItem;
-import knightminer.metalborn.json.recipe.MetalShapedForgeRecipe.JEIInfo;
+import knightminer.metalborn.json.recipe.forge.MetalShapedForgeRecipe.JEIInfo;
 import knightminer.metalborn.metal.MetalPower;
 import net.minecraft.core.NonNullList;
 import net.minecraft.core.RegistryAccess;

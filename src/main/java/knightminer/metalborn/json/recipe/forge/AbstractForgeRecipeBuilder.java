@@ -1,4 +1,4 @@
-package knightminer.metalborn.json.recipe;
+package knightminer.metalborn.json.recipe.forge;
 
 import net.minecraft.data.recipes.FinishedRecipe;
 import slimeknights.mantle.data.loadable.Loadables;
@@ -7,7 +7,7 @@ import slimeknights.mantle.recipe.helper.ItemOutput;
 
 import java.util.function.Consumer;
 
-import static knightminer.metalborn.json.recipe.ForgeRecipe.DEFAULT_COOKING_TIME;
+import static knightminer.metalborn.json.recipe.forge.ForgeRecipe.DEFAULT_COOKING_TIME;
 
 /** Shared logic for Forge recipe builders */
 public abstract class AbstractForgeRecipeBuilder<T extends AbstractForgeRecipeBuilder<T>> extends AbstractRecipeBuilder<T> {

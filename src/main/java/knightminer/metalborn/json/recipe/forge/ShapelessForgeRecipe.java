@@ -1,4 +1,4 @@
-package knightminer.metalborn.json.recipe;
+package knightminer.metalborn.json.recipe.forge;
 
 import com.mojang.datafixers.util.Function5;
 import knightminer.metalborn.core.Registration;

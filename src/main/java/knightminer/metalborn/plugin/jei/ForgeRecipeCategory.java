@@ -2,7 +2,7 @@ package knightminer.metalborn.plugin.jei;
 
 import knightminer.metalborn.Metalborn;
 import knightminer.metalborn.core.Registration;
-import knightminer.metalborn.json.recipe.ForgeRecipe;
+import knightminer.metalborn.json.recipe.forge.ForgeRecipe;
 import mezz.jei.api.gui.builder.IIngredientAcceptor;
 import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
 import mezz.jei.api.gui.builder.IRecipeSlotBuilder;

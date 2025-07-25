@@ -1,4 +1,4 @@
-package knightminer.metalborn.json.recipe;
+package knightminer.metalborn.json.recipe.forge;
 
 import knightminer.metalborn.core.Registration;
 import knightminer.metalborn.item.MetalItem;

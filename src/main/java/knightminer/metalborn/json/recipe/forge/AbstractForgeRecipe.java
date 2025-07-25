@@ -1,4 +1,4 @@
-package knightminer.metalborn.json.recipe;
+package knightminer.metalborn.json.recipe.forge;
 
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.resources.ResourceLocation;

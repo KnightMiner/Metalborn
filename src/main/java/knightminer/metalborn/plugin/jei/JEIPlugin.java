@@ -6,7 +6,7 @@ import knightminer.metalborn.core.Registration;
 import knightminer.metalborn.item.Fillable;
 import knightminer.metalborn.item.MetalItem;
 import knightminer.metalborn.item.SpikeItem;
-import knightminer.metalborn.json.recipe.ForgeRecipe;
+import knightminer.metalborn.json.recipe.forge.ForgeRecipe;
 import knightminer.metalborn.menu.ForgeMenu;
 import knightminer.metalborn.metal.MetalId;
 import mezz.jei.api.IModPlugin;
