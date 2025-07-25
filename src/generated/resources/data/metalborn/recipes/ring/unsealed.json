@@ -22,7 +22,7 @@
         "filter": "metalmind",
         "item": "metalborn:investiture_ring"
       },
-      "when": "filled"
+      "when": "unsealed"
     }
   ],
   "result": "metalborn:unsealed_ring"

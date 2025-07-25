@@ -5,6 +5,8 @@ import com.google.gson.JsonObject;
 import it.unimi.dsi.fastutil.ints.IntList;
 import knightminer.metalborn.Metalborn;
 import knightminer.metalborn.item.Fillable;
+import knightminer.metalborn.item.metalmind.MetalmindItem;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
@@ -31,18 +33,13 @@ public class FillableIngredient extends AbstractIngredient {
   }
 
   /** Creates an ingredient matching filled stacks */
+  public static FillableIngredient of(FillState fillState, Ingredient inner) {
+    return new FillableIngredient(inner, fillState);
+  }
+
+  /** Creates an ingredient matching filled stacks */
   public static FillableIngredient filled(Ingredient inner) {
     return new FillableIngredient(inner, FillState.FILLED);
-  }
-
-  /** Creates an ingredient matching not filled stacks */
-  public static FillableIngredient notFilled(Ingredient inner) {
-    return new FillableIngredient(inner, FillState.NOT_FILLED);
-  }
-
-  /** Creates an ingredient matching stacks with no power */
-  public static FillableIngredient empty(Ingredient inner) {
-    return new FillableIngredient(inner, FillState.EMPTY);
   }
 
   /** Gets the ingredient nested inside */
@@ -101,7 +98,8 @@ public class FillableIngredient extends AbstractIngredient {
     return json;
   }
 
-  private enum FillState {
+  public enum FillState {
+    /** Checks for a metal item that is completely full with any identity */
     FILLED {
       @Override
       public boolean test(Fillable fillable, ItemStack stack) {
@@ -117,16 +115,26 @@ public class FillableIngredient extends AbstractIngredient {
         return stack;
       }
     },
+    /** Checks for a metal item that is not completely full */
     NOT_FILLED {
       @Override
       public boolean test(Fillable fillable, ItemStack stack) {
         return !fillable.isFull(stack);
       }
     },
+    /** Checks for a metal item that is completely empty */
     EMPTY {
       @Override
       public boolean test(Fillable fillable, ItemStack stack) {
         return fillable.isEmpty(stack);
+      }
+    },
+    /** Checks for a metal item that is completely full  */
+    UNSEALED {
+      @Override
+      public boolean test(Fillable fillable, ItemStack stack) {
+        CompoundTag tag = stack.getTag();
+        return fillable.isFull(stack) && (tag == null || !tag.hasUUID(MetalmindItem.TAG_OWNER));
       }
     };
 

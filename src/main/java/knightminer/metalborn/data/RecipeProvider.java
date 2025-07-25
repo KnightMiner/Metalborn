@@ -4,6 +4,7 @@ import knightminer.metalborn.Metalborn;
 import knightminer.metalborn.core.Registration;
 import knightminer.metalborn.data.tag.MetalbornTags;
 import knightminer.metalborn.json.ingredient.FillableIngredient;
+import knightminer.metalborn.json.ingredient.FillableIngredient.FillState;
 import knightminer.metalborn.json.ingredient.IngredientWithMetal.MetalFilter;
 import knightminer.metalborn.json.ingredient.MetalItemIngredient;
 import knightminer.metalborn.json.ingredient.MetalShapeIngredient;
@@ -211,8 +212,8 @@ public class RecipeProvider extends net.minecraft.data.recipes.RecipeProvider im
     // unsealed is crafted from a full nicrosil metalmind and a matching empty metalmind
     ShapelessForgeRecipeBuilder.shapeless(Registration.UNSEALED_RING)
       .requires(MetalbornTags.Items.NETHERITE_NUGGETS)
-      .requires(FillableIngredient.empty(MetalItemIngredient.of(Registration.RING, MetalFilter.METALMIND)))
-      .requires(FillableIngredient.filled(MetalItemIngredient.of(Registration.INVESTITURE_RING, MetalFilter.METALMIND)))
+      .requires(FillableIngredient.of(FillState.EMPTY, MetalItemIngredient.of(Registration.RING, MetalFilter.METALMIND)))
+      .requires(FillableIngredient.of(FillState.UNSEALED, MetalItemIngredient.of(Registration.INVESTITURE_RING, MetalFilter.METALMIND)))
       .metal()
       .cookingRate(4)
       .experience(0.5f)
