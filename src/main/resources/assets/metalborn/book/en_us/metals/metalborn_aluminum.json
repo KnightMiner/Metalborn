@@ -8,7 +8,7 @@
     {
       "type": "forge:nbt",
       "item": "metalborn:identity_ring",
-      "nbt": { "amount": 30000, "owner_name": "Sazed" }
+      "nbt": { "amount": 3000, "owner_name": "Sazed" }
     }
   ],
   "storing": [

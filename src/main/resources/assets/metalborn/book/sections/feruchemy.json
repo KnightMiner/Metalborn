@@ -20,6 +20,14 @@
     "data": "feruchemy/bracers.json"
   },
   {
+    "name": "identity",
+    "data": "feruchemy/identity.json"
+  },
+  {
+    "name": "investiture",
+    "data": "feruchemy/investiture.json"
+  },
+  {
     "name": "unsealed",
     "data": "feruchemy/unsealed.json"
   }
