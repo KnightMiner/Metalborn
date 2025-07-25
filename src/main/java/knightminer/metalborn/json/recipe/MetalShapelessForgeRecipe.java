@@ -3,7 +3,6 @@ package knightminer.metalborn.json.recipe;
 import knightminer.metalborn.core.Registration;
 import knightminer.metalborn.item.MetalItem;
 import knightminer.metalborn.json.recipe.MetalShapedForgeRecipe.JEIInfo;
-import knightminer.metalborn.metal.MetalId;
 import knightminer.metalborn.metal.MetalPower;
 import net.minecraft.core.NonNullList;
 import net.minecraft.core.RegistryAccess;
@@ -39,12 +38,12 @@ public class MetalShapelessForgeRecipe extends ShapelessForgeRecipe {
 
   @Override
   public boolean matches(CraftingContainer inv, Level level) {
-    return super.matches(inv, level) && MetalShapedForgeRecipe.findMetal(inv, getMetalFilter()) != MetalId.NONE;
+    return super.matches(inv, level) && MetalShapedForgeRecipe.findMetal(inv, getMetalFilter()) != MetalPower.DEFAULT;
   }
 
   @Override
   public ItemStack assemble(CraftingContainer inv, RegistryAccess registryAccess) {
-    return MetalItem.setMetal(super.assemble(inv, registryAccess), MetalShapedForgeRecipe.findMetal(inv, getMetalFilter()));
+    return MetalItem.setMetal(super.assemble(inv, registryAccess), MetalShapedForgeRecipe.findMetal(inv, getMetalFilter()).id());
   }
 
   @Override

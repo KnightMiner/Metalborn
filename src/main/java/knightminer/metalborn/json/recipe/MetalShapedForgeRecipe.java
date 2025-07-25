@@ -5,7 +5,6 @@ import knightminer.metalborn.item.MetalItem;
 import knightminer.metalborn.json.ingredient.FillableIngredient;
 import knightminer.metalborn.json.ingredient.IngredientWithMetal;
 import knightminer.metalborn.json.ingredient.IngredientWithMetal.MetalFilter;
-import knightminer.metalborn.metal.MetalId;
 import knightminer.metalborn.metal.MetalManager;
 import knightminer.metalborn.metal.MetalPower;
 import net.minecraft.core.NonNullList;
@@ -88,9 +87,9 @@ public class MetalShapedForgeRecipe extends ShapedForgeRecipe {
   }
 
   /** Finds the metal in the given grid */
-  static MetalId findMetal(CraftingContainer inventory, Predicate<MetalPower> metal) {
+  static MetalPower findMetal(CraftingContainer inventory, Predicate<MetalPower> metal) {
     // ensure same metal is in all slots
-    MetalId firstId = null;
+    MetalPower first = null;
     for (int i = 0; i < inventory.getContainerSize(); i++) {
       ItemStack stack = inventory.getItem(i);
       if (!stack.isEmpty()) {
@@ -98,25 +97,25 @@ public class MetalShapedForgeRecipe extends ShapedForgeRecipe {
         MetalPower power = getMetal(stack);
         if (power != MetalPower.DEFAULT && metal.test(power)) {
           // first match is set
-          if (firstId == null) {
-            firstId = power.id();
-          } else if (!firstId.equals(power.id())) {
-            return MetalId.NONE;
+          if (first == null) {
+            first = power;
+          } else if (first != power) {
+            return MetalPower.DEFAULT;
           }
         }
       }
     }
-    return Objects.requireNonNullElse(firstId, MetalId.NONE);
+    return Objects.requireNonNullElse(first, MetalPower.DEFAULT);
   }
 
   @Override
   public boolean matches(CraftingContainer inv, Level level) {
-    return super.matches(inv, level) && findMetal(inv, getMetalFilter()) != MetalId.NONE;
+    return super.matches(inv, level) && findMetal(inv, getMetalFilter()) != MetalPower.DEFAULT;
   }
 
   @Override
   public ItemStack assemble(CraftingContainer inv, RegistryAccess registryAccess) {
-    return MetalItem.setMetal(super.assemble(inv, registryAccess), findMetal(inv, getMetalFilter()));
+    return MetalItem.setMetal(super.assemble(inv, registryAccess), findMetal(inv, getMetalFilter()).id());
   }
 
   @Override
