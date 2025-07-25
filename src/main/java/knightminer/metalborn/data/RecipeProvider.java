@@ -182,7 +182,7 @@ public class RecipeProvider extends net.minecraft.data.recipes.RecipeProvider im
     ICondition noDuralumin = new TagEmptyCondition<>(ingot("duralumin"));
     ShapelessForgeRecipeBuilder.shapeless(Registration.BRACER.get().withMetal(MetalIds.duralumin))
       .requires(ingot("aluminum"), 3)
-      .requires(MetalbornTags.Items.COPPER_NUGGETS, 1)
+      .requires(Tags.Items.INGOTS_COPPER, 1)
       .cookingRate(4)
       .experience(2f)
       .save(withCondition(consumer, noDuralumin), location("bracer/duralumin"));

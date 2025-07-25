@@ -1,4 +1,4 @@
-// 1.20.1	2025-07-24T22:02:56.6030112	Recipes
+// 1.20.1	2025-07-24T22:50:35.9355875	Recipes
 8720e146ed87c91433b7b556aee5d6a5390111ee data/metalborn/advancements/recipes/decorations/forge.json
 c4a47c50fae1f0fb9b1d0ad265dd630473918dd7 data/metalborn/advancements/recipes/misc/metallic_arts.json
 6bb6018bc3fcaf2326b259cddc674cf97cd5f90a data/metalborn/advancements/recipes/misc/metal/bronze_block_from_ingots.json
@@ -47,7 +47,7 @@ e8482a36b74b19f3b8869351d40ba88b3b5cebdc data/metalborn/recipes/alloy/bronze.jso
 f727dce642f2edc80c8bae5a257d1c78eb411abb data/metalborn/recipes/alloy/pewter.json
 a523af0c0f1281a5721697258bfa7b2c6ad0a09d data/metalborn/recipes/alloy/rose_gold.json
 23cfc654dc6e41521cc012f4404f43e32a6753de data/metalborn/recipes/alloy/steel.json
-9ccb1d02150f316e428790458218e8a9a3ebd060 data/metalborn/recipes/bracer/duralumin.json
+8e812a00fdb92a24f741ba3b7a63c7192d997655 data/metalborn/recipes/bracer/duralumin.json
 335bc68d5e2ab5477157c49c6eb70a8dd60873cc data/metalborn/recipes/bracer/identity.json
 9d1086ff72b00e04c3b873db07e2df83b13d4689 data/metalborn/recipes/bracer/metal.json
 2b6f5d5975d3c7a1a5cc2e95820c8a8823bbe5a7 data/metalborn/recipes/bracer/nicrosil.json
