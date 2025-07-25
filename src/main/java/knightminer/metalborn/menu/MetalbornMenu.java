@@ -37,10 +37,10 @@ public class MetalbornMenu extends BaseMenu {
         addSlot(new SmartItemHandlerSlot(metalminds, 1, 134, 57)),
         addSlot(new SmartItemHandlerSlot(metalminds, 2,  16,  9)),
         addSlot(new SmartItemHandlerSlot(metalminds, 3,  36,  9)),
-        addSlot(new SmartItemHandlerSlot(metalminds, 4, 124,  9)),
-        addSlot(new SmartItemHandlerSlot(metalminds, 5, 144,  9)),
-        addSlot(new SmartItemHandlerSlot(metalminds, 6,  16, 33)),
-        addSlot(new SmartItemHandlerSlot(metalminds, 7,  36, 33)),
+        addSlot(new SmartItemHandlerSlot(metalminds, 4,  16, 33)),
+        addSlot(new SmartItemHandlerSlot(metalminds, 5,  36, 33)),
+        addSlot(new SmartItemHandlerSlot(metalminds, 6, 124,  9)),
+        addSlot(new SmartItemHandlerSlot(metalminds, 7, 144,  9)),
         addSlot(new SmartItemHandlerSlot(metalminds, 8, 124, 33)),
         addSlot(new SmartItemHandlerSlot(metalminds, 9, 144, 33))
       );
