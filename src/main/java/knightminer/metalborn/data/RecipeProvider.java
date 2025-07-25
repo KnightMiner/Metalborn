@@ -143,12 +143,13 @@ public class RecipeProvider extends net.minecraft.data.recipes.RecipeProvider im
         .experience(1.0f)::save)
         .build(consumer, location("ring/identity"));
     // if no duralumin is registered, nugget version of alloying makes a ring
+    ICondition aluminumNuggetCondition = new TagFilledCondition<>(aluminumNugget);
     ShapelessForgeRecipeBuilder.shapeless(Registration.RING.get().withMetal(MetalIds.duralumin))
       .requires(aluminumNugget, 3)
       .requires(MetalbornTags.Items.COPPER_NUGGETS, 1)
       .cookingRate(1)
       .experience(0.5f)
-      .save(withCondition(consumer, new TagEmptyCondition<>(ItemTags.create(commonResource("nuggets/duralumin")))), location("ring/duralumin"));
+      .save(withCondition(consumer, aluminumNuggetCondition, new TagEmptyCondition<>(ItemTags.create(commonResource("nuggets/duralumin")))), location("ring/duralumin"));
     // bracers
     ShapedForgeRecipeBuilder.shaped(Registration.BRACER)
       .pattern("##").pattern("##")
@@ -185,7 +186,7 @@ public class RecipeProvider extends net.minecraft.data.recipes.RecipeProvider im
       .requires(Tags.Items.INGOTS_COPPER, 1)
       .cookingRate(4)
       .experience(2f)
-      .save(withCondition(consumer, noDuralumin), location("bracer/duralumin"));
+      .save(withCondition(consumer, ingotCondition("aluminum"), noDuralumin), location("bracer/duralumin"));
     // spikes
     ShapedForgeRecipeBuilder.shaped(Registration.SPIKE)
       .pattern(" #").pattern("# ")
@@ -207,7 +208,7 @@ public class RecipeProvider extends net.minecraft.data.recipes.RecipeProvider im
       .define('a', ingot("aluminum"))
       .cookingRate(4)
       .experience(1f)
-      .save(withCondition(consumer, noDuralumin), location("spike/duralumin"));
+      .save(withCondition(consumer, ingotCondition("aluminum"), noDuralumin), location("spike/duralumin"));
 
     // unsealed is crafted from a full nicrosil metalmind and a matching empty metalmind
     ShapelessForgeRecipeBuilder.shapeless(Registration.UNSEALED_RING)
@@ -321,7 +322,7 @@ public class RecipeProvider extends net.minecraft.data.recipes.RecipeProvider im
     // standard metal items
     metalMeltingCasting(consumer, Registration.RING,   List.of(Registration.INVESTITURE_RING,   Registration.IDENTITY_RING),   Registration.RING_CAST,   MetalFilter.METALMIND, nugget * 4, tinkersFolder);
     metalMeltingCasting(consumer, Registration.BRACER, List.of(Registration.INVESTITURE_BRACER, Registration.IDENTITY_BRACER), Registration.BRACER_CAST, MetalFilter.METALMIND, ingot * 4,  tinkersFolder);
-    metalMeltingCasting(consumer, Registration.SPIKE,  List.of(Registration.INVESTITURE_SPIKE), Registration.SPIKE_CAST,  MetalFilter.SPIKE,     ingot * 2,  tinkersFolder);
+    metalMeltingCasting(consumer, Registration.SPIKE,  List.of(Registration.INVESTITURE_SPIKE),                                Registration.SPIKE_CAST,  MetalFilter.SPIKE,     ingot * 2,  tinkersFolder);
     // special metalminds
     TagKey<Fluid> nicrosil = FluidTags.create(commonResource("molten_nicrosil"));
     int nicrosilTemperature = 1100;
