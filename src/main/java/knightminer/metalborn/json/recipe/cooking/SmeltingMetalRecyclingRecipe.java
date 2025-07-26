@@ -18,6 +18,8 @@ import net.minecraft.world.level.Level;
 import slimeknights.mantle.data.loadable.common.IngredientLoadable;
 import slimeknights.mantle.data.loadable.field.ContextKey;
 import slimeknights.mantle.data.loadable.record.RecordLoadable;
+import slimeknights.mantle.recipe.cooking.CookingResultRecipe;
+import slimeknights.mantle.recipe.cooking.SmeltingResultRecipe;
 import slimeknights.mantle.recipe.helper.LoadableRecipeSerializer;
 
 import java.util.function.Predicate;
@@ -27,7 +29,7 @@ public class SmeltingMetalRecyclingRecipe extends SmeltingRecipe implements Cook
   public static final RecordLoadable<SmeltingMetalRecyclingRecipe> LOADABLE = RecordLoadable.create(
     ContextKey.ID.requiredField(), LoadableRecipeSerializer.RECIPE_GROUP,
     IngredientLoadable.DISALLOW_EMPTY.requiredField("ingredient", r -> r.ingredient),
-    RESULT_FIELD, SmeltingResultRecipe.EXPERIENCE_FIELD, SmeltingResultRecipe.COOKING_TIME_FIELD,
+    RESULT_FIELD, CookingResultRecipe.EXPERIENCE_FIELD, SmeltingResultRecipe.COOKING_TIME_FIELD,
     SmeltingMetalRecyclingRecipe::new);
 
   private final MetalResult result;

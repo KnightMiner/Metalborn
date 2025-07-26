@@ -9,7 +9,7 @@
         }
       ],
       "recipe": {
-        "type": "metalborn:smelting",
+        "type": "mantle:smelting",
         "category": "misc",
         "cooking_time": 800,
         "experience": 0.5,
@@ -29,7 +29,7 @@
         }
       ],
       "recipe": {
-        "type": "metalborn:smelting",
+        "type": "mantle:smelting",
         "category": "misc",
         "cooking_time": 800,
         "experience": 0.5,

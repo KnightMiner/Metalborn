@@ -23,9 +23,7 @@ import knightminer.metalborn.json.ingredient.MetalShapeIngredient;
 import knightminer.metalborn.json.loot.ApplyDropChanceLootModifier;
 import knightminer.metalborn.json.loot.HasLootContextSetCondition;
 import knightminer.metalborn.json.recipe.cooking.BlastingMetalRecyclingRecipe;
-import knightminer.metalborn.json.recipe.cooking.BlastingResultRecipe;
 import knightminer.metalborn.json.recipe.cooking.SmeltingMetalRecyclingRecipe;
-import knightminer.metalborn.json.recipe.cooking.SmeltingResultRecipe;
 import knightminer.metalborn.json.recipe.forge.ForgeRecipe;
 import knightminer.metalborn.json.recipe.forge.MetalShapedForgeRecipe;
 import knightminer.metalborn.json.recipe.forge.MetalShapelessForgeRecipe;
@@ -212,8 +210,6 @@ public class Registration {
   public static final RegistryObject<RecipeSerializer<MetalShapelessForgeRecipe>> METAL_SHAPELESS_FORGE = RECIPES.register("metal_shapeless_forge", () -> LoadableRecipeSerializer.of(MetalShapelessForgeRecipe.LOADABLE));
   public static final RegistryObject<RecipeSerializer<MetalShapedForgeRecipe>> METAL_SHAPED_FORGE = RECIPES.register("metal_shaped_forge", () -> new ShapedForgeRecipe.Serializer<>(MetalShapedForgeRecipe::new));
   // furnace
-  public static final RegistryObject<RecipeSerializer<SmeltingResultRecipe>> SMELTING = RECIPES.register("smelting", () -> LoadableRecipeSerializer.of(SmeltingResultRecipe.LOADABLE));
-  public static final RegistryObject<RecipeSerializer<BlastingResultRecipe>> BLASTING = RECIPES.register("blasting", () -> LoadableRecipeSerializer.of(BlastingResultRecipe.LOADABLE));
   public static final RegistryObject<RecipeSerializer<SmeltingMetalRecyclingRecipe>> SMELTING_METAL_RECYCLING = RECIPES.register("smelting_metal_recycling", () -> LoadableRecipeSerializer.of(SmeltingMetalRecyclingRecipe.LOADABLE));
   public static final RegistryObject<RecipeSerializer<BlastingMetalRecyclingRecipe>> BLASTING_METAL_RECYCLING = RECIPES.register("blasting_metal_recycling", () -> LoadableRecipeSerializer.of(BlastingMetalRecyclingRecipe.LOADABLE));
 

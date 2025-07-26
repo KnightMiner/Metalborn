@@ -1,21 +1,27 @@
 package knightminer.metalborn.json.recipe.cooking;
 
 import knightminer.metalborn.json.recipe.MetalResult;
+import knightminer.metalborn.json.recipe.forge.AbstractForgeRecipeBuilder;
 import knightminer.metalborn.metal.MetalShape;
 import net.minecraft.data.recipes.FinishedRecipe;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.tags.TagKey;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.world.level.ItemLike;
 import org.apache.commons.lang3.NotImplementedException;
 import slimeknights.mantle.recipe.helper.ItemOutput;
 
 import java.util.function.Consumer;
 
 /** Builder for {@link SmeltingMetalRecyclingRecipe} and {@link CookingMetalRecyclingBuilder} */
-public class CookingMetalRecyclingBuilder extends CookingRecipeBuilder<CookingMetalRecyclingBuilder> {
+public class CookingMetalRecyclingBuilder extends AbstractForgeRecipeBuilder<CookingMetalRecyclingBuilder> {
   private final MetalResult result;
+  protected Ingredient ingredient = Ingredient.EMPTY;
   protected CookingMetalRecyclingBuilder(MetalResult result) {
     super(ItemOutput.EMPTY);
     this.result = result;
+    this.cookingTime = 200;
   }
 
   /** Creates a builder for the given result */
@@ -28,6 +34,22 @@ public class CookingMetalRecyclingBuilder extends CookingRecipeBuilder<CookingMe
     return builder(new MetalResult(shape, amount));
   }
 
+  /** Sets the input ingredient */
+  public CookingMetalRecyclingBuilder requires(Ingredient ingredient) {
+    this.ingredient = ingredient;
+    return this;
+  }
+
+  /** Sets the input ingredient */
+  public CookingMetalRecyclingBuilder requires(ItemLike item) {
+    return requires(Ingredient.of(item));
+  }
+
+  /** Sets the input ingredient */
+  public CookingMetalRecyclingBuilder requires(TagKey<Item> tag) {
+    return requires(Ingredient.of(tag));
+  }
+
   @Deprecated(forRemoval = true)
   @Override
   public void save(Consumer<FinishedRecipe> consumer) {
@@ -35,7 +57,6 @@ public class CookingMetalRecyclingBuilder extends CookingRecipeBuilder<CookingMe
   }
 
   /** Saves the blasting recipe */
-  @Override
   public CookingMetalRecyclingBuilder saveBlasting(Consumer<FinishedRecipe> consumer, ResourceLocation id) {
     if (ingredient == Ingredient.EMPTY) {
       throw new IllegalStateException("Ingredient must be set");

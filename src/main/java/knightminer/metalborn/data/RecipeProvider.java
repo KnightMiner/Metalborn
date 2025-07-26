@@ -9,7 +9,6 @@ import knightminer.metalborn.json.ingredient.IngredientWithMetal.MetalFilter;
 import knightminer.metalborn.json.ingredient.MetalItemIngredient;
 import knightminer.metalborn.json.ingredient.MetalShapeIngredient;
 import knightminer.metalborn.json.recipe.cooking.CookingMetalRecyclingBuilder;
-import knightminer.metalborn.json.recipe.cooking.CookingRecipeBuilder;
 import knightminer.metalborn.json.recipe.forge.ShapedForgeRecipeBuilder;
 import knightminer.metalborn.json.recipe.forge.ShapelessForgeRecipeBuilder;
 import knightminer.metalborn.metal.MetalShape;
@@ -41,6 +40,7 @@ import net.minecraftforge.common.crafting.conditions.ICondition;
 import net.minecraftforge.common.crafting.conditions.TrueCondition;
 import slimeknights.mantle.recipe.condition.TagEmptyCondition;
 import slimeknights.mantle.recipe.condition.TagFilledCondition;
+import slimeknights.mantle.recipe.cooking.CookingRecipeBuilder;
 import slimeknights.mantle.recipe.data.ICommonRecipeHelper;
 import slimeknights.mantle.registration.object.IdAwareObject;
 
@@ -330,22 +330,22 @@ public class RecipeProvider extends net.minecraft.data.recipes.RecipeProvider im
     CookingRecipeBuilder<?> quartzBuilder = CookingRecipeBuilder.builder(Items.QUARTZ, 4)
       .requires(Registration.IDENTITY_BRACER)
       .experience(0.5f)
-      .cookingTime(800)
-      .unlockedBy("has_item", has(Registration.IDENTITY_BRACER));
+      .cookingTime(800);
+      //.unlockedBy("has_item", has(Registration.IDENTITY_BRACER));
     CookingRecipeBuilder<?> aluminumBuilder = CookingRecipeBuilder.builder(ingot("aluminum"), 4)
       .requires(Registration.IDENTITY_BRACER)
       .experience(0.5f)
-      .cookingTime(800)
-      .unlockedBy("has_item", has(Registration.IDENTITY_BRACER));
+      .cookingTime(800);
+      //.unlockedBy("has_item", has(Registration.IDENTITY_BRACER));
     // just need any RL to pass into the builder, will get ignored
     ResourceLocation dummy = new ResourceLocation("dummy");
     ICondition condition = ingotCondition("aluminum");
     // smelting
     ConditionalRecipe.builder()
       .addCondition(condition)
-      .addRecipe(c -> aluminumBuilder.save(c, dummy))
+      .addRecipe(c -> aluminumBuilder.saveSmelting(c, dummy))
       .addCondition(TrueCondition.INSTANCE)
-      .addRecipe(c -> quartzBuilder.save(c, dummy))
+      .addRecipe(c -> quartzBuilder.saveSmelting(c, dummy))
       .build(consumer, location(recyclingFolder + "bracer/identity_smelting"));
     // blasting
     ConditionalRecipe.builder()
@@ -361,9 +361,9 @@ public class RecipeProvider extends net.minecraft.data.recipes.RecipeProvider im
       .requires(Registration.IDENTITY_RING)
       .experience(0.5f)
       .cookingTime(800)
-      .unlockedBy("has_item", has(Registration.IDENTITY_RING))
-      .saveBlasting(aluminumRecycle, location(recyclingFolder + "ring/identity_blasting"))
-      .save(aluminumRecycle, location(recyclingFolder + "ring/identity_smelting"));
+      //.unlockedBy("has_item", has(Registration.IDENTITY_RING))
+      .saveSmelting(aluminumRecycle, location(recyclingFolder + "ring/identity_smelting"))
+      .saveBlasting(aluminumRecycle, location(recyclingFolder + "ring/identity_blasting"));
 
     // Tinkers' Construct melting and casting
     String tinkersFolder = "tinkers/";
@@ -455,8 +455,8 @@ public class RecipeProvider extends net.minecraft.data.recipes.RecipeProvider im
       .requires(item)
       .experience(0.5f)
       .cookingTime(200 * amount)
-      .unlockedBy("has_item", has(item))
-      .saveBlasting(consumer, location(prefix + "_blasting"))
-      .save(consumer, location(prefix + "_smelting"));
+      //.unlockedBy("has_item", has(item))
+      .saveSmelting(consumer, location(prefix + "_smelting"))
+      .saveBlasting(consumer, location(prefix + "_blasting"));
   }
 }

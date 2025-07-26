@@ -1,5 +1,5 @@
 {
-  "type": "metalborn:smelting",
+  "type": "mantle:smelting",
   "category": "misc",
   "cooking_time": 400,
   "experience": 0.5,
