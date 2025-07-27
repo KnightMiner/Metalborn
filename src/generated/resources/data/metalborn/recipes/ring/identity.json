@@ -32,17 +32,14 @@
       ],
       "recipe": {
         "type": "metalborn:shapeless_forge",
-        "cooking_time": 200,
+        "cooking_time": 100,
         "experience": 1.0,
         "ingredients": [
           {
             "tag": "forge:gems/quartz"
           }
         ],
-        "result": {
-          "count": 2,
-          "item": "metalborn:identity_ring"
-        }
+        "result": "metalborn:identity_ring"
       }
     }
   ]

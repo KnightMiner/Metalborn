@@ -1,19 +1,43 @@
 {
-  "type": "mantle:blasting",
-  "category": "misc",
-  "conditions": [
+  "type": "forge:conditional",
+  "recipes": [
     {
-      "type": "mantle:tag_filled",
-      "tag": "forge:nuggets/aluminum"
+      "conditions": [
+        {
+          "type": "mantle:tag_filled",
+          "tag": "forge:nuggets/aluminum"
+        }
+      ],
+      "recipe": {
+        "type": "mantle:blasting",
+        "category": "misc",
+        "cooking_time": 400,
+        "experience": 0.5,
+        "ingredient": {
+          "item": "metalborn:identity_ring"
+        },
+        "result": {
+          "count": 4,
+          "tag": "forge:nuggets/aluminum"
+        }
+      }
+    },
+    {
+      "conditions": [
+        {
+          "type": "forge:true"
+        }
+      ],
+      "recipe": {
+        "type": "mantle:blasting",
+        "category": "misc",
+        "cooking_time": 400,
+        "experience": 0.5,
+        "ingredient": {
+          "item": "metalborn:identity_ring"
+        },
+        "result": "minecraft:quartz"
+      }
     }
-  ],
-  "cooking_time": 400,
-  "experience": 0.5,
-  "ingredient": {
-    "item": "metalborn:identity_ring"
-  },
-  "result": {
-    "count": 4,
-    "tag": "forge:nuggets/aluminum"
-  }
+  ]
 }

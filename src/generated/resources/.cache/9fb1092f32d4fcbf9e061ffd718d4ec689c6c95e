@@ -1,4 +1,4 @@
-// 1.20.1	2025-07-27T02:13:26.6643933	Recipes
+// 1.20.1	2025-07-27T04:15:06.0385268	Recipes
 8720e146ed87c91433b7b556aee5d6a5390111ee data/metalborn/advancements/recipes/decorations/forge.json
 c4a47c50fae1f0fb9b1d0ad265dd630473918dd7 data/metalborn/advancements/recipes/misc/metallic_arts.json
 6bb6018bc3fcaf2326b259cddc674cf97cd5f90a data/metalborn/advancements/recipes/misc/metal/bronze_block_from_ingots.json
@@ -96,8 +96,8 @@ fc74be7299d3e0543e75169013def30542713eea data/metalborn/recipes/recycling/bracer
 bac42c5f439c59fb0ca39989e0da29fa3d257bc8 data/metalborn/recipes/recycling/bracer/metal_smelting.json
 2b413558d1ca289d41ff3a079759d74e38396337 data/metalborn/recipes/recycling/bracer/nicrosil_blasting.json
 bdde236b1c5e5eb72f1499e623ea351f7c70d4c8 data/metalborn/recipes/recycling/bracer/nicrosil_smelting.json
-950b73b0d947918683183d69d1df1450958e538f data/metalborn/recipes/recycling/ring/identity_blasting.json
-a616d48bca9ad8a28dac380a47aff080d1541769 data/metalborn/recipes/recycling/ring/identity_smelting.json
+b2507ab14affc5b132df0ce671c8fc7ec2738652 data/metalborn/recipes/recycling/ring/identity_blasting.json
+d0159dd8c5352a6372692bda5d582086ae598d6a data/metalborn/recipes/recycling/ring/identity_smelting.json
 0b17172c1d54cc0ca87d6f80ba2dbae3aa7a7da0 data/metalborn/recipes/recycling/ring/metal_blasting.json
 46d5f5f1459d0c931b915fcff39348ded800cab0 data/metalborn/recipes/recycling/ring/metal_smelting.json
 5308722b0bf5de4c235934e257bea35a749fa99c data/metalborn/recipes/recycling/ring/nicrosil_blasting.json
@@ -106,7 +106,7 @@ ca21a2b532c83bc49982d87c8021dcf1ac042f9b data/metalborn/recipes/recycling/spike/
 75ef560919017ebd753abbb1d74e1760c4a8829d data/metalborn/recipes/recycling/spike/metal_smelting.json
 4db8be707cb32df476fa812466e4bf1af85fc70f data/metalborn/recipes/recycling/spike/nicrosil_blasting.json
 7f8c36300dce8c6b09915fd0375dc9084d7e2831 data/metalborn/recipes/recycling/spike/nicrosil_smelting.json
-f9115cb8d40a08eacc6241dab887d4bffc169f31 data/metalborn/recipes/ring/identity.json
+7ce9432f7e13dfc1b83dd53b1134f3c2d56c133c data/metalborn/recipes/ring/identity.json
 700884da4fbaef427f76bda0e8e132acbbea9af8 data/metalborn/recipes/ring/metal.json
 4210bf2e46c4dd869455be70de706d24d63686eb data/metalborn/recipes/ring/nicrosil.json
 9d82792e50ecc552268c4f6ea4c1f819ca441340 data/metalborn/recipes/ring/unsealed.json
@@ -140,9 +140,9 @@ bd4bfd5d9ca64bfac0974992f1e328a56818fb75 data/metalborn/recipes/tinkers/ring/cas
 c88dcfd3ca64793bc8c4222e334f1a78b481be4f data/metalborn/recipes/tinkers/ring/cast/sand_builder.json
 558a9175864c96fe43f7d966bd01ff3e929c8a8f data/metalborn/recipes/tinkers/ring/cast/sand_builder_block.json
 92bb6764257a60c963a2b52d273da266814aa682 data/metalborn/recipes/tinkers/ring/cast/sand_molding.json
-787f6c017572887fd527ba8f698b727294dbb344 data/metalborn/recipes/tinkers/ring/identity/casting_gold_cast.json
-2e140eb756ec777540e637174730016439b57576 data/metalborn/recipes/tinkers/ring/identity/casting_sand_cast.json
-d1b8e7b72ad9c1840aa26e7ec83cd27814dc5356 data/metalborn/recipes/tinkers/ring/identity/melting.json
+917a230d1794303993bee253eb62af6c42e61995 data/metalborn/recipes/tinkers/ring/identity/casting_gold_cast.json
+3babfa784aa48ef95cfe24aa76e4c3d6e474a911 data/metalborn/recipes/tinkers/ring/identity/casting_sand_cast.json
+f2ffc124bf9cc252b301763513b08b80c7362def data/metalborn/recipes/tinkers/ring/identity/melting.json
 7e021e967f94f32c78a5020ae9c1584e7d2e79e2 data/metalborn/recipes/tinkers/ring/investiture/casting_gold_cast.json
 fe47009bed1f0490d17d3af7cc821f3e45f306fa data/metalborn/recipes/tinkers/ring/investiture/casting_sand_cast.json
 82c95bf6c820472c04313bd950063d0b1f13e219 data/metalborn/recipes/tinkers/ring/investiture/melting.json

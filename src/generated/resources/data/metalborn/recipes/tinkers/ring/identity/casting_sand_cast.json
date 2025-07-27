@@ -41,9 +41,9 @@
           "tag": "metalborn:casts/ring_single_use"
         },
         "cast_consumed": true,
-        "cooling_time": 41,
+        "cooling_time": 58,
         "fluid": {
-          "amount": 50,
+          "amount": 100,
           "tag": "tconstruct:molten_quartz"
         },
         "result": "metalborn:identity_ring",

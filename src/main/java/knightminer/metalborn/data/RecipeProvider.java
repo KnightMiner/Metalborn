@@ -140,8 +140,10 @@ public class RecipeProvider extends net.minecraft.data.recipes.RecipeProvider im
           .cookingRate(1)
           .experience(0.5f)::save)
       .addCondition(TrueCondition.INSTANCE)
-      .addRecipe(ShapelessForgeRecipeBuilder.shapeless(Registration.IDENTITY_RING, 2)
-        .requires(Tags.Items.GEMS_QUARTZ) // 1 quartz by itself for 2 rings is close enough to 4 nuggets, 1/8 instead of 1/9
+      .addRecipe(ShapelessForgeRecipeBuilder.shapeless(Registration.IDENTITY_RING)
+        // if we gave 2, this would make the ring cost 1/8 instead of 1/9
+        // ultimately decided on just 1, making it 1/4, as we get better recycling. Means its a bit more expensive, but identity is niche
+        .requires(Tags.Items.GEMS_QUARTZ)
         .cookingRate(2)
         .experience(1.0f)::save)
         .build(consumer, location("ring/identity"));
@@ -302,44 +304,9 @@ public class RecipeProvider extends net.minecraft.data.recipes.RecipeProvider im
     recycle(consumer, Registration.INVESTITURE_SPIKE,  Registration.NICROSIL.getIngotTag(),  2, recyclingFolder + "spike/nicrosil");
 
     // identity is a pain as it has two possibilities, so recycle into the one present
-    // identity bracer
-    CookingRecipeBuilder<?> quartzBuilder = CookingRecipeBuilder.builder(Items.QUARTZ, 4)
-      .requires(Registration.IDENTITY_BRACER)
-      .experience(0.5f)
-      .cookingTime(800);
-      //.unlockedBy("has_item", has(Registration.IDENTITY_BRACER));
-    CookingRecipeBuilder<?> aluminumBuilder = CookingRecipeBuilder.builder(ingot("aluminum"), 4)
-      .requires(Registration.IDENTITY_BRACER)
-      .experience(0.5f)
-      .cookingTime(800);
-      //.unlockedBy("has_item", has(Registration.IDENTITY_BRACER));
-    // just need any RL to pass into the builder, will get ignored
-    ResourceLocation dummy = new ResourceLocation("dummy");
-    ICondition condition = ingotCondition("aluminum");
-    // smelting
-    ConditionalRecipe.builder()
-      .addCondition(condition)
-      .addRecipe(c -> aluminumBuilder.saveSmelting(c, dummy))
-      .addCondition(TrueCondition.INSTANCE)
-      .addRecipe(c -> quartzBuilder.saveSmelting(c, dummy))
-      .build(consumer, location(recyclingFolder + "bracer/identity_smelting"));
-    // blasting
-    ConditionalRecipe.builder()
-      .addCondition(condition)
-      .addRecipe(c -> aluminumBuilder.saveBlasting(c, dummy))
-      .addCondition(TrueCondition.INSTANCE)
-      .addRecipe(c -> quartzBuilder.saveBlasting(c, dummy))
-      .build(consumer, location(recyclingFolder + "bracer/identity_blasting"));
+    recycleIdentity(consumer, Registration.IDENTITY_BRACER, ingot("aluminum"), 4, recyclingFolder + "bracer/identity");
+    recycleIdentity(consumer, Registration.IDENTITY_RING,   aluminumNugget,    1, recyclingFolder + "ring/identity");
 
-    // identity ring - no nuggets here so just go conditional recipes for aluminum
-    Consumer<FinishedRecipe> aluminumRecycle = withCondition(consumer, new TagFilledCondition<>(aluminumNugget));
-    CookingRecipeBuilder.builder(aluminumNugget, 4)
-      .requires(Registration.IDENTITY_RING)
-      .experience(0.5f)
-      .cookingTime(800)
-      //.unlockedBy("has_item", has(Registration.IDENTITY_RING))
-      .saveSmelting(aluminumRecycle, location(recyclingFolder + "ring/identity_smelting"))
-      .saveBlasting(aluminumRecycle, location(recyclingFolder + "ring/identity_blasting"));
 
     // Tinkers' Construct melting and casting
     String tinkersFolder = "tinkers/";
@@ -358,8 +325,8 @@ public class RecipeProvider extends net.minecraft.data.recipes.RecipeProvider im
     TinkersMockRecipeBuilder.meltingCasting(consumer, Registration.INVESTITURE_BRACER, Registration.BRACER_CAST, nicrosil, ingot * 4,  nicrosilTemperature, tinkersFolder + "bracer/investiture/");
     TinkersMockRecipeBuilder.meltingCasting(consumer, Registration.INVESTITURE_SPIKE,  Registration.SPIKE_CAST,  nicrosil, ingot * 2,  nicrosilTemperature, tinkersFolder + "spike/investiture/");
     // identity may be quartz and may be aluminum based on loaded content
-    TinkersMockRecipeBuilder.identityMeltingCasting(consumer, Registration.IDENTITY_RING,   Registration.RING_CAST,   nugget * 4, 50, tinkersFolder + "ring/identity/");
-    TinkersMockRecipeBuilder.identityMeltingCasting(consumer, Registration.IDENTITY_BRACER, Registration.BRACER_CAST, ingot * 4, 400, tinkersFolder + "bracer/identity/");
+    TinkersMockRecipeBuilder.identityMeltingCasting(consumer, Registration.IDENTITY_RING,   Registration.RING_CAST,   nugget * 4, 100, tinkersFolder + "ring/identity/");
+    TinkersMockRecipeBuilder.identityMeltingCasting(consumer, Registration.IDENTITY_BRACER, Registration.BRACER_CAST, ingot * 4,  400, tinkersFolder + "bracer/identity/");
 
     // nuggets to change ferring type
     TagKey<Fluid> netherite = FluidTags.create(commonResource("molten_netherite"));
@@ -434,5 +401,35 @@ public class RecipeProvider extends net.minecraft.data.recipes.RecipeProvider im
       //.unlockedBy("has_item", has(item))
       .saveSmelting(consumer, location(prefix + "_smelting"))
       .saveBlasting(consumer, location(prefix + "_blasting"));
+  }
+
+  private void recycleIdentity(Consumer<FinishedRecipe> consumer, ItemLike item, TagKey<Item> aluminum, int quartz, String name) {
+    CookingRecipeBuilder<?> quartzBuilder = CookingRecipeBuilder.builder(Items.QUARTZ, quartz)
+      .requires(item)
+      .experience(0.5f)
+      .cookingTime(800);
+    //.unlockedBy("has_item", has(Registration.IDENTITY_BRACER));
+    CookingRecipeBuilder<?> aluminumBuilder = CookingRecipeBuilder.builder(aluminum, 4)
+      .requires(item)
+      .experience(0.5f)
+      .cookingTime(800);
+    //.unlockedBy("has_item", has(Registration.IDENTITY_BRACER));
+    // just need any RL to pass into the builder, will get ignored
+    ResourceLocation dummy = new ResourceLocation("dummy");
+    ICondition condition = new TagFilledCondition<>(aluminum);
+    // smelting
+    ConditionalRecipe.builder()
+      .addCondition(condition)
+      .addRecipe(c -> aluminumBuilder.saveSmelting(c, dummy))
+      .addCondition(TrueCondition.INSTANCE)
+      .addRecipe(c -> quartzBuilder.saveSmelting(c, dummy))
+      .build(consumer, location(name + "_smelting"));
+    // blasting
+    ConditionalRecipe.builder()
+      .addCondition(condition)
+      .addRecipe(c -> aluminumBuilder.saveBlasting(c, dummy))
+      .addCondition(TrueCondition.INSTANCE)
+      .addRecipe(c -> quartzBuilder.saveBlasting(c, dummy))
+      .build(consumer, location(name + "_blasting"));
   }
 }
