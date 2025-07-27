@@ -1,7 +1,7 @@
 {
   "type": "mantle:blasting",
   "category": "misc",
-  "cooking_time": 400,
+  "cooking_time": 100,
   "experience": 0.5,
   "ingredient": {
     "item": "metalborn:investiture_ring"

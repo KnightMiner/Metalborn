@@ -1,4 +1,4 @@
-// 1.20.1	2025-07-27T04:15:06.0385268	Recipes
+// 1.20.1	2025-07-27T04:23:37.1168393	Recipes
 8720e146ed87c91433b7b556aee5d6a5390111ee data/metalborn/advancements/recipes/decorations/forge.json
 c4a47c50fae1f0fb9b1d0ad265dd630473918dd7 data/metalborn/advancements/recipes/misc/metallic_arts.json
 6bb6018bc3fcaf2326b259cddc674cf97cd5f90a data/metalborn/advancements/recipes/misc/metal/bronze_block_from_ingots.json
@@ -96,12 +96,12 @@ fc74be7299d3e0543e75169013def30542713eea data/metalborn/recipes/recycling/bracer
 bac42c5f439c59fb0ca39989e0da29fa3d257bc8 data/metalborn/recipes/recycling/bracer/metal_smelting.json
 2b413558d1ca289d41ff3a079759d74e38396337 data/metalborn/recipes/recycling/bracer/nicrosil_blasting.json
 bdde236b1c5e5eb72f1499e623ea351f7c70d4c8 data/metalborn/recipes/recycling/bracer/nicrosil_smelting.json
-b2507ab14affc5b132df0ce671c8fc7ec2738652 data/metalborn/recipes/recycling/ring/identity_blasting.json
-d0159dd8c5352a6372692bda5d582086ae598d6a data/metalborn/recipes/recycling/ring/identity_smelting.json
-0b17172c1d54cc0ca87d6f80ba2dbae3aa7a7da0 data/metalborn/recipes/recycling/ring/metal_blasting.json
-46d5f5f1459d0c931b915fcff39348ded800cab0 data/metalborn/recipes/recycling/ring/metal_smelting.json
-5308722b0bf5de4c235934e257bea35a749fa99c data/metalborn/recipes/recycling/ring/nicrosil_blasting.json
-6aede2262937afc6ed6618844c81622ddf3809bc data/metalborn/recipes/recycling/ring/nicrosil_smelting.json
+fdfa4e35a0286b0ff6ab61f4e9501faac2937f25 data/metalborn/recipes/recycling/ring/identity_blasting.json
+fea71f705ffa607218a86f7d278c9b2188df49ea data/metalborn/recipes/recycling/ring/identity_smelting.json
+39055177f97041b122e4b9637dd336919e2b5150 data/metalborn/recipes/recycling/ring/metal_blasting.json
+689fef16ae21e1f09e25417d0bffda955d709685 data/metalborn/recipes/recycling/ring/metal_smelting.json
+eaafe29a66984dab9a742c250e5a89ae75b24e4f data/metalborn/recipes/recycling/ring/nicrosil_blasting.json
+100cf30c24507286117268b058ce8b41755ad17b data/metalborn/recipes/recycling/ring/nicrosil_smelting.json
 ca21a2b532c83bc49982d87c8021dcf1ac042f9b data/metalborn/recipes/recycling/spike/metal_blasting.json
 75ef560919017ebd753abbb1d74e1760c4a8829d data/metalborn/recipes/recycling/spike/metal_smelting.json
 4db8be707cb32df476fa812466e4bf1af85fc70f data/metalborn/recipes/recycling/spike/nicrosil_blasting.json

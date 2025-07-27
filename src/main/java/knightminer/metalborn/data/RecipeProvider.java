@@ -144,7 +144,7 @@ public class RecipeProvider extends net.minecraft.data.recipes.RecipeProvider im
         // if we gave 2, this would make the ring cost 1/8 instead of 1/9
         // ultimately decided on just 1, making it 1/4, as we get better recycling. Means its a bit more expensive, but identity is niche
         .requires(Tags.Items.GEMS_QUARTZ)
-        .cookingRate(2)
+        .cookingRate(1)
         .experience(1.0f)::save)
         .build(consumer, location("ring/identity"));
     // bracers
@@ -296,12 +296,12 @@ public class RecipeProvider extends net.minecraft.data.recipes.RecipeProvider im
 
     // recycling - all done in the furnace and blast furnace
     String recyclingFolder = "recycling/";
-    recycle(consumer, Registration.BRACER, MetalFilter.METALMIND, MetalShape.INGOT,  4, recyclingFolder + "bracer/metal");
-    recycle(consumer, Registration.RING,   MetalFilter.METALMIND, MetalShape.NUGGET, 4, recyclingFolder + "ring/metal");
-    recycle(consumer, Registration.SPIKE,  MetalFilter.SPIKE,     MetalShape.INGOT,  2, recyclingFolder + "spike/metal");
-    recycle(consumer, Registration.INVESTITURE_BRACER, Registration.NICROSIL.getIngotTag(),  4, recyclingFolder + "bracer/nicrosil");
-    recycle(consumer, Registration.INVESTITURE_RING,   Registration.NICROSIL.getNuggetTag(), 4, recyclingFolder + "ring/nicrosil");
-    recycle(consumer, Registration.INVESTITURE_SPIKE,  Registration.NICROSIL.getIngotTag(),  2, recyclingFolder + "spike/nicrosil");
+    recycle(consumer, Registration.BRACER, MetalFilter.METALMIND, MetalShape.INGOT,  4, 800, recyclingFolder + "bracer/metal");
+    recycle(consumer, Registration.RING,   MetalFilter.METALMIND, MetalShape.NUGGET, 4, 200, recyclingFolder + "ring/metal");
+    recycle(consumer, Registration.SPIKE,  MetalFilter.SPIKE,     MetalShape.INGOT,  2, 400, recyclingFolder + "spike/metal");
+    recycle(consumer, Registration.INVESTITURE_BRACER, Registration.NICROSIL.getIngotTag(),  4, 800, recyclingFolder + "bracer/nicrosil");
+    recycle(consumer, Registration.INVESTITURE_RING,   Registration.NICROSIL.getNuggetTag(), 4, 200, recyclingFolder + "ring/nicrosil");
+    recycle(consumer, Registration.INVESTITURE_SPIKE,  Registration.NICROSIL.getIngotTag(),  2, 400, recyclingFolder + "spike/nicrosil");
 
     // identity is a pain as it has two possibilities, so recycle into the one present
     recycleIdentity(consumer, Registration.IDENTITY_BRACER, ingot("aluminum"), 4, recyclingFolder + "bracer/identity");
@@ -383,21 +383,21 @@ public class RecipeProvider extends net.minecraft.data.recipes.RecipeProvider im
   }
 
   /** Creates a metal item recycling recipe pair for the given inputs */
-  private void recycle(Consumer<FinishedRecipe> consumer, ItemLike item, MetalFilter filter, MetalShape shape, int amount, String prefix) {
+  private void recycle(Consumer<FinishedRecipe> consumer, ItemLike item, MetalFilter filter, MetalShape shape, int amount, int cookingTime, String prefix) {
     CookingMetalRecyclingBuilder.builder(shape, amount)
       .requires(MetalItemIngredient.of(item, filter))
       .experience(0.5f)
-      .cookingTime(200 * amount)
+      .cookingTime(cookingTime)
       .saveBlasting(consumer, location(prefix + "_blasting"))
       .save(consumer, location(prefix + "_smelting"));
   }
 
   /** Creates item recycling recipe pair for the given inputs */
-  private void recycle(Consumer<FinishedRecipe> consumer, ItemLike item, TagKey<Item> result, int amount, String prefix) {
+  private void recycle(Consumer<FinishedRecipe> consumer, ItemLike item, TagKey<Item> result, int amount, int cookingTime, String prefix) {
     CookingRecipeBuilder.builder(result, amount)
       .requires(item)
       .experience(0.5f)
-      .cookingTime(200 * amount)
+      .cookingTime(cookingTime)
       //.unlockedBy("has_item", has(item))
       .saveSmelting(consumer, location(prefix + "_smelting"))
       .saveBlasting(consumer, location(prefix + "_blasting"));
@@ -407,12 +407,12 @@ public class RecipeProvider extends net.minecraft.data.recipes.RecipeProvider im
     CookingRecipeBuilder<?> quartzBuilder = CookingRecipeBuilder.builder(Items.QUARTZ, quartz)
       .requires(item)
       .experience(0.5f)
-      .cookingTime(800);
+      .cookingTime(200 * quartz);
     //.unlockedBy("has_item", has(Registration.IDENTITY_BRACER));
     CookingRecipeBuilder<?> aluminumBuilder = CookingRecipeBuilder.builder(aluminum, 4)
       .requires(item)
       .experience(0.5f)
-      .cookingTime(800);
+      .cookingTime(200 * quartz);
     //.unlockedBy("has_item", has(Registration.IDENTITY_BRACER));
     // just need any RL to pass into the builder, will get ignored
     ResourceLocation dummy = new ResourceLocation("dummy");
