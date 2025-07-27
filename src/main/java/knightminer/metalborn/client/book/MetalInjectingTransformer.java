@@ -4,7 +4,6 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 import knightminer.metalborn.Metalborn;
-import knightminer.metalborn.core.Registration;
 import knightminer.metalborn.metal.MetalManager;
 import knightminer.metalborn.metal.MetalPower;
 import net.minecraft.resources.ResourceLocation;
@@ -18,9 +17,12 @@ import slimeknights.mantle.client.book.data.content.ContentPageIconList.PageWith
 import slimeknights.mantle.client.book.transformer.BookTransformer;
 import slimeknights.mantle.client.screen.book.element.ItemElement;
 import slimeknights.mantle.client.screen.book.element.SizedBookElement;
+import slimeknights.mantle.client.screen.book.element.SpriteElement;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static knightminer.metalborn.client.model.PalettedItemModel.toSuffix;
 
 /** Transformer that injects all metal power pages into the book */
 public class MetalInjectingTransformer extends BookTransformer {
@@ -80,12 +82,16 @@ public class MetalInjectingTransformer extends BookTransformer {
 
       // set fluid effect properties into the page
       List<ItemStack> displayStacks = MetalContent.getItems(power.ingot());
-      if (displayStacks.isEmpty()) {
-        displayStacks = List.of(Registration.CHANGE_FERRING.get().withMetal(power.id()));
+      SizedBookElement icon;
+      if (!displayStacks.isEmpty()) {
+        icon = new ItemElement(0, 0, 1f, displayStacks);
+      } else {
+        // if it has no display stacks, default to its nugget icon
+        // will stand out a bit with all the ingots, so technically I could have choosen ingot icon here, but didn't feel like generating the extra textures
+        icon = new SpriteElement(0, 0, 1f, Metalborn.resource("metal/item/nugget_" + toSuffix(power.id())));
       }
 
       // build the icon
-      SizedBookElement icon = new ItemElement(0, 0, 1f, displayStacks);
       newPages.add(new PageWithIcon(icon, newPage));
     }
 
