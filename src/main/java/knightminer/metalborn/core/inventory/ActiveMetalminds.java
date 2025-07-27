@@ -331,7 +331,7 @@ public class ActiveMetalminds {
       MetalmindStack stack = iterator.next();
       if (!stack.canUse().isValid(stack.level)) {
         change += stack.level;
-        stack.level = 0;
+        stack.stop();
         iterator.remove();
       }
     }

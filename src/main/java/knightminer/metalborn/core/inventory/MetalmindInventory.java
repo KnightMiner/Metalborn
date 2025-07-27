@@ -114,6 +114,14 @@ public class MetalmindInventory extends MetalInventory<MetalmindStack> implement
       return metalmind.onUpdate(stack, index, newLevel, oldLevel, player, data);
     }
 
+    /** Tells the metalmind to deactivate, running any relevant updates. */
+    protected void stop() {
+      if (level != 0) {
+        metalmind.onStop(stack, index, level, player, data);
+        level = 0;
+      }
+    }
+
     @Override
     protected void setStack(ItemStack stack) {
       if (stack.isEmpty()) {

@@ -50,6 +50,17 @@ public interface Metalmind extends Fillable {
     return false;
   }
 
+  /**
+   * Called when this metalmind is stopped to deactivate any powers not tracked directly by active metalminds.
+   * Notably, {@link MetalbornData#stopUsingUnsealed(int)} needs to be called here; most power methods are handled automatically.
+   * @param stack  Stack being used
+   * @param index  Location of the stack in the metalmind inventory
+   * @param level  Level before this metalmind was stopped
+   * @param player Player using the metalmind
+   * @param data   Metalborn data capability
+   */
+  default void onStop(ItemStack stack, int index, int level, Player player, MetalbornData data) {}
+
   /** Checks if the metalmind is currently empty (and thus cannot tap) */
   @Override
   default boolean isEmpty(ItemStack stack) {

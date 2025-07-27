@@ -30,4 +30,11 @@ public class UnsealedMetalmindItem extends PowerMetalmindItem {
     }
     return super.onUpdate(stack, index, newLevel, oldLevel, player, data);
   }
+
+  @Override
+  public void onStop(ItemStack stack, int index, int level, Player player, MetalbornData data) {
+    if (level != 0) {
+      data.stopUsingUnsealed(index);
+    }
+  }
 }
