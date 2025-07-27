@@ -1,4 +1,10 @@
-// 1.20.1	2025-07-27T04:23:37.1168393	Recipes
+// 1.20.1	2025-07-27T18:25:38.2170334	Recipes
+45f272371eff12a4285f67a72b41dfb17082031e data/metalborn/advancements/recipes/cooking/recycling/bracer/nicrosil_blasting.json
+5149d554f0e3961bc9e6ddd7fbbf346b7d15518c data/metalborn/advancements/recipes/cooking/recycling/bracer/nicrosil_smelting.json
+a391c250669ed54093db608f5c28b31726055da5 data/metalborn/advancements/recipes/cooking/recycling/ring/nicrosil_blasting.json
+00ef11d69f7e209fb029fe181141a5b935cbbf67 data/metalborn/advancements/recipes/cooking/recycling/ring/nicrosil_smelting.json
+6e518ded2b562df7100f58c7932acbc918024207 data/metalborn/advancements/recipes/cooking/recycling/spike/nicrosil_blasting.json
+9374b63a17f507c3adede8867b3420ad8e30d930 data/metalborn/advancements/recipes/cooking/recycling/spike/nicrosil_smelting.json
 8720e146ed87c91433b7b556aee5d6a5390111ee data/metalborn/advancements/recipes/decorations/forge.json
 c4a47c50fae1f0fb9b1d0ad265dd630473918dd7 data/metalborn/advancements/recipes/misc/metallic_arts.json
 6bb6018bc3fcaf2326b259cddc674cf97cd5f90a data/metalborn/advancements/recipes/misc/metal/bronze_block_from_ingots.json

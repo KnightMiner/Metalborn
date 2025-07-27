@@ -384,12 +384,13 @@ public class RecipeProvider extends net.minecraft.data.recipes.RecipeProvider im
 
   /** Creates a metal item recycling recipe pair for the given inputs */
   private void recycle(Consumer<FinishedRecipe> consumer, ItemLike item, MetalFilter filter, MetalShape shape, int amount, int cookingTime, String prefix) {
+    // special recipe, so no advancements
     CookingMetalRecyclingBuilder.builder(shape, amount)
       .requires(MetalItemIngredient.of(item, filter))
       .experience(0.5f)
       .cookingTime(cookingTime)
-      .saveBlasting(consumer, location(prefix + "_blasting"))
-      .save(consumer, location(prefix + "_smelting"));
+      .saveSmelting(consumer, location(prefix + "_smelting"))
+      .saveBlasting(consumer, location(prefix + "_blasting"));
   }
 
   /** Creates item recycling recipe pair for the given inputs */
@@ -398,7 +399,7 @@ public class RecipeProvider extends net.minecraft.data.recipes.RecipeProvider im
       .requires(item)
       .experience(0.5f)
       .cookingTime(cookingTime)
-      //.unlockedBy("has_item", has(item))
+      .unlockedBy("has_item", has(item))
       .saveSmelting(consumer, location(prefix + "_smelting"))
       .saveBlasting(consumer, location(prefix + "_blasting"));
   }
@@ -408,12 +409,10 @@ public class RecipeProvider extends net.minecraft.data.recipes.RecipeProvider im
       .requires(item)
       .experience(0.5f)
       .cookingTime(200 * quartz);
-    //.unlockedBy("has_item", has(Registration.IDENTITY_BRACER));
     CookingRecipeBuilder<?> aluminumBuilder = CookingRecipeBuilder.builder(aluminum, 4)
       .requires(item)
       .experience(0.5f)
       .cookingTime(200 * quartz);
-    //.unlockedBy("has_item", has(Registration.IDENTITY_BRACER));
     // just need any RL to pass into the builder, will get ignored
     ResourceLocation dummy = new ResourceLocation("dummy");
     ICondition condition = new TagFilledCondition<>(aluminum);

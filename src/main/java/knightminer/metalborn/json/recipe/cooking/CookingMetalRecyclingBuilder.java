@@ -1,27 +1,22 @@
 package knightminer.metalborn.json.recipe.cooking;
 
 import knightminer.metalborn.json.recipe.MetalResult;
-import knightminer.metalborn.json.recipe.forge.AbstractForgeRecipeBuilder;
 import knightminer.metalborn.metal.MetalShape;
 import net.minecraft.data.recipes.FinishedRecipe;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.tags.TagKey;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.crafting.Ingredient;
-import net.minecraft.world.level.ItemLike;
 import org.apache.commons.lang3.NotImplementedException;
+import slimeknights.mantle.recipe.cooking.CookingRecipeBuilder;
 import slimeknights.mantle.recipe.helper.ItemOutput;
 
 import java.util.function.Consumer;
 
 /** Builder for {@link SmeltingMetalRecyclingRecipe} and {@link CookingMetalRecyclingBuilder} */
-public class CookingMetalRecyclingBuilder extends AbstractForgeRecipeBuilder<CookingMetalRecyclingBuilder> {
+public class CookingMetalRecyclingBuilder extends CookingRecipeBuilder<CookingMetalRecyclingBuilder> {
   private final MetalResult result;
-  protected Ingredient ingredient = Ingredient.EMPTY;
   protected CookingMetalRecyclingBuilder(MetalResult result) {
     super(ItemOutput.EMPTY);
     this.result = result;
-    this.cookingTime = 200;
   }
 
   /** Creates a builder for the given result */
@@ -34,29 +29,18 @@ public class CookingMetalRecyclingBuilder extends AbstractForgeRecipeBuilder<Coo
     return builder(new MetalResult(shape, amount));
   }
 
-  /** Sets the input ingredient */
-  public CookingMetalRecyclingBuilder requires(Ingredient ingredient) {
-    this.ingredient = ingredient;
+  /** Saves the smelting recipe */
+  @Override
+  public CookingMetalRecyclingBuilder saveSmelting(Consumer<FinishedRecipe> consumer, ResourceLocation id) {
+    if (ingredient == Ingredient.EMPTY) {
+      throw new IllegalStateException("Ingredient must be set");
+    }
+    consumer.accept(new LoadableFinishedRecipe<>(new SmeltingMetalRecyclingRecipe(id, group, ingredient, result, experience, cookingTime), SmeltingMetalRecyclingRecipe.LOADABLE, null));
     return this;
   }
 
-  /** Sets the input ingredient */
-  public CookingMetalRecyclingBuilder requires(ItemLike item) {
-    return requires(Ingredient.of(item));
-  }
-
-  /** Sets the input ingredient */
-  public CookingMetalRecyclingBuilder requires(TagKey<Item> tag) {
-    return requires(Ingredient.of(tag));
-  }
-
-  @Deprecated(forRemoval = true)
-  @Override
-  public void save(Consumer<FinishedRecipe> consumer) {
-    throw new NotImplementedException();
-  }
-
   /** Saves the blasting recipe */
+  @Override
   public CookingMetalRecyclingBuilder saveBlasting(Consumer<FinishedRecipe> consumer, ResourceLocation id) {
     if (ingredient == Ingredient.EMPTY) {
       throw new IllegalStateException("Ingredient must be set");
@@ -65,12 +49,13 @@ public class CookingMetalRecyclingBuilder extends AbstractForgeRecipeBuilder<Coo
     return this;
   }
 
-  /** Saves the smelting recipe */
   @Override
-  public void save(Consumer<FinishedRecipe> consumer, ResourceLocation id) {
-    if (ingredient == Ingredient.EMPTY) {
-      throw new IllegalStateException("Ingredient must be set");
-    }
-    consumer.accept(new LoadableFinishedRecipe<>(new SmeltingMetalRecyclingRecipe(id, group, ingredient, result, experience, cookingTime), SmeltingMetalRecyclingRecipe.LOADABLE, null));
+  public CookingMetalRecyclingBuilder saveSmoking(Consumer<FinishedRecipe> consumer, ResourceLocation id) {
+    throw new NotImplementedException("Only smelting and blasting recipes are supported");
+  }
+
+  @Override
+  public CookingMetalRecyclingBuilder saveCampfire(Consumer<FinishedRecipe> consumer, ResourceLocation id) {
+    throw new NotImplementedException("Only smelting and blasting recipes are supported");
   }
 }
