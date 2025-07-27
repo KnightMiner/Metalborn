@@ -48,7 +48,8 @@ public class ItemModelProvider extends net.minecraftforge.client.model.generator
     metal(Registration.ROSE_GOLD, MetalIds.roseGold);
     metal(Registration.NICROSIL, MetalIds.nicrosil);
     nugget(Registration.COPPER_NUGGET, MetalIds.copper);
-    nugget(Registration.NETHERITE_NUGGET, MetalIds.netherite);
+    nugget(Registration.NETHERITE_SHARD, MetalIds.netherite);
+    basicItem(Registration.NETHERITE_NUGGET, "netherite_nugget");
 
     // ferring nuggets
     nugget(Registration.RANDOM_FERRING, MetalIds.nicrosil);

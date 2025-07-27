@@ -1,8 +1,9 @@
-// 1.20.1	2025-07-24T04:06:23.2553038	Tags for minecraft:item mod id metalborn
+// 1.20.1	2025-07-27T02:02:28.6971304	Tags for minecraft:item mod id metalborn
 058157714c08f4d51455b63e4bf6bae3d4ccf02e data/forge/tags/items/books.json
 66dd943100ec84cf0199411516d16e1ab1e350ba data/forge/tags/items/books/guide.json
 8b9a09fc19e418e011eaab15ab0ad87882e9ccfe data/forge/tags/items/ingots.json
 03cfb4451bfb3c82bfbe118acfb1c55d545d9835 data/forge/tags/items/ingots/bronze.json
+63ed37c88e729fae463f807af47c700250de9fb2 data/forge/tags/items/ingots/netherite_scrap.json
 f905ff8061f5a302c2eb26a512041bf66d6ceee3 data/forge/tags/items/ingots/nicrosil.json
 b82e1386d985cef8647105b101ae7ebaeccee644 data/forge/tags/items/ingots/pewter.json
 e7514c66a0e390083199482c0955ff184c6e6f09 data/forge/tags/items/ingots/rose_gold.json
@@ -12,6 +13,7 @@ df4ca4e29f1642104842e775304066f7ea397604 data/forge/tags/items/ingots/tin.json
 797e7aa68cda1155014635c424ba4fae6a9eb2fd data/forge/tags/items/nuggets/bronze.json
 96297501f52bc0ed4f61530fdb7322c3c78babf0 data/forge/tags/items/nuggets/copper.json
 153083c83dde50354597232ecb844d923268e973 data/forge/tags/items/nuggets/netherite.json
+adcdf5d5a1232499cbb03d62f4f326f11d4f6be6 data/forge/tags/items/nuggets/netherite_scrap.json
 19b92e052bd2f40b21b9c7a8715c3a773452acb4 data/forge/tags/items/nuggets/nicrosil.json
 80078e9eae7e60d6fbd9aba430daf0bb33123690 data/forge/tags/items/nuggets/pewter.json
 0c5e712e0458eea79f214c53174656165b0ea9aa data/forge/tags/items/nuggets/rose_gold.json

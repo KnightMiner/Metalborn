@@ -18,8 +18,7 @@ public class MetalIds {
   // hybrid
   public static final MetalId gold = id("gold");
   public static final MetalId roseGold = id("rose_gold");
-
-  // textures
+  // spiritual
   public static final MetalId nicrosil = id("nicrosil");
   public static final MetalId netherite = id("netherite");
 
@@ -32,8 +31,6 @@ public class MetalIds {
   // compat hybrid alternatives
   public static final MetalId nickel = id("nickel");
   public static final MetalId constantan = id("constantan");
-  // compat spiritual
-  public static final MetalId duralumin = id("duralumin");
 
   /** Creates a metalborn effect ID */
   private static MetalId id(String name) {

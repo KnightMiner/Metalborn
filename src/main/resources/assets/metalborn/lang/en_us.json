@@ -58,6 +58,11 @@
   "metal_power.metalborn.quartz.ferring": "Trueself",
   "metal_power.metalborn.quartz.target": "Players",
 
+  "metal_power.metalborn.netherite": "Netherite",
+  "metal_power.metalborn.netherite.stores": "Luck",
+  "metal_power.metalborn.netherite.ferring": "Spinner",
+  "metal_power.metalborn.netherite.target": "Illagers",
+
   "metal_power.metalborn.investiture": "Nicrosil",
   "metal_power.metalborn.investiture.stores": "Investiture",
   "metal_power.metalborn.investiture.ferring": "Soulbearer",
@@ -65,19 +70,14 @@
 
 
   "metal_power.metalborn.silver": "Silver",
-  "metal_power.metalborn.silver.stores": "Luck",
-  "metal_power.metalborn.silver.ferring": "Spinner",
-  "metal_power.metalborn.silver.target": "Illagers",
+  "metal_power.metalborn.silver.stores": "Stealth",
+  "metal_power.metalborn.silver.ferring": "Sparker",
+  "metal_power.metalborn.silver.target": "Silverfish",
 
   "metal_power.metalborn.electrum": "Electrum",
   "metal_power.metalborn.electrum.stores": "Determination",
   "metal_power.metalborn.electrum.ferring": "Pinnacle",
   "metal_power.metalborn.electrum.target": "Guardians",
-
-  "metal_power.metalborn.duralumin": "Duralumin",
-  "metal_power.metalborn.duralumin.stores": "Stealth",
-  "metal_power.metalborn.duralumin.ferring": "Connector",
-  "metal_power.metalborn.duralumin.target": "Silverfish",
 
   "metal_power.metalborn.zinc": "Zinc",
   "metal_power.metalborn.zinc.stores": "Breath",
@@ -105,6 +105,7 @@
   "_group_ores_": "",
 
   "item.metalborn.copper_nugget": "Copper Nugget",
+  "item.metalborn.netherite_shard": "Netherite Shard",
 
   "block.metalborn.tin_ore": "Tin Ore",
   "block.metalborn.deepslate_tin_ore": "Deepslate Tin Ore",

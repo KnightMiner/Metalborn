@@ -3,7 +3,6 @@ package knightminer.metalborn.data;
 import knightminer.metalborn.core.Registration;
 import knightminer.metalborn.item.metalmind.IdentityMetalmindItem;
 import knightminer.metalborn.item.metalmind.InvestitureMetalmindItem;
-import knightminer.metalborn.json.ConfigEnabledCondition;
 import knightminer.metalborn.metal.AbstractMetalPowerProvider;
 import knightminer.metalborn.metal.MetalFormat;
 import knightminer.metalborn.metal.effects.general.AttributeMetalEffect;
@@ -82,11 +81,15 @@ public class MetalPowerProvider extends AbstractMetalPowerProvider {
     metal(InvestitureMetalmindItem.METAL).name("nicrosil").index(16).temperature(1100).hemalurgyCharge(0);
 
     // compat
-    metal(MetalIds.silver).index(9).temperature(790).integration().hemalurgyCharge(10)
-      .feruchemy(AttributeMetalEffect.builder(Attributes.LUCK, Operation.ADDITION).eachLevel(0.5f))
-      .feruchemy(AttributeMetalEffect.builder(Registration.EXPERIENCE_MULTIPLIER, Operation.MULTIPLY_TOTAL).eachLevel(0.1f))
-      .feruchemy(new TappingMetalEffect(AttributeMetalEffect.builder(Registration.LOOTING_BOOST, Operation.ADDITION).eachLevel(0.25f)))
-      .feruchemy(new StoringMetalEffect(AttributeMetalEffect.builder(Registration.DROP_CHANCE, Operation.MULTIPLY_TOTAL).eachLevel(0.1f)));
+    metal(MetalIds.silver).index(9).temperature(790).integration().hemalurgyCharge(15)
+      // when storing, go from 100% (default) to 200% ... 500%
+      .feruchemy(new StoringMetalEffect(new CappedMetalEffect(4, AttributeMetalEffect.builder(Registration.VISIBILITY_MULTIPLIER, Operation.MULTIPLY_TOTAL).swapColors().eachLevel(-1))))
+      // when tapping, go from 100% (default) to 75% ... 0%
+      .feruchemy(new TappingMetalEffect(new CappedMetalEffect(3, AttributeMetalEffect.builder(Registration.VISIBILITY_MULTIPLIER, Operation.MULTIPLY_TOTAL).swapColors().eachLevel(-0.25f))))
+      // when storing, apply glowing at level 4
+      .feruchemy(new OffsetMetalEffect(3, MobEffectMetalEffect.storing(MobEffects.GLOWING).flat(1)))
+      // when storing, apply invisibility at level 4
+      .feruchemy(new OffsetMetalEffect(3, MobEffectMetalEffect.tapping(MobEffects.INVISIBILITY).alwaysStore().flat(1)));
     metal(MetalIds.electrum).index(10).temperature(760).integration()
       .hemalurgyCharge(8) // guardians are tough creatures
       .feruchemy(AttributeMetalEffect.builder(Registration.DETERMINATION, Operation.MULTIPLY_TOTAL).eachLevel(0.1f));
@@ -111,22 +114,11 @@ public class MetalPowerProvider extends AbstractMetalPowerProvider {
       .feruchemy(new StoringMetalEffect(AttributeMetalEffect.builder(Attributes.ATTACK_DAMAGE, Operation.ADDITION).eachLevel(1)))
       .feruchemy(new TappingMetalEffect(AttributeMetalEffect.builder(Registration.HEAT_DAMAGE, Operation.ADDITION).eachLevel(1)));
 
-    metal(MetalIds.duralumin).index(14).condition(new OrCondition(
-      // want to allow this if we have aluminum by itself. TODO: is this worth doing for all compat alloys?
-      ConfigEnabledCondition.FORCE_INTEGRATION,
-      new TagFilledCondition<>(ItemTags.create(Mantle.commonResource("ingots/aluminum"))),
-      new TagFilledCondition<>(ItemTags.create(Mantle.commonResource("nuggets/aluminum"))),
-      new TagFilledCondition<>(ItemTags.create(Mantle.commonResource("ingots/duralumin"))),
-      new TagFilledCondition<>(ItemTags.create(Mantle.commonResource("nuggets/duralumin")))
-    )).hemalurgyCharge(15)
-      // when storing, go from 100% (default) to 200% ... 500%
-      .feruchemy(new StoringMetalEffect(new CappedMetalEffect(4, AttributeMetalEffect.builder(Registration.VISIBILITY_MULTIPLIER, Operation.MULTIPLY_TOTAL).swapColors().eachLevel(-1))))
-      // when tapping, go from 100% (default) to 75% ... 0%
-      .feruchemy(new TappingMetalEffect(new CappedMetalEffect(3, AttributeMetalEffect.builder(Registration.VISIBILITY_MULTIPLIER, Operation.MULTIPLY_TOTAL).swapColors().eachLevel(-0.25f))))
-      // when storing, apply glowing at level 4
-      .feruchemy(new OffsetMetalEffect(3, MobEffectMetalEffect.storing(MobEffects.GLOWING).flat(1)))
-      // when storing, apply invisibility at level 4
-      .feruchemy(new OffsetMetalEffect(3, MobEffectMetalEffect.tapping(MobEffects.INVISIBILITY).alwaysStore().flat(1)));
+    metal(MetalIds.netherite).name("netherite_scrap").index(15).integration().hemalurgyCharge(10).disallowFerring()
+      .feruchemy(AttributeMetalEffect.builder(Attributes.LUCK, Operation.ADDITION).eachLevel(0.5f))
+      .feruchemy(AttributeMetalEffect.builder(Registration.EXPERIENCE_MULTIPLIER, Operation.MULTIPLY_TOTAL).eachLevel(0.1f))
+      .feruchemy(new TappingMetalEffect(AttributeMetalEffect.builder(Registration.LOOTING_BOOST, Operation.ADDITION).eachLevel(0.25f)))
+      .feruchemy(new StoringMetalEffect(AttributeMetalEffect.builder(Registration.DROP_CHANCE, Operation.MULTIPLY_TOTAL).eachLevel(0.1f)));
   }
 
   @Override

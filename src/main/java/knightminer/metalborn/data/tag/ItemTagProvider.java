@@ -55,6 +55,8 @@ public class ItemTagProvider extends ItemTagsProvider {
     metal(Registration.NICROSIL);
     tag(MetalbornTags.Items.COPPER_NUGGETS).add(Registration.COPPER_NUGGET.get());
     tag(MetalbornTags.Items.NETHERITE_NUGGETS).add(Registration.NETHERITE_NUGGET.get());
+    tag(MetalbornTags.Items.NETHERITE_SCRAP_NUGGETS).add(Registration.NETHERITE_SHARD.get());
+    tag(MetalbornTags.Items.NETHERITE_SCRAP_INGOTS).add(Items.NETHERITE_SCRAP);
     tag(Tags.Items.NUGGETS).addTags(MetalbornTags.Items.COPPER_NUGGETS, MetalbornTags.Items.NETHERITE_NUGGETS);
 
     // tin ore

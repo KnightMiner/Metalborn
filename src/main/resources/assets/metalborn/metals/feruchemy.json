@@ -14,7 +14,6 @@
     
     "metalborn:silver",
     "metalborn:electrum",
-    "metalborn:duralumin",
 
     "metalborn:zinc",
     "metalborn:brass",
@@ -22,6 +21,7 @@
     "metalborn:constantan",
 
     "metalborn:quartz",
+    "metalborn:netherite",
     "metalborn:nicrosil"
   ]
 }

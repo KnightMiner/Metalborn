@@ -1,0 +1,14 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "group": "metalborn:netherite_shard",
+  "ingredients": [
+    {
+      "item": "minecraft:netherite_scrap"
+    }
+  ],
+  "result": {
+    "count": 9,
+    "item": "metalborn:netherite_shard"
+  }
+}

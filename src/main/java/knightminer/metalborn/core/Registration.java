@@ -143,6 +143,7 @@ public class Registration {
 
   // metals
   public static final ItemObject<Item> COPPER_NUGGET = ITEMS.register("copper_nugget");
+  public static final ItemObject<Item> NETHERITE_SHARD = ITEMS.register("netherite_shard");
   public static final ItemObject<Item> NETHERITE_NUGGET = ITEMS.register("netherite_nugget");
   public static final ItemObject<RandomFerringItem> RANDOM_FERRING = ITEMS.register("random_ferring", () -> new RandomFerringItem(new Item.Properties()));
   public static final ItemObject<ChangeFerringItem> CHANGE_FERRING = ITEMS.register("change_ferring", () -> new ChangeFerringItem(new Item.Properties()));
@@ -345,6 +346,7 @@ public class Registration {
 
     // metals
     output.accept(COPPER_NUGGET);
+    output.accept(NETHERITE_SHARD);
     output.accept(NETHERITE_NUGGET);
     accept(output, TIN);
     accept(output, PEWTER);

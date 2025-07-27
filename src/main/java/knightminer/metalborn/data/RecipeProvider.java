@@ -38,7 +38,6 @@ import net.minecraftforge.common.Tags;
 import net.minecraftforge.common.crafting.ConditionalRecipe;
 import net.minecraftforge.common.crafting.conditions.ICondition;
 import net.minecraftforge.common.crafting.conditions.TrueCondition;
-import slimeknights.mantle.recipe.condition.TagEmptyCondition;
 import slimeknights.mantle.recipe.condition.TagFilledCondition;
 import slimeknights.mantle.recipe.cooking.CookingRecipeBuilder;
 import slimeknights.mantle.recipe.data.ICommonRecipeHelper;
@@ -76,6 +75,7 @@ public class RecipeProvider extends net.minecraft.data.recipes.RecipeProvider im
     metalCrafting(consumer, Registration.ROSE_GOLD, metalFolder);
     metalCrafting(consumer, Registration.NICROSIL, metalFolder);
     packingRecipe(consumer, RecipeCategory.MISC, "ingot", Items.COPPER_INGOT, "nugget", Registration.COPPER_NUGGET, MetalbornTags.Items.COPPER_NUGGETS, metalFolder);
+    packingRecipe(consumer, RecipeCategory.MISC, "scrap", Items.NETHERITE_SCRAP, "shard", Registration.NETHERITE_SHARD, MetalbornTags.Items.NETHERITE_SCRAP_NUGGETS, metalFolder);
     packingRecipe(consumer, RecipeCategory.MISC, "ingot", Items.NETHERITE_INGOT, "nugget", Registration.NETHERITE_NUGGET, MetalbornTags.Items.NETHERITE_NUGGETS, metalFolder);
 
     // tin ore
@@ -145,14 +145,6 @@ public class RecipeProvider extends net.minecraft.data.recipes.RecipeProvider im
         .cookingRate(2)
         .experience(1.0f)::save)
         .build(consumer, location("ring/identity"));
-    // if no duralumin is registered, nugget version of alloying makes a ring
-    ICondition aluminumNuggetCondition = new TagFilledCondition<>(aluminumNugget);
-    ShapelessForgeRecipeBuilder.shapeless(Registration.RING.get().withMetal(MetalIds.duralumin))
-      .requires(aluminumNugget, 3)
-      .requires(MetalbornTags.Items.COPPER_NUGGETS, 1)
-      .cookingRate(1)
-      .experience(0.5f)
-      .save(withCondition(consumer, aluminumNuggetCondition, new TagEmptyCondition<>(ItemTags.create(commonResource("nuggets/duralumin")))), location("ring/duralumin"));
     // bracers
     ShapedForgeRecipeBuilder.shaped(Registration.BRACER)
       .pattern("##").pattern("##")
@@ -182,14 +174,6 @@ public class RecipeProvider extends net.minecraft.data.recipes.RecipeProvider im
         .cookingRate(4)
         .experience(2f)::save)
       .build(consumer, location("bracer/identity"));
-    // if no duralumin is registered, its alloying recipe makes bracers
-    ICondition noDuralumin = new TagEmptyCondition<>(ingot("duralumin"));
-    ShapelessForgeRecipeBuilder.shapeless(Registration.BRACER.get().withMetal(MetalIds.duralumin))
-      .requires(ingot("aluminum"), 3)
-      .requires(Tags.Items.INGOTS_COPPER, 1)
-      .cookingRate(4)
-      .experience(2f)
-      .save(withCondition(consumer, ingotCondition("aluminum"), noDuralumin), location("bracer/duralumin"));
     // spikes
     ShapedForgeRecipeBuilder.shaped(Registration.SPIKE)
       .pattern(" #").pattern("# ")
@@ -204,14 +188,6 @@ public class RecipeProvider extends net.minecraft.data.recipes.RecipeProvider im
       .cookingRate(4)
       .experience(1f)
       .save(consumer, location("spike/nicrosil"));
-    // if no duralumin is registered, create its spike with a close enough 1:1 recipe
-    ShapedForgeRecipeBuilder.shaped(Registration.SPIKE.get().withMetal(MetalIds.duralumin))
-      .pattern(" a").pattern("c ")
-      .define('c', Tags.Items.INGOTS_COPPER)
-      .define('a', ingot("aluminum"))
-      .cookingRate(4)
-      .experience(1f)
-      .save(withCondition(consumer, ingotCondition("aluminum"), noDuralumin), location("spike/duralumin"));
 
     // unsealed is crafted from a full nicrosil metalmind and a matching empty metalmind
     ShapelessForgeRecipeBuilder.shapeless(Registration.UNSEALED_RING)
@@ -356,7 +332,7 @@ public class RecipeProvider extends net.minecraft.data.recipes.RecipeProvider im
       .build(consumer, location(recyclingFolder + "bracer/identity_blasting"));
 
     // identity ring - no nuggets here so just go conditional recipes for aluminum
-    Consumer<FinishedRecipe> aluminumRecycle = withCondition(consumer, aluminumNuggetCondition);
+    Consumer<FinishedRecipe> aluminumRecycle = withCondition(consumer, new TagFilledCondition<>(aluminumNugget));
     CookingRecipeBuilder.builder(aluminumNugget, 4)
       .requires(Registration.IDENTITY_RING)
       .experience(0.5f)

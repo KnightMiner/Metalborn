@@ -32,16 +32,16 @@ public class EntityTagProvider extends EntityTypeTagsProvider {
     // hybrid
     tag(MetalIds.gold).add(EntityType.PIGLIN, EntityType.PIGLIN_BRUTE, EntityType.ZOMBIFIED_PIGLIN);
     tag(MetalIds.roseGold).add(EntityType.ZOMBIE, EntityType.ZOMBIE_VILLAGER, EntityType.HUSK);
+    // spiritual
+    tag(MetalIds.netherite).add(EntityType.PILLAGER, EntityType.VINDICATOR, EntityType.ILLUSIONER, EntityType.WITCH);
     // compat cognitive
-    tag(MetalIds.silver).add(EntityType.PILLAGER, EntityType.VINDICATOR, EntityType.ILLUSIONER, EntityType.WITCH);
+    tag(MetalIds.silver).add(EntityType.SILVERFISH);
     tag(MetalIds.electrum).add(EntityType.GUARDIAN, EntityType.ELDER_GUARDIAN);
     // compat hybrid
     tag(MetalIds.zinc).add(EntityType.DROWNED);
     tag(MetalIds.nickel).add(EntityType.DROWNED);
     tag(MetalIds.brass).add(EntityType.BLAZE);
     tag(MetalIds.constantan).add(EntityType.BLAZE);
-    // compat spiritual
-    tag(MetalIds.duralumin).add(EntityType.SILVERFISH);
   }
 
   /** Creates a tag for a metal */

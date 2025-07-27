@@ -29,6 +29,8 @@ public class MetalbornTags {
 
     public static final TagKey<Item> COPPER_NUGGETS = common("nuggets/copper");
     public static final TagKey<Item> NETHERITE_NUGGETS = common("nuggets/netherite");
+    public static final TagKey<Item> NETHERITE_SCRAP_NUGGETS = common("nuggets/netherite_scrap");
+    public static final TagKey<Item> NETHERITE_SCRAP_INGOTS = common("ingots/netherite_scrap");
     // tin ore
     public static final TagKey<Item> TIN_ORE = common("ores/tin");
     public static final TagKey<Item> RAW_TIN = common("raw_materials/tin");
