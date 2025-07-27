@@ -1,20 +1,18 @@
 package knightminer.metalborn.metal;
 
 import knightminer.metalborn.metal.effects.MetalEffect;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
-import net.minecraft.tags.FluidTags;
-import net.minecraft.tags.ItemTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.material.Fluid;
+import net.minecraftforge.common.Tags;
 import org.jetbrains.annotations.ApiStatus.Internal;
-import slimeknights.mantle.Mantle;
 import slimeknights.mantle.data.loadable.field.ContextKey;
 import slimeknights.mantle.data.loadable.primitive.EnumLoadable;
 import slimeknights.mantle.data.loadable.primitive.IntLoadable;
-import slimeknights.mantle.data.loadable.primitive.StringLoadable;
 import slimeknights.mantle.data.loadable.record.RecordLoadable;
 import slimeknights.mantle.util.RegistryHelper;
 
@@ -37,10 +35,9 @@ import java.util.List;
  * @param hemalurgyCharge  Amount of charge needed to fill this spike. If 0, this is not usable as a spike.
  */
 public record MetalPower(
-  MetalId id, String name,
+  MetalId id, int index,
   TagKey<Item> ingot, TagKey<Item> nugget, TagKey<Fluid> fluid, int temperature,
   TagKey<EntityType<?>> target,
-  int index,
   boolean ferring, List<MetalEffect> feruchemy,
   int capacity, MetalFormat format,
   int hemalurgyCharge
@@ -48,38 +45,29 @@ public record MetalPower(
   /** Loader instane for parsing from JSON and syncing over the network */
   public static final RecordLoadable<MetalPower> LOADABLE = RecordLoadable.create(
     ContextKey.ID.mappedField((id, error) -> new MetalId(id)),
-    StringLoadable.DEFAULT.requiredField("name", MetalPower::name),
     IntLoadable.FROM_ZERO.requiredField("index", MetalPower::index),
+    new DefaultingTagField<>("ingot", Registries.ITEM, "ingots/", MetalPower::ingot),
+    new DefaultingTagField<>("nugget", Registries.ITEM, "nuggets/", MetalPower::nugget),
+    new DefaultingTagField<>("fluid", Registries.FLUID, "molten_", MetalPower::fluid),
+    IntLoadable.FROM_ZERO.defaultField("temperature", 0, false, MetalPower::temperature),
+    ContextKey.ID.mappedField((id, error) -> MetalId.getTargetTag(id)),
     new AllowFerringField("allow_ferring", "feruchemy"),
     MetalEffect.LIST_LOADABLE.defaultField("feruchemy", List.of(), MetalPower::feruchemy),
     IntLoadable.FROM_ZERO.defaultField("capacity", 0, MetalPower::capacity),
     new EnumLoadable<>(MetalFormat.class).requiredField("format", MetalPower::format),
     IntLoadable.FROM_ZERO.defaultField("hemalurgy_charge", 0, MetalPower::hemalurgyCharge),
-    IntLoadable.FROM_ZERO.defaultField("temperature", 0, false, MetalPower::temperature),
     MetalPower::new);
 
   /** Default instance for when a metal does not exist */
-  public static final MetalPower DEFAULT = new MetalPower(MetalId.NONE, "none", -1, false, List.of(), 0, MetalFormat.NO_LABEL, 0, 0);
+  public static final MetalPower DEFAULT = new MetalPower(
+    MetalId.NONE, -1,
+    // random tags go, really just gives us an error state if this ends up displayed somewhere
+    Tags.Items.STORAGE_BLOCKS_LAPIS, Tags.Items.GEMS_LAPIS, Tags.Fluids.MILK, 0, MetalId.getTargetTag(MetalId.NONE),
+    false, List.of(), 0, MetalFormat.NO_LABEL, 0);
 
   /** @apiNote Use {@link MetalPowerBuilder} */
   @Internal
   public MetalPower {}
-
-  /**
-   * Constructor that automatically creates the tag names
-   * @apiNote Use {@link MetalPowerBuilder}
-   */
-  MetalPower(MetalId id, String name, int index, boolean ferring, List<MetalEffect> feruchemy, int capacity, MetalFormat format, int hemalurgyCharge, int temperature) {
-    this(
-      id, name,
-      ItemTags.create(Mantle.commonResource("ingots/" + name)),
-      ItemTags.create(Mantle.commonResource("nuggets/" + name)),
-      FluidTags.create(Mantle.commonResource("molten_" + name)),
-      temperature,
-      MetalId.getTargetTag(id),
-      index, ferring, feruchemy, capacity, format, hemalurgyCharge
-    );
-  }
 
   /** Checks if this metal power is registered in datapacks */
   public boolean isPresent() {

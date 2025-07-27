@@ -6,11 +6,18 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import knightminer.metalborn.json.ConfigEnabledCondition;
 import knightminer.metalborn.metal.effects.MetalEffect;
+import net.minecraft.core.Registry;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.tags.ItemTags;
+import net.minecraft.tags.TagKey;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.level.material.Fluid;
 import net.minecraftforge.common.crafting.CraftingHelper;
 import net.minecraftforge.common.crafting.conditions.AndCondition;
 import net.minecraftforge.common.crafting.conditions.ICondition;
 import net.minecraftforge.common.crafting.conditions.OrCondition;
+import org.jetbrains.annotations.Nullable;
 import slimeknights.mantle.Mantle;
 import slimeknights.mantle.recipe.condition.TagEmptyCondition;
 import slimeknights.mantle.recipe.condition.TagFilledCondition;
@@ -22,7 +29,6 @@ import java.util.List;
 @CanIgnoreReturnValue
 public class MetalPowerBuilder {
   private final MetalId id;
-  private String name;
   private int index;
   private int capacity = 20 * 5 * 60; // 5 minutes
   private MetalFormat format = MetalFormat.TICKS;
@@ -31,6 +37,14 @@ public class MetalPowerBuilder {
   private boolean ferring = true;
   private final List<MetalEffect> feruchemy = new ArrayList<>();
   private final List<ICondition> conditions = new ArrayList<>();
+  // tags
+  private String name;
+  @Nullable
+  private TagKey<Item> ingot;
+  @Nullable
+  private TagKey<Item> nugget;
+  @Nullable
+  private TagKey<Fluid> fluid;
 
   /** Builder constructor */
   private MetalPowerBuilder(MetalId id) {
@@ -43,17 +57,59 @@ public class MetalPowerBuilder {
     return new MetalPowerBuilder(id);
   }
 
-  /** Sets the name in this builder. By default, it will be the ID path. */
-  public MetalPowerBuilder name(String name) {
-    this.name = name;
-    return this;
-  }
-
   /** Sets the index for the metal. */
   public MetalPowerBuilder index(int index) {
     this.index = index;
     return this;
   }
+
+
+  /* Tags */
+
+  /** Sets the name in this builder, which defines all tags. By default, it will be the ID path. */
+  public MetalPowerBuilder name(String name) {
+    this.name = name;
+    return this;
+  }
+
+  /** Sets the ingot tag */
+  public MetalPowerBuilder ingot(TagKey<Item> ingot) {
+    this.ingot = ingot;
+    return this;
+  }
+
+  /** Sets the nugget tag */
+  public MetalPowerBuilder nugget(TagKey<Item> nugget) {
+    this.nugget = nugget;
+    return this;
+  }
+
+  /** Sets the fluid tag */
+  public MetalPowerBuilder fluid(TagKey<Fluid> fluid) {
+    this.fluid = fluid;
+    return this;
+  }
+
+  /** Gets the tag value, or a default if unset */
+  private <T> TagKey<T> orDefault(@Nullable TagKey<T> set, ResourceKey<? extends Registry<T>> registry, String prefix) {
+    if (set != null) {
+      return set;
+    }
+    return TagKey.create(registry, Mantle.commonResource(prefix + name));
+  }
+
+  /** Gets the ingot tag, constructing from {@link #name} if needed. */
+  private TagKey<Item> getIngot() {
+    return orDefault(ingot, Registries.ITEM, "ingots/");
+  }
+
+  /** Gets the nugget tag, constructing from {@link #name} if needed. */
+  private TagKey<Item> getNugget() {
+    return orDefault(nugget, Registries.ITEM, "nuggets/");
+  }
+
+
+  /* Conditions */
 
   /** Adds a condition to the builder */
   public MetalPowerBuilder condition(ICondition condition) {
@@ -62,11 +118,16 @@ public class MetalPowerBuilder {
   }
 
   /** Sets the metal to be optional based on the ingot and nugget. Must run after {@link #name(String)} for best results (or use the default). */
+  public MetalPowerBuilder integrationNoForce() {
+    return condition(new OrCondition(new TagFilledCondition<>(getIngot()), new TagFilledCondition<>(getNugget())));
+  }
+
+  /** Sets the metal to be optional based on the ingot and nugget. Must run after {@link #name(String)} for best results (or use the default). */
   public MetalPowerBuilder integration() {
     return condition(new OrCondition(
       ConfigEnabledCondition.FORCE_INTEGRATION,
-      new TagFilledCondition<>(ItemTags.create(Mantle.commonResource("ingots/" + name))),
-      new TagFilledCondition<>(ItemTags.create(Mantle.commonResource("nuggets/" + name)))
+      new TagFilledCondition<>(getIngot()),
+      new TagFilledCondition<>(getNugget())
     ));
   }
 
@@ -78,10 +139,18 @@ public class MetalPowerBuilder {
         new TagEmptyCondition<>(ItemTags.create(Mantle.commonResource("ingots/" + disable))),
         new TagEmptyCondition<>(ItemTags.create(Mantle.commonResource("nuggets/" + disable))),
         new OrCondition(
-          new TagFilledCondition<>(ItemTags.create(Mantle.commonResource("ingots/" + name))),
-          new TagFilledCondition<>(ItemTags.create(Mantle.commonResource("nuggets/" + name)))
+          new TagFilledCondition<>(getIngot()),
+          new TagFilledCondition<>(getNugget())
         )
       )
+    ));
+  }
+
+  /** Sets the metal to be enabled unless the specified metal is present. */
+  public MetalPowerBuilder unless(String disable) {
+    return condition(new AndCondition(
+      new TagEmptyCondition<>(ItemTags.create(Mantle.commonResource("ingots/" + disable))),
+      new TagEmptyCondition<>(ItemTags.create(Mantle.commonResource("nuggets/" + disable)))
     ));
   }
 
@@ -123,7 +192,12 @@ public class MetalPowerBuilder {
   /** Builds the instance with fewer checks */
   @CheckReturnValue
   private MetalPower buildInternal() {
-    return new MetalPower(id, name, index, ferring, feruchemy, capacity, format, hemalurgyCharge, temperature);
+    return new MetalPower(
+      id, index,
+      getIngot(), getNugget(), orDefault(fluid, Registries.FLUID, "molten_"), temperature,
+      MetalId.getTargetTag(id),
+      ferring, feruchemy, capacity, format,
+      hemalurgyCharge);
   }
 
   /** Builds the final power */
@@ -135,10 +209,14 @@ public class MetalPowerBuilder {
     return buildInternal();
   }
 
-  /** Builds the final power for serialziing in datagen */
+  /** Builds the final power for serializing in datagen */
   @CheckReturnValue
   public JsonObject serialize() {
     JsonObject json = new JsonObject();
+    // name is just used during deserializing to default values
+    if (ingot == null || nugget == null || (temperature > 0 && fluid == null)) {
+      json.addProperty("name", name);
+    }
     MetalPower.LOADABLE.serialize(buildInternal(), json);
     if (!conditions.isEmpty()) {
       JsonArray array = new JsonArray();

@@ -15,8 +15,10 @@
       ]
     }
   ],
+  "fluid": "tconstruct:molten_quartz",
   "format": "ticks",
   "index": 13,
+  "ingot": "forge:gems/quartz",
   "name": "quartz",
   "temperature": 637
 }

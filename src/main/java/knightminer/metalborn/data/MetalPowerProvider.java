@@ -1,5 +1,6 @@
 package knightminer.metalborn.data;
 
+import knightminer.metalborn.Metalborn;
 import knightminer.metalborn.core.Registration;
 import knightminer.metalborn.item.metalmind.IdentityMetalmindItem;
 import knightminer.metalborn.item.metalmind.InvestitureMetalmindItem;
@@ -17,17 +18,14 @@ import knightminer.metalborn.metal.effects.specialized.HealMetalEffect;
 import knightminer.metalborn.metal.effects.specialized.UpdateHealthEffect;
 import knightminer.metalborn.metal.effects.specialized.WarmthMetalEffect;
 import net.minecraft.data.PackOutput;
-import net.minecraft.tags.ItemTags;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.tags.FluidTags;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier.Operation;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraftforge.common.ForgeMod;
-import net.minecraftforge.common.crafting.conditions.AndCondition;
-import net.minecraftforge.common.crafting.conditions.OrCondition;
+import net.minecraftforge.common.Tags;
 import org.jetbrains.annotations.ApiStatus.Internal;
-import slimeknights.mantle.Mantle;
-import slimeknights.mantle.recipe.condition.TagEmptyCondition;
-import slimeknights.mantle.recipe.condition.TagFilledCondition;
 
 /** Adds powers from metalborn to the mod */
 @Internal
@@ -69,14 +67,10 @@ public class MetalPowerProvider extends AbstractMetalPowerProvider {
       .feruchemy(new EnergyMetalEffect(0.5f, 4f));
 
     // identity - fallback to quartz if aluminum is not present
-    metal(IdentityMetalmindItem.ALUMINUM).name("aluminum").condition(new OrCondition(
-      new TagFilledCondition<>(ItemTags.create(Mantle.commonResource("ingots/aluminum"))),
-      new TagFilledCondition<>(ItemTags.create(Mantle.commonResource("nuggets/aluminum")))
-    )).index(13).temperature(425).hemalurgyCharge(0);
-    metal(IdentityMetalmindItem.QUARTZ).name("quartz").condition(new AndCondition(
-      new TagEmptyCondition<>(ItemTags.create(Mantle.commonResource("ingots/aluminum"))),
-      new TagEmptyCondition<>(ItemTags.create(Mantle.commonResource("nuggets/aluminum")))
-    )).index(13).temperature(637).hemalurgyCharge(0);
+    metal(IdentityMetalmindItem.ALUMINUM).integrationNoForce().index(13).temperature(425).hemalurgyCharge(0);
+    metal(IdentityMetalmindItem.QUARTZ).unless("aluminum").index(13).temperature(637).hemalurgyCharge(0)
+      .ingot(Tags.Items.GEMS_QUARTZ)
+      .fluid(FluidTags.create(new ResourceLocation(Metalborn.TINKERS, "molten_quartz")));
     // special - does not use standard metal effects but wants capacity and alike
     metal(InvestitureMetalmindItem.METAL).name("nicrosil").index(16).temperature(1100).hemalurgyCharge(0);
 
@@ -115,6 +109,7 @@ public class MetalPowerProvider extends AbstractMetalPowerProvider {
       .feruchemy(new TappingMetalEffect(AttributeMetalEffect.builder(Registration.HEAT_DAMAGE, Operation.ADDITION).eachLevel(1)));
 
     metal(MetalIds.netherite).name("netherite_scrap").index(15).integration().hemalurgyCharge(10).disallowFerring()
+      .fluid(FluidTags.create(new ResourceLocation(Metalborn.TINKERS, "molten_debris"))).temperature(1175)
       .feruchemy(AttributeMetalEffect.builder(Attributes.LUCK, Operation.ADDITION).eachLevel(0.5f))
       .feruchemy(AttributeMetalEffect.builder(Registration.EXPERIENCE_MULTIPLIER, Operation.MULTIPLY_TOTAL).eachLevel(0.1f))
       .feruchemy(new TappingMetalEffect(AttributeMetalEffect.builder(Registration.LOOTING_BOOST, Operation.ADDITION).eachLevel(0.25f)))

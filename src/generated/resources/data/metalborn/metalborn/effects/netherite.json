@@ -48,8 +48,10 @@
       "storing_type": "metalborn:attribute"
     }
   ],
+  "fluid": "tconstruct:molten_debris",
   "format": "ticks",
   "hemalurgy_charge": 10,
   "index": 15,
-  "name": "netherite_scrap"
+  "name": "netherite_scrap",
+  "temperature": 1175
 }

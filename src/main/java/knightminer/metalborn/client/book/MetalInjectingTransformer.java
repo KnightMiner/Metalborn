@@ -8,9 +8,7 @@ import knightminer.metalborn.core.Registration;
 import knightminer.metalborn.metal.MetalManager;
 import knightminer.metalborn.metal.MetalPower;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.tags.TagKey;
 import net.minecraft.util.GsonHelper;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import slimeknights.mantle.client.book.data.BookData;
 import slimeknights.mantle.client.book.data.PageData;
@@ -76,14 +74,12 @@ public class MetalInjectingTransformer extends BookTransformer {
       newPage.load();
 
       // sets the power on the page
-      TagKey<Item> ingot = power.ingot();
       if (newPage.content instanceof MetalContent content) {
         content.setMetal(power);
-        ingot = content.getIngotTag();
       }
 
       // set fluid effect properties into the page
-      List<ItemStack> displayStacks = MetalContent.getItems(ingot);
+      List<ItemStack> displayStacks = MetalContent.getItems(power.ingot());
       if (displayStacks.isEmpty()) {
         displayStacks = List.of(Registration.CHANGE_FERRING.get().withMetal(power.id()));
       }
