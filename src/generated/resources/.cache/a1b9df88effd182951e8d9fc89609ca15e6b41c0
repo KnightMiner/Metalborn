@@ -1,4 +1,4 @@
-// 1.20.1	2025-07-27T02:09:36.6960738	Item Models: metalborn
+// 1.20.1	2025-07-29T23:16:55.4064453	Item Models: metalborn
 4dc7437e56be8a51858b985325aa1570e1f93125 assets/metalborn/models/item/bracer.json
 3c460b164754a3c0cfa46b79b0e3c3ccfb209045 assets/metalborn/models/item/bracer_gold_cast.json
 52b97c6dd950b6f560ab7d36946c354c5f99180d assets/metalborn/models/item/bracer_red_sand_cast.json
@@ -11,7 +11,7 @@ eed68e86ae8578312b813454b280a9d33497dd8d assets/metalborn/models/item/copper_nug
 e88557079d1e141beb6ee00848eaf99bf36b7bc4 assets/metalborn/models/item/identity_ring.json
 e4731996004c6d29ece3d5cb07f5668a9ccf46ef assets/metalborn/models/item/investiture_bracer.json
 1fd633f8ce4dc856cdf2c53895a408e426e259f3 assets/metalborn/models/item/investiture_ring.json
-83a281da4b5389c24ec5d037d21e9097947a3a0d assets/metalborn/models/item/investiture_spike.json
+0334aa010b06467760196bd770b77374b9d4b35b assets/metalborn/models/item/investiture_spike.json
 aceb7e4e4ce67c0c1ca75de324b7ddcd3e3a28e6 assets/metalborn/models/item/metallic_arts.json
 183e9ed503e5a797d4b73e0f9a88a1cfce0ee938 assets/metalborn/models/item/netherite_nugget.json
 e467e5071fad409610b9e0b00bfec9607eac9171 assets/metalborn/models/item/netherite_shard.json

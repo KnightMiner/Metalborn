@@ -74,7 +74,7 @@ public class ItemModelProvider extends net.minecraftforge.client.model.generator
       .transform(ItemDisplayContext.FIRST_PERSON_RIGHT_HAND).rotation(0, 90, 25).translation(1.13f, 3.2f, 1.13f).scale(0.68f, 0.68f, 0.68f).end();
     existingFileHelper.trackGenerated(Metalborn.resource("metal/item/spike_metalborn_nicrosil"), ModelProvider.TEXTURE);
     // can't use metal item as we want the handheld transforms
-    withExistingParent(Registration.INVESTITURE_SPIKE.getId().getPath(), "item/handheld")
+    withExistingParent(Registration.INVESTITURE_SPIKE.getId().getPath(), "item/handheld_rod")
       .texture("layer0", "metal/item/spike_metalborn_nicrosil");
 
     // tinkers' compat
