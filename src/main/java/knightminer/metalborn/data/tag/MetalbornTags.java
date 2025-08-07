@@ -1,10 +1,12 @@
 package knightminer.metalborn.data.tag;
 
 import knightminer.metalborn.Metalborn;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.tags.TagKey;
+import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
 
@@ -60,6 +62,17 @@ public class MetalbornTags {
     /** Creates a Tinkers' Construct compat tag. Used to avoid a datagen dependency */
     private static TagKey<Item> tinkers(String name) {
       return ItemTags.create(new ResourceLocation(Metalborn.TINKERS, name));
+    }
+  }
+
+  public static class Entities {
+    public static final TagKey<EntityType<?>> PIGLINS = common("piglins");
+    public static final TagKey<EntityType<?>> ILLAGERS = common("illagers");
+    public static final TagKey<EntityType<?>> ZOMBIES = common("zombies");
+
+    /** Creates a common namespace tag */
+    private static TagKey<EntityType<?>> common(String name) {
+      return TagKey.create(Registries.ENTITY_TYPE, commonResource(name));
     }
   }
 }
