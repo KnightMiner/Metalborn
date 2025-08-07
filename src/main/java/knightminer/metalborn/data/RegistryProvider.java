@@ -80,9 +80,9 @@ public class RegistryProvider {
     HolderGetter<ConfiguredFeature<?, ?>> holdergetter = context.lookup(Registries.CONFIGURED_FEATURE);
     Holder<ConfiguredFeature<?, ?>> tinOre = holdergetter.getOrThrow(MetalbornKeys.TIN_ORE);
     Holder<ConfiguredFeature<?, ?>> smallTinOre = holdergetter.getOrThrow(MetalbornKeys.TIN_ORE_SMALL);
-    PlacementUtils.register(context, MetalbornKeys.TIN_ORE_UPPER, tinOre, commonOrePlacement(20, HeightRangePlacement.triangle(VerticalAnchor.absolute(80), VerticalAnchor.absolute(384))));
-    PlacementUtils.register(context, MetalbornKeys.TIN_ORE_MIDDLE, tinOre, commonOrePlacement(3, HeightRangePlacement.triangle(VerticalAnchor.absolute(-24), VerticalAnchor.absolute(56))));
-    PlacementUtils.register(context, MetalbornKeys.PLACED_TIN_ORE_SMALL, smallTinOre, commonOrePlacement(3, HeightRangePlacement.uniform(VerticalAnchor.bottom(), VerticalAnchor.absolute(72))));  }
+    PlacementUtils.register(context, MetalbornKeys.TIN_ORE_UPPER, tinOre, commonOrePlacement(30, HeightRangePlacement.triangle(VerticalAnchor.absolute(80), VerticalAnchor.absolute(384))));
+    PlacementUtils.register(context, MetalbornKeys.TIN_ORE_MIDDLE, tinOre, commonOrePlacement(5, HeightRangePlacement.triangle(VerticalAnchor.absolute(-24), VerticalAnchor.absolute(56))));
+    PlacementUtils.register(context, MetalbornKeys.PLACED_TIN_ORE_SMALL, smallTinOre, commonOrePlacement(5, HeightRangePlacement.uniform(VerticalAnchor.bottom(), VerticalAnchor.absolute(72))));  }
 
   private static void biomeModifiers(BootstapContext<BiomeModifier> context) {
     HolderGetter<Biome> biomes = context.lookup(Registries.BIOME);

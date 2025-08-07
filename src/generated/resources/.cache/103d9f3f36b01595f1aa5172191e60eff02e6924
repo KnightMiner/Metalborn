@@ -1,4 +1,4 @@
-// 1.20.1	2025-07-05T18:51:12.6926536	Registries
+// 1.20.1	2025-08-07T03:45:30.1999657	Registries
 1f3edbe950a3218d93c0ff2252b315c6b3087c52 data/metalborn/damage_type/add_spike.json
 43ca366cc00b455f7f87c9e6f0cafad2a53ccac2 data/metalborn/damage_type/make_spike.json
 483d79966948adcb9e53026df12efba0a0e73340 data/metalborn/damage_type/melee_heat.json
@@ -6,6 +6,6 @@
 4fc34f50f50006fbbc54c1056f914e326816da8d data/metalborn/forge/biome_modifier/overworld_ores.json
 81e88c0d8f34c9d9d30f85790fe9c7552b722b22 data/metalborn/worldgen/configured_feature/tin_ore.json
 65d5ccf0c5dd09ef1efdf0c8339f3253c3965231 data/metalborn/worldgen/configured_feature/tin_ore_small.json
-67b45f728c6e88585ee8583dc1bf28bede833020 data/metalborn/worldgen/placed_feature/tin_ore_middle.json
-fbb16036cb34bb1feb9d61002f3c6787a01cea85 data/metalborn/worldgen/placed_feature/tin_ore_small.json
-560948061f7bd42010884b8905e9161cdcfefad6 data/metalborn/worldgen/placed_feature/tin_ore_upper.json
+87c40625a186d9583b71037199013f18aac55472 data/metalborn/worldgen/placed_feature/tin_ore_middle.json
+d408960707275ad56dcd60264ed4ca44cd2f4d1a data/metalborn/worldgen/placed_feature/tin_ore_small.json
+f443c8be8741af288ce2729f375ce8c131c801ce data/metalborn/worldgen/placed_feature/tin_ore_upper.json
