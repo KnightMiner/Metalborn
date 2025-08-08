@@ -10,30 +10,12 @@
           "name": "force_integration"
         },
         {
-          "type": "forge:and",
-          "values": [
-            {
-              "type": "mantle:tag_empty",
-              "tag": "forge:ingots/cadmium"
-            },
-            {
-              "type": "mantle:tag_empty",
-              "tag": "forge:nuggets/cadmium"
-            },
-            {
-              "type": "forge:or",
-              "values": [
-                {
-                  "type": "mantle:tag_filled",
-                  "tag": "forge:ingots/silver"
-                },
-                {
-                  "type": "mantle:tag_filled",
-                  "tag": "forge:nuggets/silver"
-                }
-              ]
-            }
-          ]
+          "type": "mantle:tag_filled",
+          "tag": "forge:ingots/cadmium"
+        },
+        {
+          "type": "mantle:tag_filled",
+          "tag": "forge:nuggets/cadmium"
         }
       ]
     }
@@ -85,8 +67,8 @@
     }
   ],
   "format": "ticks",
-  "hemalurgy_charge": 15,
-  "index": 9,
-  "name": "silver",
-  "temperature": 790
+  "hemalurgy_charge": 13,
+  "index": 13,
+  "name": "cadmium",
+  "temperature": 594
 }

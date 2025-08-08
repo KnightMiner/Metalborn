@@ -1,4 +1,4 @@
-// 1.20.1	2025-07-27T02:02:28.6971304	Tags for minecraft:item mod id metalborn
+// 1.20.1	2025-08-07T03:45:30.1989658	Tags for minecraft:item mod id metalborn
 058157714c08f4d51455b63e4bf6bae3d4ccf02e data/forge/tags/items/books.json
 66dd943100ec84cf0199411516d16e1ab1e350ba data/forge/tags/items/books/guide.json
 8b9a09fc19e418e011eaab15ab0ad87882e9ccfe data/forge/tags/items/ingots.json
@@ -39,6 +39,8 @@ ae5b252d16bc49820864077a43aa857230547911 data/metalborn/tags/items/casts/bracer_
 4b3c55d0115ddd813a639f0665ee561f731ad2a0 data/metalborn/tags/items/casts/spike_multi_use.json
 b8e7bf19630dc5bccc03d9acebff166f72cdc52a data/metalborn/tags/items/casts/spike_single_use.json
 f93604e97f8f6c7634487f43411cdc43c25b1d5c data/metalborn/tags/items/ingot_like/aluminum.json
+3a79a82a4e11d933ac9793b807d66f51a0ed06f1 data/metalborn/tags/items/ingot_like/cadmium.json
+966393c7f98b89a9e9a591ba9ceb6eedbb906d26 data/metalborn/tags/items/ingot_like/chromium.json
 732fab6b01a70cc268f678005329892b585a53d2 data/metalborn/tags/items/ingot_like/cobalt.json
 0f352b026bce2688fab8476e448b9a596737a565 data/metalborn/tags/items/ingot_like/copper.json
 61ff94e2556c9805ea6274be09fa696e637f7299 data/metalborn/tags/items/ingot_like/gold.json

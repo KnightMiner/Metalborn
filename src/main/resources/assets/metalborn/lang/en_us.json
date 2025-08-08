@@ -48,6 +48,11 @@
   "metal_power.metalborn.rose_gold.ferring": "Subsumer",
   "metal_power.metalborn.rose_gold.target": "Zombies",
   "metal_power.metalborn.rose_gold.label": "%s / %s energy",
+  "metal_power.metalborn.bendalloy": "Bendalloy",
+  "metal_power.metalborn.bendalloy.stores": "Energy",
+  "metal_power.metalborn.bendalloy.ferring": "Subsumer",
+  "metal_power.metalborn.bendalloy.target": "Zombies",
+  "metal_power.metalborn.bendalloy.label": "%s / %s energy",
 
   "metal_power.metalborn.aluminum": "Aluminum",
   "metal_power.metalborn.aluminum.stores": "Identity",
@@ -62,6 +67,10 @@
   "metal_power.metalborn.netherite.stores": "Luck",
   "metal_power.metalborn.netherite.ferring": "Spinner",
   "metal_power.metalborn.netherite.target": "Illagers",
+  "metal_power.metalborn.chromium": "Chromium",
+  "metal_power.metalborn.chromium.stores": "Luck",
+  "metal_power.metalborn.chromium.ferring": "Spinner",
+  "metal_power.metalborn.chromium.target": "Illagers",
 
   "metal_power.metalborn.investiture": "Nicrosil",
   "metal_power.metalborn.investiture.stores": "Investiture",
@@ -73,6 +82,10 @@
   "metal_power.metalborn.silver.stores": "Stealth",
   "metal_power.metalborn.silver.ferring": "Sparker",
   "metal_power.metalborn.silver.target": "Silverfish",
+  "metal_power.metalborn.cadmium": "Cadmium",
+  "metal_power.metalborn.cadmium.stores": "Stealth",
+  "metal_power.metalborn.cadmium.ferring": "Sparker",
+  "metal_power.metalborn.cadmium.target": "Silverfish",
 
   "metal_power.metalborn.electrum": "Electrum",
   "metal_power.metalborn.electrum.stores": "Determination",

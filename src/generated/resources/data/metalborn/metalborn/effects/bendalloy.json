@@ -3,14 +3,18 @@
   "capacity": 40,
   "conditions": [
     {
-      "type": "forge:and",
+      "type": "forge:or",
       "values": [
         {
-          "type": "mantle:tag_empty",
+          "type": "metalborn:config",
+          "name": "force_integration"
+        },
+        {
+          "type": "mantle:tag_filled",
           "tag": "forge:ingots/bendalloy"
         },
         {
-          "type": "mantle:tag_empty",
+          "type": "mantle:tag_filled",
           "tag": "forge:nuggets/bendalloy"
         }
       ]
@@ -25,7 +29,7 @@
   ],
   "format": "metal",
   "hemalurgy_charge": 10,
-  "index": 8,
-  "name": "rose_gold",
-  "temperature": 550
+  "index": 14,
+  "name": "bendalloy",
+  "temperature": 400
 }

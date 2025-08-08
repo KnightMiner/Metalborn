@@ -2,8 +2,11 @@
 0958a192333a95009361b706cd3836093a760177 data/forge/tags/entity_types/illagers.json
 13663c3a2cec55d46fe29a2ee9e9d52f6ec600ad data/forge/tags/entity_types/piglins.json
 82053daa300f581865ee639d7c5b293aa4a14e96 data/forge/tags/entity_types/zombies.json
+1f47985b50744d62ae32e02f97ee2a023010704a data/metalborn/tags/entity_types/targets/bendalloy.json
 76c0522664726c09461ad4565b6fba80b4f816b2 data/metalborn/tags/entity_types/targets/brass.json
 6f8bc3eb93347d4d15c38a3b7cfbd2b796ac201c data/metalborn/tags/entity_types/targets/bronze.json
+938693c0d925c28b546fc000571541b1f61e42c1 data/metalborn/tags/entity_types/targets/cadmium.json
+1bb5f529e87af217ae5f3fe6a8ccdfd48d6cbf55 data/metalborn/tags/entity_types/targets/chromium.json
 76c0522664726c09461ad4565b6fba80b4f816b2 data/metalborn/tags/entity_types/targets/constantan.json
 b0db6482ab418ed97bf5b365bf432f894402d942 data/metalborn/tags/entity_types/targets/copper.json
 a3b1b11b4e4acdc60cff0a6636a1ea6abf609520 data/metalborn/tags/entity_types/targets/electrum.json

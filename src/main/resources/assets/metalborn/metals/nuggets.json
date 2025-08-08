@@ -18,7 +18,11 @@
     "metalborn:nickel",
     "metalborn:constantan",
 
+    "metalborn:cadmium",
+    "metalborn:bendalloy",
+
     "metalborn:nicrosil",
+    "metalborn:chromium",
     "metalborn:netherite"
   ]
 }

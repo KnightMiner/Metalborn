@@ -1,16 +1,20 @@
 {
-  "allow_ferring": false,
+  "allow_ferring": true,
   "capacity": 6000,
   "conditions": [
     {
-      "type": "forge:and",
+      "type": "forge:or",
       "values": [
         {
-          "type": "mantle:tag_empty",
+          "type": "metalborn:config",
+          "name": "force_integration"
+        },
+        {
+          "type": "mantle:tag_filled",
           "tag": "forge:ingots/chromium"
         },
         {
-          "type": "mantle:tag_empty",
+          "type": "mantle:tag_filled",
           "tag": "forge:nuggets/chromium"
         }
       ]
@@ -44,10 +48,9 @@
       "storing_type": "metalborn:attribute"
     }
   ],
-  "fluid": "tconstruct:molten_debris",
   "format": "ticks",
   "hemalurgy_charge": 10,
   "index": 15,
-  "name": "netherite_scrap",
-  "temperature": 1175
+  "name": "chromium",
+  "temperature": 1200
 }

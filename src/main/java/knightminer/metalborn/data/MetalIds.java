@@ -28,9 +28,13 @@ public class MetalIds {
   // compat hybrid
   public static final MetalId zinc = id("zinc");
   public static final MetalId brass = id("brass");
-  // compat hybrid alternatives
+  // compat alternatives
   public static final MetalId nickel = id("nickel");
   public static final MetalId constantan = id("constantan");
+  public static final MetalId cadmium = id("cadmium");
+  public static final MetalId bendalloy = id("bendalloy");
+  // compat spiritual
+  public static final MetalId chromium = id("chromium");
 
   /** Creates a metalborn effect ID */
   private static MetalId id(String name) {
