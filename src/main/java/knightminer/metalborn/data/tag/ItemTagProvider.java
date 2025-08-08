@@ -76,6 +76,8 @@ public class ItemTagProvider extends ItemTagsProvider {
     addIngotLike(MetalIds.zinc, false);
     addIngotLike(MetalIds.nickel, false);
     addIngotLike(MetalIds.silver, false);
+    addIngotLike(MetalIds.cadmium, false);
+    addIngotLike(MetalIds.chromium, false);
     addIngotLike("aluminum", false);
     addIngotLike("cobalt", false);
 

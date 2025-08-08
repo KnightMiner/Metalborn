@@ -36,6 +36,7 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraftforge.common.Tags;
 import net.minecraftforge.common.crafting.ConditionalRecipe;
+import net.minecraftforge.common.crafting.conditions.AndCondition;
 import net.minecraftforge.common.crafting.conditions.ICondition;
 import net.minecraftforge.common.crafting.conditions.TrueCondition;
 import slimeknights.mantle.recipe.condition.TagFilledCondition;
@@ -207,8 +208,8 @@ public class RecipeProvider extends net.minecraft.data.recipes.RecipeProvider im
     // use lead instead of iron if its present, as thats closer to the real recipe for pewter
     ConditionalRecipe.builder()
       .addCondition(ingotLikeCondition("lead"))
-      .addRecipe(ShapelessForgeRecipeBuilder.shapeless(Registration.PEWTER.getIngotTag(), 3)
-        .requires(ingotLike("tin"), 2)
+      .addRecipe(ShapelessForgeRecipeBuilder.shapeless(Registration.PEWTER.getIngotTag(), 4)
+        .requires(ingotLike("tin"), 3)
         .requires(ingotLike("lead"), 1)::save)
       .addCondition(TrueCondition.INSTANCE)
       .addRecipe(ShapelessForgeRecipeBuilder.shapeless(Registration.PEWTER.getIngotTag(), 4)
@@ -232,14 +233,29 @@ public class RecipeProvider extends net.minecraft.data.recipes.RecipeProvider im
       .save(consumer, location(alloyFolder + "rose_gold"));
     // if available, use nickel in the recipe, though craft it without nickel if missing
     ConditionalRecipe.builder()
+      // nickel + chromium - proper recipe
+      .addCondition(new AndCondition(ingotLikeCondition("chromium"), ingotLikeCondition("nickel")))
+      .addRecipe(ShapelessForgeRecipeBuilder.shapeless(Registration.NICROSIL.getIngotTag(), 4)
+        .requires(ingotLike("nickel"), 2)
+        .requires(ingotLike("chromium"), 1)
+        .requires(ingotLike("quartz"), 1)::save)
+      // no chromium? replace it with tin
       .addCondition(ingotLikeCondition("nickel"))
       .addRecipe(ShapelessForgeRecipeBuilder.shapeless(Registration.NICROSIL.getIngotTag(), 4)
         .requires(ingotLike("nickel"), 2)
         .requires(ingotLike("tin"), 1)
         .requires(ingotLike("quartz"), 1)::save)
+      // no nickel? - replace it with chromium
+      .addCondition(ingotLikeCondition("chromium"))
+      .addRecipe(ShapelessForgeRecipeBuilder.shapeless(Registration.NICROSIL.getIngotTag(), 4)
+        .requires(ingotLike("chromium"), 2)
+        .requires(ingotLike("iron"), 1)
+        .requires(ingotLike("quartz"), 1)::save)
+      // both replacements
       .addCondition(TrueCondition.INSTANCE)
-      .addRecipe(ShapelessForgeRecipeBuilder.shapeless(Registration.NICROSIL.getIngotTag(), 2)
-        .requires(ingotLike("tin"), 1)
+      .addRecipe(ShapelessForgeRecipeBuilder.shapeless(Registration.NICROSIL.getIngotTag(), 4)
+        .requires(ingotLike("tin"), 2)
+        .requires(ingotLike("iron"), 1)
         .requires(ingotLike("quartz"), 1)::save)
       .build(consumer, location(alloyFolder + "nicrosil"));
     // netherite is normally 4 scrap + 4 gold = 1 ingot
@@ -273,6 +289,11 @@ public class RecipeProvider extends net.minecraft.data.recipes.RecipeProvider im
       .requires(ingotLike("aluminum"), 3)
       .requires(ingotLike("copper"), 1)
       .save(withCondition(consumer, ingotCondition("duralumin"), ingotLikeCondition("aluminum")), location(alloyFolder + "duralumin"));
+    ShapelessForgeRecipeBuilder.shapeless(ingot("bendalloy"), 4)
+      .requires(ingotLike("lead"), 2)
+      .requires(ingotLike("tin"), 1)
+      .requires(ingotLike("cadmium"), 1)
+      .save(withCondition(consumer, ingotCondition("bendalloy"), ingotLikeCondition("lead"), ingotLikeCondition("cadmium")), location(alloyFolder + "bendalloy"));
 
     // tinkers compat
     ShapelessForgeRecipeBuilder.shapeless(ingot("amethyst_bronze"), 1)

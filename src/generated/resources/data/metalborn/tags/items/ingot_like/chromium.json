@@ -1,0 +1,16 @@
+{
+  "values": [
+    {
+      "id": "#forge:ingots/chromium",
+      "required": false
+    },
+    {
+      "id": "#forge:raw_materials/chromium",
+      "required": false
+    },
+    {
+      "id": "#forge:ores/chromium",
+      "required": false
+    }
+  ]
+}

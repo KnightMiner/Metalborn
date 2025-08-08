@@ -10,9 +10,12 @@
       ],
       "recipe": {
         "type": "metalborn:shapeless_forge",
-        "cooking_time": 300,
+        "cooking_time": 400,
         "experience": 1.0,
         "ingredients": [
+          {
+            "tag": "metalborn:ingot_like/tin"
+          },
           {
             "tag": "metalborn:ingot_like/tin"
           },
@@ -24,7 +27,7 @@
           }
         ],
         "result": {
-          "count": 3,
+          "count": 4,
           "tag": "forge:ingots/pewter"
         }
       }

@@ -1,0 +1,16 @@
+{
+  "values": [
+    {
+      "id": "#forge:ingots/cadmium",
+      "required": false
+    },
+    {
+      "id": "#forge:raw_materials/cadmium",
+      "required": false
+    },
+    {
+      "id": "#forge:ores/cadmium",
+      "required": false
+    }
+  ]
+}
