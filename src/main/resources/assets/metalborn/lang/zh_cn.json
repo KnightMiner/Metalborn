@@ -50,7 +50,7 @@
   "metal_power.metalborn.rose_gold.label": "%s/%s活力",
   "metal_power.metalborn.bendalloy": "弯管合金",
   "metal_power.metalborn.bendalloy.stores": "活力",
-  "metal_power.metalborn.bendalloy.ferring": "吞食",
+  "metal_power.metalborn.bendalloy.ferring": "吞蚀",
   "metal_power.metalborn.bendalloy.target": "僵尸",
   "metal_power.metalborn.bendalloy.label": "%s/%s活力",
 
@@ -179,7 +179,7 @@
 
   "item.metalborn.metalmind.metal_id": "金属ID：%s",
   "item.metalborn.metalmind.stores": "存储能力：%s",
-  "item.metalborn.metalmind.investiture": "神能：%s",
+  "item.metalborn.metalmind.investiture": "授能：%s",
   "item.metalborn.metalmind.amount": "能力值：%s",
   "item.metalborn.metalmind.owner": "身份：%s",
   "item.metalborn.metalmind.owner.none": "无主",
