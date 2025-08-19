@@ -134,7 +134,8 @@ public class MetalmindInventory extends MetalInventory<MetalmindStack> implement
     /** Updates the item stack */
     private void setStack(ItemStack stack, Metalmind metalmind) {
       // if we are currently tapping or storing, stop as something changed
-      if (level != 0 && (this.stack.getItem() != stack.getItem() || !this.metalmind.isSamePower(this.stack, stack))) {
+      // compare the two metalmind instances as that ensures if our stack got shrunk to size 0, we don't get air (shift clicking)
+      if (level != 0 && (this.metalmind != metalmind || !this.metalmind.isSamePower(this.stack, stack))) {
         onUpdate(0, level);
         level = 0;
       }
