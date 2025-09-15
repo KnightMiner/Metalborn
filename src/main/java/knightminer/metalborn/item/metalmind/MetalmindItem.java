@@ -193,7 +193,7 @@ public abstract class MetalmindItem extends Item implements Metalmind {
     tag.putInt(TAG_AMOUNT, getCapacity(stack));
   }
 
-  /** Fills this stack from the source stack. Exists to allow overriding. */
+  /** Fills this stack from the source stack. Exists to allow overriding. Ignores size of {@code source}. */
   protected int fillFrom(ItemStack stack, Player player, ItemStack source, MetalbornData data) {
     return fill(stack, player, getAmount(source), data);
   }
@@ -236,7 +236,7 @@ public abstract class MetalmindItem extends Item implements Metalmind {
   @Override
   public boolean overrideOtherStackedOnMe(ItemStack stack, ItemStack held, Slot slot, ClickAction action, Player player, SlotAccess access) {
     // we can transfer a single metalmind of power into the slot stack, provided its the same power
-    if (held.getCount() == 1 && action == ClickAction.SECONDARY && slot.allowModification(player) && isTransferrable(stack, held)) {
+    if (action == ClickAction.SECONDARY && slot.allowModification(player) && isTransferrable(stack, held)) {
       MetalmindItem other = (MetalmindItem) held.getItem();
       MetalbornData data = MetalbornData.getData(player);
       // ensure both are usable (e.g. no identity issues)
@@ -244,7 +244,18 @@ public abstract class MetalmindItem extends Item implements Metalmind {
         // attempt transfer
         int filled = fillFrom(stack, player, held, data);
         if (filled > 0) {
-          int drained = other.drain(held, player, filled, data);
+          int drained;
+          // if we have more than 1, drain just one and keep the rest held
+          if (held.getCount() > 1) {
+            ItemStack split = held.split(1);
+            drained = other.drain(split, player, filled, data);
+            if (!player.getInventory().add(split)) {
+              player.drop(split, false);
+            }
+          } else {
+            drained = other.drain(held, player, filled, data);
+          }
+          // ensure we transferred the same amount
           if (drained != filled) {
             Metalborn.LOG.error("Failed to drain {} from {}, drained {} instead. Happened in stack on {}", filled, held, drained, stack);
           }

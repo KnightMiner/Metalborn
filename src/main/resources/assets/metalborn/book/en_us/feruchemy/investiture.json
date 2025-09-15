@@ -14,7 +14,7 @@
     }
   ],
   "text": [
-    { "text": "Investiture metalminds allow you to store your ferring power, temporarily preventing you from using it. Like identity, anyone is able to use an investiture metalmind regardless of power, though they can only be filled with your ferring power (no power from other sources)." },
+    { "text": "Investiture metalminds store your ferring power, temporarily removing it. Tapping will grant access to the stored power. Like identity, anyone can use investiture metalminds regardless of their power. Only your ferring power can be stored (no power from other sources)." },
     { "text": "On its own, investiture metalminds are not that useful. But combining with identity allows sharing your power with another player, while unkeyed investiture metalminds are used to create unsealed metalminds.", "paragraph": true }
   ]
 }

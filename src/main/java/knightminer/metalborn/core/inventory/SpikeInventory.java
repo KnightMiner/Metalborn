@@ -127,7 +127,9 @@ public class SpikeInventory extends MetalInventory<SpikeStack> {
       MetalId oldMetal = this.metal;
       if (stack.isEmpty()) {
         // clear previous power
-        if (!wasEmpty && extraPowers.remove(oldMetal)) {
+        // skip empty check as shift click will shrink the stack before setting it, causing it to not properly remove
+        // only reason we would go from empty to empty is UI opening client side, which will have an empty extra powers set
+        if (extraPowers.remove(oldMetal)) {
           updateSpikes();
           // stop the removed metal from being tapped
           onRemoveMetal(metal);
