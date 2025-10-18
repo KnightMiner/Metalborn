@@ -6,6 +6,7 @@ import net.minecraft.core.HolderLookup.Provider;
 import net.minecraft.data.PackOutput;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.TagKey;
+import net.minecraft.util.datafix.fixes.BlockEntityKeepPacked;
 import net.minecraft.world.level.block.Block;
 import net.minecraftforge.common.Tags;
 import net.minecraftforge.common.data.BlockTagsProvider;
@@ -30,6 +31,9 @@ public class BlockTagProvider extends BlockTagsProvider {
     metal(Registration.BRONZE, BlockTags.NEEDS_IRON_TOOL, false);
     metal(Registration.ROSE_GOLD, BlockTags.NEEDS_IRON_TOOL, false);
     metal(Registration.NICROSIL, BlockTags.NEEDS_IRON_TOOL, false);
+
+    // metal forge
+    tag(BlockTags.MINEABLE_WITH_PICKAXE).add(Registration.FORGE.get());
 
     // tin ore
     pickaxe(Registration.TIN_ORE, BlockTags.NEEDS_STONE_TOOL);
