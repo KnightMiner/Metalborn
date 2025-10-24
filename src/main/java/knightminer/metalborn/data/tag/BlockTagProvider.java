@@ -31,6 +31,9 @@ public class BlockTagProvider extends BlockTagsProvider {
     metal(Registration.ROSE_GOLD, BlockTags.NEEDS_IRON_TOOL, false);
     metal(Registration.NICROSIL, BlockTags.NEEDS_IRON_TOOL, false);
 
+    // metal forge
+    tag(BlockTags.MINEABLE_WITH_PICKAXE).add(Registration.FORGE.get());
+
     // tin ore
     pickaxe(Registration.TIN_ORE, BlockTags.NEEDS_STONE_TOOL);
     pickaxe(Registration.DEEPSLATE_TIN_ORE, BlockTags.NEEDS_STONE_TOOL);
