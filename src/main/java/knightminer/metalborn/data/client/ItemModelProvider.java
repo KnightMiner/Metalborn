@@ -6,12 +6,14 @@ import knightminer.metalborn.client.model.PalettedModelBuilder;
 import knightminer.metalborn.core.Registration;
 import knightminer.metalborn.data.MetalIds;
 import knightminer.metalborn.item.MetalItem;
+import knightminer.metalborn.item.SatchelItem.SatchelType;
 import knightminer.metalborn.item.metalmind.IdentityMetalmindItem;
 import knightminer.metalborn.metal.MetalId;
 import knightminer.metalborn.metal.MetalShape;
 import knightminer.metalborn.util.CastItemObject;
 import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.level.ItemLike;
 import net.minecraftforge.client.model.generators.ItemModelBuilder;
@@ -37,9 +39,9 @@ public class ItemModelProvider extends net.minecraftforge.client.model.generator
 
   @Override
   protected void registerModels() {
-    basicItem(Registration.METALLIC_ARTS, "metallic_arts");
+    basicItem(Registration.METALLIC_ARTS);
     // ores
-    basicItem(Registration.RAW_TIN, "raw_tin");
+    basicItem(Registration.RAW_TIN);
     // ingots and nuggets
     metal(Registration.TIN, MetalIds.tin);
     metal(Registration.PEWTER, MetalIds.pewter);
@@ -77,6 +79,9 @@ public class ItemModelProvider extends net.minecraftforge.client.model.generator
     withExistingParent(Registration.INVESTITURE_SPIKE.getId().getPath(), "item/handheld_rod")
       .texture("layer0", "metal/item/spike_metalborn_nicrosil");
 
+    // satchels
+    Registration.SATCHEL.forEach(this::satchel);
+
     // tinkers' compat
     cast(Registration.RING_CAST);
     cast(Registration.BRACER_CAST);
@@ -99,6 +104,26 @@ public class ItemModelProvider extends net.minecraftforge.client.model.generator
   @SuppressWarnings("SameParameterValue")
   private void basicItem(ItemObject<?> item, String texture) {
     basicItem(item.getId().getPath(), texture);
+  }
+
+  /** Generated item with a set texture */
+  @SuppressWarnings("SameParameterValue")
+  private void basicItem(ItemObject<?> item) {
+    basicItem(item.getId().getPath(), item.getId().getPath());
+  }
+
+  /** Creates the model for a satchel */
+  private void satchel(SatchelType type, Item item) {
+    String variant = type.getSerializedName();
+    // model when dyed
+    String texture = "item/satchel_" + variant;
+    ItemModelBuilder dyed = getBuilder("item/dyed_satchel/" + variant).parent(GENERATED)
+      .texture("layer0", texture)
+      .texture("layer1", "item/satchel_dyed");
+    // model when undyed
+    getBuilder(Loadables.ITEM.getKey(item).getPath()).parent(GENERATED)
+      .texture("layer0", texture)
+      .override().model(dyed).predicate(Metalborn.resource("dyed"), 1);
   }
 
   /** Adds a basic metal item */

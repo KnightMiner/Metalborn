@@ -32,7 +32,11 @@ public enum ControlPacket implements IThreadsafePacket {
       NetworkHooks.openScreen(player, new SimpleMenuProvider(
         (id, inventory, p) -> new MetalbornMenu(id, inventory),
         Component.empty()
-      ), buffer -> buffer.writeResourceLocation(ferringType));
+      ), buffer -> {
+        buffer.writeResourceLocation(ferringType);
+        // no satchel
+        buffer.writeByte(-1);
+      });
     }
   }
 }

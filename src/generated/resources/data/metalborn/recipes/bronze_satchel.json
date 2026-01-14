@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "I": {
+      "tag": "forge:ingots/bronze"
+    },
+    "c": {
+      "tag": "forge:gems/quartz"
+    },
+    "s": {
+      "tag": "forge:string"
+    }
+  },
+  "pattern": [
+    "sIs",
+    "IcI",
+    "III"
+  ],
+  "result": {
+    "item": "metalborn:bronze_satchel"
+  },
+  "show_notification": true
+}

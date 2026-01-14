@@ -2,6 +2,7 @@ package knightminer.metalborn.client;
 
 import knightminer.metalborn.Metalborn;
 import knightminer.metalborn.core.MetalbornData;
+import knightminer.metalborn.item.SatchelItem.SatchelType;
 import knightminer.metalborn.item.metalmind.Metalmind.Usable;
 import knightminer.metalborn.menu.MetalbornMenu;
 import net.minecraft.ChatFormatting;
@@ -11,6 +12,7 @@ import net.minecraft.client.gui.screens.inventory.InventoryScreen;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.inventory.ClickType;
 import net.minecraft.world.inventory.Slot;
 
 import java.util.ArrayList;
@@ -42,6 +44,13 @@ public class MetalbornScreen extends AbstractContainerScreen<MetalbornMenu> {
   /** V index for tapping button */
   private static final int TAPPING_V = 6 * BUTTON_HEIGHT;
 
+  /** U coordinate of the read only slot background */
+  private static final int READ_ONLY_U = 193;
+  /** V coordinate of the read only slot background */
+  private static final int READ_ONLY_V = 0;
+  /** Size of the read only slot background */
+  private static final int READ_ONLY_SIZE = 20;
+
   /** X coordinate for metalmind button */
   private static final int METALMIND_X = 47;
   /** Y coordinate for info buttons */
@@ -63,9 +72,42 @@ public class MetalbornScreen extends AbstractContainerScreen<MetalbornMenu> {
 
   /** Metalborn data for the player */
   private final MetalbornData data;
+  /** Local access to the player inventory */
+  private final Inventory inventory;
+
   public MetalbornScreen(MetalbornMenu menu, Inventory inventory, Component title) {
     super(menu, inventory, title);
     data = MetalbornData.getData(inventory.player);
+    this.inventory = inventory;
+
+    // set screen height based on the properties
+    SatchelType type = menu.getSatchelType();
+    if (type == null) {
+      // 0 satchel rows
+      imageHeight = 174;
+      titleLabelY = -1;
+    } else {
+      titleLabelY = 81;
+      if (type.getSize() > 9) {
+        // 2 satchel rows
+        imageHeight = 222;
+      } else {
+        // 1 satchel row
+        imageHeight = 204;
+      }
+    }
+    // correct inventory label after we adjusted image height
+    inventoryLabelY = imageHeight - 93;
+  }
+
+  @Override
+  protected void slotClicked(Slot slot, int slotId, int index, ClickType type) {
+    // disallow swapping the satchel slot, if present
+    int satchelIndex = menu.getSatchelSlot();
+    if (satchelIndex >= 0 && type == ClickType.SWAP && slot.container == inventory && satchelIndex == slot.getSlotIndex()) {
+      return;
+    }
+    super.slotClicked(slot, slotId, index, type);
   }
 
   @Override
@@ -77,16 +119,41 @@ public class MetalbornScreen extends AbstractContainerScreen<MetalbornMenu> {
 
   @Override
   protected void renderBg(GuiGraphics graphics, float pPartialTick, int pMouseX, int pMouseY) {
-    graphics.blit(TEXTURE, leftPos, topPos, 0, 0, imageWidth, imageHeight);
+    SatchelType type = menu.getSatchelType();
+    if (type == null) {
+      // 0 satchel rows - draw the top, then the player inventory
+      graphics.blit(TEXTURE, leftPos, topPos, 0, 0, imageWidth, 79);
+      graphics.blit(TEXTURE, leftPos, topPos + 79, 0, 127, imageWidth, 95);
+    } else if (type.getSize() > 9) {
+      // 2 satchel rows - draw the whole image
+      graphics.blit(TEXTURE, leftPos, topPos, 0, 0, imageWidth, 222);
+    } else {
+      // 1 satchel row - draw the first row of the satchel then skip a row
+      graphics.blit(TEXTURE, leftPos, topPos, 0, 0, imageWidth, 109);
+      graphics.blit(TEXTURE, leftPos, topPos + 109, 0, 127, imageWidth, 95);
+    }
 
     // draw player in center, watching you
     assert this.minecraft != null;
     assert this.minecraft.player != null;
     InventoryScreen.renderEntityInInventoryFollowsAngle(graphics, leftPos + PLAYER_X, topPos + PLAYER_Y, 30, 0, 0, this.minecraft.player);
+
+    // highlight the satchel slot
+    int highlightSlot = menu.getHighlightSlot();
+    if (highlightSlot >= 0 && highlightSlot < menu.slots.size()) {
+      Slot slot = menu.getSlot(highlightSlot);
+      graphics.blit(TEXTURE, leftPos + slot.x - 2, topPos + slot.y - 2, READ_ONLY_U, READ_ONLY_V, READ_ONLY_SIZE, READ_ONLY_SIZE);
+    }
   }
 
   @Override
   protected void renderLabels(GuiGraphics graphics, int mouseX, int mouseY) {
+    // only want to conditionally draw the GUI title, hence no super call
+    if (this.titleLabelY >= 0) {
+      graphics.drawString(this.font, this.title, this.titleLabelX, this.titleLabelY, 0x404040, false);
+    }
+    graphics.drawString(this.font, this.playerInventoryTitle, this.inventoryLabelX, this.inventoryLabelY, 0x404040, false);
+
     mouseX -= leftPos;
     mouseY -= topPos;
     for (Slot slot : menu.getMetalmindSlots()) {

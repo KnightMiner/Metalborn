@@ -9,6 +9,8 @@ import knightminer.metalborn.item.InvestitureSpikeItem;
 import knightminer.metalborn.item.MetalItem;
 import knightminer.metalborn.item.MetalbornBookItem;
 import knightminer.metalborn.item.RandomFerringItem;
+import knightminer.metalborn.item.SatchelItem;
+import knightminer.metalborn.item.SatchelItem.SatchelType;
 import knightminer.metalborn.item.SpikeItem;
 import knightminer.metalborn.item.metalmind.IdentityMetalmindItem;
 import knightminer.metalborn.item.metalmind.InvestitureMetalmindItem;
@@ -94,6 +96,7 @@ import slimeknights.mantle.registration.RegistrationHelper;
 import slimeknights.mantle.registration.deferred.BlockDeferredRegister;
 import slimeknights.mantle.registration.deferred.BlockEntityTypeDeferredRegister;
 import slimeknights.mantle.registration.deferred.MenuTypeDeferredRegister;
+import slimeknights.mantle.registration.object.EnumObject;
 import slimeknights.mantle.registration.object.ItemObject;
 import slimeknights.mantle.registration.object.MetalItemObject;
 import slimeknights.mantle.registration.object.MultiObject;
@@ -190,6 +193,9 @@ public class Registration {
   // metal forge
   public static final ItemObject<ForgeBlock> FORGE = BLOCKS.register("forge", () -> new ForgeBlock(BlockBehaviour.Properties.of().mapColor(MapColor.STONE).instrument(NoteBlockInstrument.BASEDRUM).requiresCorrectToolForDrops().strength(3.5F).lightLevel(s -> s.getValue(BlockStateProperties.LIT) ? 13 : 0)), BLOCK_ITEM);
   public static final RegistryObject<BlockEntityType<ForgeBlockEntity>> FORGE_BLOCK_ENTITY = BLOCK_ENTITIES.register("forge", ForgeBlockEntity::new, FORGE);
+
+  // satchels
+  public static final EnumObject<SatchelType, SatchelItem> SATCHEL = ITEMS.registerEnum(SatchelType.values(), "satchel", type -> new SatchelItem(new Item.Properties().stacksTo(1), type));
 
   /** Damage type for metal damaging the player, used in gold's effect */
   public static final ResourceKey<DamageType> METAL_HURT = ResourceKey.create(Registries.DAMAGE_TYPE, resource("metal_hurt"));
@@ -359,6 +365,8 @@ public class Registration {
     output.accept(DEEPSLATE_TIN_ORE);
     output.accept(RAW_TIN);
     output.accept(RAW_TIN_BLOCK);
+    // satchels
+    SATCHEL.forEach(item -> output.accept(item));
     // metalminds
     accept(consumer, RING);
     output.accept(IDENTITY_RING);

@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "I": {
+      "tag": "forge:ingots/pewter"
+    },
+    "c": {
+      "tag": "forge:gems/diamond"
+    },
+    "s": {
+      "tag": "forge:string"
+    }
+  },
+  "pattern": [
+    "sIs",
+    "IcI",
+    "III"
+  ],
+  "result": {
+    "item": "metalborn:pewter_satchel"
+  },
+  "show_notification": true
+}

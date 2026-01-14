@@ -7,6 +7,8 @@ import knightminer.metalborn.core.Registration;
 import knightminer.metalborn.core.inventory.MetalmindInventory;
 import knightminer.metalborn.core.inventory.MetalmindInventory.MetalmindStack;
 import knightminer.metalborn.core.inventory.SpikeInventory;
+import knightminer.metalborn.item.SatchelItem.SatchelInventory;
+import knightminer.metalborn.item.SatchelItem.SatchelType;
 import knightminer.metalborn.item.metalmind.Metalmind.Usable;
 import knightminer.metalborn.metal.MetalId;
 import net.minecraft.network.FriendlyByteBuf;
@@ -16,7 +18,10 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
+import net.minecraftforge.common.capabilities.ForgeCapabilities;
+import net.minecraftforge.items.IItemHandler;
 import org.jetbrains.annotations.Nullable;
+import slimeknights.mantle.inventory.EmptyItemHandler;
 import slimeknights.mantle.inventory.SmartItemHandlerSlot;
 
 import java.util.List;
@@ -28,8 +33,16 @@ public class MetalbornMenu extends BaseMenu {
   @Nullable
   private final MetalmindInventory metalminds;
   private final List<Slot> metalmindSlots;
-  protected MetalbornMenu(@Nullable MenuType<?> type, int id, Inventory inventory) {
+  private final ItemStack satchelStack;
+  @Nullable
+  private final SatchelType satchelType;
+  private final int satchelSlot;
+  private final int highlightSlot;
+  protected MetalbornMenu(@Nullable MenuType<?> type, int id, Inventory inventory, ItemStack satchelStack, IItemHandler satchelInventory, @Nullable SatchelType satchelType, int satchelSlot) {
     super(type, id);
+    this.satchelStack = satchelStack;
+    this.satchelType = satchelType;
+    this.satchelSlot = satchelSlot;
     if (MetalbornData.getData(inventory.player) instanceof MetalbornCapability capability) {
       metalminds = capability.getMetalminds();
       metalmindSlots = List.of(
@@ -50,8 +63,41 @@ public class MetalbornMenu extends BaseMenu {
       addSlot(new SmartItemHandlerSlot(spikes, 2, 71, 44));
       addSlot(new SmartItemHandlerSlot(spikes, 3, 89, 44));
 
-      // inventory rows
-      addPlayerInventory(inventory, 84);
+      // add satchel slots if passed
+      if (satchelType != null) {
+        int slots = satchelType.getSize();
+        // first row
+        int max = Math.min(slots, 9);
+        for (int i = 0; i < max; i++) {
+          addSlot(new SmartItemHandlerSlot(satchelInventory, i, 8 + 18 * i, 92));
+        }
+        // second row
+        if (slots > 9) {
+          max = Math.min(slots - 9, 9);
+          for (int i = 0; i < max; i++) {
+            addSlot(new SmartItemHandlerSlot(satchelInventory, i + 9, 8 + 18 * i, 110));
+          }
+        }
+        // inventory rows without satchel
+        int playerStart = this.slots.size();
+        addPlayerInventory(inventory, slots > 9 ? 140 : 122, satchelSlot);
+
+        // determine which slot in the overall slots array with the satchel to highlight
+        if (satchelSlot < 9) {
+          // hotbar slots are after all our slots, and after the main inventory 27
+          highlightSlot = playerStart + satchelSlot + 27;
+        } else if (satchelSlot < Inventory.INVENTORY_SIZE) {
+          // main inventory 27 is after our slots, but the index is 9 too high (hotbar)
+          highlightSlot = playerStart + satchelSlot - 9;
+        } else {
+          // hotbar does not show in our inventory
+          this.highlightSlot = -1;
+        }
+      } else {
+        // inventory rows without satchel
+        addPlayerInventory(inventory, 92);
+        this.highlightSlot = -1;
+      }
 
       // other data slots
       addDataSlots(metalminds);
@@ -59,11 +105,23 @@ public class MetalbornMenu extends BaseMenu {
       Metalborn.LOG.error("Missing capability for {}, this should not be possible", inventory.player.getGameProfile().getName());
       this.metalminds = null;
       this.metalmindSlots = List.of();
+      this.highlightSlot = -1;
     }
   }
 
+  /** Opens the menu for a satchel */
+  protected MetalbornMenu(int id, Inventory inventory, ItemStack stack, IItemHandler itemHandler, @Nullable SatchelType satchelType, int satchelSlot) {
+    this(Registration.METALBORN_MENU.get(), id, inventory, stack, itemHandler, satchelType, satchelSlot);
+  }
+
+  /** Opens the menu without a satchel from the keybinding */
   public MetalbornMenu(int id, Inventory inventory) {
-    this(Registration.METALBORN_MENU.get(), id, inventory);
+    this(id, inventory, ItemStack.EMPTY, EmptyItemHandler.INSTANCE, null, -1);
+  }
+
+  /** Opens the menu for a satchel */
+  public MetalbornMenu(int id, Inventory inventory, ItemStack stack, SatchelType satchelType, int satchelSlot) {
+    this(id, inventory, stack, stack.getCapability(ForgeCapabilities.ITEM_HANDLER).orElse(EmptyItemHandler.INSTANCE), satchelType, satchelSlot);
   }
 
   /** Opens the menu on the client */
@@ -72,11 +130,27 @@ public class MetalbornMenu extends BaseMenu {
     MetalbornData data = MetalbornData.getData(inventory.player);
     data.clear();
     data.setFerringType(ferringType);
-    return new MetalbornMenu(id, inventory);
+
+    // find our satchel if needed
+    int satchelSlot = buffer.readByte();
+    ItemStack satchelStack = ItemStack.EMPTY;
+    IItemHandler satchelInventory = EmptyItemHandler.INSTANCE;
+    SatchelType satchelType = null;
+    if (satchelSlot >= 0) {
+      satchelStack = inventory.getItem(satchelSlot);
+      satchelType = buffer.readEnum(SatchelType.class);
+      // while we could fetch the cap from the satchel, it may not have synced properly, so just construct a dummy handler for the client
+      satchelInventory = new SatchelInventory(satchelType);
+    }
+    return new MetalbornMenu(id, inventory, satchelStack, satchelInventory, satchelType, satchelSlot);
   }
 
   @Override
-  public boolean stillValid(Player pPlayer) {
+  public boolean stillValid(Player player) {
+    if (satchelSlot >= 0) {
+      // ensure satchel is not shrunk or dropped
+      return !satchelStack.isEmpty() && player.getInventory().getItem(satchelSlot) == satchelStack;
+    }
     return true;
   }
 
@@ -147,6 +221,22 @@ public class MetalbornMenu extends BaseMenu {
 
 
   /* Screen helpers */
+
+  /** Gets the current satchel variant, or null if no satchel present */
+  @Nullable
+  public SatchelType getSatchelType() {
+    return satchelType;
+  }
+
+  /** Gets the index of the slot containing the satchel, or -1 if not present. */
+  public int getSatchelSlot() {
+    return satchelSlot;
+  }
+
+  /** Gets the read only slot index from {@link #slots} containing the satchel to render the highlight. */
+  public int getHighlightSlot() {
+    return highlightSlot;
+  }
 
   /** Gets all metalmind slots */
   public List<Slot> getMetalmindSlots() {

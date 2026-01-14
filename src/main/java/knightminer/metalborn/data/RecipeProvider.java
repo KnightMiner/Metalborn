@@ -3,6 +3,7 @@ package knightminer.metalborn.data;
 import knightminer.metalborn.Metalborn;
 import knightminer.metalborn.core.Registration;
 import knightminer.metalborn.data.tag.MetalbornTags;
+import knightminer.metalborn.item.SatchelItem.SatchelType;
 import knightminer.metalborn.json.ingredient.FillableIngredient;
 import knightminer.metalborn.json.ingredient.FillableIngredient.FillState;
 import knightminer.metalborn.json.ingredient.IngredientWithMetal.MetalFilter;
@@ -115,6 +116,22 @@ public class RecipeProvider extends net.minecraft.data.recipes.RecipeProvider im
       .pattern("III").pattern("IXI").pattern("###")
       .unlockedBy("has_tin", has(Registration.TIN.getIngotTag()))
       .save(consumer, location("forge"));
+
+    // satchels
+    ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, Registration.SATCHEL.get(SatchelType.BRONZE))
+      .define('I', Registration.BRONZE.getIngotTag())
+      .define('s', Tags.Items.STRING)
+      .define('c', Tags.Items.GEMS_QUARTZ)
+      .pattern("sIs").pattern("IcI").pattern("III")
+      .unlockedBy("has_ingot", has(Registration.BRONZE.getIngotTag()))
+      .save(consumer, location("bronze_satchel"));
+    ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, Registration.SATCHEL.get(SatchelType.PEWTER))
+      .define('I', Registration.PEWTER.getIngotTag())
+      .define('s', Tags.Items.STRING)
+      .define('c', Tags.Items.GEMS_DIAMOND)
+      .pattern("sIs").pattern("IcI").pattern("III")
+      .unlockedBy("has_ingot", has(Registration.PEWTER.getIngotTag()))
+      .save(consumer, location("pewter_satchel"));
 
     // metal items
     // rings

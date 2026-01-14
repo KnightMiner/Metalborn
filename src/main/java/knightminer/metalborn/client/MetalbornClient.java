@@ -12,11 +12,14 @@ import knightminer.metalborn.network.ControlPacket;
 import knightminer.metalborn.network.MetalbornNetwork;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.client.gui.screens.MenuScreens;
+import net.minecraft.client.renderer.item.ItemProperties;
 import net.minecraft.client.renderer.texture.atlas.SpriteSourceType;
 import net.minecraft.client.renderer.texture.atlas.SpriteSources;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.ModelEvent;
 import net.minecraftforge.client.event.RegisterClientReloadListenersEvent;
+import net.minecraftforge.client.event.RegisterColorHandlersEvent;
 import net.minecraftforge.client.event.RegisterKeyMappingsEvent;
 import net.minecraftforge.client.settings.KeyConflictContext;
 import net.minecraftforge.common.MinecraftForge;
@@ -60,9 +63,29 @@ public class MetalbornClient {
   }
 
   @SubscribeEvent
-  static void registerScreens(FMLClientSetupEvent event) {
-    event.enqueueWork(() -> MenuScreens.register(Registration.METALBORN_MENU.get(), MetalbornScreen::new));
-    event.enqueueWork(() -> MenuScreens.register(Registration.FORGE_MENU.get(), ForgeScreen::new));
+  static void registerItemColors(RegisterColorHandlersEvent.Item event) {
+    Registration.SATCHEL.forEach(satchel -> {
+      event.register((stack, tintIndex) -> {
+        if (tintIndex == 1) {
+          return satchel.getColor(stack);
+        }
+        return -1;
+      }, satchel);
+    });
+  }
+
+  @SubscribeEvent
+  static void clientSetup(FMLClientSetupEvent event) {
+    event.enqueueWork(() -> {
+      MenuScreens.register(Registration.METALBORN_MENU.get(), MetalbornScreen::new);
+      MenuScreens.register(Registration.FORGE_MENU.get(), ForgeScreen::new);
+    });
+    event.enqueueWork(() -> {
+      ResourceLocation key = Metalborn.resource("dyed");
+      Registration.SATCHEL.forEach(satchel -> {
+        ItemProperties.register(satchel, key, (stack, level, entity, seed) -> satchel.hasCustomColor(stack) ? 1 : 0);
+      });
+    });
   }
 
   private static void clientTick(ClientTickEvent event) {
