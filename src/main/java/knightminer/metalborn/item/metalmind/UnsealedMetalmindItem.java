@@ -15,26 +15,6 @@ public class UnsealedMetalmindItem extends PowerMetalmindItem {
   @Override
   public Usable canUse(ItemStack stack, int index, Player player, MetalbornData data) {
     // must have a metal, and be the owner. No need to be able to use the metal
-    return MetalItem.getMetal(stack) != MetalId.NONE && data.canUseUnsealed(index) ? checkIdentity(stack, data) : Usable.NEVER;
-  }
-
-  @Override
-  public boolean onUpdate(ItemStack stack, int index, int newLevel, int oldLevel, Player player, MetalbornData data) {
-    // if we were not previously using and now are, mark it as used
-    if (newLevel != 0 && oldLevel == 0) {
-      data.useUnsealed(index);
-    }
-    // if we were previously using and no longer are, mark it unused
-    else if (newLevel == 0 && oldLevel != 0) {
-      data.stopUsingUnsealed(index);
-    }
-    return super.onUpdate(stack, index, newLevel, oldLevel, player, data);
-  }
-
-  @Override
-  public void onStop(ItemStack stack, int index, int level, Player player, MetalbornData data) {
-    if (level != 0) {
-      data.stopUsingUnsealed(index);
-    }
+    return MetalItem.getMetal(stack) != MetalId.NONE ? checkIdentity(stack, data) : Usable.NEVER;
   }
 }

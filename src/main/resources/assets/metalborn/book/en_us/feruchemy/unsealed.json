@@ -7,7 +7,7 @@
     "filter": "metalmind"
   },
   "text": [
-    { "text": "Unsealed rings are usable by anyone, even those who lack access to that power. However, due to their nature it is not possible to wear more than 2 unsealed metalminds at once, even if the metal is typically usable by you." },
+    { "text": "Unsealed rings are usable by anyone, even those who lack access to that power. Any number of unsealed metalminds may be used at once, making them a safer alternative to Hemalurgy." },
     { "text": "To create an unsealed ring, you need an unkeyed nicrosil ring filled with the desired power, which can be forged together with a matching empty metal ring and some netherite. Nicrosil rings with identity will not work.", "paragraph": true }
   ]
 }

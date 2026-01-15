@@ -103,20 +103,6 @@ public interface MetalbornData extends INBTSerializable<CompoundTag> {
   default void setLastWalkDistance(float value) {}
 
 
-  /* Unsealed */
-
-  /** Checks if we can use an unsealed metalmind at the given index */
-  default boolean canUseUnsealed(int index) {
-    return false;
-  }
-
-  /** Starts using unsealed at the given index */
-  default void useUnsealed(int index) {}
-
-  /** Stops using unsealed at the given index */
-  default void stopUsingUnsealed(int index) {}
-
-
   /* Inventory */
 
   /**

@@ -14,7 +14,6 @@ import net.minecraft.world.entity.player.Player;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -34,8 +33,6 @@ public class ActiveMetalminds {
   private static final String KEY_FERRING_TAP = Metalborn.key("gui", "metalminds.investiture.tap");
   /** Key for storing in a metalmind */
   private static final String KEY_FERRING_STORE = Metalborn.key("gui", "metalminds.investiture.store");
-  /** Maximum number of unsealed metalminds allowed at once */
-  private static final int MAX_UNSEALED = 2;
 
   /** Index of last reload, so powers know when to refresh. */
   private static int reloadCount = 0;
@@ -68,14 +65,10 @@ public class ActiveMetalminds {
   /** Name of current identity we are tapping */
   private String identityName = "";
 
-  /** Indices containing unsealed metalminds */
-  private final int[] unsealedIndices = new int[MAX_UNSEALED];
-
   public ActiveMetalminds(MetalbornCapability data, Player player) {
     this.data = data;
     this.player = player;
     this.constructor = ActiveMetalmind::new;
-    Arrays.fill(unsealedIndices, -1);
   }
 
   /** Gets the object tracking the given metal */
@@ -207,35 +200,6 @@ public class ActiveMetalminds {
     if (identityUUID == null && storingIdentity.isEmpty()) {
       identityChange();
     }
-  }
-
-
-  /* Unsealed */
-
-  /** Checks if we can use an unsealed metalmind at the given index */
-  public boolean canUseUnsealed(int index) {
-    return unsealedIndices[0] == -1 || unsealedIndices[1] == -1
-      || unsealedIndices[0] == index || unsealedIndices[1] == index;
-  }
-
-  /** Swaps the given value in the unsealed list with the given replacement */
-  private void swapUnsealed(int match, int replace) {
-    if (unsealedIndices[0] == match) {
-      unsealedIndices[0] = replace;
-    }
-    else if (unsealedIndices[1] == match) {
-      unsealedIndices[1] = replace;
-    }
-  }
-
-  /** Starts using unsealed at the given index */
-  public void useUnsealed(int index) {
-    swapUnsealed(-1, index);
-  }
-
-  /** Stops using unsealed at the given index */
-  public void stopUsingUnsealed(int index) {
-    swapUnsealed(index, -1);
   }
 
 
