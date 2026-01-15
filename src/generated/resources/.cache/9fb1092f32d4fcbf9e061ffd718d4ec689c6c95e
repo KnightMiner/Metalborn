@@ -1,4 +1,4 @@
-// 1.20.1	2026-01-14T23:53:58.6140521	Recipes
+// 1.20.1	2026-01-15T01:50:27.6349795	Recipes
 45f272371eff12a4285f67a72b41dfb17082031e data/metalborn/advancements/recipes/cooking/recycling/bracer/nicrosil_blasting.json
 5149d554f0e3961bc9e6ddd7fbbf346b7d15518c data/metalborn/advancements/recipes/cooking/recycling/bracer/nicrosil_smelting.json
 a391c250669ed54093db608f5c28b31726055da5 data/metalborn/advancements/recipes/cooking/recycling/ring/nicrosil_blasting.json
@@ -122,6 +122,7 @@ ca21a2b532c83bc49982d87c8021dcf1ac042f9b data/metalborn/recipes/recycling/spike/
 7ce9432f7e13dfc1b83dd53b1134f3c2d56c133c data/metalborn/recipes/ring/identity.json
 700884da4fbaef427f76bda0e8e132acbbea9af8 data/metalborn/recipes/ring/metal.json
 4210bf2e46c4dd869455be70de706d24d63686eb data/metalborn/recipes/ring/nicrosil.json
+2a1c90727dbf6c29c08ba5b3bd9a38a3d6c040d4 data/metalborn/recipes/ring/soulbound.json
 9d82792e50ecc552268c4f6ea4c1f819ca441340 data/metalborn/recipes/ring/unsealed.json
 583a4a9e50fab8f9160d65adcab8df189656a814 data/metalborn/recipes/spike/metal.json
 f80dc14fc2ce469ef3f97f6c59fbdc712ccc55cb data/metalborn/recipes/spike/nicrosil.json

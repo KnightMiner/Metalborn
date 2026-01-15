@@ -30,5 +30,9 @@
   {
     "name": "unsealed",
     "data": "feruchemy/unsealed.json"
+  },
+  {
+    "name": "unsealed",
+    "data": "feruchemy/soulbound.json"
   }
 ]

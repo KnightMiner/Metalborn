@@ -182,6 +182,7 @@ public class Registration {
   public static final ItemObject<PowerMetalmindItem> BRACER = ITEMS.register("bracer", () -> new PowerMetalmindItem(new Item.Properties().stacksTo(8), 10));
   public static final ItemObject<PowerMetalmindItem> RING = ITEMS.register("ring", () -> new PowerMetalmindItem(new Item.Properties().stacksTo(8), 1));
   public static final ItemObject<PowerMetalmindItem> UNSEALED_RING = ITEMS.register("unsealed_ring", () -> new UnsealedMetalmindItem(new Item.Properties().stacksTo(8), 1));
+  public static final ItemObject<PowerMetalmindItem> SOULBOUND_RING = ITEMS.register("soulbound_ring", () -> new PowerMetalmindItem(new Item.Properties().stacksTo(8), 1));
   // investiture metalminds
   public static final ItemObject<InvestitureMetalmindItem> INVESTITURE_BRACER = ITEMS.register("investiture_bracer", () -> new InvestitureMetalmindItem(new Item.Properties().stacksTo(8), 10));
   public static final ItemObject<InvestitureMetalmindItem> INVESTITURE_RING = ITEMS.register("investiture_ring", () -> new InvestitureMetalmindItem(new Item.Properties().stacksTo(8), 1));
@@ -378,8 +379,9 @@ public class Registration {
     accept(consumer, INVESTITURE_BRACER);
     accept(consumer, SPIKE);
     accept(consumer, INVESTITURE_SPIKE);
-    // unsealed metalminds
+    // special metalminds
     accept(consumer, UNSEALED_RING);
+    accept(consumer, SOULBOUND_RING);
     // ferring nuggets
     output.accept(RANDOM_FERRING);
     accept(consumer, CHANGE_FERRING);

@@ -61,6 +61,7 @@ public class JEIPlugin implements IModPlugin {
     registration.registerSubtypeInterpreter(Registration.BRACER.asItem(), metal);
     registration.registerSubtypeInterpreter(Registration.RING.asItem(), metal);
     registration.registerSubtypeInterpreter(Registration.UNSEALED_RING.asItem(), metal);
+    registration.registerSubtypeInterpreter(Registration.SOULBOUND_RING.asItem(), metal);
     registration.registerSubtypeInterpreter(Registration.SPIKE.asItem(), (stack, context) -> {
       MetalId id = MetalItem.getMetal(stack);
       if (id == MetalId.NONE) {

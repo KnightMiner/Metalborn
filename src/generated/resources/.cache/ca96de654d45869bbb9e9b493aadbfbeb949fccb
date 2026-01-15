@@ -1,4 +1,4 @@
-// 1.20.1	2026-01-14T23:53:58.6114322	Tags for minecraft:item mod id metalborn
+// 1.20.1	2026-01-15T01:51:50.8547385	Tags for minecraft:item mod id metalborn
 058157714c08f4d51455b63e4bf6bae3d4ccf02e data/forge/tags/items/books.json
 66dd943100ec84cf0199411516d16e1ab1e350ba data/forge/tags/items/books/guide.json
 8b9a09fc19e418e011eaab15ab0ad87882e9ccfe data/forge/tags/items/ingots.json
@@ -53,8 +53,8 @@ e811fea8b06671da251e7fbec4e2614f6f191dbf data/metalborn/tags/items/ingot_like/ni
 398b903658b869cb7a0523e23b3a32a634c3be1c data/metalborn/tags/items/ingot_like/tin.json
 a1f720331d641e7f110e85ffcbffcaa6ad50c76b data/metalborn/tags/items/ingot_like/zinc.json
 e0c0741d39a1b25b845aed61a90109fdea665c5a data/metalborn/tags/items/metalminds.json
-d23ec62b93f155d6162147a5ee9dfe33de45475c data/metalborn/tags/items/rings.json
-1330d95c98b07019c31ab22fb282699d39ef946d data/metalborn/tags/items/soulbound.json
+bfe2d415fe2603923e301350eb58792767b96cdf data/metalborn/tags/items/rings.json
+26b8f5c015ba66c141c707e9e8e28ee1d2a59c29 data/metalborn/tags/items/soulbound.json
 06e9a13721426b2443c965a90a4d38deb66ad7de data/metalborn/tags/items/spikes.json
 66dd943100ec84cf0199411516d16e1ab1e350ba data/minecraft/tags/items/bookshelf_books.json
 66dd943100ec84cf0199411516d16e1ab1e350ba data/minecraft/tags/items/lectern_books.json

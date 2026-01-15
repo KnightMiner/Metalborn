@@ -65,6 +65,7 @@ public class ItemModelProvider extends net.minecraftforge.client.model.generator
     metal(Registration.BRACER, "metal/item/bracer", true);
     metal(Registration.RING, "metal/item/ring", false);
     metal(Registration.UNSEALED_RING, "metal/item/ring", false).end().texture("layer1", "item/unsealed_ring_gem");
+    metal(Registration.SOULBOUND_RING, "metal/item/ring", false).end().texture("layer1", "item/soulbound_ring_gem");
     // investiture items just use nicrosil directly
     metalItem(Registration.INVESTITURE_BRACER, "bracer", MetalIds.nicrosil);
     metalItem(Registration.INVESTITURE_RING, "ring", MetalIds.nicrosil);
