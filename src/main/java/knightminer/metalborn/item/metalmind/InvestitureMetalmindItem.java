@@ -51,6 +51,10 @@ public class InvestitureMetalmindItem extends MetalmindItem implements MetalItem
 
   @Override
   public boolean isSamePower(ItemStack stack1, ItemStack stack2) {
+    // only want investiture metalminds, not identity or power
+    if (!(stack2.getItem() instanceof InvestitureMetalmindItem)) {
+      return false;
+    }
     MetalId metal1 = getMetal(stack1);
     MetalId metal2 = getMetal(stack2);
     return metal1 == MetalId.NONE || metal2 == MetalId.NONE || metal1.equals(metal2);

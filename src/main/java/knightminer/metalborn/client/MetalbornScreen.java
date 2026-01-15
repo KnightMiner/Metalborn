@@ -27,6 +27,7 @@ public class MetalbornScreen extends AbstractContainerScreen<MetalbornMenu> {
   private static final String KEY_TAP_STOP = Metalborn.key("gui", "tap.stop");
   private static final String KEY_STORE_START = Metalborn.key("gui", "store.start");
   private static final String KEY_STORE_STOP = Metalborn.key("gui", "store.stop");
+  private static final Component SHIFT_MATCHING = Metalborn.component("gui", "shift_matching").withStyle(ChatFormatting.ITALIC);
   private static final Component STOP_ALL = Metalborn.component("gui", "metalminds.stop_all").withStyle(ChatFormatting.GRAY);
   // texture
   /** U index for all extra elements */
@@ -216,20 +217,21 @@ public class MetalbornScreen extends AbstractContainerScreen<MetalbornMenu> {
         if (usable != Usable.NEVER) {
           int level = menu.getMetalmindLevel(slot.index);
           Component stores = menu.getStores(slot.index);
-          List<Component> tooltip = new ArrayList<>(2);
+          List<Component> tooltip = new ArrayList<>(3);
+          tooltip.add(SHIFT_MATCHING);
           // if storing, suggest stopping
           if (level < 0) {
-            tooltip.add(Component.translatable(KEY_STORE_STOP, stores));
+            tooltip.add(Component.translatable(KEY_STORE_STOP, stores).withStyle(ChatFormatting.GRAY));
           // not storing and can? suggest doing so
           } else if (usable.canStore()) {
-            tooltip.add(Component.translatable(KEY_STORE_START, stores));
+            tooltip.add(Component.translatable(KEY_STORE_START, stores).withStyle(ChatFormatting.RED));
           }
           // if tapping, suggest stopping
           if (level > 0) {
-            tooltip.add(Component.translatable(KEY_TAP_STOP, stores));
+            tooltip.add(Component.translatable(KEY_TAP_STOP, stores).withStyle(ChatFormatting.GRAY));
           // not tapping and can? suggest doing so
           } else if (usable.canTap()) {
-            tooltip.add(Component.translatable(KEY_TAP_START, stores));
+            tooltip.add(Component.translatable(KEY_TAP_START, stores).withStyle(ChatFormatting.GREEN));
           }
           graphics.renderComponentTooltip(font, tooltip, mouseX, mouseY);
         }
@@ -263,7 +265,7 @@ public class MetalbornScreen extends AbstractContainerScreen<MetalbornMenu> {
 
       // check if we clicked the metalborn button
       if (METALMIND_X <= checkX && checkX < METALMIND_X + INFO_SIZE && INFO_Y <= checkY && checkY < INFO_Y + INFO_SIZE) {
-        minecraft.gameMode.handleInventoryButtonClick(menu.containerId, 20);
+        minecraft.gameMode.handleInventoryButtonClick(menu.containerId, 40);
         return true;
       }
 
@@ -279,14 +281,20 @@ public class MetalbornScreen extends AbstractContainerScreen<MetalbornMenu> {
           // if we are actively fill or tapping, either button will cancel, though one might reverse
           if (level != 0 || (button == 0 ? usable.canStore() : usable.canTap())) {
             // if tapping, and we can't store, map the storing button to stop tapping
+            int flag = button;
             if (level > 0 && button == 0 && !usable.canStore()) {
-              button = 1;
+              flag = 1;
             }
             // if storing, and we can't tap, map the tapping button to stop storing
             if (level < 0 && button == 1 && !usable.canTap()) {
-              button = 0;
+              flag = 0;
             }
-            minecraft.gameMode.handleInventoryButtonClick(menu.containerId, slot.index * 2 + button);
+            // if holding shift, pass that along too
+            if (hasShiftDown()) {
+              flag += 2;
+            }
+
+            minecraft.gameMode.handleInventoryButtonClick(menu.containerId, (slot.index << 2) + flag);
             return true;
           }
         }

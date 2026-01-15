@@ -209,21 +209,28 @@ public class MetalbornMenu extends BaseMenu {
     // on clicking a plus or minus button, update the tapping/storing value
     if (metalminds != null) {
       // metalminds button stops all action
-      if (id == 20) {
+      if (id == 40) {
         metalminds.stopAll();
         return true;
       }
       // other buttons start or stop specific actions
-      if (id < 20) {
+      if (id < 40) {
         // index is doubled for this button click
-        MetalmindStack stack = metalminds.getSlot(id / 2);
+        MetalmindStack stack = metalminds.getSlot(id >> 2);
         if (stack != null) {
           int current = stack.getLevel();
           // last bit is set to indicate plus or minus button
+          int newLevel;
           if (id % 2 == 1) {
-            stack.setLevel(current > 0 ? 0 : 1);
+            newLevel = current > 0 ? 0 : 1;
           } else {
-            stack.setLevel(current < 0 ? 0 : -1);
+            newLevel = current < 0 ? 0 : -1;
+          }
+          // if the shift bit is set, update all matching metalminds
+          if ((id & 2) > 0) {
+            stack.setMatchingLevel(newLevel);
+          } else {
+            stack.setLevel(newLevel);
           }
           return true;
         }

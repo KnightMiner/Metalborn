@@ -34,7 +34,8 @@ public class IdentityMetalmindItem extends MetalmindItem {
 
   @Override
   public boolean isSamePower(ItemStack stack1, ItemStack stack2) {
-    return isSameIdentity(stack1, stack2);
+    // match any metalmind of the same type
+    return stack2.getItem() instanceof IdentityMetalmindItem && isSameIdentity(stack1, stack2);
   }
 
   @Override

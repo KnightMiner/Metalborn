@@ -134,8 +134,9 @@ public class MetalmindInventory extends MetalInventory<MetalmindStack> implement
     /** Updates the item stack */
     private void setStack(ItemStack stack, Metalmind metalmind) {
       // if we are currently tapping or storing, stop as something changed
-      // compare the two metalmind instances as that ensures if our stack got shrunk to size 0, we don't get air (shift clicking)
-      if (level != 0 && (this.metalmind != metalmind || !this.metalmind.isSamePower(this.stack, stack))) {
+      // unless of course the new metalmind is the same power as the old one, thats acceptable
+      // for both simplicity and to fix shift click making this.stack empty, if the replacement is empty we stop too
+      if (level != 0 && (metalmind == Metalmind.EMPTY || !this.metalmind.isSamePower(this.stack, stack))) {
         onUpdate(0, level);
         level = 0;
       }
@@ -162,6 +163,15 @@ public class MetalmindInventory extends MetalInventory<MetalmindStack> implement
           level = newLevel;
         } else {
           level = 0;
+        }
+      }
+    }
+
+    /** Sets this and all matching metalminds to the given level */
+    public void setMatchingLevel(int level) {
+      for (MetalmindStack metalmind : inventory) {
+        if (metalmind == this || this.metalmind.isSamePower(this.stack, metalmind.stack)) {
+          metalmind.setLevel(level);
         }
       }
     }

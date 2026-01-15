@@ -12,7 +12,7 @@ import org.jetbrains.annotations.Nullable;
 public interface Metalmind extends Fillable {
   /** Checks if the two stacks have the same power */
   default boolean isSamePower(ItemStack stack1, ItemStack stack2) {
-    return true;
+    return ItemStack.isSameItem(stack1, stack2);
   }
 
   /** Gets text explaining what is stored by this stack */

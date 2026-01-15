@@ -253,6 +253,7 @@
   "gui.metalborn.store.stop": "Left click to stop %s",
   "gui.metalborn.tap.start": "Right click to tap %s",
   "gui.metalborn.tap.stop": "Right click to stop %s",
+  "gui.metalborn.shift_matching": "Hold shift to set all matching",
   "gui.metalborn.metalminds.stop_all": "Click to stop all metalminds",
 
   "key.metalborn.binding": "Metalborn",

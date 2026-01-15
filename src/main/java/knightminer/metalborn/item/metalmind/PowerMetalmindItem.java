@@ -27,7 +27,8 @@ public class PowerMetalmindItem extends MetalmindItem implements MetalItem {
 
   @Override
   public boolean isSamePower(ItemStack stack1, ItemStack stack2) {
-    return getMetal(stack1).equals(getMetal(stack2));
+    // only want investiture metalminds, not identity or power
+    return stack2.getItem() instanceof PowerMetalmindItem && getMetal(stack1).equals(getMetal(stack2));
   }
 
   @Override
