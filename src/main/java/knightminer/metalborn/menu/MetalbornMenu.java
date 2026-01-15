@@ -28,7 +28,8 @@ import java.util.List;
 
 /** Menu for managing metalminds */
 public class MetalbornMenu extends BaseMenu {
-  private static final int PLAYER_INVENTORY_START = 10 + 4;
+  /** Index of the first slot after the end of the metalminds. */
+  private static final int METAL_END = 10 + 4;
 
   @Nullable
   private final MetalmindInventory metalminds;
@@ -36,8 +37,12 @@ public class MetalbornMenu extends BaseMenu {
   private final ItemStack satchelStack;
   @Nullable
   private final SatchelType satchelType;
+  /** Index in the player inventory of the slot containing the satchel. -1 if no satchel. */
   private final int satchelSlot;
+  /** Index in the slots array of the slot containing the satchel. -1 if no satchel. */
   private final int highlightSlot;
+  /** First slot in the player inventory */
+  private final int playerStart;
   protected MetalbornMenu(@Nullable MenuType<?> type, int id, Inventory inventory, ItemStack satchelStack, IItemHandler satchelInventory, @Nullable SatchelType satchelType, int satchelSlot) {
     super(type, id);
     this.satchelStack = satchelStack;
@@ -79,7 +84,7 @@ public class MetalbornMenu extends BaseMenu {
           }
         }
         // inventory rows without satchel
-        int playerStart = this.slots.size();
+        playerStart = this.slots.size();
         addPlayerInventory(inventory, slots > 9 ? 140 : 122, satchelSlot);
 
         // determine which slot in the overall slots array with the satchel to highlight
@@ -94,6 +99,7 @@ public class MetalbornMenu extends BaseMenu {
           this.highlightSlot = -1;
         }
       } else {
+        this.playerStart = this.slots.size();
         // inventory rows without satchel
         addPlayerInventory(inventory, 92);
         this.highlightSlot = -1;
@@ -106,6 +112,7 @@ public class MetalbornMenu extends BaseMenu {
       this.metalminds = null;
       this.metalmindSlots = List.of();
       this.highlightSlot = -1;
+      this.playerStart = 0;
     }
   }
 
@@ -163,18 +170,24 @@ public class MetalbornMenu extends BaseMenu {
       result = slotStack.copy();
       int end = this.slots.size();
       // if its a metalmind slot, move to inventory
-      if (index < PLAYER_INVENTORY_START) {
-        if (!this.moveItemStackTo(slotStack, PLAYER_INVENTORY_START, end, true)) {
+      if (index < METAL_END) {
+        if (!this.moveItemStackTo(slotStack, METAL_END, end, true)) {
           return ItemStack.EMPTY;
         }
-      // move hotbar to metalminds, then inventory
-      } else if (index >= PLAYER_INVENTORY_START + 27) {
-        if (!this.moveItemStackTo(slotStack, 0, PLAYER_INVENTORY_START + 27, false)) {
+      // move satchel into metalminds, then inventory. Note this will be skipped if player start is metal end
+      } else if (index < playerStart) {
+        if (!this.moveItemStackTo(slotStack, 0, METAL_END, false)
+            && !this.moveItemStackTo(slotStack, playerStart, end, true)) {
           return ItemStack.EMPTY;
         }
-      // move player inventory into metalminds, then hotbar
-      } else if (!this.moveItemStackTo(slotStack, 0, PLAYER_INVENTORY_START, false)
-          && !this.moveItemStackTo(slotStack, PLAYER_INVENTORY_START + 27, PLAYER_INVENTORY_START + 36, false)) {
+      // move hotbar to metalminds, then satchel, then inventory
+      } else if (index >= playerStart + 27) {
+        if (!this.moveItemStackTo(slotStack, 0, playerStart + 27, false)) {
+          return ItemStack.EMPTY;
+        }
+      // move player inventory into metalminds, then satchel, then hotbar
+      } else if (!this.moveItemStackTo(slotStack, 0, playerStart, false)
+          && !this.moveItemStackTo(slotStack, playerStart + 27, end, false)) {
         return ItemStack.EMPTY;
       }
       // if we moved the whole stack, clear the slot
