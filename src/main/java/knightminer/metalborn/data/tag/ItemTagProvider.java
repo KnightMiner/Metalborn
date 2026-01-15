@@ -3,6 +3,7 @@ package knightminer.metalborn.data.tag;
 import knightminer.metalborn.Metalborn;
 import knightminer.metalborn.core.Registration;
 import knightminer.metalborn.data.MetalIds;
+import knightminer.metalborn.item.SatchelItem.SatchelType;
 import knightminer.metalborn.metal.MetalId;
 import knightminer.metalborn.util.CastItemObject;
 import net.minecraft.core.HolderLookup.Provider;
@@ -46,6 +47,7 @@ public class ItemTagProvider extends ItemTagsProvider {
     tag(Registration.BRACERS).add(Registration.BRACER.get(), Registration.INVESTITURE_BRACER.get(), Registration.IDENTITY_BRACER.get());
     tag(Registration.RINGS).add(Registration.RING.get(), Registration.INVESTITURE_RING.get(), Registration.IDENTITY_RING.get(), Registration.UNSEALED_RING.get());
     tag(Registration.SPIKES).add(Registration.SPIKE.get(), Registration.INVESTITURE_SPIKE.get());
+    tag(Registration.SOULBOUND).add(Registration.SATCHEL.get(SatchelType.NICROSIL));
 
     metal(Registration.TIN);
     metal(Registration.PEWTER);

@@ -118,8 +118,12 @@ public class SatchelItem extends Item implements DyeableLeatherItem {
 
   /** Enum of satchel variants */
   public enum SatchelType implements StringRepresentable {
+    /** Holds 9 items */
     BRONZE(9),
-    PEWTER(18);
+    /** Holds 18 items */
+    PEWTER(18),
+    /** Holds 9 items, remains in inventory on death */
+    NICROSIL(9);
 
     private final int size;
     SatchelType(int size) {

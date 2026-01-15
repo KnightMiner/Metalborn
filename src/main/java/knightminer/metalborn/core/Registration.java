@@ -174,6 +174,8 @@ public class Registration {
   public static final TagKey<Item> RINGS = itemTag("rings");
   /** Valid items for the ring slots. Should implement {@link knightminer.metalborn.item.Spike} */
   public static final TagKey<Item> SPIKES = itemTag("spikes");
+  /** Items in this tag remain on the player after death. */
+  public static final TagKey<Item> SOULBOUND = itemTag("soulbound");
 
   // metal items
   // metalminds

@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "I": {
+      "tag": "forge:ingots/nicrosil"
+    },
+    "c": {
+      "item": "minecraft:echo_shard"
+    },
+    "s": {
+      "tag": "forge:string"
+    }
+  },
+  "pattern": [
+    "sIs",
+    "IcI",
+    "III"
+  ],
+  "result": {
+    "item": "metalborn:nicrosil_satchel"
+  },
+  "show_notification": true
+}
