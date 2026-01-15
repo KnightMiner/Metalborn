@@ -40,7 +40,7 @@ public class MetalPowerProvider extends AbstractMetalPowerProvider {
       .hemalurgyCharge(5) // hoglins are a pain to hunt down and fight, double the health bar
       .feruchemy(AttributeMetalEffect.builder(ForgeMod.ENTITY_GRAVITY, Operation.MULTIPLY_TOTAL).swapColors().eachLevel(0.05f))
       .feruchemy(AttributeMetalEffect.builder(Registration.FALL_DISTANCE_MULTIPLIER, Operation.MULTIPLY_TOTAL).swapColors().eachLevel(0.05f))
-      .feruchemy(new TappingMetalEffect(AttributeMetalEffect.builder(Attributes.KNOCKBACK_RESISTANCE, Operation.ADDITION).eachLevel(0.05f)))
+      .feruchemy(new TappingMetalEffect(AttributeMetalEffect.builder(Attributes.KNOCKBACK_RESISTANCE, Operation.ADDITION).eachLevel(0.1f)))
       .feruchemy(new StoringMetalEffect(AttributeMetalEffect.builder(Registration.KNOCKBACK_MULTIPLIER, Operation.MULTIPLY_TOTAL).swapColors().eachLevel(-0.1f)));
     metal(MetalIds.steel).index(2).temperature(950)
       .feruchemy(AttributeMetalEffect.builder(Attributes.MOVEMENT_SPEED, Operation.MULTIPLY_TOTAL).eachLevel(0.1f))
@@ -50,7 +50,7 @@ public class MetalPowerProvider extends AbstractMetalPowerProvider {
       .feruchemy(MobEffectMetalEffect.storing(MobEffects.BLINDNESS).duration(60).flat(1))
       .feruchemy(MobEffectMetalEffect.tapping(MobEffects.NIGHT_VISION).duration(230).flat(1));
     metal(MetalIds.pewter).index(4).temperature(400)
-      .feruchemy(AttributeMetalEffect.builder(Attributes.ATTACK_DAMAGE, Operation.ADDITION).eachLevel(1))
+      .feruchemy(AttributeMetalEffect.builder(Attributes.ATTACK_DAMAGE, Operation.ADDITION).eachLevel(0.5f))
       .feruchemy(AttributeMetalEffect.builder(Attributes.MAX_HEALTH, Operation.ADDITION).eachLevel(2))
       .feruchemy(UpdateHealthEffect.INSTANCE);
     metal(MetalIds.copper).index(5).temperature(500).hemalurgyCharge(20)
@@ -109,13 +109,13 @@ public class MetalPowerProvider extends AbstractMetalPowerProvider {
       .feruchemy(AttributeMetalEffect.builder(Registration.RESPIRATION, Operation.ADDITION).eachLevel(1));
 
     metal(MetalIds.brass).index(12).temperature(605).integration()
-      .feruchemy(new WarmthMetalEffect())
+      .feruchemy(new WarmthMetalEffect(false))
       .feruchemy(AttributeMetalEffect.builder(Registration.WARMTH, Operation.MULTIPLY_TOTAL).eachLevel(0.1f))
       .feruchemy(new StoringMetalEffect(AttributeMetalEffect.builder(Attributes.ATTACK_DAMAGE, Operation.ADDITION).eachLevel(1)))
       .feruchemy(new TappingMetalEffect(AttributeMetalEffect.builder(Registration.HEAT_DAMAGE, Operation.ADDITION).eachLevel(1)));
     // constantan is only present if no brass
     metal(MetalIds.constantan).index(12).temperature(920).alternative("brass")
-      .feruchemy(new WarmthMetalEffect())
+      .feruchemy(new WarmthMetalEffect(false))
       .feruchemy(AttributeMetalEffect.builder(Registration.WARMTH, Operation.MULTIPLY_TOTAL).eachLevel(0.1f))
       .feruchemy(new StoringMetalEffect(AttributeMetalEffect.builder(Attributes.ATTACK_DAMAGE, Operation.ADDITION).eachLevel(1)))
       .feruchemy(new TappingMetalEffect(AttributeMetalEffect.builder(Registration.HEAT_DAMAGE, Operation.ADDITION).eachLevel(1)));

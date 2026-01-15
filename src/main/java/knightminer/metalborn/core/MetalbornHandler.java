@@ -153,20 +153,21 @@ public class MetalbornHandler {
       DamageSource source = event.getSource();
       // only apply to direct damage (no heating arrows)
       // also skip our damage type to prevent infinite recursion, and require being on fire (not on fire means we are sitting in water and thus avoiding the fire)
-      if (!source.isIndirect() && !source.is(Registration.MELEE_HEAT) && source.getEntity() instanceof LivingEntity attacker && attacker.isOnFire()) {
+      if (!source.isIndirect() && !source.is(Registration.MELEE_HEAT) && source.getEntity() instanceof LivingEntity attacker) {
         double heatDamage = attacker.getAttributeValue(Registration.HEAT_DAMAGE.get());
         if (heatDamage > 0) {
-          boolean fakeFire = false;
-          if (!target.isOnFire()) {
-            target.setSecondsOnFire(1);
+          // if the attacker is not on fire, does less damage
+          float finalDamage = (float) heatDamage;
+          if (!attacker.isOnFire()) {
+            finalDamage /= 2;
           }
+          // ignite attacker on attack, downside to heat attacks, but makes future attacks stronger
+          attacker.setSecondsOnFire(3);
+
           // hurt them
-          if (target.hurt(CombatHelper.damageSource(Registration.MELEE_HEAT, attacker), (float) heatDamage)) {
+          if (target.hurt(CombatHelper.damageSource(Registration.MELEE_HEAT, attacker), finalDamage)) {
             // reset invulnerable time to 0 for the main attack
             target.invulnerableTime = 0;
-            target.setSecondsOnFire((int) heatDamage);
-          } else if (fakeFire) {
-            target.setSecondsOnFire(0);
           }
         }
       }

@@ -19,7 +19,7 @@
     {
       "type": "metalborn:tapping",
       "attribute": "minecraft:generic.knockback_resistance",
-      "multiplier": 0.05,
+      "multiplier": 0.1,
       "operation": "addition",
       "tapping_type": "metalborn:attribute"
     },

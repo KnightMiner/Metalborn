@@ -21,7 +21,10 @@
     }
   ],
   "feruchemy": [
-    "metalborn:warmth",
+    {
+      "type": "metalborn:warmth",
+      "ignite": false
+    },
     {
       "type": "metalborn:attribute",
       "attribute": "metalborn:warmth",

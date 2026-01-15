@@ -11,18 +11,21 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.Level;
+import slimeknights.mantle.data.loadable.primitive.BooleanLoadable;
 import slimeknights.mantle.data.loadable.record.RecordLoadable;
-import slimeknights.mantle.data.loadable.record.SingletonLoader;
 import slimeknights.mantle.data.registry.GenericLoaderRegistry.IHaveLoader;
 
 import java.util.List;
 
-/** Effect that adjust fire and freezing on the target */
-public record WarmthMetalEffect() implements MetalEffect {
+/**
+ * Effect that adjust fire and freezing on the target.
+ * @param ignite  If true, ignites the target when tapping. If false, tapping will only reduce frozen time.
+ */
+public record WarmthMetalEffect(boolean ignite) implements MetalEffect {
   private static final String KEY_HEAT = Metalborn.key("metal_effect", "warmth.heat");
   private static final String KEY_COLD = Metalborn.key("metal_effect", "warmth.cold");
 
-  public static final RecordLoadable<WarmthMetalEffect> LOADER = new SingletonLoader<>(new WarmthMetalEffect());
+  public static final RecordLoadable<WarmthMetalEffect> LOADER = RecordLoadable.create(BooleanLoadable.INSTANCE.defaultField("ignite", false, WarmthMetalEffect::ignite), WarmthMetalEffect::new);
 
   @Override
   public int onTap(MetalPower power, LivingEntity entity, int level) {
@@ -43,7 +46,7 @@ public record WarmthMetalEffect() implements MetalEffect {
           server.sendParticles(ParticleTypes.LARGE_SMOKE, x, y, z, 8, 0, 0, 0, 0);
         }
       }
-    } else {
+    } else if (ignite) {
       // keep adding 1 second of fire every second, but don't
       int fireTicks = entity.getRemainingFireTicks();
       // if currently not on fire, add just enough fire ticks to not take damage at level 1
@@ -55,7 +58,7 @@ public record WarmthMetalEffect() implements MetalEffect {
         entity.setRemainingFireTicks(fireTicks + 20 * level);
       }
     }
-    return level;
+    return ignite ? level : 0;
   }
 
   @Override

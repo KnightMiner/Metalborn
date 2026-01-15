@@ -5,7 +5,7 @@
     {
       "type": "metalborn:attribute",
       "attribute": "minecraft:generic.attack_damage",
-      "multiplier": 1.0,
+      "multiplier": 0.5,
       "operation": "addition"
     },
     {
