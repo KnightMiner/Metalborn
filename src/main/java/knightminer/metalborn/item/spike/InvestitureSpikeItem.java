@@ -104,12 +104,6 @@ public class InvestitureSpikeItem extends SpikeItem {
   /* Tooltip */
 
   @Override
-  public Component getName(ItemStack stack) {
-    // don't show metal in tooltip
-    return Component.translatable(this.getDescriptionId(stack));
-  }
-
-  @Override
   public void appendHoverText(ItemStack stack, @Nullable Level pLevel, List<Component> tooltip, TooltipFlag flag) {
     // if filled, we have a metal, so display metal info
     if (isFull(stack)) {
