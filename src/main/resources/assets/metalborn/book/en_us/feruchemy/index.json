@@ -1,0 +1,6 @@
+{
+  "type": "mantle:index",
+  "title": "Feruchemy",
+  "subText": "This section covers how to access Feruchemy to store and tap power, along with the types of metalminds available.",
+  "hidden": ["satchel_gui"]
+}

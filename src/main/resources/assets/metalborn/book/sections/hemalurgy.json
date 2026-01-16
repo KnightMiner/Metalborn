@@ -1,5 +1,9 @@
 [
   {
+    "name": "index",
+    "data": "hemalurgy/index.json"
+  },
+  {
     "name": "overview",
     "data": "hemalurgy/overview.json"
   },

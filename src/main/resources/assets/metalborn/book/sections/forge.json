@@ -1,5 +1,9 @@
 [
   {
+    "name": "index",
+    "data": "forge/index.json"
+  },
+  {
     "name": "crafting",
     "data": "forge/recipe.json"
   },
@@ -29,7 +33,7 @@
     }
   },
   {
-    "type": "mantle:right_padding",
+    "type": "mantle:left_padding",
     "data": "no-load"
   }
 ]

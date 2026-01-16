@@ -1,5 +1,9 @@
 [
   {
+    "name": "index",
+    "data": "feruchemy/index.json"
+  },
+  {
     "name": "gui",
     "data": "feruchemy/gui.json"
   },
@@ -32,7 +36,7 @@
     "data": "feruchemy/unsealed.json"
   },
   {
-    "name": "unsealed",
+    "name": "soulbound",
     "data": "feruchemy/soulbound.json"
   }
 ]
