@@ -14,7 +14,6 @@ import knightminer.metalborn.util.CastItemObject;
 import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
-import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.level.ItemLike;
 import net.minecraftforge.client.model.generators.ItemModelBuilder;
 import net.minecraftforge.client.model.generators.ModelFile.UncheckedModelFile;
@@ -30,6 +29,9 @@ import static knightminer.metalborn.client.model.PalettedItemModel.toSuffix;
 
 /** Data generator for all item models in this mod */
 public class ItemModelProvider extends net.minecraftforge.client.model.generators.ItemModelProvider {
+  private static final String ITEM = "forge:item/default";
+  private static final String TOOL = "forge:item/default-tool";
+  private static final String ROD = "metalborn:item/default_rod";
   private final UncheckedModelFile GENERATED = new UncheckedModelFile("item/generated");
   public static final ResourceLocation FERUCHEMY_METALS = resource("metals/feruchemy");
 
@@ -55,26 +57,24 @@ public class ItemModelProvider extends net.minecraftforge.client.model.generator
 
     // ferring nuggets
     nugget(Registration.RANDOM_FERRING, MetalIds.nicrosil);
-    customModel(Registration.CHANGE_FERRING, false)
+    customModel(Registration.CHANGE_FERRING, ITEM)
       .texture("texture", "metal/item/nugget")
       .customLoader(MetalShapeModelBuilder::new)
       .shape(MetalShape.NUGGET)
       .paletteList(resource("metals/nuggets"));
 
     // metalminds
-    metal(Registration.BRACER, "metal/item/bracer", true);
-    metal(Registration.RING, "metal/item/ring", false);
-    metal(Registration.UNSEALED_RING, "metal/item/ring", false).end().texture("layer1", "item/unsealed_ring_gem");
-    metal(Registration.SOULBOUND_RING, "metal/item/ring", false).end().texture("layer1", "item/soulbound_ring_gem");
+    metal(Registration.BRACER, "metal/item/bracer", TOOL);
+    metal(Registration.RING, "metal/item/ring", ITEM);
+    metal(Registration.UNSEALED_RING, "metal/item/ring", ITEM).end().texture("layer1", "item/unsealed_ring_gem");
+    metal(Registration.SOULBOUND_RING, "metal/item/ring", ITEM).end().texture("layer1", "item/soulbound_ring_gem");
     // investiture items just use nicrosil directly
     metalItem(Registration.INVESTITURE_BRACER, "bracer", MetalIds.nicrosil);
     metalItem(Registration.INVESTITURE_RING, "ring", MetalIds.nicrosil);
     metalItem(Registration.IDENTITY_BRACER, "bracer", IdentityMetalmindItem.QUARTZ);
     metalItem(Registration.IDENTITY_RING, "ring", IdentityMetalmindItem.QUARTZ);
     // spikes we want to rotate the in hand model 180 degrees so it points out
-    metal(Registration.SPIKE, "metal/item/spike", true).end().transforms()
-      .transform(ItemDisplayContext.FIRST_PERSON_LEFT_HAND).rotation(0, -90, -25).translation(1.13f, 3.2f, 1.13f).scale(0.68f, 0.68f, 0.68f).end()
-      .transform(ItemDisplayContext.FIRST_PERSON_RIGHT_HAND).rotation(0, 90, 25).translation(1.13f, 3.2f, 1.13f).scale(0.68f, 0.68f, 0.68f).end();
+    metal(Registration.SPIKE, "metal/item/spike", ROD);
     existingFileHelper.trackGenerated(Metalborn.resource("metal/item/spike_metalborn_nicrosil"), ModelProvider.TEXTURE);
     // can't use metal item as we want the handheld transforms
     withExistingParent(Registration.INVESTITURE_SPIKE.getId().getPath(), "item/handheld_rod")
@@ -153,14 +153,15 @@ public class ItemModelProvider extends net.minecraftforge.client.model.generator
   }
 
   /** Creates a part model with the given texture */
-  private ItemModelBuilder customModel(ItemObject<?> item, boolean tool) {
-    return withExistingParent(item.getId().getPath(), tool ? "forge:item/default-tool" : "forge:item/default");
+  @SuppressWarnings("SameParameterValue")
+  private ItemModelBuilder customModel(ItemObject<?> item, String parent) {
+    return withExistingParent(item.getId().getPath(), parent);
   }
 
   /** Creates a part model with the given texture */
   @SuppressWarnings("UnusedReturnValue")
-  private PalettedModelBuilder<ItemModelBuilder> metal(ItemObject<?> item, String texture, boolean tool) {
-    return customModel(item, tool)
+  private PalettedModelBuilder<ItemModelBuilder> metal(ItemObject<?> item, String texture, String parent) {
+    return customModel(item, parent)
       .texture("layer0", resource(texture))
       .customLoader(PalettedModelBuilder::new)
       .paletted(FERUCHEMY_METALS, MetalItem.TAG_METAL);
