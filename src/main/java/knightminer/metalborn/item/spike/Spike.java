@@ -1,5 +1,6 @@
-package knightminer.metalborn.item;
+package knightminer.metalborn.item.spike;
 
+import knightminer.metalborn.item.Fillable;
 import knightminer.metalborn.metal.MetalId;
 import net.minecraft.world.item.ItemStack;
 

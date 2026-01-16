@@ -5,19 +5,19 @@ import knightminer.metalborn.Metalborn;
 import knightminer.metalborn.block.ForgeBlock;
 import knightminer.metalborn.block.ForgeBlockEntity;
 import knightminer.metalborn.item.ChangeFerringItem;
-import knightminer.metalborn.item.InvestitureSpikeItem;
 import knightminer.metalborn.item.MetalItem;
 import knightminer.metalborn.item.MetalbornBookItem;
 import knightminer.metalborn.item.RandomFerringItem;
 import knightminer.metalborn.item.SatchelItem;
 import knightminer.metalborn.item.SatchelItem.SatchelType;
-import knightminer.metalborn.item.SpikeItem;
 import knightminer.metalborn.item.metalmind.IdentityMetalmindItem;
 import knightminer.metalborn.item.metalmind.InvestitureMetalmindItem;
 import knightminer.metalborn.item.metalmind.Metalmind;
 import knightminer.metalborn.item.metalmind.MetalmindItem;
 import knightminer.metalborn.item.metalmind.PowerMetalmindItem;
 import knightminer.metalborn.item.metalmind.UnsealedMetalmindItem;
+import knightminer.metalborn.item.spike.InvestitureSpikeItem;
+import knightminer.metalborn.item.spike.SpikeItem;
 import knightminer.metalborn.json.ConfigEnabledCondition;
 import knightminer.metalborn.json.ingredient.FillableIngredient;
 import knightminer.metalborn.json.ingredient.MetalItemIngredient;
@@ -172,7 +172,7 @@ public class Registration {
   public static final TagKey<Item> BRACERS = itemTag("bracers");
   /** Valid items for the ring slots. Should implement {@link Metalmind} */
   public static final TagKey<Item> RINGS = itemTag("rings");
-  /** Valid items for the ring slots. Should implement {@link knightminer.metalborn.item.Spike} */
+  /** Valid items for the ring slots. Should implement {@link knightminer.metalborn.item.spike.Spike} */
   public static final TagKey<Item> SPIKES = itemTag("spikes");
   /** Items in this tag remain on the player after death. */
   public static final TagKey<Item> SOULBOUND = itemTag("soulbound");

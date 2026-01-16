@@ -1,10 +1,11 @@
-package knightminer.metalborn.item;
+package knightminer.metalborn.item.spike;
 
 import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.Multimap;
 import knightminer.metalborn.Metalborn;
 import knightminer.metalborn.core.Config;
 import knightminer.metalborn.core.MetalbornData;
+import knightminer.metalborn.item.MetalItem;
 import knightminer.metalborn.item.metalmind.MetalmindItem;
 import knightminer.metalborn.metal.MetalId;
 import knightminer.metalborn.metal.MetalManager;

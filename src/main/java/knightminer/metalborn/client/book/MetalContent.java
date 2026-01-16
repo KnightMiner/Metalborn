@@ -4,8 +4,8 @@ import com.google.gson.annotations.SerializedName;
 import knightminer.metalborn.Metalborn;
 import knightminer.metalborn.core.Registration;
 import knightminer.metalborn.item.MetalItem;
-import knightminer.metalborn.item.SpikeItem;
 import knightminer.metalborn.item.metalmind.Metalmind;
+import knightminer.metalborn.item.spike.SpikeItem;
 import knightminer.metalborn.metal.MetalId;
 import knightminer.metalborn.metal.MetalManager;
 import knightminer.metalborn.metal.MetalPower;
@@ -39,8 +39,8 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import static knightminer.metalborn.item.SpikeItem.KEY_TARGET;
 import static knightminer.metalborn.item.metalmind.MetalmindItem.KEY_STORES;
+import static knightminer.metalborn.item.spike.SpikeItem.KEY_TARGET;
 
 /** Book page for metal */
 public class MetalContent extends PageContent {

@@ -6,7 +6,7 @@ import knightminer.metalborn.Metalborn;
 import knightminer.metalborn.core.MetalbornCapability;
 import knightminer.metalborn.core.Registration;
 import knightminer.metalborn.core.inventory.SpikeInventory.SpikeStack;
-import knightminer.metalborn.item.Spike;
+import knightminer.metalborn.item.spike.Spike;
 import knightminer.metalborn.metal.MetalId;
 import net.minecraft.ChatFormatting;
 import net.minecraft.nbt.CompoundTag;

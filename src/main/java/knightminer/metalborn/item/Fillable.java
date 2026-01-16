@@ -2,7 +2,7 @@ package knightminer.metalborn.item;
 
 import net.minecraft.world.item.ItemStack;
 
-/** Interface for items that can be filled, such as {@link Spike} and {@link knightminer.metalborn.item.metalmind.Metalmind} */
+/** Interface for items that can be filled, such as {@link knightminer.metalborn.item.spike.Spike} and {@link knightminer.metalborn.item.metalmind.Metalmind} */
 public interface Fillable {
   /** Checks if the item is currently full */
   boolean isFull(ItemStack stack);
