@@ -132,6 +132,13 @@ public class RecipeProvider extends net.minecraft.data.recipes.RecipeProvider im
       .pattern("sIs").pattern("IcI").pattern("III")
       .unlockedBy("has_ingot", has(Registration.PEWTER.getIngotTag()))
       .save(consumer, location("pewter_satchel"));
+    ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, Registration.SATCHEL.get(SatchelType.STEEL))
+      .define('I', Registration.STEEL.getIngotTag())
+      .define('s', Tags.Items.STRING)
+      .define('c', Tags.Items.INGOTS_NETHERITE)
+      .pattern("sIs").pattern("IcI").pattern("III")
+      .unlockedBy("has_ingot", has(Registration.STEEL.getIngotTag()))
+      .save(consumer, location("steel_satchel"));
     ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, Registration.SATCHEL.get(SatchelType.NICROSIL))
       .define('I', Registration.NICROSIL.getIngotTag())
       .define('s', Tags.Items.STRING)

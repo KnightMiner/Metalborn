@@ -1,4 +1,4 @@
-// 1.20.1	2026-01-16T00:13:28.3686198	Recipes
+// 1.20.1	2026-01-16T02:29:15.8704932	Recipes
 45f272371eff12a4285f67a72b41dfb17082031e data/metalborn/advancements/recipes/cooking/recycling/bracer/nicrosil_blasting.json
 5149d554f0e3961bc9e6ddd7fbbf346b7d15518c data/metalborn/advancements/recipes/cooking/recycling/bracer/nicrosil_smelting.json
 a391c250669ed54093db608f5c28b31726055da5 data/metalborn/advancements/recipes/cooking/recycling/ring/nicrosil_blasting.json
@@ -44,6 +44,7 @@ ed1b6a6f30e842b4ae0cec62e286b6365596233f data/metalborn/advancements/recipes/mis
 6a21a437c9a6fbdcc4964881143a883d2c6158e7 data/metalborn/advancements/recipes/tools/bronze_satchel.json
 32d44f10df83c7b7ea6d356375d11b084e43c2fd data/metalborn/advancements/recipes/tools/nicrosil_satchel.json
 86344b863fbfc061a894419c7e89ae39c6334a1b data/metalborn/advancements/recipes/tools/pewter_satchel.json
+9231ccae658e255e5f08c0f3a10774105a25768b data/metalborn/advancements/recipes/tools/steel_satchel.json
 58a942a42f27a92298f5be825aed77434cd0417d data/metalborn/recipes/alloy/amethyst_bronze.json
 fa9f8e75706f31adeac4185f2c3f088a62260ac8 data/metalborn/recipes/alloy/bendalloy.json
 4b3d67340c8b8ec130e6ca7e202d969ed29ddca8 data/metalborn/recipes/alloy/brass.json
@@ -127,6 +128,7 @@ ca21a2b532c83bc49982d87c8021dcf1ac042f9b data/metalborn/recipes/recycling/spike/
 583a4a9e50fab8f9160d65adcab8df189656a814 data/metalborn/recipes/spike/metal.json
 f80dc14fc2ce469ef3f97f6c59fbdc712ccc55cb data/metalborn/recipes/spike/nicrosil.json
 a48a8ba5e26624a207069dea0cf4a3608aff9c35 data/metalborn/recipes/spike/soulbound.json
+54b2a8d73a6fcd0d9d4c56779783145b512442db data/metalborn/recipes/steel_satchel.json
 2c23616591df675ad143c939d5dbc9ef50e995db data/metalborn/recipes/tinkers/bracer/casting_gold_cast.json
 cfdad03d190238cdbbf7cd0ba5db47833489d08e data/metalborn/recipes/tinkers/bracer/casting_sand_cast.json
 098d5fc69a92827a9611cada9b4a1cbb95e99adb data/metalborn/recipes/tinkers/bracer/cast/gold_casting.json

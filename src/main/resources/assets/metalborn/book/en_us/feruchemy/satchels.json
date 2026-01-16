@@ -4,10 +4,11 @@
   "item": [
     "metalborn:bronze_satchel",
     "metalborn:pewter_satchel",
+    "metalborn:steel_satchel",
     "metalborn:nicrosil_satchel"
   ],
   "text": [
     { "text": "Satchels can be opened by interacting while held, or by right clicking from the inventory. Opening grants access to their slots plus the metalmind inventory, making them ideal for swapping metalminds." },
-    { "text": "Bronze satchels are the cheapest variant holding 9 stacks, while pewter holds up to 18. Nicrosil satchels also hold 9 items, but remain in the inventory on death.", "paragraph": true }
+    { "text": "Most satchels hold 9 items, though pewter holds up to 18. Steel satchels are immune to damage when dropped. Nicrosil satchels remain in the inventory on death.", "paragraph": true }
   ]
 }

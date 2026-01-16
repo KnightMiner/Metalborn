@@ -205,6 +205,8 @@
   "item.metalborn.bronze_satchel.tooltip": "Holds up to 9 items.",
   "item.metalborn.pewter_satchel": "Pewter Satchel",
   "item.metalborn.pewter_satchel.tooltip": "Holds up to 18 items.",
+  "item.metalborn.steel_satchel": "Steel Satchel",
+  "item.metalborn.steel_satchel.tooltip": "Holds up to 9 items. Immune to damage when dropped.",
   "item.metalborn.nicrosil_satchel": "Nicrosil Satchel",
   "item.metalborn.nicrosil_satchel.tooltip": "Holds up to 9 items. Remains in inventory on death.",
   "item.metalborn.mist_satchel": "Mist Satchel",

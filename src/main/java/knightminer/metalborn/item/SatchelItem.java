@@ -14,6 +14,7 @@ import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.SimpleMenuProvider;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.SlotAccess;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
@@ -61,6 +62,11 @@ public class SatchelItem extends Item implements DyeableLeatherItem {
   @Override
   public boolean isNotReplaceableByPickAction(ItemStack stack, Player player, int inventorySlot) {
     return true;
+  }
+
+  @Override
+  public boolean canBeHurtBy(DamageSource source) {
+    return type != SatchelType.STEEL;
   }
 
   @Override
@@ -140,6 +146,8 @@ public class SatchelItem extends Item implements DyeableLeatherItem {
     BRONZE(9),
     /** Holds 18 items */
     PEWTER(18),
+    /** Holds 9 items, immune to damage from any source */
+    STEEL(9),
     /** Holds 9 items, remains in inventory on death */
     NICROSIL(9),
     /** Holds 18 items, but items can only be removed, not added */

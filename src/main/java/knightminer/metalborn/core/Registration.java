@@ -202,7 +202,13 @@ public class Registration {
   public static final RegistryObject<BlockEntityType<ForgeBlockEntity>> FORGE_BLOCK_ENTITY = BLOCK_ENTITIES.register("forge", ForgeBlockEntity::new, FORGE);
 
   // satchels
-  public static final EnumObject<SatchelType, SatchelItem> SATCHEL = ITEMS.registerEnum(SatchelType.values(), "satchel", type -> new SatchelItem(new Item.Properties().stacksTo(1), type));
+  public static final EnumObject<SatchelType, SatchelItem> SATCHEL = ITEMS.registerEnum(SatchelType.values(), "satchel", type -> {
+    Item.Properties props = new Item.Properties().stacksTo(1);
+    if (type == SatchelType.STEEL) {
+      props.fireResistant();
+    }
+    return new SatchelItem(props, type);
+  });
 
   /** Damage type for metal damaging the player, used in gold's effect */
   public static final ResourceKey<DamageType> METAL_HURT = ResourceKey.create(Registries.DAMAGE_TYPE, resource("metal_hurt"));
