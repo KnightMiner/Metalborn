@@ -5,7 +5,6 @@ import knightminer.metalborn.core.inventory.MetalInventory.StackHolder;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.common.util.INBTSerializable;
 import net.minecraftforge.items.IItemHandlerModifiable;
@@ -128,7 +127,7 @@ public abstract class MetalInventory<T extends StackHolder<T>> implements IItemH
   }
 
   /** Called on death to drop all items */
-  public void dropItems(Entity entity, Collection<ItemEntity> drops) {
+  public void dropItems(Entity entity, Collection<ItemStack> drops) {
     for (StackHolder<?> stack : inventory) {
       stack.drop(entity, drops);
     }
@@ -162,11 +161,9 @@ public abstract class MetalInventory<T extends StackHolder<T>> implements IItemH
     }
 
     /** Drops this item */
-    protected void drop(Entity entity, Collection<ItemEntity> drops) {
+    protected void drop(Entity entity, Collection<ItemStack> drops) {
       if (!stack.isEmpty() && !stack.is(Registration.SOULBOUND)) {
-        ItemEntity itemEntity = new ItemEntity(entity.level(), entity.getX(), entity.getY(), entity.getZ(), stack.copy());
-        itemEntity.setDefaultPickUpDelay();
-        drops.add(itemEntity);
+        drops.add(stack.copy());
         setStack(ItemStack.EMPTY);
       }
     }

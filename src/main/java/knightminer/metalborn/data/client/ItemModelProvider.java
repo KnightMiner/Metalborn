@@ -127,6 +127,11 @@ public class ItemModelProvider extends net.minecraftforge.client.model.generator
 
   /** Creates the model for a satchel */
   private void satchel(SatchelType type, Item item) {
+    // mist satchels just use a single layer instead of needing a dyed overlay
+    if (type == SatchelType.MIST) {
+      basicItem(item);
+      return;
+    }
     String variant = type.getSerializedName();
     // model when dyed
     String texture = "item/" + variant + "_satchel";

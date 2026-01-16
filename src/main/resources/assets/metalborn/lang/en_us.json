@@ -207,6 +207,8 @@
   "item.metalborn.pewter_satchel.tooltip": "Holds up to 18 items. Right click to open.",
   "item.metalborn.nicrosil_satchel": "Nicrosil Satchel",
   "item.metalborn.nicrosil_satchel.tooltip": "Holds up to 9 items. Remains in inventory on death. Right click to open.",
+  "item.metalborn.mist_satchel": "Mist Satchel",
+  "item.metalborn.mist_satchel.tooltip": "Metal items from last death. Disappears when empty. Right click to open.",
 
   "item.metalborn.ferring.matches": "You feel this metal pulling on you slightly.",
   "item.metalborn.ferring.mismatches": "You do not feel anything from this metal.",

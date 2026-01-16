@@ -14,6 +14,8 @@ public class Config {
   public static final BooleanValue KEEP_ON_DEATH;
   /** If true, spikes can be used as a weapon in the offhand  */
   public static final BooleanValue OFFHAND_SPIKE_ATTACK;
+  /** If true, uses the mist satchel on death for metalborn inventory items */
+  public static final BooleanValue DROP_AS_SATCHEL;
 
   /** Forces integration metals to be enabled */
   public static final BooleanValue FORCE_INTEGRATION;
@@ -30,6 +32,8 @@ public class Config {
         .define("keep_ferring_on_death", false);
       OFFHAND_SPIKE_ATTACK = builder.comment("If true, spikes can be used to attack mobs in the offhand, allowing you to dual wield them with swords. False requires main hand kills.")
         .define("offhand_spike_attack", true);
+      DROP_AS_SATCHEL = builder.comment("If true, on death metalminds and spikes will drop as a mist satchel if there is more than 1. If false, they will drop as individual items.")
+        .define("drop_as_satchel", true);
     }
 
     builder.push("debug");

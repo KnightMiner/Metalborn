@@ -9,6 +9,7 @@ import knightminer.metalborn.client.model.PaletteListManager;
 import knightminer.metalborn.client.model.PalettedItemModel;
 import knightminer.metalborn.core.Registration;
 import knightminer.metalborn.item.MetalItem;
+import knightminer.metalborn.item.SatchelItem.SatchelType;
 import knightminer.metalborn.metal.MetalId;
 import knightminer.metalborn.network.ControlPacket;
 import knightminer.metalborn.network.MetalbornNetwork;
@@ -71,13 +72,23 @@ public class MetalbornClient {
 
   @SubscribeEvent
   static void registerItemColors(RegisterColorHandlersEvent.Item event) {
-    Registration.SATCHEL.forEach(satchel -> {
-      event.register((stack, tintIndex) -> {
-        if (tintIndex == 1) {
-          return satchel.getColor(stack);
-        }
-        return -1;
-      }, satchel);
+    Registration.SATCHEL.forEach((type, satchel) -> {
+      // mist satchels want to tint layer 0
+      if (type == SatchelType.MIST) {
+        event.register((stack, tintIndex) -> {
+          if (satchel.hasCustomColor(stack)) {
+            return satchel.getColor(stack);
+          }
+          return -1;
+        }, satchel);
+      } else {
+        event.register((stack, tintIndex) -> {
+          if (tintIndex == 1) {
+            return satchel.getColor(stack);
+          }
+          return -1;
+        }, satchel);
+      }
     });
   }
 

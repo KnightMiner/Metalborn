@@ -371,7 +371,12 @@ public class Registration {
     output.accept(RAW_TIN);
     output.accept(RAW_TIN_BLOCK);
     // satchels
-    SATCHEL.forEach(item -> output.accept(item));
+    SATCHEL.forEach((type, item) -> {
+      // don't show mist satchels, they are just used on death
+      if (type != SatchelType.MIST) {
+        output.accept(item);
+      }
+    });
     // metalminds
     accept(consumer, RING);
     output.accept(IDENTITY_RING);

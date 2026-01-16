@@ -1,4 +1,4 @@
-// 1.20.1	2026-01-16T01:34:38.3749841	Item Models: metalborn
+// 1.20.1	2026-01-16T01:38:36.3936491	Item Models: metalborn
 4dc7437e56be8a51858b985325aa1570e1f93125 assets/metalborn/models/item/bracer.json
 3c460b164754a3c0cfa46b79b0e3c3ccfb209045 assets/metalborn/models/item/bracer_gold_cast.json
 52b97c6dd950b6f560ab7d36946c354c5f99180d assets/metalborn/models/item/bracer_red_sand_cast.json
@@ -18,6 +18,7 @@ e4731996004c6d29ece3d5cb07f5668a9ccf46ef assets/metalborn/models/item/investitur
 29cbe7a992cea87ab71ce5118ed38c8d79de6fb7 assets/metalborn/models/item/investiture_spike.json
 0334aa010b06467760196bd770b77374b9d4b35b assets/metalborn/models/item/investiture_spike_empty.json
 aceb7e4e4ce67c0c1ca75de324b7ddcd3e3a28e6 assets/metalborn/models/item/metallic_arts.json
+cc33d8d16187f9ce383a00afa1b40604216b3e5e assets/metalborn/models/item/mist_satchel.json
 183e9ed503e5a797d4b73e0f9a88a1cfce0ee938 assets/metalborn/models/item/netherite_nugget.json
 e467e5071fad409610b9e0b00bfec9607eac9171 assets/metalborn/models/item/netherite_shard.json
 ff497dc5246983ae39c1dc86168ca4cae0de52f1 assets/metalborn/models/item/nicrosil_ingot.json

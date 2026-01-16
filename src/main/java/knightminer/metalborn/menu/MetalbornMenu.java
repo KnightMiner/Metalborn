@@ -13,6 +13,7 @@ import knightminer.metalborn.item.metalmind.Metalmind.Usable;
 import knightminer.metalborn.metal.MetalId;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.chat.Component;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.MenuType;
@@ -35,6 +36,8 @@ public class MetalbornMenu extends BaseMenu {
   private final MetalmindInventory metalminds;
   private final List<Slot> metalmindSlots;
   private final ItemStack satchelStack;
+  /** Reference to the satchel inventory, for clearing the satchel stack on inventory close */
+  private final IItemHandler satchelInventory;
   @Nullable
   private final SatchelType satchelType;
   /** Index in the player inventory of the slot containing the satchel. -1 if no satchel. */
@@ -46,6 +49,7 @@ public class MetalbornMenu extends BaseMenu {
   protected MetalbornMenu(@Nullable MenuType<?> type, int id, Inventory inventory, ItemStack satchelStack, IItemHandler satchelInventory, @Nullable SatchelType satchelType, int satchelSlot) {
     super(type, id);
     this.satchelStack = satchelStack;
+    this.satchelInventory = satchelInventory;
     this.satchelType = satchelType;
     this.satchelSlot = satchelSlot;
     if (MetalbornData.getData(inventory.player) instanceof MetalbornCapability capability) {
@@ -159,6 +163,24 @@ public class MetalbornMenu extends BaseMenu {
       return !satchelStack.isEmpty() && player.getInventory().getItem(satchelSlot) == satchelStack;
     }
     return true;
+  }
+
+  @Override
+  public void removed(Player player) {
+    super.removed(player);
+    // if a mist satchel is now empty, remove it from the inventory
+    // though make sure its still in the proper slot
+    if (satchelType == SatchelType.MIST && player.isAlive() && player.getInventory().getItem(satchelSlot) == satchelStack
+        && player instanceof ServerPlayer serverPlayer && !serverPlayer.hasDisconnected()) {
+      // empty check
+      for (int i = 0; i < satchelInventory.getSlots(); i++) {
+        if (!satchelInventory.getStackInSlot(i).isEmpty()) {
+          return;
+        }
+      }
+      // clear the empty mist satchel
+      player.getInventory().setItem(satchelSlot, ItemStack.EMPTY);
+    }
   }
 
   @Override

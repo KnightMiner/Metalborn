@@ -39,9 +39,7 @@ import java.util.Locale;
 
 /**
  * Implements the satchel item, which stores metalminds and has a UI that can unequip and reequip metalminds.
- * TODO:
- *  Satchel variants - nicrosil (soulbound), rose gold (?), steel (?), mist (ethereal)
- *  Config to limit satchel to metalmind items? While doing the predicate, prevent other bags inside satchels
+ * TODO: Config to limit satchel to metalmind items? While doing the predicate, prevent other bags inside satchels
  */
 public class SatchelItem extends Item implements DyeableLeatherItem {
   private final SatchelType type;
@@ -123,7 +121,9 @@ public class SatchelItem extends Item implements DyeableLeatherItem {
     /** Holds 18 items */
     PEWTER(18),
     /** Holds 9 items, remains in inventory on death */
-    NICROSIL(9);
+    NICROSIL(9),
+    /** Holds 18 items, but items can only be removed, not added */
+    MIST(18);
 
     private final int size;
     SatchelType(int size) {
@@ -143,12 +143,17 @@ public class SatchelItem extends Item implements DyeableLeatherItem {
 
   /** Inventory for satchel items */
   public static class SatchelInventory extends ItemStackHandler {
+    private final SatchelType type;
     public SatchelInventory(SatchelType type) {
       super(type.size);
+      this.type = type;
     }
 
     @Override
     public boolean isItemValid(int slot, @NotNull ItemStack stack) {
+      if (type == SatchelType.MIST) {
+        return false;
+      }
       return stack.isEmpty() || stack.getItem().canFitInsideContainerItems() && !stack.getCapability(ForgeCapabilities.ITEM_HANDLER).isPresent();
     }
   }

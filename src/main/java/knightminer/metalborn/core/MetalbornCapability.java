@@ -5,6 +5,7 @@ import knightminer.metalborn.core.inventory.ActiveMetalminds;
 import knightminer.metalborn.core.inventory.MetalmindInventory;
 import knightminer.metalborn.core.inventory.MetalmindInventory.MetalmindStack;
 import knightminer.metalborn.core.inventory.SpikeInventory;
+import knightminer.metalborn.item.SatchelItem.SatchelType;
 import knightminer.metalborn.metal.MetalId;
 import knightminer.metalborn.metal.MetalManager;
 import net.minecraft.core.Direction;
@@ -20,14 +21,19 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.CapabilityManager;
 import net.minecraftforge.common.capabilities.CapabilityToken;
+import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.common.capabilities.ICapabilitySerializable;
 import net.minecraftforge.common.capabilities.RegisterCapabilitiesEvent;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
+import net.minecraftforge.items.IItemHandler;
+import net.minecraftforge.items.IItemHandlerModifiable;
 import org.jetbrains.annotations.Nullable;
+import slimeknights.mantle.inventory.EmptyItemHandler;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.UUID;
@@ -244,10 +250,38 @@ public class MetalbornCapability implements ICapabilitySerializable<CompoundTag>
     return metalminds.equip(stack) || spikes.equip(stack);
   }
 
+  /** Creates an item entity for the given stack */
+  private ItemEntity createDrop(ItemStack stack) {
+    ItemEntity itemEntity = new ItemEntity(player.level(), player.getX(), player.getY(), player.getZ(), stack);
+    itemEntity.setDefaultPickUpDelay();
+    return itemEntity;
+  }
+
   @Override
   public void dropItems(Collection<ItemEntity> drops) {
-    metalminds.dropItems(player, drops);
-    spikes.dropItems(player, drops);
+    List<ItemStack> stacks = new ArrayList<>(14);
+    metalminds.dropItems(player, stacks);
+    spikes.dropItems(player, stacks);
+
+    // if we have at least 2 items and are using the mist satchel, drop as that
+    if (stacks.size() > 1 && Config.DROP_AS_SATCHEL.get()) {
+      ItemStack satchel = new ItemStack(Registration.SATCHEL.get(SatchelType.MIST));
+      IItemHandler inventory = satchel.getCapability(ForgeCapabilities.ITEM_HANDLER).orElse(EmptyItemHandler.INSTANCE);
+
+      // ensure we have enough slots in the satchel for all items and can quickly fill, should always be true but better to be safe
+      if (inventory.getSlots() >= stacks.size() && inventory instanceof IItemHandlerModifiable modifiable) {
+        for (int i = 0; i < stacks.size(); i++) {
+          modifiable.setStackInSlot(i, stacks.get(i));
+        }
+        drops.add(createDrop(satchel));
+        return;
+      }
+    }
+
+    // drop each item separately
+    for (ItemStack stack : stacks) {
+      drops.add(createDrop(stack));
+    }
   }
 
 
