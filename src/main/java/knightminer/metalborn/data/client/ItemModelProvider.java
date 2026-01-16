@@ -129,7 +129,7 @@ public class ItemModelProvider extends net.minecraftforge.client.model.generator
   private void satchel(SatchelType type, Item item) {
     String variant = type.getSerializedName();
     // model when dyed
-    String texture = "item/satchel_" + variant;
+    String texture = "item/" + variant + "_satchel";
     ItemModelBuilder dyed = getBuilder("item/dyed_satchel/" + variant).parent(GENERATED)
       .texture("layer0", texture)
       .texture("layer1", "item/satchel_dyed");

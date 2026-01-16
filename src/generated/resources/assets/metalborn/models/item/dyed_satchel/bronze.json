@@ -1,7 +1,7 @@
 {
   "parent": "minecraft:item/generated",
   "textures": {
-    "layer0": "metalborn:item/satchel_bronze",
+    "layer0": "metalborn:item/bronze_satchel",
     "layer1": "metalborn:item/satchel_dyed"
   }
 }
