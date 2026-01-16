@@ -8,11 +8,14 @@ import knightminer.metalborn.client.model.MetalShapeModel;
 import knightminer.metalborn.client.model.PaletteListManager;
 import knightminer.metalborn.client.model.PalettedItemModel;
 import knightminer.metalborn.core.Registration;
+import knightminer.metalborn.item.MetalItem;
+import knightminer.metalborn.metal.MetalId;
 import knightminer.metalborn.network.ControlPacket;
 import knightminer.metalborn.network.MetalbornNetwork;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraft.client.renderer.item.ItemProperties;
+import net.minecraft.client.renderer.item.ItemPropertyFunction;
 import net.minecraft.client.renderer.texture.atlas.SpriteSourceType;
 import net.minecraft.client.renderer.texture.atlas.SpriteSources;
 import net.minecraft.resources.ResourceLocation;
@@ -38,6 +41,10 @@ public class MetalbornClient {
   public static final SpriteSourceType EXTENDABLE_PALETTE = SpriteSources.register(resource("extendable_palette").toString(), ExtendablePalettedPermutations.CODEC);
   /** Universal keybinding */
   private static final KeyMapping KEY = new KeyMapping(Metalborn.key("key", "binding"), KeyConflictContext.IN_GAME, InputConstants.getKey("key.keyboard.m"), "key.categories.metalborn");
+  /** Item properties key for a satchel being dyed */
+  public static final ResourceLocation DYED = Metalborn.resource("dyed");
+  /** Item properties key for an investiture metal item having no metal set */
+  public static final ResourceLocation NO_METAL = Metalborn.resource("no_metal");
 
   /** Runs during mod constructor to register any important client only things */
   public static void onConstruct() {
@@ -81,10 +88,13 @@ public class MetalbornClient {
       MenuScreens.register(Registration.FORGE_MENU.get(), ForgeScreen::new);
     });
     event.enqueueWork(() -> {
-      ResourceLocation key = Metalborn.resource("dyed");
       Registration.SATCHEL.forEach(satchel -> {
-        ItemProperties.register(satchel, key, (stack, level, entity, seed) -> satchel.hasCustomColor(stack) ? 1 : 0);
+        ItemProperties.register(satchel, DYED, (stack, level, entity, seed) -> satchel.hasCustomColor(stack) ? 1 : 0);
       });
+      ItemPropertyFunction noMetal = (stack, level, entity, seed) -> MetalItem.getMetal(stack) != MetalId.NONE ? 0 : 1;
+      ItemProperties.register(Registration.INVESTITURE_BRACER.get(), NO_METAL, noMetal);
+      ItemProperties.register(Registration.INVESTITURE_RING.get(), NO_METAL, noMetal);
+      ItemProperties.register(Registration.INVESTITURE_SPIKE.get(), NO_METAL, noMetal);
     });
   }
 

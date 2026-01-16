@@ -83,7 +83,7 @@ public class MetalShapeModel implements IUnbakedGeometry<MetalShapeModel> {
     private final Map<String,BakedModel> variants = new HashMap<>();
 
     private ShapeOverrides(IGeometryBakingContext context, BakedPermutationData data, ModelState modelTransform, RenderTypeGroup renderTypes, MetalShape shape, String key) {
-      super(context, List.of(data), modelTransform, renderTypes);
+      super(ItemOverrides.EMPTY, context, List.of(data), modelTransform, renderTypes);
       this.shape = shape;
       this.key = key;
     }

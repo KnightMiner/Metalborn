@@ -1,6 +1,7 @@
 package knightminer.metalborn.data.client;
 
 import knightminer.metalborn.Metalborn;
+import knightminer.metalborn.client.MetalbornClient;
 import knightminer.metalborn.client.model.MetalShapeModelBuilder;
 import knightminer.metalborn.client.model.PalettedModelBuilder;
 import knightminer.metalborn.core.Registration;
@@ -29,10 +30,15 @@ import static knightminer.metalborn.client.model.PalettedItemModel.toSuffix;
 
 /** Data generator for all item models in this mod */
 public class ItemModelProvider extends net.minecraftforge.client.model.generators.ItemModelProvider {
+  /** Standard item transforms */
   private static final String ITEM = "forge:item/default";
+  /** Item held like a pickaxe or sword */
   private static final String TOOL = "forge:item/default-tool";
+  /** Item held like a blaze rod or stick */
   private static final String ROD = "metalborn:item/default_rod";
+  /** Parent for generated item models */
   private final UncheckedModelFile GENERATED = new UncheckedModelFile("item/generated");
+  /** File for anything repalette as feruchey metals used on rings and bracers */
   public static final ResourceLocation FERUCHEMY_METALS = resource("metals/feruchemy");
 
   public ItemModelProvider(PackOutput output, ExistingFileHelper existingFileHelper) {
@@ -76,9 +82,13 @@ public class ItemModelProvider extends net.minecraftforge.client.model.generator
     // spikes we want to rotate the in hand model 180 degrees so it points out
     metal(Registration.SPIKE, "metal/item/spike", ROD);
     existingFileHelper.trackGenerated(Metalborn.resource("metal/item/spike_metalborn_nicrosil"), ModelProvider.TEXTURE);
-    // can't use metal item as we want the handheld transforms
-    withExistingParent(Registration.INVESTITURE_SPIKE.getId().getPath(), "item/handheld_rod")
-      .texture("layer0", "metal/item/spike_metalborn_nicrosil");
+    // if no metal, use a pure nicrosil spike
+    metal(Registration.INVESTITURE_SPIKE, "metal/item/spike", ROD).end()
+      .texture("layer1", "item/nicrosil_spike_overlay")
+        .override().predicate(MetalbornClient.NO_METAL, 1)
+        // can't use metal item as we want the handheld transforms, don't currently need elsewhere so no helper
+        .model(withExistingParent("investiture_spike_empty", "item/handheld_rod")
+          .texture("layer0", "metal/item/spike_metalborn_nicrosil"));
 
     // satchels
     Registration.SATCHEL.forEach(this::satchel);
@@ -124,7 +134,7 @@ public class ItemModelProvider extends net.minecraftforge.client.model.generator
     // model when undyed
     getBuilder(Loadables.ITEM.getKey(item).getPath()).parent(GENERATED)
       .texture("layer0", texture)
-      .override().model(dyed).predicate(Metalborn.resource("dyed"), 1);
+      .override().model(dyed).predicate(MetalbornClient.DYED, 1);
   }
 
   /** Adds a basic metal item */
@@ -160,11 +170,18 @@ public class ItemModelProvider extends net.minecraftforge.client.model.generator
 
   /** Creates a part model with the given texture */
   @SuppressWarnings("UnusedReturnValue")
-  private PalettedModelBuilder<ItemModelBuilder> metal(ItemObject<?> item, String texture, String parent) {
-    return customModel(item, parent)
+  private PalettedModelBuilder<ItemModelBuilder> metal(String path, String texture, String parent) {
+    return withExistingParent(path, parent)
       .texture("layer0", resource(texture))
       .customLoader(PalettedModelBuilder::new)
       .paletted(FERUCHEMY_METALS, MetalItem.TAG_METAL);
+  }
+
+
+  /** Creates a part model with the given texture */
+  @SuppressWarnings("UnusedReturnValue")
+  private PalettedModelBuilder<ItemModelBuilder> metal(ItemObject<?> item, String texture, String parent) {
+    return metal(item.getId().getPath(), texture, parent);
   }
 
   /** Creates models for the given cast object */

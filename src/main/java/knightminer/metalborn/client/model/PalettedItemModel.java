@@ -61,7 +61,7 @@ public class PalettedItemModel implements IUnbakedGeometry<PalettedItemModel> {
     // setup baking
     modelTransform = MantleItemLayerModel.applyTransform(modelTransform, context.getRootTransform());
     RenderTypeGroup renderTypes = MantleItemLayerModel.getDefaultRenderType(context);
-    PermutatedItemOverrides permutatedOverrides = new PermutatedItemOverrides(context, textures, modelTransform, renderTypes);
+    PermutatedItemOverrides permutatedOverrides = new PermutatedItemOverrides(overrides, context, textures, modelTransform, renderTypes);
 
     // bake final model
     return permutatedOverrides.bake(permutatedOverrides, List.of());
@@ -126,20 +126,20 @@ public class PalettedItemModel implements IUnbakedGeometry<PalettedItemModel> {
   static class PermutatedItemOverrides extends ItemOverrides {
     /** Model variant cache */
     private final Map<String,BakedModel> cache = new HashMap<>();
+    private final ItemOverrides parent;
     /** List of textures to use */
     private final IGeometryBakingContext context;
     private final List<BakedPermutationData> permutations;
     private final ModelState modelTransform;
     private final RenderTypeGroup renderTypes;
 
-    protected PermutatedItemOverrides(IGeometryBakingContext context, List<BakedPermutationData> permutations, ModelState modelTransform, RenderTypeGroup renderTypes) {
+    protected PermutatedItemOverrides(ItemOverrides parent, IGeometryBakingContext context, List<BakedPermutationData> permutations, ModelState modelTransform, RenderTypeGroup renderTypes) {
+      this.parent = parent;
       this.context = context;
       this.permutations = permutations;
       this.modelTransform = modelTransform;
       this.renderTypes = renderTypes;
     }
-
-    // TODO: do we need nested overrides at all?
 
     /** Bakes a model with the given item data */
     BakedModel bake(ItemOverrides overrides, List<String> itemData) {
@@ -170,6 +170,11 @@ public class PalettedItemModel implements IUnbakedGeometry<PalettedItemModel> {
     @Nullable
     @Override
     public BakedModel resolve(BakedModel model, ItemStack stack, @Nullable ClientLevel level, @Nullable LivingEntity entity, int seed) {
+      BakedModel resolved = parent.resolve(model, stack, level, entity, seed);
+      if (resolved != model) {
+        // TODO: run overrides on resolved model?
+        return resolved;
+      }
       CompoundTag tag = stack.getTag();
       if (tag != null) {
         // find variant info from NBT. Will use it for a cache key and a list of variants for the builder

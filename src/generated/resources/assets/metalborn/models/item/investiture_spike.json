@@ -1,6 +1,20 @@
 {
-  "parent": "minecraft:item/handheld_rod",
+  "parent": "metalborn:item/default_rod",
+  "loader": "metalborn:paletted",
+  "overrides": [
+    {
+      "model": "metalborn:item/investiture_spike_empty",
+      "predicate": {
+        "metalborn:no_metal": 1.0
+      }
+    }
+  ],
+  "palette": {
+    "key": "metal",
+    "list": "metalborn:metals/feruchemy"
+  },
   "textures": {
-    "layer0": "metalborn:metal/item/spike_metalborn_nicrosil"
+    "layer0": "metalborn:metal/item/spike",
+    "layer1": "metalborn:item/nicrosil_spike_overlay"
   }
 }
