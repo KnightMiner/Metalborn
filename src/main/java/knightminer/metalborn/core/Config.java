@@ -16,6 +16,8 @@ public class Config {
   public static final BooleanValue OFFHAND_SPIKE_ATTACK;
   /** If true, uses the mist satchel on death for metalborn inventory items */
   public static final BooleanValue DROP_AS_SATCHEL;
+  /** If true, satchels are limited to metalborn items */
+  public static final BooleanValue LIMITED_SATCHELS;
 
   /** Forces integration metals to be enabled */
   public static final BooleanValue FORCE_INTEGRATION;
@@ -34,6 +36,8 @@ public class Config {
         .define("offhand_spike_attack", true);
       DROP_AS_SATCHEL = builder.comment("If true, on death metalminds and spikes will drop as a mist satchel if there is more than 1. If false, they will drop as individual items.")
         .define("drop_as_satchel", true);
+      LIMITED_SATCHELS = builder.comment("If true, satchels are limited to holding spikes and metalminds, as defined by the item tag `metalborn:satchel_items`. If false they can hold anything.")
+        .define("limited_satchels", false);
     }
 
     builder.push("debug");

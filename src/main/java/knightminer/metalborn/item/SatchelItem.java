@@ -1,6 +1,8 @@
 package knightminer.metalborn.item;
 
+import knightminer.metalborn.core.Config;
 import knightminer.metalborn.core.MetalbornData;
+import knightminer.metalborn.core.Registration;
 import knightminer.metalborn.menu.MetalbornMenu;
 import knightminer.metalborn.metal.MetalId;
 import net.minecraft.ChatFormatting;
@@ -41,7 +43,6 @@ import java.util.Locale;
 
 /**
  * Implements the satchel item, which stores metalminds and has a UI that can unequip and reequip metalminds.
- * TODO: Config to limit satchel to metalmind items? While doing the predicate, prevent other bags inside satchels
  */
 public class SatchelItem extends Item implements DyeableLeatherItem {
   private static final Component CLICK_TO_OPEN = Mantle.makeComponent("item", "book.click_to_open").withStyle(ChatFormatting.YELLOW, ChatFormatting.ITALIC);
@@ -165,10 +166,19 @@ public class SatchelItem extends Item implements DyeableLeatherItem {
 
     @Override
     public boolean isItemValid(int slot, @NotNull ItemStack stack) {
+      if (stack.isEmpty()) {
+        return true;
+      }
+      // mist is extract only
       if (type == SatchelType.MIST) {
         return false;
       }
-      return stack.isEmpty() || stack.getItem().canFitInsideContainerItems() && !stack.getCapability(ForgeCapabilities.ITEM_HANDLER).isPresent();
+      // limited satchels forces a tag whitelist
+      if (Config.LIMITED_SATCHELS.get() && !stack.is(Registration.SATCHEL_ITEMS)) {
+        return false;
+      }
+      // no bags
+      return stack.getItem().canFitInsideContainerItems() && !stack.getCapability(ForgeCapabilities.ITEM_HANDLER).isPresent();
     }
   }
 

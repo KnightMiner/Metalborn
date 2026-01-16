@@ -177,6 +177,8 @@ public class Registration {
   public static final TagKey<Item> SPIKES = itemTag("spikes");
   /** Items in this tag remain on the player after death. */
   public static final TagKey<Item> SOULBOUND = itemTag("soulbound");
+  /** Whitelist of items allowed in the satchel. Only used if {@link Config#LIMITED_SATCHELS} is true (not default). */
+  public static final TagKey<Item> SATCHEL_ITEMS = itemTag("satchel_items");
 
   // metal items
   // metalminds

@@ -51,6 +51,7 @@ public class ItemTagProvider extends ItemTagsProvider {
     );
     tag(Registration.SPIKES).add(Registration.SPIKE.get(), Registration.INVESTITURE_SPIKE.get(), Registration.SOULBOUND_SPIKE.get());
     tag(Registration.SOULBOUND).add(Registration.SATCHEL.get(SatchelType.NICROSIL), Registration.SOULBOUND_RING.get(), Registration.SOULBOUND_SPIKE.get());
+    tag(Registration.SATCHEL_ITEMS).add(Registration.METALLIC_ARTS.get()).addTags(Registration.BRACERS, Registration.RINGS, Registration.SPIKES);
 
     metal(Registration.TIN);
     metal(Registration.PEWTER);
