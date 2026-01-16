@@ -1,4 +1,4 @@
-// 1.20.1	2026-01-15T01:50:27.6349795	Recipes
+// 1.20.1	2026-01-16T00:13:28.3686198	Recipes
 45f272371eff12a4285f67a72b41dfb17082031e data/metalborn/advancements/recipes/cooking/recycling/bracer/nicrosil_blasting.json
 5149d554f0e3961bc9e6ddd7fbbf346b7d15518c data/metalborn/advancements/recipes/cooking/recycling/bracer/nicrosil_smelting.json
 a391c250669ed54093db608f5c28b31726055da5 data/metalborn/advancements/recipes/cooking/recycling/ring/nicrosil_blasting.json
@@ -126,6 +126,7 @@ ca21a2b532c83bc49982d87c8021dcf1ac042f9b data/metalborn/recipes/recycling/spike/
 9d82792e50ecc552268c4f6ea4c1f819ca441340 data/metalborn/recipes/ring/unsealed.json
 583a4a9e50fab8f9160d65adcab8df189656a814 data/metalborn/recipes/spike/metal.json
 f80dc14fc2ce469ef3f97f6c59fbdc712ccc55cb data/metalborn/recipes/spike/nicrosil.json
+a48a8ba5e26624a207069dea0cf4a3608aff9c35 data/metalborn/recipes/spike/soulbound.json
 2c23616591df675ad143c939d5dbc9ef50e995db data/metalborn/recipes/tinkers/bracer/casting_gold_cast.json
 cfdad03d190238cdbbf7cd0ba5db47833489d08e data/metalborn/recipes/tinkers/bracer/casting_sand_cast.json
 098d5fc69a92827a9611cada9b4a1cbb95e99adb data/metalborn/recipes/tinkers/bracer/cast/gold_casting.json

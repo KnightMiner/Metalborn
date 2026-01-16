@@ -18,5 +18,9 @@
   {
     "name": "change_ferring",
     "data": "hemalurgy/change_ferring.json"
+  },
+  {
+    "name": "soulbound_spike",
+    "data": "hemalurgy/soulbound_spike.json"
   }
 ]

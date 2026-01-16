@@ -197,6 +197,8 @@
   "item.metalborn.spike.charge": "Charge: %s / %s",
   "item.metalborn.spike.charge.full": "Fully Charged",
   "item.metalborn.investiture_spike": "Nicrosil Spike",
+  "item.metalborn.soulbound_spike": "Soulbound Spike",
+  "item.metalborn.soulbound_spike.format": "Soulbound %s Spike",
 
   "item.metalborn.bronze_satchel": "Bronze Satchel",
   "item.metalborn.bronze_satchel.tooltip": "Holds up to 9 items. Right click to open.",

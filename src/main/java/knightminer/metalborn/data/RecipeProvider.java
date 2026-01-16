@@ -234,6 +234,15 @@ public class RecipeProvider extends net.minecraft.data.recipes.RecipeProvider im
       .cookingRate(4)
       .experience(0.5f)
       .save(consumer, location("ring/soulbound"));
+    // soulbound spikes require full spikes of both variants, plus some echo
+    ShapelessForgeRecipeBuilder.shapeless(Registration.SOULBOUND_SPIKE)
+      .requires(Items.ECHO_SHARD)
+      .requires(FillableIngredient.of(FillState.FILLED, MetalItemIngredient.of(Registration.SPIKE, MetalFilter.SPIKE)))
+      .requires(FillableIngredient.of(FillState.FILLED, MetalItemIngredient.of(Registration.INVESTITURE_SPIKE, MetalFilter.SPIKE)))
+      .metal()
+      .cookingRate(4)
+      .experience(0.5f)
+      .save(consumer, location("spike/soulbound"));
 
     // alloys
     String alloyFolder = "alloy/";

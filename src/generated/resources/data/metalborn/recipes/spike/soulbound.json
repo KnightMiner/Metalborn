@@ -1,0 +1,29 @@
+{
+  "type": "metalborn:metal_shapeless_forge",
+  "cooking_time": 400,
+  "experience": 0.5,
+  "ingredients": [
+    {
+      "item": "minecraft:echo_shard"
+    },
+    {
+      "type": "metalborn:fillable",
+      "match": {
+        "type": "metalborn:metal_item",
+        "filter": "spike",
+        "item": "metalborn:spike"
+      },
+      "when": "filled"
+    },
+    {
+      "type": "metalborn:fillable",
+      "match": {
+        "type": "metalborn:metal_item",
+        "filter": "spike",
+        "item": "metalborn:investiture_spike"
+      },
+      "when": "filled"
+    }
+  ],
+  "result": "metalborn:soulbound_spike"
+}

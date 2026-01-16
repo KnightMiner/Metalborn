@@ -1,0 +1,12 @@
+{
+  "parent": "metalborn:item/default_rod",
+  "loader": "metalborn:paletted",
+  "palette": {
+    "key": "metal",
+    "list": "metalborn:metals/feruchemy"
+  },
+  "textures": {
+    "layer0": "metalborn:metal/item/spike",
+    "layer1": "metalborn:item/soulbound_spike_overlay"
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "type": "mantle:showcase",
+  "title": "Soulbound Spikes",
+  "item": {
+    "type": "metalborn:metal_item",
+    "item": "metalborn:soulbound_spike",
+    "filter": "spike"
+  },
+  "text": [
+    { "text": "While changing your power is safer, soulbound spikes grant truly permanent access to a power as they remain even upon death." },
+    { "text": "These spikes are forged from an echo shard and two matching spikes: metal filled from monsters and nicrosil from a player.", "paragraph": true },
+    { "text": "This process is difficult as it requires stealing power from a player, though you can leverage invested nuggets to steal it from yourself.", "paragraph": true }
+  ]
+}

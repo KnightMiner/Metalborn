@@ -81,6 +81,8 @@ public class ItemModelProvider extends net.minecraftforge.client.model.generator
     metalItem(Registration.IDENTITY_RING, "ring", IdentityMetalmindItem.QUARTZ);
     // spikes we want to rotate the in hand model 180 degrees so it points out
     metal(Registration.SPIKE, "metal/item/spike", ROD);
+    metal(Registration.SOULBOUND_SPIKE, "metal/item/spike", ROD).end().texture("layer1", "item/soulbound_spike_overlay");
+    // investiture spike
     existingFileHelper.trackGenerated(Metalborn.resource("metal/item/spike_metalborn_nicrosil"), ModelProvider.TEXTURE);
     // if no metal, use a pure nicrosil spike
     metal(Registration.INVESTITURE_SPIKE, "metal/item/spike", ROD).end()

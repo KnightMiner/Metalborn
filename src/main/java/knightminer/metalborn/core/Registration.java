@@ -18,6 +18,7 @@ import knightminer.metalborn.item.metalmind.PowerMetalmindItem;
 import knightminer.metalborn.item.metalmind.UnsealedMetalmindItem;
 import knightminer.metalborn.item.spike.InvestitureSpikeItem;
 import knightminer.metalborn.item.spike.MonsterSpikeItem;
+import knightminer.metalborn.item.spike.SpikeItem;
 import knightminer.metalborn.json.ConfigEnabledCondition;
 import knightminer.metalborn.json.ingredient.FillableIngredient;
 import knightminer.metalborn.json.ingredient.MetalItemIngredient;
@@ -192,6 +193,7 @@ public class Registration {
   // spikes
   public static final ItemObject<MonsterSpikeItem> SPIKE = ITEMS.register("spike", () -> new MonsterSpikeItem(new Item.Properties().stacksTo(1)));
   public static final ItemObject<InvestitureSpikeItem> INVESTITURE_SPIKE = ITEMS.register("investiture_spike", () -> new InvestitureSpikeItem(new Item.Properties().stacksTo(1)));
+  public static final ItemObject<SpikeItem> SOULBOUND_SPIKE = ITEMS.register("soulbound_spike", () -> new SpikeItem(new Item.Properties().stacksTo(1)));
 
   // metal forge
   public static final ItemObject<ForgeBlock> FORGE = BLOCKS.register("forge", () -> new ForgeBlock(BlockBehaviour.Properties.of().mapColor(MapColor.STONE).instrument(NoteBlockInstrument.BASEDRUM).requiresCorrectToolForDrops().strength(3.5F).lightLevel(s -> s.getValue(BlockStateProperties.LIT) ? 13 : 0)), BLOCK_ITEM);
@@ -379,6 +381,7 @@ public class Registration {
     accept(consumer, INVESTITURE_BRACER);
     accept(consumer, SPIKE);
     accept(consumer, INVESTITURE_SPIKE);
+    accept(consumer, SOULBOUND_SPIKE);
     // special metalminds
     accept(consumer, UNSEALED_RING);
     accept(consumer, SOULBOUND_RING);
