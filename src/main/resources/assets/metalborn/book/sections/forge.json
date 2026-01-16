@@ -33,7 +33,7 @@
     }
   },
   {
-    "type": "mantle:left_padding",
+    "type": "mantle:right_padding",
     "data": "no-load"
   }
 ]

@@ -4,16 +4,16 @@
     "data": "feruchemy/index.json"
   },
   {
+    "name": "ferrings",
+    "data": "feruchemy/ferrings.json"
+  },
+  {
     "name": "gui",
     "data": "feruchemy/gui.json"
   },
   {
     "name": "gui2",
     "data": "feruchemy/gui2.json"
-  },
-  {
-    "name": "ferrings",
-    "data": "feruchemy/ferrings.json"
   },
   {
     "name": "rings",
@@ -38,5 +38,13 @@
   {
     "name": "soulbound",
     "data": "feruchemy/soulbound.json"
+  },
+  {
+    "name": "satchels",
+    "data": "feruchemy/satchels.json"
+  },
+  {
+    "name": "satchel_gui",
+    "data": "feruchemy/satchel_gui.json"
   }
 ]
