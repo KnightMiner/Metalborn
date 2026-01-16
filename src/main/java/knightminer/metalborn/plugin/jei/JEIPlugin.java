@@ -6,7 +6,7 @@ import knightminer.metalborn.block.ForgeInventory;
 import knightminer.metalborn.core.Registration;
 import knightminer.metalborn.item.Fillable;
 import knightminer.metalborn.item.MetalItem;
-import knightminer.metalborn.item.spike.SpikeItem;
+import knightminer.metalborn.item.spike.Spike;
 import knightminer.metalborn.json.recipe.MetalResult;
 import knightminer.metalborn.json.recipe.cooking.CookingMetalRecyclingRecipe;
 import knightminer.metalborn.json.recipe.forge.ForgeRecipe;
@@ -68,7 +68,7 @@ public class JEIPlugin implements IModPlugin {
         return IIngredientSubtypeInterpreter.NONE;
       }
       String type = id.toString();
-      if (((SpikeItem)stack.getItem()).isFull(stack)) {
+      if (((Spike)stack.getItem()).isFull(stack)) {
         type += ",full";
       }
       return type;

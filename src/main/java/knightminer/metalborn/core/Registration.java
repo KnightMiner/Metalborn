@@ -17,7 +17,7 @@ import knightminer.metalborn.item.metalmind.MetalmindItem;
 import knightminer.metalborn.item.metalmind.PowerMetalmindItem;
 import knightminer.metalborn.item.metalmind.UnsealedMetalmindItem;
 import knightminer.metalborn.item.spike.InvestitureSpikeItem;
-import knightminer.metalborn.item.spike.SpikeItem;
+import knightminer.metalborn.item.spike.MonsterSpikeItem;
 import knightminer.metalborn.json.ConfigEnabledCondition;
 import knightminer.metalborn.json.ingredient.FillableIngredient;
 import knightminer.metalborn.json.ingredient.MetalItemIngredient;
@@ -190,7 +190,7 @@ public class Registration {
   public static final ItemObject<IdentityMetalmindItem> IDENTITY_BRACER = ITEMS.register("identity_bracer", () -> new IdentityMetalmindItem(new Item.Properties().stacksTo(8), 10));
   public static final ItemObject<IdentityMetalmindItem> IDENTITY_RING = ITEMS.register("identity_ring", () -> new IdentityMetalmindItem(new Item.Properties().stacksTo(8), 1));
   // spikes
-  public static final ItemObject<SpikeItem> SPIKE = ITEMS.register("spike", () -> new SpikeItem(new Item.Properties().stacksTo(1)));
+  public static final ItemObject<MonsterSpikeItem> SPIKE = ITEMS.register("spike", () -> new MonsterSpikeItem(new Item.Properties().stacksTo(1)));
   public static final ItemObject<InvestitureSpikeItem> INVESTITURE_SPIKE = ITEMS.register("investiture_spike", () -> new InvestitureSpikeItem(new Item.Properties().stacksTo(1)));
 
   // metal forge

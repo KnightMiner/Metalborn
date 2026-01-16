@@ -11,7 +11,6 @@ import knightminer.metalborn.metal.MetalId;
 import knightminer.metalborn.metal.MetalManager;
 import knightminer.metalborn.metal.MetalPower;
 import net.minecraft.ChatFormatting;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -33,11 +32,9 @@ import slimeknights.mantle.util.OffhandCooldownTracker;
 import java.util.List;
 import java.util.function.Consumer;
 
-import static knightminer.metalborn.item.metalmind.MetalmindItem.TAG_AMOUNT;
-
-/** Represents a hemalurgic spike, which can be filled with power from monsters */
+/** Spike item that is always full. Subclasses handle fillable spikes, but base is used for soulbound spikes which are crafted from full spikes. */
 public class SpikeItem extends Item implements MetalItem, Spike {
-  // translation keys
+  // translation
   protected static final String KEY_CHARGE = Metalborn.key("item", "spike.charge");
   protected static final String KEY_STEALS = Metalborn.key("item", "spike.steals");
   public static final String KEY_TARGET = Metalborn.key("item", "spike.target");
@@ -80,120 +77,27 @@ public class SpikeItem extends Item implements MetalItem, Spike {
     return MetalItem.getMetal(stack);
   }
 
-  /** Gets the amount of charge needed to be full */
-  @Override
-  public int getMaxCharge(ItemStack stack) {
-    return MetalManager.INSTANCE.get(getMetal(stack)).hemalurgyCharge();
-  }
-
-  @Override
-  public int setCharge(ItemStack stack, int amount) {
-    // zero amount? clean up NBT
-    if (amount <= 0) {
-      CompoundTag tag = stack.getTag();
-      if (tag != null) {
-        tag.remove(TAG_FULL);
-        tag.remove(TAG_AMOUNT);
-        if (tag.isEmpty()) {
-          stack.setTag(null);
-        }
-      }
-    } else {
-      // if now full, set the full tag
-      CompoundTag tag = stack.getOrCreateTag();
-      int max = getMaxCharge(stack);
-      if (amount >= getMaxCharge(stack)) {
-        tag.putBoolean(TAG_FULL, true);
-        tag.remove(TAG_AMOUNT);
-        return max;
-      } else {
-        // otherwise clear full and set amount
-        tag.remove(TAG_FULL);
-        tag.putInt(TAG_AMOUNT, amount);
-      }
-    }
-    return amount;
-  }
-
   @Override
   public boolean isFull(ItemStack stack) {
-    CompoundTag tag = stack.getTag();
-    return tag != null && tag.getBoolean(TAG_FULL);
-  }
-
-  @Override
-  public boolean isEmpty(ItemStack stack) {
-    CompoundTag tag = stack.getTag();
-    return tag != null && !tag.getBoolean(TAG_FULL) && tag.getInt(TAG_AMOUNT) == 0;
-  }
-
-  @Override
-  public int fill(ItemStack stack, int amount) {
-    if (amount <= 0) {
-      return 0;
-    }
-    CompoundTag tag = stack.getOrCreateTag();
-    if (tag.getBoolean(TAG_FULL)) {
-      return 0;
-    }
-    int maxCharge = getMaxCharge(stack);
-    int stored = MetalmindItem.getAmount(stack);
-    int updated = stored + amount;
-    if (updated >= maxCharge) {
-      tag.putBoolean(TAG_FULL, true);
-      tag.remove(TAG_AMOUNT);
-      return maxCharge - stored;
-    } else {
-      tag.putInt(TAG_AMOUNT, updated);
-      return amount;
-    }
+    return true;
   }
 
   @Override
   public void addVariants(Consumer<ItemStack> consumer) {
     for (MetalPower power : MetalManager.INSTANCE.getSortedPowers()) {
       if (!power.feruchemy().isEmpty() && power.hemalurgyCharge() > 0) {
-        ItemStack stack = withMetal(power.id());
-        consumer.accept(stack.copy());
-        stack.getOrCreateTag().putBoolean(TAG_FULL, true);
-        consumer.accept(stack);
+        consumer.accept(withMetal(power.id()));
       }
     }
   }
 
 
-  /* Bar */
+  /* Display */
 
   @Override
   public boolean isFoil(ItemStack stack) {
     return isFull(stack);
   }
-
-  @Override
-  public boolean isBarVisible(ItemStack stack) {
-    return stack.getCount() == 1 && !isFull(stack);
-  }
-
-  @Override
-  public int getBarWidth(ItemStack stack) {
-    CompoundTag tag = stack.getTag();
-    if (tag == null) {
-      return 0;
-    }
-    if (tag.getBoolean(TAG_FULL)) {
-      return 13;
-    }
-    int capacity = getMaxCharge(stack);
-    return capacity > 0 ? Math.min(13, MetalmindItem.getAmount(stack) * 13 / capacity) : 0;
-  }
-
-  @Override
-  public int getBarColor(ItemStack stack) {
-    return 0xFF0000;
-  }
-
-
-  /* Tooltip */
 
   @Override
   public Component getName(ItemStack stack) {
@@ -212,7 +116,7 @@ public class SpikeItem extends Item implements MetalItem, Spike {
 
       // amount
       if (isFull(stack)) {
-          tooltip.add(FULLY_CHARGED);
+        tooltip.add(FULLY_CHARGED);
       } else {
         tooltip.add(Component.translatable(KEY_TARGET, metal.getTarget().withStyle(ChatFormatting.RED)).withStyle(ChatFormatting.GRAY));
         int amount = MetalmindItem.getAmount(stack);
@@ -238,20 +142,6 @@ public class SpikeItem extends Item implements MetalItem, Spike {
   @Override
   public Multimap<Attribute, AttributeModifier> getDefaultAttributeModifiers(EquipmentSlot slot) {
     return slot == EquipmentSlot.MAINHAND ? DEFAULT_MODIFIERS : ImmutableMultimap.of();
-  }
-
-  @Override
-  public boolean hurtEnemy(ItemStack stack, LivingEntity target, LivingEntity attacker) {
-    if (stack.getCount() == 1 && !isFull(stack)) {
-      MetalId metal = getMetal(stack);
-      if (metal != MetalId.NONE && metal.equals(MetalManager.INSTANCE.fromTarget(target.getType()).id())) {
-        if (target.isDeadOrDying()) {
-          fill(stack, 1);
-        }
-        return true;
-      }
-    }
-    return false;
   }
 
   @Override

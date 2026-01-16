@@ -9,7 +9,10 @@ import knightminer.metalborn.metal.MetalId;
 import knightminer.metalborn.metal.MetalManager;
 import knightminer.metalborn.metal.MetalPower;
 import net.minecraft.ChatFormatting;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.Tag;
 import net.minecraft.network.chat.Component;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.EntityType;
@@ -34,8 +37,66 @@ public class InvestitureSpikeItem extends SpikeItem {
     super(props);
   }
 
+
+  /* Spike */
+
   @Override
   public int getMaxCharge(ItemStack stack) {
+    return 1;
+  }
+
+  /** Ensures the metal is set, setting randomly if missing */
+  private static void ensureMetalSet(CompoundTag tag) {
+    // if missing metal, set it randomly as we lack player access
+    if (!tag.contains(TAG_METAL, Tag.TAG_STRING)) {
+      tag.putString(TAG_METAL, MetalManager.INSTANCE.getRandomFerring(RandomSource.create()).id().toString());
+    }
+  }
+
+  @Override
+  public int setCharge(ItemStack stack, int amount) {
+    if (amount <= 0) {
+      CompoundTag tag = stack.getTag();
+      if (tag != null) {
+        tag.remove(TAG_FULL);
+        tag.remove(TAG_METAL);
+        if (tag.isEmpty()) {
+          stack.setTag(null);
+        }
+      }
+      return 0;
+    }
+    // set to full
+    CompoundTag tag = stack.getOrCreateTag();
+    tag.putBoolean(TAG_FULL, true);
+    ensureMetalSet(tag);
+    return 1;
+  }
+
+  @Override
+  public boolean isFull(ItemStack stack) {
+    CompoundTag tag = stack.getTag();
+    return tag != null && tag.getBoolean(TAG_FULL);
+  }
+
+  @Override
+  public boolean isEmpty(ItemStack stack) {
+    CompoundTag tag = stack.getTag();
+    return tag == null || !tag.getBoolean(TAG_FULL);
+  }
+
+  @Override
+  public int fill(ItemStack stack, int amount) {
+    if (amount <= 0) {
+      return 0;
+    }
+    CompoundTag tag = stack.getOrCreateTag();
+    if (tag.getBoolean(TAG_FULL)) {
+      return 0;
+    }
+    // fill it
+    tag.putBoolean(TAG_FULL, true);
+    ensureMetalSet(tag);
     return 1;
   }
 
