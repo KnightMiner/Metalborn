@@ -202,13 +202,13 @@
   "item.metalborn.soulbound_spike.format": "Soulbound %s Spike",
 
   "item.metalborn.bronze_satchel": "Bronze Satchel",
-  "item.metalborn.bronze_satchel.tooltip": "Holds up to 9 items. Right click to open.",
+  "item.metalborn.bronze_satchel.tooltip": "Holds up to 9 items.",
   "item.metalborn.pewter_satchel": "Pewter Satchel",
-  "item.metalborn.pewter_satchel.tooltip": "Holds up to 18 items. Right click to open.",
+  "item.metalborn.pewter_satchel.tooltip": "Holds up to 18 items.",
   "item.metalborn.nicrosil_satchel": "Nicrosil Satchel",
-  "item.metalborn.nicrosil_satchel.tooltip": "Holds up to 9 items. Remains in inventory on death. Right click to open.",
+  "item.metalborn.nicrosil_satchel.tooltip": "Holds up to 9 items. Remains in inventory on death.",
   "item.metalborn.mist_satchel": "Mist Satchel",
-  "item.metalborn.mist_satchel.tooltip": "Metal items from last death. Disappears when empty. Right click to open.",
+  "item.metalborn.mist_satchel.tooltip": "Can extract metal items from last death. Disappears when empty.",
 
   "item.metalborn.ferring.matches": "You feel this metal pulling on you slightly.",
   "item.metalborn.ferring.mismatches": "You do not feel anything from this metal.",

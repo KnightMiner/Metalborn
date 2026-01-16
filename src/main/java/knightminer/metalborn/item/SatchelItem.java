@@ -32,6 +32,8 @@ import net.minecraftforge.items.ItemStackHandler;
 import net.minecraftforge.network.NetworkHooks;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import slimeknights.mantle.Mantle;
+import slimeknights.mantle.client.SafeClientAccess;
 import slimeknights.mantle.item.AbstractBookItem;
 
 import java.util.List;
@@ -42,6 +44,8 @@ import java.util.Locale;
  * TODO: Config to limit satchel to metalmind items? While doing the predicate, prevent other bags inside satchels
  */
 public class SatchelItem extends Item implements DyeableLeatherItem {
+  private static final Component CLICK_TO_OPEN = Mantle.makeComponent("item", "book.click_to_open").withStyle(ChatFormatting.YELLOW, ChatFormatting.ITALIC);
+
   private final SatchelType type;
   public SatchelItem(Properties properties, SatchelType type) {
     super(properties);
@@ -60,6 +64,16 @@ public class SatchelItem extends Item implements DyeableLeatherItem {
 
   @Override
   public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag flag) {
+    // if the stack is in the player inventory, show the right click to open tooltip
+    if (level != null && level.isClientSide) {
+      Player player = SafeClientAccess.getPlayer();
+      if (player != null && AbstractBookItem.isValidContainer(player.containerMenu)) {
+        Inventory inventory = player.getInventory();
+        if (inventory.items.contains(stack) || inventory.offhand.contains(stack)) {
+          tooltip.add(CLICK_TO_OPEN);
+        }
+      }
+    }
     tooltip.add(Component.translatable(stack.getDescriptionId() + ".tooltip").withStyle(ChatFormatting.GRAY));
     // TODO: tooltip about what it contains?
   }
