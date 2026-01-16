@@ -59,6 +59,11 @@ public class SatchelItem extends Item implements DyeableLeatherItem {
   }
 
   @Override
+  public boolean isNotReplaceableByPickAction(ItemStack stack, Player player, int inventorySlot) {
+    return true;
+  }
+
+  @Override
   public ICapabilityProvider initCapabilities(ItemStack stack, @Nullable CompoundTag nbt) {
     return new SatchelCapability(type);
   }
