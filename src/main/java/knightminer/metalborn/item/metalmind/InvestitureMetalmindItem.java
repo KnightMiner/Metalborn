@@ -26,6 +26,7 @@ import static knightminer.metalborn.item.MetalItem.getMetal;
 /** Metalmind that grants access to powers instead of granting powers */
 public class InvestitureMetalmindItem extends MetalmindItem implements MetalItem {
   public static final MetalId METAL = new MetalId(Metalborn.MOD_ID, "investiture");
+  public static final String KEY_METAL = Metalborn.key("item", "investiture.metal");
   private static final String KEY_INVESTITURE = Metalborn.key("item", "metalmind.investiture");
   private static final Component STORES = makeStores(METAL);
 
@@ -172,6 +173,7 @@ public class InvestitureMetalmindItem extends MetalmindItem implements MetalItem
     MetalId metal = getMetal(stack);
     if (metal != MetalId.NONE) {
       tooltip.add(Component.translatable(KEY_INVESTITURE, metal.getFerring().withStyle(ChatFormatting.AQUA)).withStyle(ChatFormatting.GRAY));
+      tooltip.add(Component.translatable(KEY_METAL, metal.getName().withStyle(ChatFormatting.GOLD)).withStyle(ChatFormatting.GRAY));
       if (flag.isAdvanced()) {
         MetalItem.appendMetalId(metal, tooltip);
       }

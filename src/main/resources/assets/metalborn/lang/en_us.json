@@ -190,6 +190,7 @@
   "item.metalborn.metalmind.owner": "Identity: %s",
   "item.metalborn.metalmind.owner.none": "Unkeyed",
   "item.metalborn.metalmind.owner.unknown": "Unknown",
+  "item.metalborn.investiture.metal": "Metal: %s",
 
   "gui.metalborn.amount.no_label": "%s / %s",
   "gui.metalborn.amount.seconds": "%s / %s seconds",
@@ -201,7 +202,6 @@
   "item.metalborn.spike.charge": "Charge: %s / %s",
   "item.metalborn.spike.charge.full": "Fully Charged",
   "item.metalborn.investiture_spike": "Nicrosil Spike",
-  "item.metalborn.investiture_spike.format": "Nicrosil-%s Spike",
   "item.metalborn.soulbound_spike": "Soulbound Spike",
   "item.metalborn.soulbound_spike.format": "Soulbound %s Spike",
 

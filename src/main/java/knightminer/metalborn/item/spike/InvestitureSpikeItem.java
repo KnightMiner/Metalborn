@@ -28,6 +28,8 @@ import slimeknights.mantle.util.CombatHelper;
 import java.util.List;
 import java.util.function.Consumer;
 
+import static knightminer.metalborn.item.metalmind.InvestitureMetalmindItem.KEY_METAL;
+
 /** Spike that steals powers from players */
 public class InvestitureSpikeItem extends SpikeItem {
   private static final Component STEALS = Component.translatable(KEY_STEALS, InvestitureMetalmindItem.METAL.getStores().withStyle(ChatFormatting.GREEN)).withStyle(ChatFormatting.GRAY);
@@ -104,6 +106,12 @@ public class InvestitureSpikeItem extends SpikeItem {
   /* Tooltip */
 
   @Override
+  public Component getName(ItemStack pStack) {
+    // no metal variant in name
+    return Component.translatable(this.getDescriptionId(pStack));
+  }
+
+  @Override
   public void appendHoverText(ItemStack stack, @Nullable Level pLevel, List<Component> tooltip, TooltipFlag flag) {
     // if filled, we have a metal, so display metal info
     if (isFull(stack)) {
@@ -112,6 +120,7 @@ public class InvestitureSpikeItem extends SpikeItem {
         MetalItem.appendMetalId(metal, tooltip);
       }
       tooltip.add(Component.translatable(KEY_STEALS, metal.getStores().withStyle(ChatFormatting.GREEN)).withStyle(ChatFormatting.GRAY));
+      tooltip.add(Component.translatable(KEY_METAL, metal.getName().withStyle(ChatFormatting.GOLD)).withStyle(ChatFormatting.GRAY));
       tooltip.add(FULLY_CHARGED);
     } else {
       // no charge - generic tooltip
