@@ -1,6 +1,6 @@
 {
+  "append": true,
   "tapping": [
-    "Restores 0.5 saturation per second",
     "Restores 1 hunger per second, hunger restored does not scale"
   ]
 }

@@ -73,6 +73,14 @@ public class MetalContent extends PageContent {
   @Nullable
   protected String[] storing = null;
 
+  /** If true, appends the tapping texts instead of replacing */
+  protected boolean append_tapping = false;
+  /** If true, appends the storing texts instead of replacing */
+  protected boolean append_storing = false;
+  /** If true, appends both tapping and storing instead of replacing */
+  protected boolean append = false;
+
+
   @Override
   public String getTitle() {
     return getMetal().getName().getString();
@@ -141,28 +149,35 @@ public class MetalContent extends PageContent {
   }
 
   /** Adds a list of effects to the page */
-  private void addList(List<BookElement> list, int x, int y, int width, int height, Component title, @Nullable String[] texts, int fallbackLevel) {
+  private void addList(List<BookElement> list, int x, int y, int width, int height, Component title, @Nullable String[] texts, boolean append, int fallbackLevel) {
     list.add(new TextComponentElement(x, y, width, height, title));
 
     // we use text components when autogenerating data from the effects list
-    if (texts == null) {
+    if (append || this.append ||texts == null) {
       Player player = Minecraft.getInstance().player;
+      List<TextComponentData> effectData = new ArrayList<>();
       if (player != null) {
         List<Component> components = new ArrayList<>();
         getPower().getTooltip(player, fallbackLevel, components);
-        List<TextComponentData> effectData = new ArrayList<>();
         for (Component text : components) {
-          effectData.add(new TextComponentData("● "));
-          effectData.add(new TextComponentData(text.copy().setStyle(Style.EMPTY)));
+          effectData.add(new TextComponentData(Component.literal("● ").append(text.copy().setStyle(Style.EMPTY))));
           effectData.add(new TextComponentData("\n"));
         }
+      }
+      // append texts array
+      if (texts != null) {
+        for (String text : texts) {
+          effectData.add(new TextComponentData("● " + text + '\n'));
+        }
+      }
+      // add if we have any effects
+      if (!effectData.isEmpty()) {
         list.add(new TextComponentElement(x, y + 14, width, height, effectData));
       }
     } else if (texts.length > 0) {
       List<TextData> effectData = new ArrayList<>();
       for (String text : texts) {
-        effectData.add(new TextData("● "));
-        effectData.add(new TextData(text));
+        effectData.add(new TextData("● " + text));
         effectData.add(new TextData("\n"));
       }
       list.add(new TextElement(x, y + 14, width, height, effectData));
@@ -214,7 +229,7 @@ public class MetalContent extends PageContent {
     // add effects
     int width = BookScreen.PAGE_WIDTH / 2 - 2;
     int height = BookScreen.PAGE_HEIGHT - y;
-    addList(list,  0, y, width, height, STORING_EFFECTS, storing, -1);
-    addList(list, width + 4, y, width, height, TAPPING_EFFECTS, tapping, 1);
+    addList(list,  0, y, width, height, STORING_EFFECTS, storing, append_storing, -1);
+    addList(list, width + 4, y, width, height, TAPPING_EFFECTS, tapping, append_tapping, 1);
   }
 }

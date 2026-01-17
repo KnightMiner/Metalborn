@@ -1,7 +1,6 @@
 {
+  "append": true,
   "tapping": [
-    "+0.5 Attack Damage",
-    "+2 Max Health",
     "Restores extra health immediately",
     "Stopping removes the extra health, which may be fatal"
   ]
