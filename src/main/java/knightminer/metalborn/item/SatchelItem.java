@@ -10,6 +10,7 @@ import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
@@ -66,7 +67,18 @@ public class SatchelItem extends Item implements DyeableLeatherItem {
 
   @Override
   public boolean canBeHurtBy(DamageSource source) {
-    return type != SatchelType.STEEL;
+    // anything that is not steel takes normal damage. Steel only takes damage from things that hurt creative (e.g. the void)
+    return type != SatchelType.STEEL || source.is(DamageTypeTags.BYPASSES_INVULNERABILITY);
+  }
+
+  @Override
+  public int getEntityLifespan(ItemStack stack, Level level) {
+    // steel should not despawn
+    if (type == SatchelType.STEEL) {
+      // since age is a short, this value should never be reachable so the item will never despawn
+      return Integer.MAX_VALUE;
+    }
+    return super.getEntityLifespan(stack, level);
   }
 
   @Override
