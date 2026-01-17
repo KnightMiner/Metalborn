@@ -83,9 +83,9 @@ public class InvestitureMetalmindItem extends MetalmindItem implements MetalItem
 
   @Override
   public Usable canUse(ItemStack stack, int index, Player player, MetalbornData data) {
-    // index is -1 when asking from the context of the inveotry, in that case just always say its usable
+    // index is -1 when asking from the context of the inventory, in that case just always say its usable
     // allows us to transfer investiture between different nicrosil metalminds of the same type even if we can't fill one
-    Usable identity = checkIdentity(stack, data);
+    Usable identity = checkIdentity(stack, data, index == -1);
     return Usable.from(identity.canTap(), identity.canStore() && (index == -1 || canFill(data.getFerringType(), getMetal(stack), getAmount(stack))));
   }
 

@@ -49,21 +49,21 @@ public abstract class MetalmindItem extends Item implements Metalmind {
   /* Identity */
 
   /** Checks if the given player has the same identity as this metalmind */
-  protected static Usable matchesIdentity(ItemStack stack, MetalbornData data) {
+  protected static Usable matchesIdentity(ItemStack stack, MetalbornData data, boolean isTransfer) {
     UUID identity = data.getIdentity();
     CompoundTag tag = stack.getTag();
     if (tag != null && tag.hasUUID(TAG_OWNER)) {
       // identity must match that inside the metalmind to use
       return identity != null && identity.equals(tag.getUUID(TAG_OWNER)) ? Usable.ALWAYS : Usable.NEVER;
     }
-    // no identity stored? tapping is always fine but storing is only fine if we also lack identity; no overwriting identity
-    return identity == null ? Usable.ALWAYS : Usable.TAPPING;
+    // no identity stored? tapping is always fine but storing is only fine if we also lack identity or are transferring; no overwriting identity
+    return identity == null || isTransfer ? Usable.ALWAYS : Usable.TAPPING;
   }
 
   /** Checks if the given player can use this metalmind */
-  protected static Usable checkIdentity(ItemStack stack, MetalbornData data) {
+  protected static Usable checkIdentity(ItemStack stack, MetalbornData data, boolean isTransfer) {
     // if empty, identity is always valid
-    return getAmount(stack) == 0 ? Usable.ALWAYS : matchesIdentity(stack, data);
+    return getAmount(stack) == 0 ? Usable.ALWAYS : matchesIdentity(stack, data, isTransfer);
   }
 
   /** Gets the identity of the given metalmind */

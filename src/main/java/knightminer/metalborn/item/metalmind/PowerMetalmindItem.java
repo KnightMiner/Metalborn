@@ -50,7 +50,7 @@ public class PowerMetalmindItem extends MetalmindItem implements MetalItem {
   public Usable canUse(ItemStack stack, int index, Player player, MetalbornData data) {
     // must have a metal, be able to use it, and be the owner
     MetalId metal = getMetal(stack);
-    return metal != MetalId.NONE && data.canUse(metal) ? checkIdentity(stack, data) : Usable.NEVER;
+    return metal != MetalId.NONE && data.canUse(metal) ? checkIdentity(stack, data, index == -1) : Usable.NEVER;
   }
 
   @Override
