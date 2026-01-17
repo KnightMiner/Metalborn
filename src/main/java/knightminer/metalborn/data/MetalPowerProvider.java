@@ -114,13 +114,11 @@ public class MetalPowerProvider extends AbstractMetalPowerProvider {
     metal(MetalIds.brass).index(12).temperature(605).integration()
       .feruchemy(new WarmthMetalEffect(false))
       .feruchemy(AttributeMetalEffect.builder(Registration.WARMTH, Operation.MULTIPLY_TOTAL).eachLevel(0.1f))
-      .feruchemy(new StoringMetalEffect(AttributeMetalEffect.builder(Attributes.ATTACK_DAMAGE, Operation.ADDITION).eachLevel(1)))
       .feruchemy(new TappingMetalEffect(AttributeMetalEffect.builder(Registration.HEAT_DAMAGE, Operation.ADDITION).eachLevel(1)));
     // constantan is only present if no brass
     metal(MetalIds.constantan).index(12).temperature(920).alternative("brass")
       .feruchemy(new WarmthMetalEffect(false))
       .feruchemy(AttributeMetalEffect.builder(Registration.WARMTH, Operation.MULTIPLY_TOTAL).eachLevel(0.1f))
-      .feruchemy(new StoringMetalEffect(AttributeMetalEffect.builder(Attributes.ATTACK_DAMAGE, Operation.ADDITION).eachLevel(1)))
       .feruchemy(new TappingMetalEffect(AttributeMetalEffect.builder(Registration.HEAT_DAMAGE, Operation.ADDITION).eachLevel(1)));
 
     metal(MetalIds.netherite).name("netherite_scrap").index(15).hemalurgyCharge(10).disallowFerring().unless("chromium")

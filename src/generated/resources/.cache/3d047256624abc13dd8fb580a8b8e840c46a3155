@@ -1,11 +1,11 @@
-// 1.20.1	2026-01-17T14:42:50.1864323	Metalborn Metal Powers
+// 1.20.1	2026-01-17T15:32:49.5551895	Metalborn Metal Powers
 8852b7c4613896d4068fbe5e0c9ca2bd7ed9c163 data/metalborn/metalborn/effects/aluminum.json
 c0eb81ae973d53872c76333244d7f71aa750cca3 data/metalborn/metalborn/effects/bendalloy.json
-bbc9e7b47e591fecb98caba2d355d01f5f4c9909 data/metalborn/metalborn/effects/brass.json
+1af4034c68eb2c86f70998978e684b432628d3a4 data/metalborn/metalborn/effects/brass.json
 4bfd60e48f2f217415f0affae8bfef141ad218d9 data/metalborn/metalborn/effects/bronze.json
 fba71d60a8377b987448f422f1f7a3e3991afb0c data/metalborn/metalborn/effects/cadmium.json
 8339215d8156789e1dfc2dfcc38d0c7b7b04f19d data/metalborn/metalborn/effects/chromium.json
-9961d1d5f361c1f8e68c56e1799e2c1257b85b77 data/metalborn/metalborn/effects/constantan.json
+e11d15fbe15a7f64d3f395ef9be31ee21885fddf data/metalborn/metalborn/effects/constantan.json
 c3e959026f0b67c8cec3a0d241ed94098610fe15 data/metalborn/metalborn/effects/copper.json
 a427432832ae985005ec2a848ef56c5ef2fa0142 data/metalborn/metalborn/effects/electrum.json
 c58e35bfb25daee8e8c425c279cb945d8cff2765 data/metalborn/metalborn/effects/gold.json
