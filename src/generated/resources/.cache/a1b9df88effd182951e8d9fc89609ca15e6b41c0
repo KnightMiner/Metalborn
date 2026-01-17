@@ -1,4 +1,4 @@
-// 1.20.1	2026-01-16T02:29:15.8626589	Item Models: metalborn
+// 1.20.1	2026-01-17T01:05:08.3489621	Item Models: metalborn
 4dc7437e56be8a51858b985325aa1570e1f93125 assets/metalborn/models/item/bracer.json
 3c460b164754a3c0cfa46b79b0e3c3ccfb209045 assets/metalborn/models/item/bracer_gold_cast.json
 52b97c6dd950b6f560ab7d36946c354c5f99180d assets/metalborn/models/item/bracer_red_sand_cast.json
@@ -36,6 +36,8 @@ f7bed48d71c1ac4fcbf911ec312cab4096035884 assets/metalborn/models/item/ring_red_s
 b2a55a3d119daeab2844b5b50f4c8da91fa2b61c assets/metalborn/models/item/ring_sand_cast.json
 4a1be52dbbbcbc96f6b775e470f6741ac57c879c assets/metalborn/models/item/rose_gold_ingot.json
 855e5ecc9900899d52c02601845872cd4619db1a assets/metalborn/models/item/rose_gold_nugget.json
+b53db32261043a4551ba152a49755d78b6879463 assets/metalborn/models/item/soulbound_identity_ring.json
+217b6497dd0e42a2b484a4d5e9a7c14637b8b18a assets/metalborn/models/item/soulbound_investiture_ring.json
 3d255d5eaf5b9eff1a8d43b2affbe4e7847886bc assets/metalborn/models/item/soulbound_ring.json
 f3a24772d11dc177706db90f0bd53f585e4a1327 assets/metalborn/models/item/soulbound_spike.json
 92bb39bd4a6faee1ffe655404f1e8dede5b1e13b assets/metalborn/models/item/spike.json

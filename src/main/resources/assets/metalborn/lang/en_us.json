@@ -176,8 +176,12 @@
   "item.metalborn.identity_ring.quartz": "Quartz Ring",
   "item.metalborn.unsealed_ring": "Unsealed Ring",
   "item.metalborn.unsealed_ring.format": "Unsealed %s Ring",
+
   "item.metalborn.soulbound_ring": "Soulbound Ring",
   "item.metalborn.soulbound_ring.format": "Soulbound %s Ring",
+  "item.metalborn.soulbound_investiture_ring": "Soulbound Nicrosil Ring",
+  "item.metalborn.soulbound_identity_ring.aluminum": "Soulbound Aluminum Ring",
+  "item.metalborn.soulbound_identity_ring.quartz": "Soulbound Quartz Ring",
 
   "item.metalborn.metalmind.metal_id": "Metal ID: %s",
   "item.metalborn.metalmind.stores": "Stores: %s",

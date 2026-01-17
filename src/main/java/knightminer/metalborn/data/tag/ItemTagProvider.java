@@ -46,11 +46,14 @@ public class ItemTagProvider extends ItemTagsProvider {
     tag(Registration.METALMINDS).add(Registration.BRACER.get(), Registration.RING.get());
     tag(Registration.BRACERS).add(Registration.BRACER.get(), Registration.INVESTITURE_BRACER.get(), Registration.IDENTITY_BRACER.get());
     tag(Registration.RINGS).add(
-      Registration.RING.get(), Registration.INVESTITURE_RING.get(), Registration.IDENTITY_RING.get(),
-      Registration.UNSEALED_RING.get(), Registration.SOULBOUND_RING.get()
+      Registration.RING.get(), Registration.INVESTITURE_RING.get(), Registration.IDENTITY_RING.get(), Registration.UNSEALED_RING.get(),
+      Registration.SOULBOUND_RING.get(), Registration.SOULBOUND_INVESTITURE_RING.get(), Registration.SOULBOUND_IDENTITY_RING.get()
     );
     tag(Registration.SPIKES).add(Registration.SPIKE.get(), Registration.INVESTITURE_SPIKE.get(), Registration.SOULBOUND_SPIKE.get());
-    tag(Registration.SOULBOUND).add(Registration.SATCHEL.get(SatchelType.NICROSIL), Registration.SOULBOUND_RING.get(), Registration.SOULBOUND_SPIKE.get());
+    tag(Registration.SOULBOUND).add(
+      Registration.SATCHEL.get(SatchelType.NICROSIL), Registration.SOULBOUND_SPIKE.get(),
+      Registration.SOULBOUND_RING.get(), Registration.SOULBOUND_INVESTITURE_RING.get(), Registration.SOULBOUND_IDENTITY_RING.get()
+    );
     tag(Registration.SATCHEL_ITEMS).add(Registration.METALLIC_ARTS.get()).addTags(Registration.BRACERS, Registration.RINGS, Registration.SPIKES);
 
     metal(Registration.TIN);

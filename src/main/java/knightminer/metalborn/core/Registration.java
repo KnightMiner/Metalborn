@@ -189,9 +189,11 @@ public class Registration {
   // investiture metalminds
   public static final ItemObject<InvestitureMetalmindItem> INVESTITURE_BRACER = ITEMS.register("investiture_bracer", () -> new InvestitureMetalmindItem(new Item.Properties().stacksTo(8), 10));
   public static final ItemObject<InvestitureMetalmindItem> INVESTITURE_RING = ITEMS.register("investiture_ring", () -> new InvestitureMetalmindItem(new Item.Properties().stacksTo(8), 1));
+  public static final ItemObject<InvestitureMetalmindItem> SOULBOUND_INVESTITURE_RING = ITEMS.register("soulbound_investiture_ring", () -> new InvestitureMetalmindItem(new Item.Properties().stacksTo(8), 1));
   // identity metalminds
   public static final ItemObject<IdentityMetalmindItem> IDENTITY_BRACER = ITEMS.register("identity_bracer", () -> new IdentityMetalmindItem(new Item.Properties().stacksTo(8), 10));
   public static final ItemObject<IdentityMetalmindItem> IDENTITY_RING = ITEMS.register("identity_ring", () -> new IdentityMetalmindItem(new Item.Properties().stacksTo(8), 1));
+  public static final ItemObject<IdentityMetalmindItem> SOULBOUND_IDENTITY_RING = ITEMS.register("soulbound_identity_ring", () -> new IdentityMetalmindItem(new Item.Properties().stacksTo(8), 1));
   // spikes
   public static final ItemObject<MonsterSpikeItem> SPIKE = ITEMS.register("spike", () -> new MonsterSpikeItem(new Item.Properties().stacksTo(1)));
   public static final ItemObject<InvestitureSpikeItem> INVESTITURE_SPIKE = ITEMS.register("investiture_spike", () -> new InvestitureSpikeItem(new Item.Properties().stacksTo(1)));
@@ -398,6 +400,8 @@ public class Registration {
     // special metalminds
     accept(consumer, UNSEALED_RING);
     accept(consumer, SOULBOUND_RING);
+    output.accept(SOULBOUND_IDENTITY_RING);
+    accept(consumer, SOULBOUND_INVESTITURE_RING);
     // ferring nuggets
     output.accept(RANDOM_FERRING);
     accept(consumer, CHANGE_FERRING);

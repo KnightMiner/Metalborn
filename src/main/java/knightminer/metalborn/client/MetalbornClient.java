@@ -106,6 +106,7 @@ public class MetalbornClient {
       ItemProperties.register(Registration.INVESTITURE_BRACER.get(), NO_METAL, noMetal);
       ItemProperties.register(Registration.INVESTITURE_RING.get(), NO_METAL, noMetal);
       ItemProperties.register(Registration.INVESTITURE_SPIKE.get(), NO_METAL, noMetal);
+      ItemProperties.register(Registration.SOULBOUND_INVESTITURE_RING.get(), NO_METAL, noMetal);
     });
   }
 

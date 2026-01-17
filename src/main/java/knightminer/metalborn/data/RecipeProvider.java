@@ -241,6 +241,20 @@ public class RecipeProvider extends net.minecraft.data.recipes.RecipeProvider im
       .cookingRate(4)
       .experience(0.5f)
       .save(consumer, location("ring/soulbound"));
+    ShapelessForgeRecipeBuilder.shapeless(Registration.SOULBOUND_IDENTITY_RING)
+      .requires(Items.ECHO_SHARD)
+      .requires(FillableIngredient.of(FillState.EMPTY, Ingredient.of(Registration.IDENTITY_RING)))
+      .requires(FillableIngredient.of(FillState.FILLED, Ingredient.of(Registration.IDENTITY_RING)))
+      .cookingRate(4)
+      .experience(0.5f)
+      .save(consumer, location("ring/soulbound_identity"));
+    ShapelessForgeRecipeBuilder.shapeless(Registration.SOULBOUND_INVESTITURE_RING)
+      .requires(Items.ECHO_SHARD)
+      .requires(FillableIngredient.of(FillState.EMPTY, Ingredient.of(Registration.INVESTITURE_RING)))
+      .requires(FillableIngredient.of(FillState.FILLED, Ingredient.of(Registration.IDENTITY_RING)))
+      .cookingRate(4)
+      .experience(0.5f)
+      .save(consumer, location("ring/soulbound_investiture"));
     // soulbound spikes require full spikes of both variants, plus some echo
     ShapelessForgeRecipeBuilder.shapeless(Registration.SOULBOUND_SPIKE)
       .requires(Items.ECHO_SHARD)

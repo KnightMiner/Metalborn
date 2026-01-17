@@ -1,0 +1,25 @@
+{
+  "type": "metalborn:shapeless_forge",
+  "cooking_time": 400,
+  "experience": 0.5,
+  "ingredients": [
+    {
+      "item": "minecraft:echo_shard"
+    },
+    {
+      "type": "metalborn:fillable",
+      "match": {
+        "item": "metalborn:investiture_ring"
+      },
+      "when": "empty"
+    },
+    {
+      "type": "metalborn:fillable",
+      "match": {
+        "item": "metalborn:identity_ring"
+      },
+      "when": "filled"
+    }
+  ],
+  "result": "metalborn:soulbound_investiture_ring"
+}

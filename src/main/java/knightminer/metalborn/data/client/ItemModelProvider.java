@@ -73,12 +73,15 @@ public class ItemModelProvider extends net.minecraftforge.client.model.generator
     metal(Registration.BRACER, "metal/item/bracer", TOOL);
     metal(Registration.RING, "metal/item/ring", ITEM);
     metal(Registration.UNSEALED_RING, "metal/item/ring", ITEM).end().texture("layer1", "item/unsealed_ring_gem");
-    metal(Registration.SOULBOUND_RING, "metal/item/ring", ITEM).end().texture("layer1", "item/soulbound_ring_gem");
+    String soulboundGem = "item/soulbound_ring_gem";
+    metal(Registration.SOULBOUND_RING, "metal/item/ring", ITEM).end().texture("layer1", soulboundGem);
     // investiture items just use nicrosil directly
     metalItem(Registration.INVESTITURE_BRACER, "bracer", MetalIds.nicrosil);
     metalItem(Registration.INVESTITURE_RING, "ring", MetalIds.nicrosil);
+    metalItem(Registration.SOULBOUND_INVESTITURE_RING, "ring", MetalIds.nicrosil).texture("layer1", soulboundGem);
     metalItem(Registration.IDENTITY_BRACER, "bracer", IdentityMetalmindItem.QUARTZ);
     metalItem(Registration.IDENTITY_RING, "ring", IdentityMetalmindItem.QUARTZ);
+    metalItem(Registration.SOULBOUND_IDENTITY_RING, "ring", IdentityMetalmindItem.QUARTZ).texture("layer1", soulboundGem);
     // spikes we want to rotate the in hand model 180 degrees so it points out
     metal(Registration.SPIKE, "metal/item/spike", ROD);
     metal(Registration.SOULBOUND_SPIKE, "metal/item/spike", ROD).end().texture("layer1", "item/soulbound_spike_overlay");
@@ -145,16 +148,16 @@ public class ItemModelProvider extends net.minecraftforge.client.model.generator
   }
 
   /** Adds a basic metal item */
-  private void metalItem(String path, String name, MetalId metal) {
+  private ItemModelBuilder metalItem(String path, String name, MetalId metal) {
     // metal items are generated textures, so just mark as existing so the provider is happy
     String texture = "metal/item/" + name + '_' + toSuffix(metal);
     existingFileHelper.trackGenerated(Metalborn.resource(texture), ModelProvider.TEXTURE);
-    getBuilder(path).parent(GENERATED).texture("layer0", texture);
+    return getBuilder(path).parent(GENERATED).texture("layer0", texture);
   }
 
   /** Adds a basic metal item */
-  private void metalItem(IdAwareObject item, String name, MetalId metal) {
-    metalItem(item.getId().getPath(), name, metal);
+  private ItemModelBuilder metalItem(IdAwareObject item, String name, MetalId metal) {
+    return metalItem(item.getId().getPath(), name, metal);
   }
 
   /** Adds a nugget model */

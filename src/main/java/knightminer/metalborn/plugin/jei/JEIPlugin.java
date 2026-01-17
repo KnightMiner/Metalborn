@@ -85,6 +85,7 @@ public class JEIPlugin implements IModPlugin {
     registration.registerSubtypeInterpreter(Registration.INVESTITURE_RING.asItem(), investiture);
     registration.registerSubtypeInterpreter(Registration.INVESTITURE_BRACER.asItem(), investiture);
     registration.registerSubtypeInterpreter(Registration.INVESTITURE_SPIKE.asItem(), investiture);
+    registration.registerSubtypeInterpreter(Registration.SOULBOUND_INVESTITURE_RING.asItem(), investiture);
   }
 
   @Override

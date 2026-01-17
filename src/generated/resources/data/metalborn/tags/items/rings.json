@@ -4,6 +4,8 @@
     "metalborn:investiture_ring",
     "metalborn:identity_ring",
     "metalborn:unsealed_ring",
-    "metalborn:soulbound_ring"
+    "metalborn:soulbound_ring",
+    "metalborn:soulbound_investiture_ring",
+    "metalborn:soulbound_identity_ring"
   ]
 }
