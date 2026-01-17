@@ -220,6 +220,8 @@ public class Registration {
   public static final ResourceKey<DamageType> MAKE_SPIKE = ResourceKey.create(Registries.DAMAGE_TYPE, resource("make_spike"));
   /** Bonus heat damage dealt to the target */
   public static final ResourceKey<DamageType> MELEE_HEAT = ResourceKey.create(Registries.DAMAGE_TYPE, resource("melee_heat"));
+  /** Damage dealt when updating health removes too much */
+  public static final ResourceKey<DamageType> UPDATE_HEALTH = ResourceKey.create(Registries.DAMAGE_TYPE, resource("update_health"));
 
   // menus
   public static final RegistryObject<MenuType<MetalbornMenu>> METALBORN_MENU = MENUS.register("metalborn", MetalbornMenu::forClient);

@@ -242,6 +242,8 @@
   "death.attack.metalborn.add_spike.player": "%1$s failed at acupuncture whilst fighting %2$s",
   "death.attack.metalborn.make_spike": "%1$s stabbed the wrong spot",
   "death.attack.metalborn.make_spike.player": "%1$s stabbed the wrong spot whilst fighting %2$s",
+  "death.attack.metalborn.update_health": "%1$s succumbed to their past injuries",
+  "death.attack.metalborn.update_health.player": "%1$s succumbed to their past injuries whilst fighting %2$s",
 
   "metal_effect.metalborn.xp.gain": "Restores %s XP per second",
   "metal_effect.metalborn.xp.store": "Drains %s XP per second",

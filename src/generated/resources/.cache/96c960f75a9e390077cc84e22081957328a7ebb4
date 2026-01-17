@@ -1,6 +1,6 @@
-// 1.20.1	2025-07-22T02:44:54.2438245	Metalborn DamageType tags
-e29c117395e7936871eaeb6ec75f4e3dad1d3b42 data/minecraft/tags/damage_type/bypasses_armor.json
-e29c117395e7936871eaeb6ec75f4e3dad1d3b42 data/minecraft/tags/damage_type/bypasses_cooldown.json
-e29c117395e7936871eaeb6ec75f4e3dad1d3b42 data/minecraft/tags/damage_type/bypasses_effects.json
+// 1.20.1	2026-01-17T14:42:50.1844312	Metalborn DamageType tags
+2066e90945906b5f9d5e936daabafc9590ca561a data/minecraft/tags/damage_type/bypasses_armor.json
+2066e90945906b5f9d5e936daabafc9590ca561a data/minecraft/tags/damage_type/bypasses_cooldown.json
+2066e90945906b5f9d5e936daabafc9590ca561a data/minecraft/tags/damage_type/bypasses_effects.json
 853b0bc478bb20ca8fdc32081c70946e5625f7fc data/minecraft/tags/damage_type/is_fire.json
 853b0bc478bb20ca8fdc32081c70946e5625f7fc data/tconstruct/tags/damage_type/protection/melee.json

@@ -14,7 +14,15 @@
       "multiplier": 2.0,
       "operation": "addition"
     },
-    "metalborn:update_health"
+    {
+      "type": "metalborn:tapping",
+      "amount": 2,
+      "tapping_type": "metalborn:update_health"
+    },
+    {
+      "type": "metalborn:storing",
+      "storing_type": "metalborn:update_health"
+    }
   ],
   "format": "ticks",
   "hemalurgy_charge": 10,

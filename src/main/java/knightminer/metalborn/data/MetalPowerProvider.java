@@ -52,7 +52,10 @@ public class MetalPowerProvider extends AbstractMetalPowerProvider {
     metal(MetalIds.pewter).index(4).temperature(400)
       .feruchemy(AttributeMetalEffect.builder(Attributes.ATTACK_DAMAGE, Operation.ADDITION).eachLevel(0.5f))
       .feruchemy(AttributeMetalEffect.builder(Attributes.MAX_HEALTH, Operation.ADDITION).eachLevel(2))
-      .feruchemy(UpdateHealthEffect.INSTANCE);
+      // when tapping, gain health immediately but lose it when you stop
+      .feruchemy(new TappingMetalEffect(new UpdateHealthEffect(2)))
+      // when storing,
+      .feruchemy(new StoringMetalEffect(new UpdateHealthEffect(0)));
     metal(MetalIds.copper).index(5).temperature(500).hemalurgyCharge(20)
       .capacity(MetalFormat.METAL, 100) // about 8 levels
       .feruchemy(new ExperienceMetalEffect(1));
