@@ -15,7 +15,6 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 import java.util.Objects;
-import java.util.UUID;
 
 /** Metalmind that allows storing and tapping identity */
 public class IdentityMetalmindItem extends MetalmindItem {
@@ -97,32 +96,6 @@ public class IdentityMetalmindItem extends MetalmindItem {
   protected void startFillingMetalmind(CompoundTag tag, Player player, MetalbornData data) {
     tag.putUUID(TAG_OWNER, player.getUUID());
     tag.putString(TAG_OWNER_NAME, player.getGameProfile().getName());
-  }
-
-  @Override
-  protected int fillFrom(ItemStack stack, Player player, ItemStack source, MetalbornData data) {
-    int amount = getAmount(source) / stack.getCount();
-    if (amount <= 0) {
-      return 0;
-    }
-    int stored = getAmount(stack);
-    int capacity = getCapacity(stack);
-    // if already full, no work to do. Also prevents us from deleting from an overfilled metalmind
-    if (stored >= capacity) {
-      return 0;
-    }
-
-    // set the metal directly from the source stack; it will always exist if it has amount
-    CompoundTag tag = stack.getOrCreateTag();
-    if (stored == 0) {
-      UUID owner = getIdentity(source);
-      if (owner != null) {
-        tag.putUUID(TAG_OWNER, owner);
-        tag.putString(TAG_OWNER_NAME, source.getOrCreateTag().getString(TAG_OWNER_NAME));
-      }
-    }
-
-    return fill(tag, stored, capacity, amount) * stack.getCount();
   }
 
   @Override

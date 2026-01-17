@@ -135,25 +135,10 @@ public class InvestitureMetalmindItem extends MetalmindItem implements MetalItem
   }
 
   @Override
-  protected int fillFrom(ItemStack stack, Player player, ItemStack source, MetalbornData data) {
-    int amount = getAmount(source) / stack.getCount();
-    if (amount <= 0) {
-      return 0;
-    }
-    int stored = getAmount(stack);
-    int capacity = getCapacity(stack);
-    // if already full, no work to do. Also prevents us from deleting from an overfilled metalmind
-    if (stored >= capacity) {
-      return 0;
-    }
-
-    // set the metal directly from the source stack; it will always exist if it has amount
-    CompoundTag tag = stack.getOrCreateTag();
-    if (stored == 0) {
-      tag.putString(MetalItem.TAG_METAL, getMetal(source).toString());
-    }
-
-    return fill(tag, stored, capacity, amount) * stack.getCount();
+  protected void copyDataFrom(CompoundTag tag, ItemStack source) {
+    super.copyDataFrom(tag, source);
+    // copy metal power over
+    tag.putString(MetalItem.TAG_METAL, getMetal(source).toString());
   }
 
   @Override

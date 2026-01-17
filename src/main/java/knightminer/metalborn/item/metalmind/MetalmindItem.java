@@ -193,9 +193,35 @@ public abstract class MetalmindItem extends Item implements Metalmind {
     tag.putInt(TAG_AMOUNT, getCapacity(stack));
   }
 
-  /** Fills this stack from the source stack. Exists to allow overriding. Ignores size of {@code source}. */
-  protected int fillFrom(ItemStack stack, Player player, ItemStack source, MetalbornData data) {
-    return fill(stack, player, getAmount(source), data);
+  /** Copies fill related data (other than amount) from the passed source to the given tag. */
+  protected void copyDataFrom(CompoundTag tag, ItemStack source) {
+    UUID owner = getIdentity(source);
+    if (owner != null) {
+      tag.putUUID(TAG_OWNER, owner);
+      tag.putString(TAG_OWNER_NAME, source.getOrCreateTag().getString(TAG_OWNER_NAME));
+    }
+  }
+
+  /** Fills this stack from the source stack. Handles copying the relevant data that goes along capacity. Ignores size of {@code source}. */
+  protected int fillFrom(ItemStack stack, ItemStack source) {
+    int amount = getAmount(source) / stack.getCount();
+    if (amount <= 0) {
+      return 0;
+    }
+    int stored = getAmount(stack);
+    int capacity = getCapacity(stack);
+    // if already full, no work to do. Also prevents us from deleting from an overfilled metalmind
+    if (stored >= capacity) {
+      return 0;
+    }
+
+    // copy properties from the target into the destination. Since we are transferring, it should keep identity the same
+    CompoundTag tag = stack.getOrCreateTag();
+    if (stored == 0) {
+      copyDataFrom(tag, source);
+    }
+
+    return fill(tag, stored, capacity, amount) * stack.getCount();
   }
 
   @Override
@@ -244,7 +270,7 @@ public abstract class MetalmindItem extends Item implements Metalmind {
       // ensure both are usable (e.g. no identity issues)
       if (!other.isEmpty(held) && canUse(stack, -1, player, data).canStore() && other.canUse(held, -1, player, data).canTap()) {
         // attempt transfer
-        int filled = fillFrom(stack, player, held, data);
+        int filled = fillFrom(stack, held);
         if (filled > 0) {
           int drained;
           // if we have more than 1, drain just one and keep the rest held
