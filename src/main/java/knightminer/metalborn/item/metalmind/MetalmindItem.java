@@ -236,11 +236,13 @@ public abstract class MetalmindItem extends Item implements Metalmind {
   @Override
   public boolean overrideOtherStackedOnMe(ItemStack stack, ItemStack held, Slot slot, ClickAction action, Player player, SlotAccess access) {
     // we can transfer a single metalmind of power into the slot stack, provided its the same power
-    if (action == ClickAction.SECONDARY && slot.allowModification(player) && isTransferrable(stack, held)) {
+    if (action == ClickAction.SECONDARY && slot.allowModification(player) && isTransferrable(stack, held)
+        // if stackable, do not attempt transfer if either empty or full
+        && (!ItemStack.isSameItemSameTags(stack, held) || !isEmpty(stack) && !isFull(stack))) {
       MetalmindItem other = (MetalmindItem) held.getItem();
       MetalbornData data = MetalbornData.getData(player);
       // ensure both are usable (e.g. no identity issues)
-      if (getAmount(held) > 0 && canUse(stack, -1, player, data).canStore() && other.canUse(held, -1, player, data).canTap()) {
+      if (!other.isEmpty(held) && canUse(stack, -1, player, data).canStore() && other.canUse(held, -1, player, data).canTap()) {
         // attempt transfer
         int filled = fillFrom(stack, player, held, data);
         if (filled > 0) {
