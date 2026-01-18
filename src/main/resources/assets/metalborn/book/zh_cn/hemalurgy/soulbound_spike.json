@@ -1,0 +1,14 @@
+{
+  "type": "mantle:showcase",
+  "title": "魂缚的尖钉",
+  "item": {
+    "type": "metalborn:metal_item",
+    "item": "metalborn:soulbound_spike",
+    "filter": "spike"
+  },
+  "text": [
+    { "text": "现在改变金属能力已经很安全了，但要想更持久地占有金属能力，你可以选择魂缚尖钉。它在玩家死亡时也仍会继续保留。" },
+    { "text": "锻造这种尖钉需要一个回响碎片和以下两种尖钉：一个吸收了怪物能力的金属尖钉，和另一个吸收了玩家能力的镍铬合金尖钉。", "paragraph": true },
+    { "text": "这一过程很难，因为需要从一个玩家身上窃得力量，当然你可以利用注能金属粒得到自己的力量。", "paragraph": true }
+  ]
+}

@@ -1,0 +1,12 @@
+{
+  "type": "mantle:image_text",
+  "title": "手提袋·界面",
+  "image": {
+    "file": "metalborn:book/images/satchel.png",
+    "width": 156,
+    "height": 109
+  },
+  "text": [
+    { "text": "在金属意识界面中浏览手提袋的物品栏。" }
+  ]
+}
