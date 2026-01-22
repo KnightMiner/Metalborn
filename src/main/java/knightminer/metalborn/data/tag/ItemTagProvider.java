@@ -18,6 +18,7 @@ import net.minecraft.world.level.block.Block;
 import net.minecraftforge.common.Tags;
 import net.minecraftforge.common.data.ExistingFileHelper;
 import org.jetbrains.annotations.Nullable;
+import slimeknights.mantle.datagen.MantleTags;
 import slimeknights.mantle.registration.object.MetalItemObject;
 
 import java.util.concurrent.CompletableFuture;
@@ -50,7 +51,7 @@ public class ItemTagProvider extends ItemTagsProvider {
       Registration.SOULBOUND_RING.get(), Registration.SOULBOUND_INVESTITURE_RING.get(), Registration.SOULBOUND_IDENTITY_RING.get()
     );
     tag(Registration.SPIKES).add(Registration.SPIKE.get(), Registration.INVESTITURE_SPIKE.get(), Registration.SOULBOUND_SPIKE.get());
-    tag(Registration.SOULBOUND).add(
+    tag(MantleTags.Items.SOULBOUND).add(
       Registration.SATCHEL.get(SatchelType.NICROSIL), Registration.SOULBOUND_SPIKE.get(),
       Registration.SOULBOUND_RING.get(), Registration.SOULBOUND_INVESTITURE_RING.get(), Registration.SOULBOUND_IDENTITY_RING.get()
     );

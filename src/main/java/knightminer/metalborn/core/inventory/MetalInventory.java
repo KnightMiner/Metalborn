@@ -1,6 +1,5 @@
 package knightminer.metalborn.core.inventory;
 
-import knightminer.metalborn.core.Registration;
 import knightminer.metalborn.core.inventory.MetalInventory.StackHolder;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
@@ -8,6 +7,7 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.common.util.INBTSerializable;
 import net.minecraftforge.items.IItemHandlerModifiable;
+import slimeknights.mantle.datagen.MantleTags;
 
 import java.util.Collection;
 import java.util.List;
@@ -162,7 +162,7 @@ public abstract class MetalInventory<T extends StackHolder<T>> implements IItemH
 
     /** Drops this item */
     protected void drop(Entity entity, Collection<ItemStack> drops) {
-      if (!stack.isEmpty() && !stack.is(Registration.SOULBOUND)) {
+      if (!stack.isEmpty() && !stack.is(MantleTags.Items.SOULBOUND)) {
         drops.add(stack.copy());
         setStack(ItemStack.EMPTY);
       }

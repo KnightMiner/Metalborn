@@ -1,4 +1,4 @@
-// 1.20.1	2026-01-17T01:00:40.018961	Tags for minecraft:item mod id metalborn
+// 1.20.1	2026-01-18T02:33:09.0034392	Tags for minecraft:item mod id metalborn
 058157714c08f4d51455b63e4bf6bae3d4ccf02e data/forge/tags/items/books.json
 66dd943100ec84cf0199411516d16e1ab1e350ba data/forge/tags/items/books/guide.json
 8b9a09fc19e418e011eaab15ab0ad87882e9ccfe data/forge/tags/items/ingots.json
@@ -31,6 +31,7 @@ cd5b2c9853eed4454b5baadfa42e59b461e32409 data/forge/tags/items/storage_blocks/pe
 0eb858f023ba3ddbb0a3699de23e92faf0feceb0 data/forge/tags/items/storage_blocks/rose_gold.json
 2c8e40745b73849326f23e235c1cdb273872a96f data/forge/tags/items/storage_blocks/steel.json
 e585c51c68d5f9813b4e4e9ae82ccfc368396757 data/forge/tags/items/storage_blocks/tin.json
+2f1c68a8dba709e5a10e6c91469d68522b1af70b data/mantle/tags/items/soulbound.json
 c03ee99466677d5611cc6a3801bfae2163780ddf data/metalborn/tags/items/bracers.json
 f71732471c66195c1b076bbb1c5ae8e5fe804758 data/metalborn/tags/items/casts/bracer_multi_use.json
 ae5b252d16bc49820864077a43aa857230547911 data/metalborn/tags/items/casts/bracer_single_use.json
@@ -55,7 +56,6 @@ a1f720331d641e7f110e85ffcbffcaa6ad50c76b data/metalborn/tags/items/ingot_like/zi
 e0c0741d39a1b25b845aed61a90109fdea665c5a data/metalborn/tags/items/metalminds.json
 5b73dd2e1e075ba18d9c5d982528548d2f79e606 data/metalborn/tags/items/rings.json
 c1f1ff698982ab8eb8502d65617f26259563ce74 data/metalborn/tags/items/satchel_items.json
-2f1c68a8dba709e5a10e6c91469d68522b1af70b data/metalborn/tags/items/soulbound.json
 24ea125300773cacd43295f54f948bb99b321a01 data/metalborn/tags/items/spikes.json
 66dd943100ec84cf0199411516d16e1ab1e350ba data/minecraft/tags/items/bookshelf_books.json
 66dd943100ec84cf0199411516d16e1ab1e350ba data/minecraft/tags/items/lectern_books.json
