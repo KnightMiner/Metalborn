@@ -160,14 +160,13 @@ public class MetalContent extends PageContent {
         List<Component> components = new ArrayList<>();
         getPower().getTooltip(player, fallbackLevel, components);
         for (Component text : components) {
-          effectData.add(new TextComponentData(Component.literal("● ").append(text.copy().setStyle(Style.EMPTY))));
-          effectData.add(new TextComponentData("\n"));
+          effectData.add(new TextComponentData(Component.literal("● ").append(text.copy().setStyle(Style.EMPTY))).linebreak(true));
         }
       }
       // append texts array
       if (texts != null) {
         for (String text : texts) {
-          effectData.add(new TextComponentData("● " + text + '\n'));
+          effectData.add(new TextComponentData("● " + text).linebreak(true));
         }
       }
       // add if we have any effects
@@ -177,8 +176,7 @@ public class MetalContent extends PageContent {
     } else if (texts.length > 0) {
       List<TextData> effectData = new ArrayList<>();
       for (String text : texts) {
-        effectData.add(new TextData("● " + text));
-        effectData.add(new TextData("\n"));
+        effectData.add(new TextData("● " + text).linebreak(true));
       }
       list.add(new TextElement(x, y + 14, width, height, effectData));
     }
