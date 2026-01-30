@@ -234,7 +234,7 @@ public class RecipeProvider extends net.minecraft.data.recipes.RecipeProvider im
       .save(consumer, location("ring/unsealed"));
     // soulbound requires a full identity ring
     ShapelessForgeRecipeBuilder.shapeless(Registration.SOULBOUND_RING)
-      .requires(Items.ECHO_SHARD)
+      .requires(Items.ENDER_PEARL)
       .requires(FillableIngredient.of(FillState.EMPTY, MetalItemIngredient.of(Registration.RING, MetalFilter.METALMIND)))
       .requires(FillableIngredient.of(FillState.FILLED, Ingredient.of(Registration.IDENTITY_RING)))
       .metal()
@@ -242,14 +242,14 @@ public class RecipeProvider extends net.minecraft.data.recipes.RecipeProvider im
       .experience(0.5f)
       .save(consumer, location("ring/soulbound"));
     ShapelessForgeRecipeBuilder.shapeless(Registration.SOULBOUND_IDENTITY_RING)
-      .requires(Items.ECHO_SHARD)
+      .requires(Items.ENDER_PEARL)
       .requires(FillableIngredient.of(FillState.EMPTY, Ingredient.of(Registration.IDENTITY_RING)))
       .requires(FillableIngredient.of(FillState.FILLED, Ingredient.of(Registration.IDENTITY_RING)))
       .cookingRate(4)
       .experience(0.5f)
       .save(consumer, location("ring/soulbound_identity"));
     ShapelessForgeRecipeBuilder.shapeless(Registration.SOULBOUND_INVESTITURE_RING)
-      .requires(Items.ECHO_SHARD)
+      .requires(Items.ENDER_PEARL)
       .requires(FillableIngredient.of(FillState.EMPTY, Ingredient.of(Registration.INVESTITURE_RING)))
       .requires(FillableIngredient.of(FillState.FILLED, Ingredient.of(Registration.IDENTITY_RING)))
       .cookingRate(4)
