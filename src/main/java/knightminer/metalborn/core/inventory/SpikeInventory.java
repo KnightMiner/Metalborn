@@ -16,6 +16,7 @@ import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier.Operation;
 import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import slimeknights.mantle.data.loadable.Loadables;
 import slimeknights.mantle.util.CombatHelper;
@@ -124,6 +125,7 @@ public class SpikeInventory extends MetalInventory<SpikeStack> {
     @Override
     protected void setStack(ItemStack stack) {
       boolean wasEmpty = this.stack.isEmpty();
+      Item oldItem = this.stack.getItem();
       MetalId oldMetal = this.metal;
       if (stack.isEmpty()) {
         // clear previous power
@@ -151,8 +153,10 @@ public class SpikeInventory extends MetalInventory<SpikeStack> {
         }
       }
       // you get hurt when adding or removing a spike
-      if (!entity.level().isClientSide && (wasEmpty != stack.isEmpty() || !oldMetal.equals(this.metal))) {
-        entity.hurt(CombatHelper.damageSource(entity.level(), Registration.ADD_SPIKE), HEALTH_PER_SPIKE);
+      // also damage on swapping spikes, unless the two are identical (same metal and item) since inventory might swap for itself
+      if (!entity.level().isClientSide && (wasEmpty != stack.isEmpty() || oldItem != stack.getItem() || !oldMetal.equals(this.metal))) {
+        // if two spikes moved (swapped spike for spike), deal double damage. Makes it equivelent to removing then adding
+        entity.hurt(CombatHelper.damageSource(entity.level(), Registration.ADD_SPIKE), wasEmpty || stack.isEmpty() ? HEALTH_PER_SPIKE : HEALTH_PER_SPIKE * 2);
       }
     }
 
