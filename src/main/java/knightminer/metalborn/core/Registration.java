@@ -146,10 +146,14 @@ public class Registration {
 
   // metals
   public static final ItemObject<Item> COPPER_NUGGET = ITEMS.register("copper_nugget");
-  public static final ItemObject<Item> NETHERITE_SHARD = ITEMS.register("netherite_shard");
-  public static final ItemObject<Item> NETHERITE_NUGGET = ITEMS.register("netherite_nugget");
+  public static final ItemObject<Item> NETHERITE_SHARD, NETHERITE_NUGGET;
+  static {
+    Item.Properties props = new Item.Properties().fireResistant();
+    NETHERITE_SHARD = ITEMS.register("netherite_shard", props);
+    NETHERITE_NUGGET = ITEMS.register("netherite_nugget", props);
+  }
   public static final ItemObject<RandomFerringItem> RANDOM_FERRING = ITEMS.register("random_ferring", () -> new RandomFerringItem(new Item.Properties()));
-  public static final ItemObject<ChangeFerringItem> CHANGE_FERRING = ITEMS.register("change_ferring", () -> new ChangeFerringItem(new Item.Properties()));
+  public static final ItemObject<ChangeFerringItem> CHANGE_FERRING = ITEMS.register("change_ferring", () -> new ChangeFerringItem(new Item.Properties().fireResistant()));
 
   // unique
   public static final MetalItemObject TIN       = BLOCKS.registerMetal("tin",       metalBuilder(MapColor.ICE), BLOCK_ITEM, PROPS);
@@ -181,7 +185,7 @@ public class Registration {
   // metalminds
   public static final ItemObject<PowerMetalmindItem> BRACER = ITEMS.register("bracer", () -> new PowerMetalmindItem(new Item.Properties().stacksTo(8), 10));
   public static final ItemObject<PowerMetalmindItem> RING = ITEMS.register("ring", () -> new PowerMetalmindItem(new Item.Properties().stacksTo(8), 1));
-  public static final ItemObject<PowerMetalmindItem> UNSEALED_RING = ITEMS.register("unsealed_ring", () -> new UnsealedMetalmindItem(new Item.Properties().stacksTo(8), 1));
+  public static final ItemObject<PowerMetalmindItem> UNSEALED_RING = ITEMS.register("unsealed_ring", () -> new UnsealedMetalmindItem(new Item.Properties().stacksTo(8).fireResistant(), 1));
   public static final ItemObject<PowerMetalmindItem> SOULBOUND_RING = ITEMS.register("soulbound_ring", () -> new PowerMetalmindItem(new Item.Properties().stacksTo(8), 1));
   // investiture metalminds
   public static final ItemObject<InvestitureMetalmindItem> INVESTITURE_BRACER = ITEMS.register("investiture_bracer", () -> new InvestitureMetalmindItem(new Item.Properties().stacksTo(8), 10));
