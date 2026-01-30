@@ -193,7 +193,7 @@ public class MetalmindInventory extends MetalInventory<MetalmindStack> implement
       int used = metalmind.fill(stack, player, amount, data);
       // if its now empty, stop filling
       if (metalmind.isFull(stack)) {
-        level = 0;
+        stop();
       }
       return used;
     }
@@ -215,7 +215,7 @@ public class MetalmindInventory extends MetalInventory<MetalmindStack> implement
       int used = metalmind.drain(stack, player, amount, data);
       // if its now empty, stop draining
       if (metalmind.isEmpty(stack)) {
-        level = 0;
+        stop();
       }
       return used;
     }

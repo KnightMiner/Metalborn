@@ -52,7 +52,7 @@ public interface Metalmind extends Fillable {
 
   /**
    * Called when this metalmind is stopped to deactivate any powers not tracked directly by active metalminds.
-   * Notably, {@link MetalbornData#stopUsingUnsealed(int)} needs to be called here; most power methods are handled automatically.
+   * Currently unused, but may find a use for it again in the future.
    * @param stack  Stack being used
    * @param index  Location of the stack in the metalmind inventory
    * @param level  Level before this metalmind was stopped
