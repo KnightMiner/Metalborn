@@ -24,7 +24,6 @@ import knightminer.metalborn.json.ingredient.FillableIngredient;
 import knightminer.metalborn.json.ingredient.MetalItemIngredient;
 import knightminer.metalborn.json.ingredient.MetalShapeIngredient;
 import knightminer.metalborn.json.loot.ApplyDropChanceLootModifier;
-import knightminer.metalborn.json.loot.HasLootContextSetCondition;
 import knightminer.metalborn.json.recipe.cooking.BlastingMetalRecyclingRecipe;
 import knightminer.metalborn.json.recipe.cooking.SmeltingMetalRecyclingRecipe;
 import knightminer.metalborn.json.recipe.forge.ForgeRecipe;
@@ -278,7 +277,6 @@ public class Registration {
 
   // loot
   public static final RegistryObject<LootItemConditionType> CONFIG = LOOT_CONDITIONS.register("config", () -> new LootItemConditionType(ConfigEnabledCondition.Serializer.INSTANCE));
-  public static final RegistryObject<LootItemConditionType> HAS_LOOT_CONTEXT_SET = LOOT_CONDITIONS.register("has_context_set", () -> new LootItemConditionType(new HasLootContextSetCondition.Serializer()));
 
 
   /** Registers any relevant static entries */
