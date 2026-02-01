@@ -1,0 +1,23 @@
+{
+  "metalminds": [
+    {
+      "type": "forge:nbt",
+      "item": "metalborn:investiture_bracer",
+      "nbt": { "amount": 30000 }
+    },
+    {
+      "type": "forge:nbt",
+      "item": "metalborn:investiture_ring",
+      "nbt": { "amount": 3000 }
+    }
+  ],
+  "spikes": "metalborn:investiture_spike",
+  "storing": [
+    "Временно отключает силу ферринга.",
+    "Металлоразум наполняется соответствующей силой.",
+    "Может использовать никросил независимо от сил."
+  ],
+  "tapping": [
+    "Даёт доступ к накопленной силе ферринга."
+  ]
+}
