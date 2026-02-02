@@ -67,10 +67,10 @@ public class MetalPowerProvider extends AbstractMetalPowerProvider {
       .feruchemy(new HealMetalEffect(100));
     metal(MetalIds.roseGold).index(8).temperature(550).unless(MetalIds.bendalloy)
       .capacity(MetalFormat.METAL, 40) // 2 full food bars
-      .feruchemy(new EnergyMetalEffect(0.5f, 4f));
+      .feruchemy(new EnergyMetalEffect(0, 4f));
     metal(MetalIds.bendalloy).index(14).integration().temperature(400).fallback(MetalIds.roseGold)
       .capacity(MetalFormat.METAL, 40) // 2 full food bars
-      .feruchemy(new EnergyMetalEffect(0.5f, 4f));
+      .feruchemy(new EnergyMetalEffect(0, 4f));
 
     // identity - fallback to quartz if aluminum is not present
     metal(IdentityMetalmindItem.ALUMINUM).integrationNoForce().index(18).temperature(425).hemalurgyCharge(0);

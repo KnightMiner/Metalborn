@@ -247,7 +247,7 @@
 
   "metal_effect.metalborn.xp.gain": "Restores %s XP per second",
   "metal_effect.metalborn.xp.store": "Drains %s XP per second",
-  "metal_effect.metalborn.saturation.gain": "Restores %s saturation per second",
+  "metal_effect.metalborn.saturation.gain": "Restores %s hunger at %s saturation per second",
   "metal_effect.metalborn.saturation.store": "Causes %s exhaustion per second",
   "metal_effect.metalborn.warmth.heat": "Increases heat by %s each second",
   "metal_effect.metalborn.warmth.cold": "Decreases heat by %s each second",

@@ -31,8 +31,14 @@ public record EnergyMetalEffect(float saturation, float exhaustion) implements M
   public int onTap(MetalPower power, LivingEntity entity, int level) {
     if (entity.tickCount % 20 == 0 && entity instanceof Player player) {
       FoodData data = player.getFoodData();
-      if (data.getFoodLevel() < 20) {
-        data.eat(1, saturation * level);
+      int foodLevel = data.getFoodLevel();
+      if (foodLevel < 20) {
+        data.eat(level, saturation);
+        // only consume the levels worth if we are granting saturation
+        // at 0 saturation be conservative instead of wasteful
+        if (saturation == 0) {
+          return Math.min(level, 20 - foodLevel);
+        }
         return level;
       }
     }
@@ -54,7 +60,7 @@ public record EnergyMetalEffect(float saturation, float exhaustion) implements M
   @Override
   public void getTooltip(MetalPower power, LivingEntity entity, int level, List<Component> tooltip) {
     if (level > 0) {
-      tooltip.add(Component.translatable(KEY_GAIN, level * saturation).withStyle(ChatFormatting.BLUE));
+      tooltip.add(Component.translatable(KEY_GAIN, level, saturation).withStyle(ChatFormatting.BLUE));
     } else {
       tooltip.add(Component.translatable(KEY_STORE, -level * exhaustion).withStyle(ChatFormatting.RED));
     }

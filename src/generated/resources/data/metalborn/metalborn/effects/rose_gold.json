@@ -21,7 +21,7 @@
     {
       "type": "metalborn:energy",
       "exhaustion": 4.0,
-      "saturation": 0.5
+      "saturation": 0.0
     }
   ],
   "format": "metal",
