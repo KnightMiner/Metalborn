@@ -1,0 +1,12 @@
+{
+  "type": "mantle:image_text",
+  "title": "Пользовательский интерфейс сумок",
+  "image": {
+    "file": "metalborn:book/images/satchel.png",
+    "width": 156,
+    "height": 109
+  },
+  "text": [
+    { "text": "Доступ к сумке одновременно с доступом к инвентарю металлоразумов." }
+  ]
+}

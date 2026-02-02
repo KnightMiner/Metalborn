@@ -1,0 +1,364 @@
+{
+  "creative_tab.metalborn": "Рождённый металлом",
+
+  "metal_power.metalborn.none": "Нет",
+  "metal_power.metalborn.none.stores": "Ничего",
+  "metal_power.metalborn.none.ferring": "Гнат",
+  "metal_power.metalborn.none.target": "Нет",
+
+  "metal_power.metalborn.iron": "Железо",
+  "metal_power.metalborn.iron.stores": "Вес",
+  "metal_power.metalborn.iron.ferring": "Скиммер",
+  "metal_power.metalborn.iron.target": "Хоглины или разорители",
+
+  "metal_power.metalborn.steel": "Сталь",
+  "metal_power.metalborn.steel.stores": "Скорость",
+  "metal_power.metalborn.steel.ferring": "Стилет",
+  "metal_power.metalborn.steel.target": "Пауки",
+
+  "metal_power.metalborn.tin": "Олово",
+  "metal_power.metalborn.tin.stores": "Взгляд",
+  "metal_power.metalborn.tin.ferring": "Шептун ветра",
+  "metal_power.metalborn.tin.target": "Скелеты",
+
+  "metal_power.metalborn.pewter": "Пьютер",
+  "metal_power.metalborn.pewter.stores": "Сила",
+  "metal_power.metalborn.pewter.ferring": "Брут",
+  "metal_power.metalborn.pewter.target": "Криперы",
+
+  "metal_power.metalborn.copper": "Медь",
+  "metal_power.metalborn.copper.stores": "Опыт",
+  "metal_power.metalborn.copper.ferring": "Архивариус",
+  "metal_power.metalborn.copper.target": "Слизни",
+  "metal_power.metalborn.copper.label": "%s / %s опыта",
+
+  "metal_power.metalborn.bronze": "Бронза",
+  "metal_power.metalborn.bronze.stores": "Досягаемость",
+  "metal_power.metalborn.bronze.ferring": "Часовой",
+  "metal_power.metalborn.bronze.target": "Эндермены",
+
+  "metal_power.metalborn.gold": "Золото",
+  "metal_power.metalborn.gold.stores": "Здоровье",
+  "metal_power.metalborn.gold.ferring": "Кровопийца",
+  "metal_power.metalborn.gold.target": "Пиглины",
+  "metal_power.metalborn.gold.label": "%s / %s здоровья",
+
+  "metal_power.metalborn.rose_gold": "Розовое золото",
+  "metal_power.metalborn.rose_gold.stores": "Энергия",
+  "metal_power.metalborn.rose_gold.ferring": "Поглотитель",
+  "metal_power.metalborn.rose_gold.target": "Зомби",
+  "metal_power.metalborn.rose_gold.label": "%s / %s энергии",
+
+  "metal_power.metalborn.bendalloy": "Сплав Вуда",
+  "metal_power.metalborn.bendalloy.stores": "Энергия",
+  "metal_power.metalborn.bendalloy.ferring": "Поглотитель",
+  "metal_power.metalborn.bendalloy.target": "Зомби",
+  "metal_power.metalborn.bendalloy.label": "%s / %s энергии",
+
+  "metal_power.metalborn.aluminum": "Алюминий",
+  "metal_power.metalborn.aluminum.stores": "Идентичность",
+  "metal_power.metalborn.aluminum.ferring": "Истиннособойный",
+  "metal_power.metalborn.aluminum.target": "Игроки",
+
+  "metal_power.metalborn.quartz": "Кварц",
+  "metal_power.metalborn.quartz.stores": "Идентичность",
+  "metal_power.metalborn.quartz.ferring": "Истиннособойный",
+  "metal_power.metalborn.quartz.target": "Игроки",
+
+  "metal_power.metalborn.netherite": "Незерит",
+  "metal_power.metalborn.netherite.stores": "Удача",
+  "metal_power.metalborn.netherite.ferring": "Спиннер",
+  "metal_power.metalborn.netherite.target": "Разбойники",
+
+  "metal_power.metalborn.chromium": "Хром",
+  "metal_power.metalborn.chromium.stores": "Удача",
+  "metal_power.metalborn.chromium.ferring": "Спиннер",
+  "metal_power.metalborn.chromium.target": "Разбойники",
+
+  "metal_power.metalborn.investiture": "Никросил",
+  "metal_power.metalborn.investiture.stores": "Инвеститура",
+  "metal_power.metalborn.investiture.ferring": "Носитель души",
+  "metal_power.metalborn.investiture.target": "Игроки",
+
+  "metal_power.metalborn.silver": "Серебро",
+  "metal_power.metalborn.silver.stores": "Хитрость",
+  "metal_power.metalborn.silver.ferring": "Вспыхиватель",
+  "metal_power.metalborn.silver.target": "Чешуйницы",
+
+  "metal_power.metalborn.cadmium": "Кадмий",
+  "metal_power.metalborn.cadmium.stores": "Хитрость",
+  "metal_power.metalborn.cadmium.ferring": "Вспыхиватель",
+  "metal_power.metalborn.cadmium.target": "Чешуйницы",
+
+  "metal_power.metalborn.electrum": "Электрум",
+  "metal_power.metalborn.electrum.stores": "Решимость",
+  "metal_power.metalborn.electrum.ferring": "Вершитель",
+  "metal_power.metalborn.electrum.target": "Стражи",
+
+  "metal_power.metalborn.zinc": "Цинк",
+  "metal_power.metalborn.zinc.stores": "Дыхание",
+  "metal_power.metalborn.zinc.ferring": "Гаспер",
+  "metal_power.metalborn.zinc.target": "Утопленники",
+
+  "metal_power.metalborn.nickel": "Никель",
+  "metal_power.metalborn.nickel.stores": "Дыхание",
+  "metal_power.metalborn.nickel.ferring": "Гаспер",
+  "metal_power.metalborn.nickel.target": "Утопленники",
+
+  "metal_power.metalborn.brass": "Латунь",
+  "metal_power.metalborn.brass.stores": "Тепло",
+  "metal_power.metalborn.brass.ferring": "Огнедуш",
+  "metal_power.metalborn.brass.target": "Всполохи",
+
+  "metal_power.metalborn.constantan": "Константан",
+  "metal_power.metalborn.constantan.stores": "Тепло",
+  "metal_power.metalborn.constantan.ferring": "Огнедуш",
+  "metal_power.metalborn.constantan.target": "Всполохи",
+
+
+  "item.metalborn.metallic_arts": "Металлоискусство",
+  "item.metalborn.metallic_arts.tooltip": "Введение в ковку металлов и ферохимию.\nАвтор: Лестиборнес",
+
+
+  "_group_ores_": "",
+
+  "item.metalborn.copper_nugget": "Кусочек меди",
+  "item.metalborn.netherite_shard": "Незеритовый осколок",
+
+  "block.metalborn.tin_ore": "Оловянная руда",
+  "block.metalborn.deepslate_tin_ore": "Оловоносный глубинный сланец",
+  "block.metalborn.raw_tin_block": "Блок рудного олова",
+  "item.metalborn.raw_tin": "Рудное олово",
+
+  "block.metalborn.tin_block": "Оловянный блок",
+  "item.metalborn.tin_ingot": "Оловянный слиток",
+  "item.metalborn.tin_nugget": "Кусочек олова",
+
+
+  "_group_aloys_": "",
+
+  "block.metalborn.pewter_block": "Пьютеровый блок",
+  "item.metalborn.pewter_ingot": "Пьютеровый слиток",
+  "item.metalborn.pewter_nugget": "Кусочек пьютера",
+
+  "block.metalborn.steel_block": "Стальной блок",
+  "item.metalborn.steel_ingot": "Стальной слиток",
+  "item.metalborn.steel_nugget": "Кусочек стали",
+
+  "block.metalborn.bronze_block": "Бронзовый блок",
+  "item.metalborn.bronze_ingot": "Бронзовый слиток",
+  "item.metalborn.bronze_nugget": "Кусочек бронзы",
+
+  "block.metalborn.rose_gold_block": "Блок розового золота",
+  "item.metalborn.rose_gold_ingot": "Слиток розового золота",
+  "item.metalborn.rose_gold_nugget": "Кусочек розового золота",
+
+  "block.metalborn.nicrosil_block": "Никросиловый блок",
+  "item.metalborn.nicrosil_ingot": "Никросиловый слиток",
+  "item.metalborn.nicrosil_nugget": "Кусочек никросила",
+
+  "item.metalborn.netherite_nugget": "Кусочек незерита",
+
+  "item.metalborn.random_ferring": "Инвестированный кусочек никросила",
+  "item.metalborn.random_ferring.on_consume": "Съешьте, чтобы стать случайным феррингом.",
+  "item.metalborn.change_ferring": "Инвестированный кусочек",
+  "item.metalborn.change_ferring.format": "Инвестированный кусочек [%s]",
+  "item.metalborn.change_ferring.on_consume": "Съешьте, чтобы стать феррингом [%s].",
+
+
+  "_group_metal_": "",
+
+  "item.metalborn.bracer": "Браслет",
+  "item.metalborn.bracer.format": "Браслет [%s]",
+  "item.metalborn.investiture_bracer": "Никросиловый браслет",
+  "item.metalborn.identity_bracer.aluminum": "Алюминиевый браслет",
+  "item.metalborn.identity_bracer.quartz": "Кварцевый браслет",
+
+  "item.metalborn.ring": "Кольцо",
+  "item.metalborn.ring.format": "Кольцо [%s]",
+  "item.metalborn.investiture_ring": "Никросиловое кольцо",
+  "item.metalborn.identity_ring.aluminum": "Алюминиевое кольцо",
+  "item.metalborn.identity_ring.quartz": "Кварцевое кольцо",
+  "item.metalborn.unsealed_ring": "Незапечатанное кольцо",
+  "item.metalborn.unsealed_ring.format": "Незапечатанное кольцо [%s]",
+  "item.metalborn.soulbound_ring": "Связанное кольцо душ",
+  "item.metalborn.soulbound_ring.format": "Связанное кольцо душ [%s]",
+  "item.metalborn.soulbound_investiture_ring": "Связанное никросиловое кольцо душ",
+  "item.metalborn.soulbound_identity_ring.aluminum": "Связанное алюминиевое кольцо душ",
+  "item.metalborn.soulbound_identity_ring.quartz": "Связанное кварцевое кольцо душ",
+
+  "item.metalborn.metalmind.metal_id": "ID металла: %s",
+  "item.metalborn.metalmind.stores": "Накопление: %s",
+  "item.metalborn.metalmind.investiture": "Инвеститура: %s",
+  "item.metalborn.metalmind.amount": "Накоплено: %s",
+  "item.metalborn.metalmind.owner": "Идентичность: %s",
+  "item.metalborn.metalmind.owner.none": "Непривязанный",
+  "item.metalborn.metalmind.owner.unknown": "Неизвестно",
+  "item.metalborn.investiture.metal": "Металл: %s",
+
+  "gui.metalborn.amount.no_label": "%s / %s",
+  "gui.metalborn.amount.seconds": "%s / %s сек.",
+
+  "item.metalborn.spike": "Штырь",
+  "item.metalborn.spike.format": "Штырь [%s]",
+  "item.metalborn.spike.steals": "Кража: %s",
+  "item.metalborn.spike.target": "Цель: %s",
+  "item.metalborn.spike.charge": "Заряд: %s / %s",
+  "item.metalborn.spike.charge.full": "Полностью заряжен",
+  "item.metalborn.investiture_spike": "Никросиловый штырь",
+  "item.metalborn.soulbound_spike": "Связанный штырь душ",
+  "item.metalborn.soulbound_spike.format": "Связанный штырь душ [%s]",
+
+  "item.metalborn.bronze_satchel": "Бронзовая сумка",
+  "item.metalborn.bronze_satchel.tooltip": "Вмещает до 9 предметов.",
+  "item.metalborn.pewter_satchel": "Пьютеровая сумка",
+  "item.metalborn.pewter_satchel.tooltip": "Вмещает до 18 предметов.",
+  "item.metalborn.steel_satchel": "Стальная сумка",
+  "item.metalborn.steel_satchel.tooltip": "Вмещает до 9 предметов. Невосприимчива к повреждениям при выпадении.",
+  "item.metalborn.nicrosil_satchel": "Никросиловая сумка",
+  "item.metalborn.nicrosil_satchel.tooltip": "Вмещает до 9 предметов. Остаётся в инвентаре после смерти.",
+  "item.metalborn.mist_satchel": "Туманная сумка",
+  "item.metalborn.mist_satchel.tooltip": "Может извлекать металлические предметы после последней смерти. Исчезает, когда пусто.",
+
+  "item.metalborn.ferring.matches": "Вы чувствуете, как этот металл слегка притягивает вас.",
+  "item.metalborn.ferring.mismatches": "Вы ничего не чувствуете от этого металла.",
+
+  "attribute.name.metalborn.fall_distance_multiplier": "Дистанция падения",
+  "attribute.name.metalborn.knockback_multiplier": "Отдача",
+  "attribute.name.metalborn.mining_speed_multiplier": "Скорость добычи",
+  "attribute.name.metalborn.experience_multiplier": "Опыт",
+  "attribute.name.metalborn.drop_chance": "Шанс выпадения",
+  "attribute.name.metalborn.looting_boost": "Добыча",
+  "attribute.name.metalborn.determination": "Решимость",
+  "attribute.name.metalborn.warmth": "Тепло",
+  "attribute.name.metalborn.visibility_multiplier": "Видимость",
+  "attribute.name.metalborn.respiration": "Дыхание",
+
+  "attribute.name.metalborn.heat_damage": "Урон от тепла",
+  "death.attack.metalborn.melee_heat": "%1$s был сожжён заживо от %2$s",
+  "death.attack.metalborn.melee_heat.item": "%1$s был сожжён заживо от %2$s используя %3$s",
+
+  "death.attack.metalborn.metal_hurt": "%1$s накопил слишком много здоровья",
+  "death.attack.metalborn.metal_hurt.player": "%1$s накопил слишком много здоровья, сражаясь с %2$s",
+  "metal_effect.metalborn.health.heal": "Восстанавливает 1 здоровье каждые %s сек.",
+  "metal_effect.metalborn.health.harm": "Отнимает 1 здоровье каждые %s сек.",
+  "death.attack.metalborn.add_spike": "%1$s потерпел неудачу в акупунктуре",
+  "death.attack.metalborn.add_spike.player": "%1$s потерпел неудачу в акупунктуре, сражаясь с %2$s",
+  "death.attack.metalborn.make_spike": "%1$s нанёс удар не в то место",
+  "death.attack.metalborn.make_spike.player": "%1$s нанёс удар не в то место, сражаясь с %2$s",
+  "death.attack.metalborn.update_health": "%1$s скончался от полученных ранее травм",
+  "death.attack.metalborn.update_health.player": "%1$s скончался от полученных ранее травм, сражаясь с %2$s",
+
+  "metal_effect.metalborn.xp.gain": "Восстанавливает %s опыта в сек.",
+  "metal_effect.metalborn.xp.store": "Отнимает %s опыт(а) в сек.",
+  "metal_effect.metalborn.saturation.gain": "Восстанавливает %s насыщение в сек.",
+  "metal_effect.metalborn.saturation.store": "Вызывает %s истощения в сек.",
+  "metal_effect.metalborn.warmth.heat": "Увеличивает нагрев на каждые %s сек.",
+  "metal_effect.metalborn.warmth.cold": "Уменьшает нагрев на каждые %s сек.",
+  "metal_effect.metalborn.apply_effect": "Предоставляет %s",
+
+  "gui.metalborn.metalminds.effects": "Эффекты ферохимии:",
+  "gui.metalborn.metalminds.none": "Нет активных металлозапасов",
+  "gui.metalborn.metalminds.investiture.tap": "Может использовать: %s",
+  "gui.metalborn.metalminds.investiture.store": "Не накапливает: %s",
+
+  "gui.metalborn.spikes.effects": "Эффекты гемалургии:",
+  "gui.metalborn.spikes.none": "Нет штырей",
+  "gui.metalborn.spikes.grants": "Может использовать: %s",
+
+  "gui.metalborn.store.start": "Щёлкните [ЛКМ], чтобы накопить [%s].",
+  "gui.metalborn.store.stop": "Щёлкните [ЛКМ], чтобы остановить [%s].",
+  "gui.metalborn.tap.start": "Щёлкните [ПКМ], чтобы использовать [%s].",
+  "gui.metalborn.tap.stop": "Щёлкните [ПКМ], чтобы остановить [%s].",
+  "gui.metalborn.shift_matching": "Удерживайте [Shift], чтобы установить все совпадения.",
+  "gui.metalborn.metalminds.stop_all": "Щёлкните, чтобы остановить все металлоразумы.",
+
+  "key.metalborn.binding": "Открыть интерфейс металлоразумов",
+  "key.categories.metalborn": "Рождённый металлом",
+
+  "block.metalborn.forge": "Металлическая кузница",
+  "gui.metalborn.forge": "Металлическая кузница",
+  "jei.metalborn.forge": "Ковка металла",
+
+
+  "_group_book_": "",
+
+  "book.metalborn.metal.tapping": "Использование:",
+  "book.metalborn.metal.storing": "Накопление:",
+  "book.metalborn.metal.ferring": "Ферринг: %s",
+
+
+  "_group_commands_": "",
+
+  "command.metalborn.ferring.get": "Игрок %s теперь ферринг [%s]. (ID %s)",
+  "command.metalborn.ferring.set.single": "Для игрока %s установлен тип ферринга [%s]. (ID %s)",
+  "command.metalborn.ferring.set.multiple": "Для %s игроков установлен тип ферринга [%s]. (ID %s)",
+  "command.metalborn.ferring.random.single": "Случайный тип ферринга для игрока %s.",
+  "command.metalborn.ferring.random.multiple": "Случайный тип ферринга %s игроков.",
+
+  "command.metalborn.metalmind.success.single.fill": "Металлоразум игрока %s заполнен на %s.",
+  "command.metalborn.metalmind.success.single.drain": "Металлоразум игрока %s опустошён на %s.",
+  "command.metalborn.metalmind.success.single.set": "Кол-во металлоразума игрока %s установлено на %s.",
+  "command.metalborn.metalmind.success.multiple.fill": "Металлоразум %s целей заполнен на %s.",
+  "command.metalborn.metalmind.success.multiple.drain": "Металлоразум %s целей опустошён на %s.",
+  "command.metalborn.metalmind.success.multiple.set": "Кол-во металлоразума %s целей установлено на %s.",
+  "command.metalborn.metalmind.success.multiple.full": "Металлоразум %s целей полностью заполнен.",
+  "command.metalborn.metalmind.success.multiple.empty": "Металлоразум %s целей полностью опустошён.",
+
+  "command.metalborn.spike.success.single.fill": "Штырь игрока %s заполнен на %s.",
+  "command.metalborn.spike.success.single.set": "Заряд штыря игрока %s установлен на %s.",
+  "command.metalborn.spike.success.multiple.fill": "Штырь %s целей заполнен на %s.",
+  "command.metalborn.spike.success.multiple.set": "Заряд штыря %s целей установлен на %s.",
+  "command.metalborn.spike.success.multiple.full": "Заряд штыря %s целей полностью заполнен.",
+
+  "command.metalborn.identity.success.single.set": "Идентичность металлоразума игрока %s установлена на %s.",
+  "command.metalborn.identity.success.multiple.set": "Идентичность металлоразума %s целей установлена на %s.",
+
+  "command.metalborn.error.itemless": "%s не держит никаких предметов.",
+  "command.metalborn.metalmind.error.not_metalmind": "%s не имеет действующего металлоразума в руке.",
+  "command.metalborn.metalmind.no_action": "Нет целей, имеющих металлоразум в руках.",
+  "command.metalborn.spike.error.not_spike": "%s не имеет действующего штыря в руке.",
+  "command.metalborn.spike.no_action": "Нет целей, имеющих штырь в руках.",
+
+  "command.metalborn.metal.get": "Металл игрока %s теперь [%s]. (ID %s)",
+  "command.metalborn.metal.set.single": "Для игрока %s установлен металл [%s]. (ID %s)",
+  "command.metalborn.metal.set.multiple": "Для %s игроков установлен металл [%s]. (ID %s)",
+  "command.metalborn.metal.error.not_metal": "%s не имеет действующего металла в руке.",
+  "command.metalborn.metal.no_action": "Нет целей, имеющих металл в руках.",
+  "command.metalborn.metal.not_found": "Нет зарегистрированных металлов с ID (%s).",
+
+  "command.metalborn.metal.feruchemy": "Ферохимия для %s (ID %s) на уровне %s:",
+  "command.metalborn.metal.feruchemy.no_effects": "Нет эффектов",
+  "command.metalborn.metal.list": "Зарегистрированные металлы:",
+  "command.metalborn.metal.list.format": "%s (ID %s, индекс %s)",
+  "command.metalborn.metal.stats": "Статистика для %s (ID %s, индекс %s):",
+  "command.metalborn.metal.stats.ingot": "Тег слитка: %s",
+  "command.metalborn.metal.stats.nugget": "Тег кусочка: %s",
+  "command.metalborn.metal.stats.fluid": "Жидкость: тег %s, температура %s",
+  "command.metalborn.metal.stats.ferring": "Ферринг: %s, естественное появление %s",
+  "command.metalborn.metal.stats.stores": "Накопление: %s, вместимость %s, форматированный %s",
+  "command.metalborn.metal.stats.hemalurgy": "Гемалургия: цель %s, требуемый заряд %s",
+  "command.metalborn.metal.stats.target": "Тег целевой сущности: %s",
+
+
+  "_group_tinkers_compat_": "",
+
+  "pattern.metalborn.ring": "Кольцо",
+  "pattern.metalborn.bracer": "Браслет",
+  "pattern.metalborn.spike": "Штырь",
+
+  "item.metalborn.ring_cast.tooltip": "Стоимость материала: 4 кусочка",
+  "item.metalborn.ring_gold_cast": "Золотая литейная форма: Кольцо",
+  "item.metalborn.ring_sand_cast": "Песочная литейная форма: Кольцо",
+  "item.metalborn.ring_red_sand_cast": "Красная песочная литейная форма: Кольцо",
+
+  "item.metalborn.bracer_cast.tooltip": "Стоимость материала: 4 слитка",
+  "item.metalborn.bracer_gold_cast": "Золотая литейная форма: Браслет",
+  "item.metalborn.bracer_sand_cast": "Песочная литейная форма: Браслет",
+  "item.metalborn.bracer_red_sand_cast": "Красная песочная литейная форма: Браслет",
+
+  "item.metalborn.spike_cast.tooltip": "Стоимость материала: 2 слитка",
+  "item.metalborn.spike_gold_cast": "Золотая литейная форма: Штырь",
+  "item.metalborn.spike_sand_cast": "Песочная литейная форма: Штырь",
+  "item.metalborn.spike_red_sand_cast": "Красная песочная литейная форма: Штырь"
+}
