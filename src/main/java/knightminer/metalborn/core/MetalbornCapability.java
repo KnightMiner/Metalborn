@@ -8,6 +8,7 @@ import knightminer.metalborn.core.inventory.SpikeInventory;
 import knightminer.metalborn.item.SatchelItem.SatchelType;
 import knightminer.metalborn.metal.MetalId;
 import knightminer.metalborn.metal.MetalManager;
+import knightminer.metalborn.metal.MetalPower;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
@@ -356,6 +357,14 @@ public class MetalbornCapability implements ICapabilitySerializable<CompoundTag>
   public void deserializeNBT(CompoundTag nbt) {
     if (nbt.contains(FERRING_TYPE, Tag.TAG_STRING)) {
       this.ferringType = MetalId.tryParse(nbt.getString(FERRING_TYPE));
+      // resolve the redirect in the metal power ID if present
+      if (this.ferringType != null) {
+        MetalPower power = MetalManager.INSTANCE.resolve(this.ferringType);
+        // do not delete their power if its missing
+        if (power != MetalPower.DEFAULT) {
+          ferringType = power.id();
+        }
+      }
     }
     // clear any active powers, ensures we don't apply double effects upon refreshing metalminds
     this.activeMetalminds.clear();

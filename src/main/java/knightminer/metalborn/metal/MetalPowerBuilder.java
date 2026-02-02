@@ -37,6 +37,7 @@ public class MetalPowerBuilder {
   private boolean ferring = true;
   private final List<MetalEffect> feruchemy = new ArrayList<>();
   private final List<ICondition> conditions = new ArrayList<>();
+  private final List<MetalId> fallback = new ArrayList<>();
   // tags
   private String name;
   @Nullable
@@ -117,6 +118,12 @@ public class MetalPowerBuilder {
     return this;
   }
 
+  /** Adds a fallback for when the condition does not match. */
+  public MetalPowerBuilder fallback(MetalId metal) {
+    fallback.add(metal);
+    return this;
+  }
+
   /** Sets the metal to be optional based on the ingot and nugget. Must run after {@link #name(String)} for best results (or use the default). */
   public MetalPowerBuilder integrationNoForce() {
     return condition(new OrCondition(new TagFilledCondition<>(getIngot()), new TagFilledCondition<>(getNugget())));
@@ -146,12 +153,26 @@ public class MetalPowerBuilder {
     ));
   }
 
+  /** Sets the metal to be optional based on the ingot and nugget, but only present if the listed metal is *not* present. */
+  public MetalPowerBuilder alternative(MetalId disable) {
+    alternative(disable.getPath());
+    fallback(disable);
+    return this;
+  }
+
   /** Sets the metal to be enabled unless the specified metal is present. */
   public MetalPowerBuilder unless(String disable) {
     return condition(new AndCondition(
       new TagEmptyCondition<>(ItemTags.create(Mantle.commonResource("ingots/" + disable))),
       new TagEmptyCondition<>(ItemTags.create(Mantle.commonResource("nuggets/" + disable)))
     ));
+  }
+
+  /** Sets the metal to be enabled unless the specified metal is present. */
+  public MetalPowerBuilder unless(MetalId disable) {
+    unless(disable.getPath());
+    fallback(disable);
+    return this;
   }
 
 
@@ -224,6 +245,9 @@ public class MetalPowerBuilder {
         array.add(CraftingHelper.serialize(condition));
       }
       json.add("conditions", array);
+      if (!fallback.isEmpty()) {
+        json.add("fallback", MetalManager.FALLBACK_LOADABLE.serialize(fallback));
+      }
     }
     return json;
   }

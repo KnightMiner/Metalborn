@@ -4,6 +4,7 @@ import knightminer.metalborn.Metalborn;
 import knightminer.metalborn.core.MetalbornData;
 import knightminer.metalborn.metal.MetalId;
 import net.minecraft.ChatFormatting;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
@@ -55,5 +56,10 @@ public class ChangeFerringItem extends ConsumableItem implements MetalItem {
   @Override
   public String getCreatorModId(ItemStack stack) {
     return MetalItem.getCreatorModId(stack);
+  }
+
+  @Override
+  public void verifyTagAfterLoad(CompoundTag tag) {
+    MetalItem.verifyTagAfterLoad(tag);
   }
 }

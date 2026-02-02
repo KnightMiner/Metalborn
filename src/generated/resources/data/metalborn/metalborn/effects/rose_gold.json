@@ -16,6 +16,7 @@
       ]
     }
   ],
+  "fallback": "metalborn:bendalloy",
   "feruchemy": [
     {
       "type": "metalborn:energy",

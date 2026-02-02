@@ -38,6 +38,7 @@
       ]
     }
   ],
+  "fallback": "metalborn:brass",
   "feruchemy": [
     {
       "type": "metalborn:warmth",

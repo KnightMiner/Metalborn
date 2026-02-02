@@ -4,6 +4,7 @@ import knightminer.metalborn.core.MetalbornData;
 import knightminer.metalborn.item.MetalItem;
 import knightminer.metalborn.metal.MetalId;
 import knightminer.metalborn.metal.MetalManager;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -63,6 +64,11 @@ public class PowerMetalmindItem extends MetalmindItem implements MetalItem {
   protected boolean isTransferrable(ItemStack destination, ItemStack source) {
     // any power metalmind is fine, as long as the metals match (which isSamePower checks)
     return source.getItem() instanceof PowerMetalmindItem && isSamePower(destination, source) && isSameIdentity(destination, source);
+  }
+
+  @Override
+  public void verifyTagAfterLoad(CompoundTag tag) {
+    MetalItem.verifyTagAfterLoad(tag);
   }
 
 

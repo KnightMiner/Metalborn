@@ -21,7 +21,6 @@ import java.util.List;
 /**
  * Data container for all metal effects performed by a metal, from Feruchemy and Hemalurgy.
  * @param id           ID of this metal, corresponds to storage in NBT and recipes.
- * @param name         Tag suffix for this metal
  * @param ingot        Ingot tag for this metal, used in recipes.
  * @param nugget       Nugget tag for this metal, used in recipes.
  * @param fluid        Fluid tag for Tinkers' Construct compatibility

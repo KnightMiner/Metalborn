@@ -16,6 +16,7 @@
       ]
     }
   ],
+  "fallback": "metalborn:chromium",
   "feruchemy": [
     {
       "type": "metalborn:attribute",

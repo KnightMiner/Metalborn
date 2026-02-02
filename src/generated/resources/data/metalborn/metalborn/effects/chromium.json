@@ -20,6 +20,7 @@
       ]
     }
   ],
+  "fallback": "metalborn:netherite",
   "feruchemy": [
     {
       "type": "metalborn:attribute",

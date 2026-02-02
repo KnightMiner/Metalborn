@@ -21,6 +21,8 @@ import net.minecraftforge.event.AddReloadListenerEvent;
 import net.minecraftforge.event.OnDatapackSyncEvent;
 import net.minecraftforge.eventbus.api.EventPriority;
 import org.jetbrains.annotations.ApiStatus.Internal;
+import slimeknights.mantle.data.loadable.Loadable;
+import slimeknights.mantle.data.loadable.array.ArrayLoadable;
 import slimeknights.mantle.data.loadable.field.ContextKey;
 import slimeknights.mantle.util.JsonHelper;
 import slimeknights.mantle.util.typed.TypedMap;
@@ -38,6 +40,8 @@ public class MetalManager extends SimpleJsonResourceReloadListener {
   public static final String FOLDER = "metalborn/effects";
   /** Singleton instance of the manager */
   public static final MetalManager INSTANCE = new MetalManager();
+  /** Loadable for the list of fallback IDs to use if a power's conditions fail. */
+  public static final Loadable<List<MetalId>> FALLBACK_LOADABLE = MetalId.LOADABLE.list(ArrayLoadable.COMPACT_OR_EMPTY);
 
   /** Currently loaded map of all powers */
   private Map<MetalId,MetalPower> powers = Map.of();
@@ -45,6 +49,8 @@ public class MetalManager extends SimpleJsonResourceReloadListener {
   private List<MetalPower> sortedPowers = List.of();
   /** All powers that can be used by a ferring */
   private List<MetalPower> ferrings = List.of();
+  /** Mapping from unused metal IDs to existing powers, for migrating power list changes. */
+  private Map<MetalId, MetalPower> redirects = Map.of();
 
   /** Cache of the metal power for each item type */
   private final Map<Item,MetalPower> itemCache = new HashMap<>();
@@ -95,7 +101,7 @@ public class MetalManager extends SimpleJsonResourceReloadListener {
   @Internal
   public void init() {
     MinecraftForge.EVENT_BUS.addListener(EventPriority.NORMAL, false, AddReloadListenerEvent.class, this::addDataPackListeners);
-    MinecraftForge.EVENT_BUS.addListener(EventPriority.NORMAL, false, OnDatapackSyncEvent.class, e -> JsonHelper.syncPackets(e, MetalbornNetwork.getInstance(), new UpdateMetalPowerPacket(this.powers)));
+    MinecraftForge.EVENT_BUS.addListener(EventPriority.NORMAL, false, OnDatapackSyncEvent.class, e -> JsonHelper.syncPackets(e, MetalbornNetwork.getInstance(), new UpdateMetalPowerPacket(this.powers, this.redirects)));
   }
 
   /** Adds the managers as datapack listeners */
@@ -105,8 +111,10 @@ public class MetalManager extends SimpleJsonResourceReloadListener {
   }
 
   /** Updates the list of metal powers from the given map */
-  void updateMetalPowers(Map<MetalId,MetalPower> powers) {
+  @Internal
+  void updateMetalPowers(Map<MetalId,MetalPower> powers, Map<MetalId,MetalPower> redirects) {
     this.powers = powers;
+    this.redirects = redirects;
     this.sortedPowers = powers.values().stream().sorted(Comparator.comparing(MetalPower::index)).toList();
     this.ferrings = sortedPowers.stream().filter(power -> power.ferring() && !power.feruchemy().isEmpty()).toList();
     this.itemCache.clear();
@@ -126,6 +134,7 @@ public class MetalManager extends SimpleJsonResourceReloadListener {
     long time = System.nanoTime();
 
     Map<MetalId,MetalPower> powers = new HashMap<>();
+    Map<MetalId,List<MetalId>> potentialRedirects = new HashMap<>();
     for (Entry<ResourceLocation,JsonElement> entry : splashList.entrySet()) {
       JsonObject json = GsonHelper.convertToJsonObject(entry.getValue(), "metal");
       // ensure load conditions pass
@@ -135,14 +144,33 @@ public class MetalManager extends SimpleJsonResourceReloadListener {
           MetalPower power = MetalPower.LOADABLE.deserialize(json, createContext(entry.getKey()));
           // store it into the map
           powers.put(power.id(), power);
+        } else {
+          // if the condition disables it, load in fallback options, though wait to process as we have not yet loaded all powers
+          List<MetalId> fallback = FALLBACK_LOADABLE.getOrDefault(json, "fallback", List.of());
+          if (!fallback.isEmpty()) {
+            potentialRedirects.put(new MetalId(entry.getKey()), fallback);
+          }
         }
       } catch (Exception e) {
         Metalborn.LOG.error("Failed to load metal {}", entry.getKey(), e);
       }
     }
-    // update the powers
-    updateMetalPowers(Map.copyOf(powers));
-    Metalborn.LOG.info("Loaded {} metal powers in {} ms", powers.size(), (System.nanoTime() - time) / 1_000_000f);
+    // process redirects
+    Map<MetalId,MetalPower> redirects = new HashMap<>();
+    // check if any of the fallback options exists
+    // no worry of circular redirect here as we do not recursively resolve redirects
+    for (Map.Entry<MetalId,List<MetalId>> entry : potentialRedirects.entrySet()) {
+      for (MetalId potential : entry.getValue()) {
+        MetalPower power = powers.get(potential);
+        if (power != null) {
+          redirects.put(entry.getKey(), power);
+          break;
+        }
+      }
+    }
+    // update the stored data structures
+    updateMetalPowers(Map.copyOf(powers), Map.copyOf(redirects));
+    Metalborn.LOG.info("Loaded {} metal powers with {} redirects in {} ms", powers.size(), redirects.size(), (System.nanoTime() - time) / 1_000_000f);
   }
 
 
@@ -151,6 +179,16 @@ public class MetalManager extends SimpleJsonResourceReloadListener {
   /** Gets the power with the given ID */
   public MetalPower get(MetalId id) {
     return powers.getOrDefault(id, MetalPower.DEFAULT);
+  }
+
+  /** Gets the power with the given ID, handling redirects. */
+  public MetalPower resolve(MetalId id) {
+    // while this should never happen, ensure we don't redirect an ID when its power is present
+    MetalPower power = powers.get(id);
+    if (power != null) {
+      return power;
+    }
+    return redirects.getOrDefault(id, MetalPower.DEFAULT);
   }
 
   /** Gets a list of all powers in sorted order */

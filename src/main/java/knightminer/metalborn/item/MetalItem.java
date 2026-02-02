@@ -59,6 +59,18 @@ public interface MetalItem extends ItemLike {
     return stack;
   }
 
+  /** Helper to resolve redirects in the metal */
+  static void verifyTagAfterLoad(CompoundTag tag) {
+    MetalId metal = MetalId.tryParse(tag.getString(TAG_METAL));
+    if (metal != null) {
+      MetalPower power = MetalManager.INSTANCE.resolve(metal);
+      // ensure we don't delete the metal just because it has no match
+      if (power != MetalPower.DEFAULT) {
+        tag.putString(TAG_METAL, power.id().toString());
+      }
+    }
+  }
+
 
   /* Tooltips */
 

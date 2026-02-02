@@ -65,10 +65,10 @@ public class MetalPowerProvider extends AbstractMetalPowerProvider {
     metal(MetalIds.gold).index(7).temperature(700)
       .capacity(MetalFormat.METAL, 40) // 2 full health bars
       .feruchemy(new HealMetalEffect(100));
-    metal(MetalIds.roseGold).index(8).temperature(550).unless("bendalloy")
+    metal(MetalIds.roseGold).index(8).temperature(550).unless(MetalIds.bendalloy)
       .capacity(MetalFormat.METAL, 40) // 2 full food bars
       .feruchemy(new EnergyMetalEffect(0.5f, 4f));
-    metal(MetalIds.bendalloy).index(14).integration().temperature(400)
+    metal(MetalIds.bendalloy).index(14).integration().temperature(400).fallback(MetalIds.roseGold)
       .capacity(MetalFormat.METAL, 40) // 2 full food bars
       .feruchemy(new EnergyMetalEffect(0.5f, 4f));
 
@@ -81,7 +81,7 @@ public class MetalPowerProvider extends AbstractMetalPowerProvider {
     metal(InvestitureMetalmindItem.METAL).name("nicrosil").index(17).temperature(1100).hemalurgyCharge(0);
 
     // compat
-    metal(MetalIds.cadmium).index(13).integration().hemalurgyCharge(13).temperature(594)
+    metal(MetalIds.cadmium).index(13).integration().hemalurgyCharge(13).temperature(594).fallback(MetalIds.silver)
       // when storing, go from 100% (default) to 200% ... 500%
       .feruchemy(new StoringMetalEffect(new CappedMetalEffect(4, AttributeMetalEffect.builder(Registration.VISIBILITY_MULTIPLIER, Operation.MULTIPLY_TOTAL).swapColors().eachLevel(-1))))
       // when tapping, go from 100% (default) to 75% ... 0%
@@ -90,7 +90,7 @@ public class MetalPowerProvider extends AbstractMetalPowerProvider {
       .feruchemy(new OffsetMetalEffect(3, MobEffectMetalEffect.storing(MobEffects.GLOWING).flat(1)))
       // when storing, apply invisibility at level 4
       .feruchemy(new OffsetMetalEffect(3, MobEffectMetalEffect.tapping(MobEffects.INVISIBILITY).alwaysStore().flat(1)));
-    metal(MetalIds.silver).index(9).temperature(790).alternative("cadmium").hemalurgyCharge(15)
+    metal(MetalIds.silver).index(9).temperature(790).alternative(MetalIds.cadmium).hemalurgyCharge(15)
       // when storing, go from 100% (default) to 200% ... 500%
       .feruchemy(new StoringMetalEffect(new CappedMetalEffect(4, AttributeMetalEffect.builder(Registration.VISIBILITY_MULTIPLIER, Operation.MULTIPLY_TOTAL).swapColors().eachLevel(-1))))
       // when tapping, go from 100% (default) to 75% ... 0%
@@ -103,31 +103,31 @@ public class MetalPowerProvider extends AbstractMetalPowerProvider {
       .hemalurgyCharge(8) // guardians are tough creatures
       .feruchemy(AttributeMetalEffect.builder(Registration.DETERMINATION, Operation.MULTIPLY_TOTAL).eachLevel(0.1f));
 
-    metal(MetalIds.zinc).index(11).temperature(420).integration()
+    metal(MetalIds.zinc).index(11).temperature(420).integration().fallback(MetalIds.nickel)
       .feruchemy(AttributeMetalEffect.builder(ForgeMod.SWIM_SPEED, Operation.MULTIPLY_TOTAL).eachLevel(0.1f))
       .feruchemy(AttributeMetalEffect.builder(Registration.RESPIRATION, Operation.ADDITION).eachLevel(1));
     // nickel is only present if no zinc
-    metal(MetalIds.nickel).index(11).temperature(950).alternative("zinc")
+    metal(MetalIds.nickel).index(11).temperature(950).alternative(MetalIds.zinc)
       .feruchemy(AttributeMetalEffect.builder(ForgeMod.SWIM_SPEED, Operation.MULTIPLY_TOTAL).eachLevel(0.1f))
       .feruchemy(AttributeMetalEffect.builder(Registration.RESPIRATION, Operation.ADDITION).eachLevel(1));
 
-    metal(MetalIds.brass).index(12).temperature(605).integration()
+    metal(MetalIds.brass).index(12).temperature(605).integration().fallback(MetalIds.constantan)
       .feruchemy(new WarmthMetalEffect(false))
       .feruchemy(AttributeMetalEffect.builder(Registration.WARMTH, Operation.MULTIPLY_TOTAL).eachLevel(0.1f))
       .feruchemy(new TappingMetalEffect(AttributeMetalEffect.builder(Registration.HEAT_DAMAGE, Operation.ADDITION).eachLevel(1)));
     // constantan is only present if no brass
-    metal(MetalIds.constantan).index(12).temperature(920).alternative("brass")
+    metal(MetalIds.constantan).index(12).temperature(920).alternative(MetalIds.brass)
       .feruchemy(new WarmthMetalEffect(false))
       .feruchemy(AttributeMetalEffect.builder(Registration.WARMTH, Operation.MULTIPLY_TOTAL).eachLevel(0.1f))
       .feruchemy(new TappingMetalEffect(AttributeMetalEffect.builder(Registration.HEAT_DAMAGE, Operation.ADDITION).eachLevel(1)));
 
-    metal(MetalIds.netherite).name("netherite_scrap").index(15).hemalurgyCharge(10).disallowFerring().unless("chromium")
+    metal(MetalIds.netherite).name("netherite_scrap").index(15).hemalurgyCharge(10).disallowFerring().unless(MetalIds.chromium)
       .fluid(FluidTags.create(new ResourceLocation(Metalborn.TINKERS, "molten_debris"))).temperature(1175)
       .feruchemy(AttributeMetalEffect.builder(Attributes.LUCK, Operation.ADDITION).eachLevel(0.5f))
       .feruchemy(AttributeMetalEffect.builder(Registration.EXPERIENCE_MULTIPLIER, Operation.MULTIPLY_TOTAL).eachLevel(0.1f))
       .feruchemy(new TappingMetalEffect(AttributeMetalEffect.builder(Registration.LOOTING_BOOST, Operation.ADDITION).eachLevel(0.25f)))
       .feruchemy(new StoringMetalEffect(AttributeMetalEffect.builder(Registration.DROP_CHANCE, Operation.MULTIPLY_TOTAL).eachLevel(0.1f)));
-    metal(MetalIds.chromium).index(15).integration().hemalurgyCharge(10).temperature(1200)
+    metal(MetalIds.chromium).index(15).integration().hemalurgyCharge(10).temperature(1200).fallback(MetalIds.netherite)
       // TOOD: fluid
       .feruchemy(AttributeMetalEffect.builder(Attributes.LUCK, Operation.ADDITION).eachLevel(0.5f))
       .feruchemy(AttributeMetalEffect.builder(Registration.EXPERIENCE_MULTIPLIER, Operation.MULTIPLY_TOTAL).eachLevel(0.1f))

@@ -47,6 +47,11 @@ public class InvestitureMetalmindItem extends MetalmindItem implements MetalItem
     }
   }
 
+  @Override
+  public void verifyTagAfterLoad(CompoundTag tag) {
+    MetalItem.verifyTagAfterLoad(tag);
+  }
+
 
   /* Metal */
 
