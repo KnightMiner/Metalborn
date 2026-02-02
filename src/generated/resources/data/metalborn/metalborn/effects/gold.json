@@ -3,8 +3,12 @@
   "capacity": 40,
   "feruchemy": [
     {
-      "type": "metalborn:heal",
-      "delay": 100
+      "type": "metalborn:capped",
+      "capped": {
+        "type": "metalborn:heal",
+        "delay": 60
+      },
+      "level": 6
     }
   ],
   "format": "metal",

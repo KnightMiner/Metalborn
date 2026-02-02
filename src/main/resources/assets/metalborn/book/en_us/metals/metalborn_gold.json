@@ -1,6 +1,10 @@
 {
   "append": true,
+  "storing": [
+    "Storing speed caps at 6 metalminds"
+  ],
   "tapping": [
-    "Healing faster restores less health"
+    "Healing faster restores less health",
+    "Healing speed caps at 6 metalminds"
   ]
 }

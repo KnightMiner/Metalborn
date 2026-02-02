@@ -64,7 +64,7 @@ public class MetalPowerProvider extends AbstractMetalPowerProvider {
       .feruchemy(AttributeMetalEffect.builder(ForgeMod.BLOCK_REACH, Operation.ADDITION).eachLevel(0.5f));
     metal(MetalIds.gold).index(7).temperature(700)
       .capacity(MetalFormat.METAL, 40) // 2 full health bars
-      .feruchemy(new HealMetalEffect(100));
+      .feruchemy(new CappedMetalEffect(6, new HealMetalEffect(60))); // caps at 1 health every 10 ticks
     metal(MetalIds.roseGold).index(8).temperature(550).unless(MetalIds.bendalloy)
       .capacity(MetalFormat.METAL, 40) // 2 full food bars
       .feruchemy(new EnergyMetalEffect(0, 4f));
