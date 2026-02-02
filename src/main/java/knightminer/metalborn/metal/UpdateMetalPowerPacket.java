@@ -1,6 +1,7 @@
 package knightminer.metalborn.metal;
 
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.network.NetworkEvent.Context;
 import org.jetbrains.annotations.ApiStatus.Internal;
 import slimeknights.mantle.network.packet.ISimplePacket;
@@ -19,9 +20,9 @@ public record UpdateMetalPowerPacket(Map<MetalId, MetalPower> powers, Map<MetalI
     Map<MetalId,MetalPower> powers = new HashMap<>();
     int size = buffer.readVarInt();
     for (int i = 0; i < size; i++) {
-      MetalId id = MetalId.LOADABLE.decode(buffer);
+      ResourceLocation id = buffer.readResourceLocation();
       MetalPower power = MetalPower.LOADABLE.decode(buffer, MetalManager.createContext(id));
-      powers.put(id, power);
+      powers.put(power.id(), power);
     }
     // read redirects, only the ID syncs
     Map<MetalId,MetalPower> redirects = new HashMap<>();
@@ -41,7 +42,7 @@ public record UpdateMetalPowerPacket(Map<MetalId, MetalPower> powers, Map<MetalI
   public void encode(FriendlyByteBuf buffer) {
     buffer.writeVarInt(powers.size());
     for (MetalPower power : powers.values()) {
-      MetalId.LOADABLE.encode(buffer, power.id());
+      buffer.writeResourceLocation(power.id());
       MetalPower.LOADABLE.encode(buffer, power);
     }
     // for redirects, just write the ID, not the full power
