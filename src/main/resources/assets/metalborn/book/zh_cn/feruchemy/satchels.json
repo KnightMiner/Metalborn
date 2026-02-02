@@ -1,0 +1,14 @@
+{
+  "type": "mantle:showcase",
+  "title": "手提袋",
+  "item": [
+    "metalborn:bronze_satchel",
+    "metalborn:pewter_satchel",
+    "metalborn:steel_satchel",
+    "metalborn:nicrosil_satchel"
+  ],
+  "text": [
+    { "text": "手提袋可以在手持时按下交互键打开，也能直接在物品栏中按下鼠标右键打开。打开的手提袋提供额外的槽位用于存放金属意识，以此方便在多个金属意识中切换。" },
+    { "text": "多数手提袋最多容纳9个物品，白镴手提袋的上限则是18个。钢手提袋即使丢出也能免疫环境伤害。镍铬合金手提袋则在玩家死亡后也得以保留。", "paragraph": true }
+  ]
+}

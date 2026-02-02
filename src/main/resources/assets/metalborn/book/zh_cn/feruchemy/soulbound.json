@@ -1,0 +1,13 @@
+{
+  "type": "mantle:showcase",
+  "title": "魂缚的金属意识",
+  "item": {
+    "type": "metalborn:metal_item",
+    "item": "metalborn:soulbound_ring",
+    "filter": "metalmind"
+  },
+  "text": [
+    { "text": "藉由身份的金属能力，魂缚的金属意识即使在你死亡时，也依然会驻留在身上。你仍需要与相应金属能力建立联系，这样才能驱动金属意识。正因如此，倘若你的金属能力每次死亡后都会变化的话，这件物品便不会那么有用。" },
+    { "text": "要制作一枚魂缚的指环，你需要一个填满的身份指环，身份指环可由一枚空的金属指环和一个回响碎片进行金属锻造制得。", "paragraph": true }
+  ]
+}
