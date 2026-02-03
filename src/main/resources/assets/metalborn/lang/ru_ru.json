@@ -251,7 +251,7 @@
 
   "metal_effect.metalborn.xp.gain": "Восстанавливает %s опыта в сек.",
   "metal_effect.metalborn.xp.store": "Отнимает %s опыт(а) в сек.",
-  "metal_effect.metalborn.saturation.gain": "Восстанавливает %s насыщение в сек.",
+  "metal_effect.metalborn.saturation.gain": "Восстанавливает %s голода при %s насыщении в сек.",
   "metal_effect.metalborn.saturation.store": "Вызывает %s истощения в сек.",
   "metal_effect.metalborn.warmth.heat": "Увеличивает нагрев на каждые %s сек.",
   "metal_effect.metalborn.warmth.cold": "Уменьшает нагрев на каждые %s сек.",
