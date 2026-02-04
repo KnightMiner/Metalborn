@@ -162,7 +162,7 @@ public class PalettedItemModel implements IUnbakedGeometry<PalettedItemModel> {
       }
 
       // build final model
-      CompositeModel.Baked.Builder modelBuilder = CompositeModel.Baked.builder(context, particle, overrides, context.getTransforms());
+      CompositeModel.Baked.Builder modelBuilder = CompositeModel.Baked.builder(context.useAmbientOcclusion(), false, false, particle, overrides, context.getTransforms());
       quadBuilder.build(quadGroup -> modelBuilder.addQuads(quadGroup.renderType, quadGroup.quads));
       return modelBuilder.build();
     }
