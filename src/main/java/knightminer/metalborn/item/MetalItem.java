@@ -65,7 +65,7 @@ public interface MetalItem extends ItemLike {
     if (metal != null) {
       MetalPower power = MetalManager.INSTANCE.resolve(metal);
       // ensure we don't delete the metal just because it has no match
-      if (power != MetalPower.DEFAULT) {
+      if (power != null) {
         tag.putString(TAG_METAL, power.id().toString());
       }
     }

@@ -21,6 +21,7 @@ import net.minecraftforge.event.AddReloadListenerEvent;
 import net.minecraftforge.event.OnDatapackSyncEvent;
 import net.minecraftforge.eventbus.api.EventPriority;
 import org.jetbrains.annotations.ApiStatus.Internal;
+import org.jetbrains.annotations.Nullable;
 import slimeknights.mantle.data.loadable.Loadable;
 import slimeknights.mantle.data.loadable.array.ArrayLoadable;
 import slimeknights.mantle.data.loadable.field.ContextKey;
@@ -181,14 +182,10 @@ public class MetalManager extends SimpleJsonResourceReloadListener {
     return powers.getOrDefault(id, MetalPower.DEFAULT);
   }
 
-  /** Gets the power with the given ID, handling redirects. */
+  /** Resolves the given redirect, returning null if its not redirected. */
+  @Nullable
   public MetalPower resolve(MetalId id) {
-    // while this should never happen, ensure we don't redirect an ID when its power is present
-    MetalPower power = powers.get(id);
-    if (power != null) {
-      return power;
-    }
-    return redirects.getOrDefault(id, MetalPower.DEFAULT);
+    return redirects.get(id);
   }
 
   /** Gets a list of all powers in sorted order */

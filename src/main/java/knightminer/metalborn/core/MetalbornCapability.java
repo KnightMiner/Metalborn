@@ -361,7 +361,7 @@ public class MetalbornCapability implements ICapabilitySerializable<CompoundTag>
       if (this.ferringType != null) {
         MetalPower power = MetalManager.INSTANCE.resolve(this.ferringType);
         // do not delete their power if its missing
-        if (power != MetalPower.DEFAULT) {
+        if (power != null) {
           ferringType = power.id();
         }
       }
