@@ -1,6 +1,6 @@
 {
   "values": [
-    "minecraft:quartz",
-    "minecraft:nether_quartz_ore"
+    "#forge:gems/quartz",
+    "#forge:ores/quartz"
   ]
 }

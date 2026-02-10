@@ -41,6 +41,7 @@ public class MetalbornTags {
     // ingot-like tags - contains ingots, raw ores, and ore blocks
     public static final TagKey<Item> SCRAP_LIKE = local("ingot_like/netherite_scrap");
     public static final TagKey<Item> QUARTZ_LIKE = local("ingot_like/quartz");
+    public static final TagKey<Item> DIAMOND_LIKE = local("ingot_like/diamond");
 
     // Tinkers' cast tags
     public static final TagKey<Item> GOLD_CASTS = tinkers("casts/gold");

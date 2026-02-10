@@ -93,7 +93,8 @@ public class ItemTagProvider extends ItemTagsProvider {
 
     // netherite scrap is weird as its not fully tagged, but we can deal with that
     tag(MetalbornTags.Items.SCRAP_LIKE).add(Items.NETHERITE_SCRAP).addTag(Tags.Items.ORES_NETHERITE_SCRAP);
-    tag(MetalbornTags.Items.QUARTZ_LIKE).add(Items.QUARTZ, Items.NETHER_QUARTZ_ORE);
+    tag(MetalbornTags.Items.QUARTZ_LIKE).addTags(Tags.Items.GEMS_QUARTZ, Tags.Items.ORES_QUARTZ);
+    tag(MetalbornTags.Items.DIAMOND_LIKE).addTags(Tags.Items.GEMS_DIAMOND, Tags.Items.ORES_DIAMOND);
 
     // tinkers compat - casts
     addCast(Registration.RING_CAST);

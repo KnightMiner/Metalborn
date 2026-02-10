@@ -302,23 +302,23 @@ public class RecipeProvider extends net.minecraft.data.recipes.RecipeProvider im
         .requires(ingotLike("nickel"), 2)
         .requires(ingotLike("chromium"), 1)
         .requires(ingotLike("quartz"), 1)::save)
-      // no chromium? replace it with tin
+      // no chromium? replace it with diamond
       .addCondition(ingotLikeCondition("nickel"))
       .addRecipe(ShapelessForgeRecipeBuilder.shapeless(Registration.NICROSIL.getIngotTag(), 4)
         .requires(ingotLike("nickel"), 2)
-        .requires(ingotLike("tin"), 1)
+        .requires(ingotLike("diamond"), 1)
         .requires(ingotLike("quartz"), 1)::save)
-      // no nickel? - replace it with chromium
+      // no nickel but chromium? use the allomancy recipe
       .addCondition(ingotLikeCondition("chromium"))
       .addRecipe(ShapelessForgeRecipeBuilder.shapeless(Registration.NICROSIL.getIngotTag(), 4)
         .requires(ingotLike("chromium"), 2)
         .requires(ingotLike("iron"), 1)
         .requires(ingotLike("quartz"), 1)::save)
-      // both replacements
+      // no nickel or chromium? sub for tin and diamond
       .addCondition(TrueCondition.INSTANCE)
       .addRecipe(ShapelessForgeRecipeBuilder.shapeless(Registration.NICROSIL.getIngotTag(), 4)
         .requires(ingotLike("tin"), 2)
-        .requires(ingotLike("iron"), 1)
+        .requires(ingotLike("diamond"), 1)
         .requires(ingotLike("quartz"), 1)::save)
       .build(consumer, location(alloyFolder + "nicrosil"));
     // netherite is normally 4 scrap + 4 gold = 1 ingot
