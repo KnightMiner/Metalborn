@@ -95,6 +95,7 @@ public class ItemTagProvider extends ItemTagsProvider {
     tag(MetalbornTags.Items.SCRAP_LIKE).add(Items.NETHERITE_SCRAP).addTag(Tags.Items.ORES_NETHERITE_SCRAP);
     tag(MetalbornTags.Items.QUARTZ_LIKE).addTags(Tags.Items.GEMS_QUARTZ, Tags.Items.ORES_QUARTZ);
     tag(MetalbornTags.Items.DIAMOND_LIKE).addTags(Tags.Items.GEMS_DIAMOND, Tags.Items.ORES_DIAMOND);
+    tag(MetalbornTags.Items.EMERALD_LIKE).addTags(Tags.Items.GEMS_EMERALD, Tags.Items.ORES_EMERALD);
 
     // tinkers compat - casts
     addCast(Registration.RING_CAST);

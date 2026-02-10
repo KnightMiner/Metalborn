@@ -42,6 +42,7 @@ public class MetalbornTags {
     public static final TagKey<Item> SCRAP_LIKE = local("ingot_like/netherite_scrap");
     public static final TagKey<Item> QUARTZ_LIKE = local("ingot_like/quartz");
     public static final TagKey<Item> DIAMOND_LIKE = local("ingot_like/diamond");
+    public static final TagKey<Item> EMERALD_LIKE = local("ingot_like/emerald");
 
     // Tinkers' cast tags
     public static final TagKey<Item> GOLD_CASTS = tinkers("casts/gold");
