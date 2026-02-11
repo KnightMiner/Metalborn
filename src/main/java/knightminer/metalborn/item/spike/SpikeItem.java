@@ -176,7 +176,7 @@ public class SpikeItem extends Item implements MetalItem, Spike {
   @Override
   public InteractionResult interactLivingEntity(ItemStack stack, Player player, LivingEntity target, InteractionHand hand) {
     if (hand == InteractionHand.OFF_HAND && Config.OFFHAND_SPIKE_ATTACK.get() && OffhandCooldownTracker.isAttackReady(player)) {
-      if (!player.level().isClientSide && CombatHelper.attack(stack, player, target, target, hand)) {
+      if (CombatHelper.attack(stack, player, target, target, hand)) {
         OffhandCooldownTracker.swingHand(player, hand, false);
         return InteractionResult.CONSUME;
       }
