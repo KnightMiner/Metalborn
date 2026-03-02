@@ -127,7 +127,7 @@ public class IdentityMetalmindItem extends MetalmindItem {
 
     // owner name
     if (amount > 0) {
-      appendOwner(stack, tooltip);
+      appendOwner(stack, tooltip, false);
     }
   }
 }

@@ -357,14 +357,14 @@ public abstract class MetalmindItem extends Item implements Metalmind {
   }
 
   /** Appends the owner to the tooltip */
-  protected static void appendOwner(ItemStack stack, List<Component> tooltip) {
+  protected static void appendOwner(ItemStack stack, List<Component> tooltip, boolean showUnkeyed) {
     CompoundTag tag = stack.getTag();
     if (tag != null) {
       if (tag.contains(TAG_OWNER_NAME, Tag.TAG_STRING)) {
         tooltip.add(ownerComponent(tag.getString(TAG_OWNER_NAME)));
       } else if (tag.hasUUID(TAG_OWNER)) {
         tooltip.add(UNKNOWN_OWNER);
-      } else {
+      } else if (showUnkeyed) {
         tooltip.add(UNKEYED);
       }
     }

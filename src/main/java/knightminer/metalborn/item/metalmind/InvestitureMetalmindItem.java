@@ -175,7 +175,7 @@ public class InvestitureMetalmindItem extends MetalmindItem implements MetalItem
 
     // owner
     if (amount > 0) {
-      appendOwner(stack, tooltip);
+      appendOwner(stack, tooltip, true);
     }
   }
 

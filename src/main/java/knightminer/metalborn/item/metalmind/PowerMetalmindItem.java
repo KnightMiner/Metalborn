@@ -95,7 +95,7 @@ public class PowerMetalmindItem extends MetalmindItem implements MetalItem {
 
       // owner name
       if (amount > 0) {
-        appendOwner(stack, tooltip);
+        appendOwner(stack, tooltip, true);
       }
     }
   }
