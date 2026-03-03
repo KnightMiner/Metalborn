@@ -229,10 +229,9 @@ public class MetalmindInventory extends MetalInventory<MetalmindStack> implement
 
     /** Refreshes the stack in the active metalmind list */
     private void refresh() {
-      if (level != 0 && canUse().isValid(level)) {
-        if (!onUpdate(level, 0)) {
-          level = 0;
-        }
+      // reset level if either we are unable to use this metalmind, or it returns stop
+      if (level != 0 && (!canUse().isValid(level) || !onUpdate(level, 0))) {
+        level = 0;
       }
     }
 
