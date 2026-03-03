@@ -252,7 +252,7 @@ public class MetalbornMenu extends BaseMenu {
           if ((id & 2) > 0) {
             stack.setMatchingLevel(newLevel);
           } else {
-            stack.setLevel(newLevel);
+            stack.setLevel(newLevel, true);
           }
           return true;
         }

@@ -61,6 +61,7 @@ public class MetalmindInventory extends MetalInventory<MetalmindStack> implement
     } else {
       // when not dying (e.g. exit portal), keep them at the previous level
       // means we need to reactivate their powers
+      // TODO: this breaks when using investiture metalminds placed after the active metalmind
       for (MetalmindStack stack : inventory) {
         stack.refresh();
       }
@@ -78,14 +79,16 @@ public class MetalmindInventory extends MetalInventory<MetalmindStack> implement
   @Override
   public void set(int i, int level) {
     if (i >= 0 && i < inventory.size()) {
-      inventory.get(i).setLevel(level);
+      // don't do the valid check as its possible this is made valid by a later metalmind
+      // if it's not valid, thats the servers job to fix at this stage
+      inventory.get(i).setLevel(level, false);
     }
   }
 
   /** Stops all tapping and storing */
   public void stopAll() {
     for (MetalmindStack stack : inventory) {
-      stack.setLevel(0);
+      stack.setLevel(0, false);
     }
   }
 
@@ -155,18 +158,21 @@ public class MetalmindInventory extends MetalInventory<MetalmindStack> implement
     }
 
     /** Updates the level on the stack */
-    public void setLevel(int newLevel) {
-      // ensure the metalmind is actually usable to change the level
-      if (!canUse().isValid(newLevel)) {
-        newLevel = 0;
-      }
-      // if the metalmind is empty, no tapping
-      else if (newLevel > 0 && metalmind.isEmpty(stack)) {
-        newLevel = 0;
-      }
-      // if the metalmind is full, no filling
-      else if (newLevel < 0 && metalmind.isFull(stack)) {
-        newLevel = 0;
+    public void setLevel(int newLevel, boolean checkValid) {
+      // only need to bother with things that reset to 0 if not targeting 0
+      if (newLevel != 0) {
+        // ensure the metalmind is actually usable to change the level
+        if (checkValid && !canUse().isValid(newLevel)) {
+          newLevel = 0;
+        }
+        // if the metalmind is empty, no tapping
+        else if (newLevel > 0 && metalmind.isEmpty(stack)) {
+          newLevel = 0;
+        }
+        // if the metalmind is full, no filling
+        else if (newLevel < 0 && metalmind.isFull(stack)) {
+          newLevel = 0;
+        }
       }
       if (newLevel != level) {
         if (onUpdate(newLevel, level)) {
@@ -181,7 +187,7 @@ public class MetalmindInventory extends MetalInventory<MetalmindStack> implement
     public void setMatchingLevel(int level) {
       for (MetalmindStack metalmind : inventory) {
         if (metalmind == this || this.metalmind.isSamePower(this.stack, metalmind.stack)) {
-          metalmind.setLevel(level);
+          metalmind.setLevel(level, true);
         }
       }
     }
