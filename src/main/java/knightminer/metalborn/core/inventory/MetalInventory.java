@@ -111,7 +111,7 @@ public abstract class MetalInventory<T extends StackHolder<T>> implements IItemH
         current.deserializeNBT(tag);
       }
     }
-    refreshActive();
+    refreshActive(false);
   }
 
   /** Attempts to equip the given item */
@@ -134,15 +134,15 @@ public abstract class MetalInventory<T extends StackHolder<T>> implements IItemH
   }
 
   /** Copies all stacks from the other inventory */
-  public void copyFrom(MetalInventory<T> other) {
+  public void copyFrom(MetalInventory<T> other, boolean wasDeath) {
     for (int i = 0; i < inventory.size(); i++) {
       inventory.get(i).copyFrom(other.inventory.get(i));
     }
-    refreshActive();
+    refreshActive(wasDeath);
   }
 
   /** Refreshes the properties of this inventory */
-  protected abstract void refreshActive();
+  protected abstract void refreshActive(boolean wasDeath);
 
   /** Clears the inventory */
   public void clear() {

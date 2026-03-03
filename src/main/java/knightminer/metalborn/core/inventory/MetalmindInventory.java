@@ -51,9 +51,19 @@ public class MetalmindInventory extends MetalInventory<MetalmindStack> implement
   }
 
   @Override
-  protected void refreshActive() {
-    for (MetalmindStack stack : inventory) {
-      stack.refresh();
+  protected void refreshActive(boolean wasDeath) {
+    // if we just died, make all metalminds inactive
+    // need to call update methods as those were cleared earlier
+    if (wasDeath) {
+      for (MetalmindStack stack : inventory) {
+        stack.level = 0;
+      }
+    } else {
+      // when not dying (e.g. exit portal), keep them at the previous level
+      // means we need to reactivate their powers
+      for (MetalmindStack stack : inventory) {
+        stack.refresh();
+      }
     }
   }
 

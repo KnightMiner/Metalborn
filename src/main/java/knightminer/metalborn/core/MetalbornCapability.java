@@ -322,10 +322,10 @@ public class MetalbornCapability implements ICapabilitySerializable<CompoundTag>
       }
       this.activeMetalminds.clear();
       // copy spikes first as they may be what allows a power to be active
-      this.spikes.copyFrom(other.spikes);
+      this.spikes.copyFrom(other.spikes, wasDeath);
       // there may be some redundant work as all the metalminds are copied over
       // however, it did not seem work having a suppress updates part of the API when this is rarely called
-      this.metalminds.copyFrom(other.metalminds);
+      this.metalminds.copyFrom(other.metalminds, wasDeath);
     }
   }
 
