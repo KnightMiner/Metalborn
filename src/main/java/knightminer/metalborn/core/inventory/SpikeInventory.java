@@ -161,6 +161,12 @@ public class SpikeInventory extends MetalInventory<SpikeStack> {
     }
 
     @Override
+    protected void copyFrom(SpikeStack other) {
+      super.copyFrom(other);
+      this.metal = other.metal;
+    }
+
+    @Override
     protected void clear() {
       super.clear();
       metal = MetalId.NONE;
