@@ -15,6 +15,8 @@ import net.minecraftforge.common.util.INBTSerializable;
 import net.minecraftforge.items.IItemHandlerModifiable;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.stream.IntStream;
 
 /** Inventory of metalminds held on the player */
@@ -61,9 +63,19 @@ public class MetalmindInventory extends MetalInventory<MetalmindStack> implement
     } else {
       // when not dying (e.g. exit portal), keep them at the previous level
       // means we need to reactivate their powers
-      // TODO: this breaks when using investiture metalminds placed after the active metalmind
+      List<MetalmindStack> retry = new ArrayList<>(inventory.size());
+      // loop 1: if it fails, don't reset its level but defer to try again later
+      // deals with investiture metalminds granting a power earlier than them
       for (MetalmindStack stack : inventory) {
-        stack.refresh();
+        if (stack.refresh()) {
+          retry.add(stack);
+        }
+      }
+      // loop 2: try failures again, if they repeat failure then reset them to 0
+      for (MetalmindStack stack : retry) {
+        if (stack.refresh()) {
+          stack.level = 0;
+        }
       }
     }
   }
@@ -243,12 +255,23 @@ public class MetalmindInventory extends MetalInventory<MetalmindStack> implement
       this.level = other.level;
     }
 
-    /** Refreshes the stack in the active metalmind list */
-    private void refresh() {
-      // reset level if either we are unable to use this metalmind, or it returns stop
-      if (level != 0 && (!canUse().isValid(level) || !onUpdate(level, 0))) {
-        level = 0;
+    /**
+     * Refreshes the stack to activate its power.
+     * @return true if this needs to be checked again after metalminds finish processing.
+     */
+    private boolean refresh() {
+      if (level != 0) {
+        // if the metal is no longer valid, don't immediately reset. Instead defer to check again later
+        // works around issues with investiture metalminds
+        if (!canUse().isValid(level)) {
+          return true;
+        }
+        // if on update fails, reset immediately. This indicates something went wrong in using the power
+        if (!onUpdate(level, 0)) {
+          level = 0;
+        }
       }
+      return false;
     }
 
     @Override
