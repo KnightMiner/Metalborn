@@ -21,27 +21,26 @@ public class MetalColorManager implements ISafeManagerReloadListener {
   public static final MetalColorManager INSTANCE = new MetalColorManager();
 
   /** Loaded mapping of colors */
-  private Object2IntMap<ResourceLocation> colors = Object2IntMaps.emptyMap();
+  private Object2IntMap<String> colors = Object2IntMaps.emptyMap();
 
   private MetalColorManager() {}
 
   @Override
   public void onReloadSafe(ResourceManager manager) {
-    Object2IntMap<ResourceLocation> colors = new Object2IntOpenHashMap<>();
+    Object2IntMap<String> colors = new Object2IntOpenHashMap<>();
     for (Entry<ResourceLocation, Resource> entry : CONVERTER.listMatchingResources(manager).entrySet()) {
       ResourceLocation path = entry.getKey();
       if (Metalborn.MOD_ID.equals(path.getNamespace())) {
         String id = CONVERTER.fileToId(path).getPath();
-        int index = id.indexOf('_');
-        if (index != -1) {
-          ResourceLocation metal = new ResourceLocation(id.substring(0, index), id.substring(index + 1));
+        // don't care about palettes that lack underscore, means they are a fallback
+        if (id.indexOf('_') != -1) {
           try (
             InputStream input = entry.getValue().open();
             NativeImage image = NativeImage.read(input);
           ) {
-            colors.put(metal, translateColorBGR(image.getPixelRGBA(2, 0)));
+            colors.put(id, translateColorBGR(image.getPixelRGBA(2, 0)));
           } catch (IOException e) {
-            Metalborn.LOG.error("Failed to fetch color from metal palette {} at {}", metal, path, e);
+            Metalborn.LOG.error("Failed to fetch color from metal palette {} at {}", id, path, e);
           }
         }
       }
@@ -51,7 +50,8 @@ public class MetalColorManager implements ISafeManagerReloadListener {
 
   /** Gets the color for the given metal */
   public int getColor(ResourceLocation metal, int defaultColor) {
-    return colors.getOrDefault(metal, defaultColor);
+    String id = metal.getNamespace() + '_' + metal.getPath();
+    return colors.getOrDefault(id, defaultColor);
   }
 
   /** Converts an ARGB color to a ABGR color or vice versa */
