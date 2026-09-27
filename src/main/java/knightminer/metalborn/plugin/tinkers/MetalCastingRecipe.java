@@ -22,12 +22,11 @@ import slimeknights.mantle.recipe.helper.TagPreference;
 import slimeknights.mantle.recipe.helper.TypeAwareRecipeSerializer;
 import slimeknights.mantle.recipe.ingredient.FluidIngredient;
 import slimeknights.tconstruct.library.recipe.casting.AbstractCastingRecipe;
-import slimeknights.tconstruct.library.recipe.casting.DisplayCastingRecipe;
 import slimeknights.tconstruct.library.recipe.casting.ICastingContainer;
 import slimeknights.tconstruct.library.recipe.casting.ICastingRecipe;
 import slimeknights.tconstruct.library.recipe.casting.IDisplayableCastingRecipe;
 
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -112,37 +111,73 @@ public class MetalCastingRecipe extends AbstractCastingRecipe implements IMultiR
   /* JEI */
   protected List<IDisplayableCastingRecipe> multiRecipes = null;
 
-  /** Adds the metal to the list of stacks */
-  private static List<ItemStack> withMetal(List<ItemStack> stacks, MetalId metal) {
-    // first, find a stack that is a metal item; if none we don't need a new list
-    for (ItemStack stack : stacks) {
-      if (stack.getItem() instanceof MetalItem) {
-        // we now know we have a stack, so copy each over
-        return stacks.stream().map(s -> s.getItem() instanceof MetalItem ? MetalItem.setMetal(s.copy(), metal) : s).toList();
-      }
-    }
-    return stacks;
-  }
-
   @Override
   public List<IDisplayableCastingRecipe> getRecipes(RegistryAccess access) {
     if (multiRecipes == null) {
-      // if its a metal ingredient, display each stack as a separate recipe
-      Ingredient cast = getCast();
-      List<ItemStack> castItems = Arrays.asList(cast.getItems());
-      multiRecipes = MetalManager.INSTANCE.getSortedPowers().stream()
-        .filter(power -> power.temperature() > 0 && filter.test(power) && TagPreference.getPreference(power.fluid()).isPresent())
-        .map(power -> {
-          List<FluidStack> fluids = ((FluidIngredient)FluidIngredient.of(power.fluid(), amount)).getFluids();
-          return DisplayCastingRecipe.from(this)
-            .casts(withMetal(castItems, power.id()))
-            .fluids(fluids)
-            .result(MetalItem.setMetal(result.copy(), power.id()))
-            .coolingTime(ICastingRecipe.calcCoolingTime(power.temperature(), amount))
-            .consumed(isConsumed())
-            .build();
-        }).toList();
+      List<ItemStack> results = new ArrayList<>();
+      List<FluidStack> fluids = new ArrayList<>();
+      int maxTime = 0;
+      for (MetalPower power : MetalManager.INSTANCE.getSortedPowers()) {
+        if (power.temperature() > 0 && filter.test(power) && TagPreference.getPreference(power.fluid()).isPresent()) {
+          // add all new fluids to the animation
+          List<FluidStack> newFluids = ((FluidIngredient)FluidIngredient.of(power.fluid(), amount)).getFluids();
+          fluids.addAll(newFluids);
+          // add a copy of the result per fluid
+          ItemStack newResult = MetalItem.setMetal(result.copy(), power.id());
+          for (int i = 0; i < newFluids.size(); i++) {
+            results.add(newResult);
+          }
+          int newTime = ICastingRecipe.calcCoolingTime(power.temperature(), amount);
+          if (newTime > maxTime) {
+            maxTime = newTime;
+          }
+        }
+      }
+      // if we got anything, make the display recipe
+      if (!results.isEmpty()) {
+        multiRecipes = List.of(new DisplayRecipe(getId(), List.of(getCast().getItems()), isConsumed(), List.copyOf(fluids), List.copyOf(results), maxTime));
+      } else {
+        multiRecipes = List.of();
+      }
     }
     return multiRecipes;
+  }
+
+  /** Display recipe implementation - handles dynamic cooling time from the fluid */
+  private record DisplayRecipe(ResourceLocation getRecipeId, List<ItemStack> getCastItems, boolean isConsumed, List<FluidStack> getFluids, List<ItemStack> getOutputs, int getCoolingTime) implements IDisplayableCastingRecipe {
+    @Override
+    public boolean hasCast() {
+      return !getCastItems.isEmpty();
+    }
+
+    @Override
+    public boolean linkCastToOutput() {
+      return false;
+    }
+
+    @Override
+    public boolean linkFluidsToOutput() {
+      return true;
+    }
+
+    @Deprecated
+    @Override
+    public ItemStack getOutput() {
+      return getOutputs.get(0);
+    }
+
+    @Override
+    public boolean isCoolingTimeDynamic() {
+      return true;
+    }
+
+    @Override
+    public int getCoolingTime(FluidStack fluid) {
+      int temperature = MetalManager.INSTANCE.fromFluid(fluid.getFluid()).temperature();
+      if (temperature == 0) {
+        return getCoolingTime;
+      }
+      return ICastingRecipe.calcCoolingTime(temperature, fluid.getAmount());
+    }
   }
 }
