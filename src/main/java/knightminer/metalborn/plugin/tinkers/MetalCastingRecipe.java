@@ -29,7 +29,6 @@ import slimeknights.tconstruct.library.recipe.casting.IDisplayableCastingRecipe;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * Casting recipe for casting metal items, such as metalminds or spikes.
@@ -135,10 +134,14 @@ public class MetalCastingRecipe extends AbstractCastingRecipe implements IMultiR
         .filter(power -> power.temperature() > 0 && filter.test(power) && TagPreference.getPreference(power.fluid()).isPresent())
         .map(power -> {
           List<FluidStack> fluids = ((FluidIngredient)FluidIngredient.of(power.fluid(), amount)).getFluids();
-          return new DisplayCastingRecipe(
-            getId(), getType(), withMetal(castItems, power.id()), fluids, MetalItem.setMetal(result.copy(), power.id()),
-            ICastingRecipe.calcCoolingTime(power.temperature(), amount), isConsumed());
-        }).collect(Collectors.toList());
+          return DisplayCastingRecipe.from(this)
+            .casts(withMetal(castItems, power.id()))
+            .fluids(fluids)
+            .result(MetalItem.setMetal(result.copy(), power.id()))
+            .coolingTime(ICastingRecipe.calcCoolingTime(power.temperature(), amount))
+            .consumed(isConsumed())
+            .build();
+        }).toList();
     }
     return multiRecipes;
   }
