@@ -55,6 +55,8 @@ public class TinkersMockRecipeBuilder {
   private static final int GOLD_INGOT_TIME = 57;
   /** Material ID for copper, the one part builder metalmind recipe */
   private static final ResourceLocation COPPER = new ResourceLocation(TINKERS, "copper");
+  /** Title key for sand cast creation */
+  private static final ResourceLocation SAND_CAST_TITLE = new ResourceLocation(TINKERS, "sand_cast");
 
   /** Creates all recipes for creating casts in Tinkers' Construct */
   public static void castRecipes(Consumer<FinishedRecipe> consumer, ItemLike metalItem, List<ItemLike> otherItems, CastItemObject cast, MetalFilter filter, int cost, String folder) {
@@ -66,10 +68,10 @@ public class TinkersMockRecipeBuilder {
 
     // part builder - makes sand casts and copper metalminds
     consumer.accept(new ItemPartRecipe(root.withSuffix("/part_builder"), COPPER, id, Ingredient.EMPTY, cost, ItemOutput.fromStack(MetalItem.setMetal(new ItemStack(metalItem), MetalIds.copper))));
-    consumer.accept(new ItemPartRecipe(casts.withSuffix("sand_builder"),           id, SAND_CASTS,     sandCast));
-    consumer.accept(new ItemPartRecipe(casts.withSuffix("red_sand_builder"),       id, RED_SAND_CASTS, redSandCast));
-    consumer.accept(new ItemPartRecipe(casts.withSuffix("sand_builder_block"),     id, Ingredient.of(Blocks.SAND),     ItemOutput.fromItem(cast.getSand(), 4)));
-    consumer.accept(new ItemPartRecipe(casts.withSuffix("red_sand_builder_block"), id, Ingredient.of(Blocks.RED_SAND), ItemOutput.fromItem(cast.getRedSand(), 4)));
+    consumer.accept(new ItemPartRecipe(casts.withSuffix("sand_builder"),           SAND_CAST_TITLE, id, SAND_CASTS,     sandCast));
+    consumer.accept(new ItemPartRecipe(casts.withSuffix("red_sand_builder"),       SAND_CAST_TITLE, id, RED_SAND_CASTS, redSandCast));
+    consumer.accept(new ItemPartRecipe(casts.withSuffix("sand_builder_block"),     SAND_CAST_TITLE, id, Ingredient.of(Blocks.SAND),     ItemOutput.fromItem(cast.getSand(), 4)));
+    consumer.accept(new ItemPartRecipe(casts.withSuffix("red_sand_builder_block"), SAND_CAST_TITLE, id, Ingredient.of(Blocks.RED_SAND), ItemOutput.fromItem(cast.getRedSand(), 4)));
 
     // molding - makes sand casts in the casting table
     Ingredient itemIngredient = MetalItemIngredient.of(metalItem, filter);
@@ -190,9 +192,9 @@ public class TinkersMockRecipeBuilder {
   }
 
   /** Finished recipe for an item part recipe */
-  private record ItemPartRecipe(ResourceLocation getId, @Nullable ResourceLocation material, ResourceLocation pattern, Ingredient patternItem, int cost, ItemOutput result) implements MockRecipe {
-    public ItemPartRecipe(ResourceLocation id, ResourceLocation pattern, Ingredient patternItem, ItemOutput result) {
-      this(id, null, pattern, patternItem, 0, result);
+  private record ItemPartRecipe(ResourceLocation getId, @Nullable ResourceLocation materialOrTitle, ResourceLocation pattern, Ingredient patternItem, int cost, ItemOutput result) implements MockRecipe {
+    public ItemPartRecipe(ResourceLocation id, ResourceLocation title, ResourceLocation pattern, Ingredient patternItem, ItemOutput result) {
+      this(id, title, pattern, patternItem, 0, result);
     }
 
     @Override
@@ -202,9 +204,13 @@ public class TinkersMockRecipeBuilder {
 
     @Override
     public void serializeRecipeData(JsonObject json) {
-      if (material != null) {
-        json.addProperty("material", material.toString());
-        json.addProperty("cost", cost);
+      if (materialOrTitle != null) {
+        if (cost > 0) {
+          json.addProperty("material", materialOrTitle.toString());
+          json.addProperty("cost", cost);
+        } else {
+          json.addProperty("title_key", materialOrTitle.toString());
+        }
       }
       json.addProperty("pattern", pattern.toString());
       if (patternItem != Ingredient.EMPTY) {
