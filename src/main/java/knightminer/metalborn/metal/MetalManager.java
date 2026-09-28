@@ -116,7 +116,7 @@ public class MetalManager extends SimpleJsonResourceReloadListener {
   void updateMetalPowers(Map<MetalId,MetalPower> powers, Map<MetalId,MetalPower> redirects) {
     this.powers = powers;
     this.redirects = redirects;
-    this.sortedPowers = powers.values().stream().sorted(Comparator.comparing(MetalPower::index)).toList();
+    this.sortedPowers = powers.values().stream().sorted(Comparator.comparing(MetalPower::index).thenComparing(MetalPower::id)).toList();
     this.ferrings = sortedPowers.stream().filter(power -> power.ferring() && !power.feruchemy().isEmpty()).toList();
     this.itemCache.clear();
     this.entityCache.clear();
