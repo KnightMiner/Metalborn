@@ -358,23 +358,25 @@ public class MetalContent extends PageContent {
 
     // add metalmind
     List<ItemStack> metalminds = getMetalminds().getItems();
+    HtmlElement metalmindElement = HtmlElement.div().classes("metalmind");
+    page.add(metalmindElement);
     if (!metalminds.isEmpty()) {
-      page.add(HtmlElement.div().classes("metalmind")
+      metalmindElement
         .add(HtmlElement.div().classes("item").minetip(itemTooltip(metalminds.get(0))))
         .add(HtmlElement.div().classes("item-text")
           .add(metalText(KEY_FERRING, metal.getFerring(), ChatFormatting.DARK_AQUA))
           .add(metalText(KEY_STORES, metal.getStores(), ChatFormatting.DARK_GREEN))
-        )
-      );
+        );
     }
 
     // add spikes
     List<ItemStack> spikes = getSpikes().getItems();
+    HtmlElement spikeElement = HtmlElement.div().classes("spike");
+    page.add(spikeElement);
     if (!spikes.isEmpty()) {
-      page.add(HtmlElement.div().classes("spike")
+      spikeElement
         .add(HtmlElement.div().classes("item").minetip(itemTooltip(spikes.get(0))))
-        .add(HtmlElement.div().classes("item-text").add(metalText(KEY_TARGET, metal.getTarget(), ChatFormatting.DARK_RED)))
-      );
+        .add(HtmlElement.div().classes("item-text").add(metalText(KEY_TARGET, metal.getTarget(), ChatFormatting.DARK_RED)));
     }
     // add effects
     page.add(HtmlElement.div().classes("row").add(
