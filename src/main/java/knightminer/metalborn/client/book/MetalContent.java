@@ -14,12 +14,17 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.core.NonNullList;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.network.chat.Style;
+import net.minecraft.network.chat.TextColor;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.TooltipFlag;
+import org.apache.commons.lang3.mutable.MutableObject;
+import slimeknights.mantle.client.book.HTMLUtils;
 import slimeknights.mantle.client.book.data.BookData;
 import slimeknights.mantle.client.book.data.content.PageContent;
 import slimeknights.mantle.client.book.data.element.IngredientData;
@@ -31,11 +36,16 @@ import slimeknights.mantle.client.screen.book.element.ItemElement;
 import slimeknights.mantle.client.screen.book.element.TextComponentElement;
 import slimeknights.mantle.client.screen.book.element.TextElement;
 import slimeknights.mantle.util.RegistryHelper;
+import slimeknights.mantle.util.html.HtmlElement;
+import slimeknights.mantle.util.html.HtmlGroup;
+import slimeknights.mantle.util.html.HtmlSerializable;
 
 import javax.annotation.Nullable;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -153,20 +163,20 @@ public class MetalContent extends PageContent {
     list.add(new TextComponentElement(x, y, width, height, title));
 
     // we use text components when autogenerating data from the effects list
-    if (append || this.append ||texts == null) {
+    if (append || this.append || texts == null) {
       Player player = Minecraft.getInstance().player;
       List<TextComponentData> effectData = new ArrayList<>();
       if (player != null) {
         List<Component> components = new ArrayList<>();
         getPower().getTooltip(player, fallbackLevel, components);
         for (Component text : components) {
-          effectData.add(new TextComponentData(Component.literal("● ").append(text.copy().setStyle(Style.EMPTY))).linebreak(true));
+          effectData.add(new TextComponentData(Component.literal(TextData.LIST_PREFIX).append(text.copy().setStyle(Style.EMPTY))).linebreak(true));
         }
       }
       // append texts array
       if (texts != null) {
         for (String text : texts) {
-          effectData.add(new TextComponentData("● " + text).linebreak(true));
+          effectData.add(new TextComponentData(TextData.LIST_PREFIX + text).linebreak(true));
         }
       }
       // add if we have any effects
@@ -176,7 +186,7 @@ public class MetalContent extends PageContent {
     } else if (texts.length > 0) {
       List<TextData> effectData = new ArrayList<>();
       for (String text : texts) {
-        effectData.add(new TextData("● " + text).linebreak(true));
+        effectData.add(new TextData(TextData.LIST_PREFIX + text).linebreak(true));
       }
       list.add(new TextElement(x, y + 14, width, height, effectData));
     }
@@ -229,5 +239,149 @@ public class MetalContent extends PageContent {
     int height = BookScreen.PAGE_HEIGHT - y;
     addList(list,  0, y, width, height, STORING_EFFECTS, storing, append_storing, -1);
     addList(list, width + 4, y, width, height, TAPPING_EFFECTS, tapping, append_tapping, 1);
+  }
+
+
+  /* HTML */
+
+  /** Creates an element with the given style. */
+  private static HtmlGroup applyStyle(Style style) {
+    HtmlGroup group;
+    if (!style.isEmpty()) {
+      // span if we have styles
+      HtmlElement element = HtmlElement.span();
+      group = element;
+      TextColor color = style.getColor();
+      if (color != null && (color.getValue() & 0xFFFFFF) != 0) {
+        element.color(color.getValue());
+      }
+
+      if (style.isBold()) element.style("font-weight", "bold");
+      if (style.isItalic()) element.style("font-style", "italic");
+      if (style.isStrikethrough()) element.style("text-decoration", "line-through");
+
+      if (style.isUnderlined()) element.classes("underline");
+    } else {
+      group = HtmlGroup.inline();
+    }
+    return group;
+  }
+
+  /** Copy of {@link HTMLUtils#toHtml(Component)} to fix a bug with styles in arguments. TODO: replace with Mantle version after its merged back in. */
+  private static HtmlSerializable toHtml(Component component) {
+    HtmlGroup group = HtmlGroup.inline();
+    // keep track of the last used style so we only add a new span if something changes - works around a lot of arguments sharing styles
+    MutableObject<Style> lastStyle = new MutableObject<>(Style.EMPTY);
+    MutableObject<HtmlGroup> lastElement = new MutableObject<>(group);
+
+    // add contents
+    component.visit((style, string) -> {
+      HtmlGroup nested = lastElement.getValue();
+      if (!style.equals(lastStyle.getValue())) {
+        nested = applyStyle(style);
+        group.add(nested);
+        lastStyle.setValue(style);
+        lastElement.setValue(nested);
+      }
+      if (string.indexOf('\n') != -1) {
+        nested.add(HtmlGroup.indent().add(Arrays.stream(string.split("\n")).map(str -> HtmlElement.span().add(str))));
+      } else {
+        nested.add(string);
+      }
+      return Optional.empty();
+    }, Style.EMPTY);
+
+    return group;
+  }
+
+
+  /** Adds a list of effects to the page */
+  private HtmlElement htmlList(Component title, @Nullable String[] texts, boolean append, int fallbackLevel) {
+    HtmlElement element = HtmlElement.div().classes("column");
+    // add title
+    element.add(HtmlElement.p().classes("effect-title").add(toHtml(title)));
+
+    // build list
+    HtmlElement list = HtmlElement.ul().classes("effects");
+    element.add(list);
+
+    // we use text components when autogenerating data from the effects list
+    if (append || this.append || texts == null) {
+      Player player = Minecraft.getInstance().player;
+      if (player != null) {
+        List<Component> components = new ArrayList<>();
+        getPower().getTooltip(player, fallbackLevel, components);
+        for (Component text : components) {
+          list.add(HtmlElement.li().add(HtmlElement.p().add(toHtml(text.copy().setStyle(Style.EMPTY)))));
+        }
+      }
+    }
+    // add texts array
+    if (texts != null) {
+      for (String text : texts) {
+        list.add(HtmlElement.li().add(HtmlElement.p().add(text)));
+      }
+    }
+    return element;
+  }
+
+  /** Makes a text line for the metal description */
+  private static HtmlSerializable metalText(String key, MutableComponent text, ChatFormatting style) {
+    return HtmlElement.p().add(toHtml(Component.translatable(key, text.withStyle(style))));
+  }
+
+  /** Creates an item tooltip as a serializable component, for use in minetips. */
+  private static HtmlSerializable itemTooltip(ItemStack stack) {
+    HtmlGroup group = HtmlGroup.indent();
+    for (Component component : stack.getTooltipLines(Minecraft.getInstance().player, TooltipFlag.NORMAL)) {
+      group.add(toHtml(component));
+    }
+    return group;
+  }
+
+  @Nullable
+  @Override
+  public HtmlSerializable toHTML(BookData book) {
+    MetalId metal = getMetal();
+    HtmlElement page = HtmlElement.div().classes("page-metalborn").add(makeTitleHTML().classes("title"));
+
+    // add metal ingot and nugget tooltips
+    MetalPower power = getPower();
+    List<ItemStack> items = getItems(power.ingot());
+    if (!items.isEmpty()) {
+      page.add(HtmlElement.div().classes("metal-ingot").minetip(itemTooltip(items.get(0))));
+    }
+    items = getItems(power.nugget());
+    if (!items.isEmpty()) {
+      page.add(HtmlElement.div().classes("metal-nugget").minetip(itemTooltip(items.get(0))));
+    }
+
+    // add metalmind
+    List<ItemStack> metalminds = getMetalminds().getItems();
+    if (!metalminds.isEmpty()) {
+      page.add(HtmlElement.div().classes("metalmind")
+        .add(HtmlElement.div().classes("item").minetip(itemTooltip(metalminds.get(0))))
+        .add(HtmlElement.div().classes("item-text")
+          .add(metalText(KEY_FERRING, metal.getFerring(), ChatFormatting.DARK_AQUA))
+          .add(metalText(KEY_STORES, metal.getStores(), ChatFormatting.DARK_GREEN))
+        )
+      );
+    }
+
+    // add spikes
+    List<ItemStack> spikes = getSpikes().getItems();
+    if (!spikes.isEmpty()) {
+      page.add(HtmlElement.div().classes("spike")
+        .add(HtmlElement.div().classes("item").minetip(itemTooltip(spikes.get(0))))
+        .add(HtmlElement.div().classes("item-text").add(metalText(KEY_TARGET, metal.getTarget(), ChatFormatting.DARK_RED)))
+      );
+    }
+    // add effects
+    page.add(HtmlElement.div().classes("row").add(
+      htmlList(STORING_EFFECTS, storing, append_storing, -1),
+      htmlList(TAPPING_EFFECTS, tapping, append_tapping, 1)
+    ));
+
+    return page;
   }
 }
