@@ -79,9 +79,9 @@
 
 
   "metal_power.metalborn.silver": "银",
-  "metal_power.metalborn.silver.stores": "运气",
-  "metal_power.metalborn.silver.ferring": "旋转",
-  "metal_power.metalborn.silver.target": "灾厄村民",
+  "metal_power.metalborn.silver.stores": "隐匿",
+  "metal_power.metalborn.silver.ferring": "星火",
+  "metal_power.metalborn.silver.target": "蠹虫",
   "metal_power.metalborn.cadmium": "镉",
   "metal_power.metalborn.cadmium.stores": "隐匿",
   "metal_power.metalborn.cadmium.ferring": "星火",
@@ -247,7 +247,7 @@
 
   "metal_effect.metalborn.xp.gain": "每秒回复%s点经验值",
   "metal_effect.metalborn.xp.store": "每秒扣除%s点经验值",
-  "metal_effect.metalborn.saturation.gain": "每秒回复%s点饱和度",
+  "metal_effect.metalborn.saturation.gain": "每秒回复%s点饥饿值、%s点饱和度",
   "metal_effect.metalborn.saturation.store": "每秒增加%s点消耗度",
   "metal_effect.metalborn.warmth.heat": "每秒增加%s点热量",
   "metal_effect.metalborn.warmth.cold": "每秒减少%s点热量",
