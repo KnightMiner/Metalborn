@@ -1,35 +1,37 @@
 package knightminer.metalborn.network;
 
+import io.netty.buffer.ByteBuf;
+import knightminer.metalborn.Metalborn;
 import knightminer.metalborn.core.MetalbornData;
 import knightminer.metalborn.menu.MetalbornMenu;
 import knightminer.metalborn.metal.MetalId;
-import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.chat.Component;
-import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.network.codec.StreamCodec;
+import net.minecraft.util.ByIdMap.OutOfBoundsStrategy;
 import net.minecraft.world.SimpleMenuProvider;
-import net.neoforged.neoforge.network.NetworkEvent.Context;
-import net.neoforged.neoforge.network.NetworkHooks;
-import slimeknights.mantle.network.packet.IThreadsafePacket;
+import net.minecraft.world.entity.player.Player;
+import net.neoforged.neoforge.network.handling.IPayloadContext;
+import slimeknights.mantle.network.ISimplePacket;
+import slimeknights.mantle.network.MantleStreamCodecs;
 
 /** Packet sent from client to server when keybindings are pressed */
-public enum ControlPacket implements IThreadsafePacket {
+public enum ControlPacket implements ISimplePacket {
   INVENTORY;
 
-  public static ControlPacket decode(FriendlyByteBuf buffer) {
-    return buffer.readEnum(ControlPacket.class);
+  public static final Type<ControlPacket> TYPE = new Type<>(Metalborn.resource("control"));
+  public static final StreamCodec<ByteBuf, ControlPacket> CODEC = MantleStreamCodecs.enumCodec(ControlPacket.class, OutOfBoundsStrategy.ZERO);
+
+  @Override
+  public Type<ControlPacket> type() {
+    return TYPE;
   }
 
   @Override
-  public void encode(FriendlyByteBuf buffer) {
-    buffer.writeEnum(this);
-  }
-
-  @Override
-  public void handleThreadsafe(Context context) {
-    ServerPlayer player = context.getSender();
-    if (player != null && !player.hasContainerOpen() && !player.isSpectator()) {
+  public void handle(IPayloadContext context) {
+    Player player = context.player();
+    if (!player.hasContainerOpen() && !player.isSpectator()) {
       MetalId ferringType = MetalbornData.getData(player).getFerringType();
-      NetworkHooks.openScreen(player, new SimpleMenuProvider(
+      player.openMenu(new SimpleMenuProvider(
         (id, inventory, p) -> new MetalbornMenu(id, inventory),
         Component.empty()
       ), buffer -> {

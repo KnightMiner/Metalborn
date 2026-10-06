@@ -18,7 +18,6 @@ import knightminer.metalborn.data.tag.EntityTagProvider;
 import knightminer.metalborn.data.tag.ItemTagProvider;
 import knightminer.metalborn.data.tag.MenuTagProvider;
 import knightminer.metalborn.metal.MetalManager;
-import knightminer.metalborn.network.MetalbornNetwork;
 import knightminer.metalborn.plugin.tinkers.TinkersPlugin;
 import net.minecraft.core.HolderLookup.Provider;
 import net.minecraft.data.DataGenerator;
@@ -57,7 +56,6 @@ public class Metalborn {
 
   public Metalborn(IEventBus modEventBus, ModContainer modContainer) {
     modContainer.registerConfig(Type.COMMON, Config.COMMON_SPEC);
-    MetalbornNetwork.setup();
     MetalManager.INSTANCE.init();
     Registration.init(modEventBus);
     MetalbornCommand.init();

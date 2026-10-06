@@ -2,36 +2,35 @@ package knightminer.metalborn.network;
 
 import knightminer.metalborn.Metalborn;
 import knightminer.metalborn.metal.UpdateMetalPowerPacket;
-import net.neoforged.neoforge.network.NetworkDirection;
-import org.jetbrains.annotations.ApiStatus.Internal;
-import slimeknights.mantle.network.NetworkWrapper;
+import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.fml.common.EventBusSubscriber;
+import net.neoforged.neoforge.network.event.RegisterPayloadHandlersEvent;
+import net.neoforged.neoforge.network.registration.HandlerThread;
+import net.neoforged.neoforge.network.registration.PayloadRegistrar;
+import slimeknights.mantle.network.ISimplePacket;
 
 /** Network instance for Metalborn */
-public class MetalbornNetwork extends NetworkWrapper {
-  private static MetalbornNetwork instance = null;
-  private MetalbornNetwork() {
-    super(Metalborn.resource("network"));
-  }
+@EventBusSubscriber(modid = Metalborn.MOD_ID)
+public class MetalbornNetwork {
+  /**
+   * Network instance
+   * 21.0: Initial 1.21.1 release
+   */
+  private static final String VERSION = "21.0";
 
-  /** Gets the instance of the network */
-  public static MetalbornNetwork getInstance() {
-    if (instance == null) {
-      throw new IllegalStateException("Attempt to call network getInstance before network is setup");
-    }
-    return instance;
-  }
-
-  /** Called during mod construction to setup the network */
-  @Internal
-  public static void setup() {
-    if (instance != null) {
-      return;
-    }
-    instance = new MetalbornNetwork();
+  /**
+   * Registers packets into this network
+   */
+  @SubscribeEvent
+  static void registerPackets(RegisterPayloadHandlersEvent event) {
+    PayloadRegistrar registrar = event.registrar(VERSION);
 
     // datapacks
-    instance.registerPacket(UpdateMetalPowerPacket.class, UpdateMetalPowerPacket::decode, NetworkDirection.PLAY_TO_CLIENT);
+    registrar.executesOn(HandlerThread.NETWORK);
+    registrar.playToClient(UpdateMetalPowerPacket.TYPE, UpdateMetalPowerPacket.CODEC, ISimplePacket.handle());
+
     // controls
-    instance.registerPacket(ControlPacket.class, ControlPacket::decode, NetworkDirection.PLAY_TO_SERVER);
+    registrar.executesOn(HandlerThread.MAIN);
+    registrar.playToServer(ControlPacket.TYPE, ControlPacket.CODEC, ISimplePacket.handle());
   }
 }
