@@ -2,6 +2,7 @@ modLoader="javafml"
 loaderVersion="${loader_range}"
 issueTrackerURL="https://github.com/KnightMiner/Metalborn/issues/"
 license="MIT"
+
 [[mods]]
 modId="metalborn"
 version="${version}"
@@ -13,27 +14,37 @@ authors="KnightMiner"
 description='''
 Metalborn adds in Feruchemy, which allows storing attributes in metal, making you temporarily weaker. Those attributes can later be tapped to boost your power.
 '''
-[[dependencies.metalborn]] 
-    modId="forge"
-    mandatory=true
-    versionRange="${forge_range}"
-    ordering="AFTER"
+[[dependencies.metalborn]]
+    modId="neoforge"
+    type="required"
+    versionRange="${neo_range}"
+    ordering="NONE"
     side="BOTH"
+
 [[dependencies.metalborn]]
     modId="minecraft"
-    mandatory=true
+    type="required"
     versionRange="${minecraft_range}"
     ordering="NONE"
     side="BOTH"
+
 [[dependencies.metalborn]]
     modId="mantle"
     mandatory=true
     versionRange="${mantle_range}"
     ordering="NONE"
     side="BOTH"
+
+[[dependencies.metalborn]]
+    modId="jei"
+    type="optional"
+    versionRange="${jei_range}"
+    ordering="NONE"
+    side="BOTH"
+
 [[dependencies.metalborn]]
     modId="tconstruct"
-    mandatory=false
+    type="optional"
     versionRange="${tinkers_range}"
     ordering="NONE"
     side="BOTH"
