@@ -4,7 +4,7 @@ import knightminer.metalborn.client.book.MetalbornBook;
 import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.ApiStatus.Internal;
 import slimeknights.mantle.client.book.BookScreenOpener;
-import slimeknights.mantle.item.AbstractBookItem;
+import slimeknights.mantle.item.book.AbstractBookItem;
 
 /** Book item for the mod */
 @Internal

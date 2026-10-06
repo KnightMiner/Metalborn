@@ -20,9 +20,6 @@ import knightminer.metalborn.item.spike.InvestitureSpikeItem;
 import knightminer.metalborn.item.spike.MonsterSpikeItem;
 import knightminer.metalborn.item.spike.SpikeItem;
 import knightminer.metalborn.json.ConfigEnabledCondition;
-import knightminer.metalborn.json.ingredient.FillableIngredient;
-import knightminer.metalborn.json.ingredient.MetalItemIngredient;
-import knightminer.metalborn.json.ingredient.MetalShapeIngredient;
 import knightminer.metalborn.json.loot.ApplyDropChanceLootModifier;
 import knightminer.metalborn.json.recipe.cooking.BlastingMetalRecyclingRecipe;
 import knightminer.metalborn.json.recipe.cooking.SmeltingMetalRecyclingRecipe;
@@ -46,9 +43,9 @@ import knightminer.metalborn.metal.effects.specialized.ExperienceMetalEffect;
 import knightminer.metalborn.metal.effects.specialized.HealMetalEffect;
 import knightminer.metalborn.metal.effects.specialized.UpdateHealthEffect;
 import knightminer.metalborn.metal.effects.specialized.WarmthMetalEffect;
-import knightminer.metalborn.util.AttributeDeferredRegister;
 import knightminer.metalborn.util.CastItemObject;
 import knightminer.metalborn.util.ItemDeferredRegisterExtension;
+import net.minecraft.core.Holder;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
@@ -79,25 +76,22 @@ import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.NoteBlockInstrument;
 import net.minecraft.world.level.material.MapColor;
 import net.minecraft.world.level.storage.loot.predicates.LootItemConditionType;
-import net.neoforged.neoforge.common.MinecraftForge;
-import net.neoforged.neoforge.common.crafting.CraftingHelper;
-import net.neoforged.neoforge.event.entity.EntityAttributeModificationEvent;
-import net.neoforged.neoforge.eventbus.api.IEventBus;
+import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.ModList;
-import net.neoforged.fml.javafmlmod.FMLJavaModLoadingContext;
+import net.neoforged.neoforge.event.entity.EntityAttributeModificationEvent;
+import net.neoforged.neoforge.registries.DeferredBlock;
+import net.neoforged.neoforge.registries.DeferredHolder;
+import net.neoforged.neoforge.registries.DeferredItem;
 import net.neoforged.neoforge.registries.DeferredRegister;
-import net.neoforged.neoforge.registries.ForgeRegistries;
-import net.neoforged.neoforge.registries.MissingMappingsEvent;
+import net.neoforged.neoforge.registries.NeoForgeRegistries;
 import net.neoforged.neoforge.registries.RegisterEvent;
-import net.neoforged.neoforge.registries.RegistryObject;
 import org.jetbrains.annotations.ApiStatus.Internal;
 import slimeknights.mantle.recipe.helper.LoadableRecipeSerializer;
-import slimeknights.mantle.registration.RegistrationHelper;
+import slimeknights.mantle.registration.deferred.AttributeDeferredRegister;
 import slimeknights.mantle.registration.deferred.BlockDeferredRegister;
 import slimeknights.mantle.registration.deferred.BlockEntityTypeDeferredRegister;
 import slimeknights.mantle.registration.deferred.MenuTypeDeferredRegister;
 import slimeknights.mantle.registration.object.EnumObject;
-import slimeknights.mantle.registration.object.ItemObject;
 import slimeknights.mantle.registration.object.MetalItemObject;
 import slimeknights.mantle.registration.object.MultiObject;
 
@@ -127,11 +121,9 @@ public class Registration {
 
   /** Initializes the registration event buses */
   @Internal
-  public static void init() {
-    IEventBus bus = FMLJavaModLoadingContext.get().getModEventBus();
+  public static void init(IEventBus bus) {
     bus.addListener(Registration::registerMisc);
     bus.addListener(Registration::addAttributes);
-    MinecraftForge.EVENT_BUS.addListener(Registration::missingMappings);
     BLOCKS.register(bus);
     BLOCK_ENTITIES.register(bus);
     ITEMS.register(bus);
@@ -142,32 +134,32 @@ public class Registration {
     LOOT_CONDITIONS.register(bus);
   }
 
-  public static final ItemObject<Item> METALLIC_ARTS = ITEMS.register("metallic_arts", () -> new MetalbornBookItem(new Properties().stacksTo(1)));
+  public static final DeferredItem<Item> METALLIC_ARTS = ITEMS.register("metallic_arts", () -> new MetalbornBookItem(new Properties().stacksTo(1)));
 
   // metals
-  public static final ItemObject<Item> COPPER_NUGGET = ITEMS.register("copper_nugget");
-  public static final ItemObject<Item> NETHERITE_SHARD, NETHERITE_NUGGET;
+  public static final DeferredItem<Item> COPPER_NUGGET = ITEMS.register("copper_nugget");
+  public static final DeferredItem<Item> NETHERITE_SHARD, NETHERITE_NUGGET;
   static {
     Item.Properties props = new Item.Properties().fireResistant();
     NETHERITE_SHARD = ITEMS.register("netherite_shard", props);
     NETHERITE_NUGGET = ITEMS.register("netherite_nugget", props);
   }
-  public static final ItemObject<RandomFerringItem> RANDOM_FERRING = ITEMS.register("random_ferring", () -> new RandomFerringItem(new Item.Properties()));
-  public static final ItemObject<ChangeFerringItem> CHANGE_FERRING = ITEMS.register("change_ferring", () -> new ChangeFerringItem(new Item.Properties().fireResistant()));
+  public static final DeferredItem<RandomFerringItem> RANDOM_FERRING = ITEMS.register("random_ferring", () -> new RandomFerringItem(new Item.Properties()));
+  public static final DeferredItem<ChangeFerringItem> CHANGE_FERRING = ITEMS.register("change_ferring", () -> new ChangeFerringItem(new Item.Properties().fireResistant()));
 
   // unique
-  public static final MetalItemObject TIN       = BLOCKS.registerMetal("tin",       metalBuilder(MapColor.ICE), BLOCK_ITEM, PROPS);
-  public static final MetalItemObject PEWTER    = BLOCKS.registerMetal("pewter",    metalBuilder(MapColor.TERRACOTTA_GREEN), BLOCK_ITEM, PROPS);
-  public static final MetalItemObject STEEL     = BLOCKS.registerMetal("steel",     metalBuilder(MapColor.STONE), BLOCK_ITEM, PROPS);
-  public static final MetalItemObject BRONZE    = BLOCKS.registerMetal("bronze",    metalBuilder(MapColor.WOOD), BLOCK_ITEM, PROPS);
-  public static final MetalItemObject ROSE_GOLD = BLOCKS.registerMetal("rose_gold", metalBuilder(MapColor.TERRACOTTA_WHITE), BLOCK_ITEM, PROPS);
-  public static final MetalItemObject NICROSIL  = BLOCKS.registerMetal("nicrosil",  metalBuilder(MapColor.SNOW), BLOCK_ITEM, PROPS);
+  public static final MetalItemObject TIN       = BLOCKS.registerMetal("tin").block(metalBuilder(MapColor.ICE));
+  public static final MetalItemObject PEWTER    = BLOCKS.registerMetal("pewter").block(metalBuilder(MapColor.TERRACOTTA_GREEN));
+  public static final MetalItemObject STEEL     = BLOCKS.registerMetal("steel").block(metalBuilder(MapColor.STONE));
+  public static final MetalItemObject BRONZE    = BLOCKS.registerMetal("bronze").block(metalBuilder(MapColor.WOOD));
+  public static final MetalItemObject ROSE_GOLD = BLOCKS.registerMetal("rose_gold").block(metalBuilder(MapColor.TERRACOTTA_WHITE));
+  public static final MetalItemObject NICROSIL  = BLOCKS.registerMetal("nicrosil").block(metalBuilder(MapColor.SNOW));
 
   // ores
-  public static final ItemObject<Block> TIN_ORE = BLOCKS.register("tin_ore", BlockBehaviour.Properties.of().mapColor(MapColor.STONE).instrument(NoteBlockInstrument.BASEDRUM).requiresCorrectToolForDrops().strength(3.0F, 3.0F), BLOCK_ITEM);
-  public static final ItemObject<Block> DEEPSLATE_TIN_ORE = BLOCKS.register("deepslate_tin_ore", BlockBehaviour.Properties.of().mapColor(MapColor.DEEPSLATE).instrument(NoteBlockInstrument.BASEDRUM).requiresCorrectToolForDrops().strength(4.5F, 3.0F).sound(SoundType.DEEPSLATE), BLOCK_ITEM);
-  public static final ItemObject<Block> RAW_TIN_BLOCK = BLOCKS.register("raw_tin_block", BlockBehaviour.Properties.of().mapColor(MapColor.RAW_IRON).instrument(NoteBlockInstrument.BASEDRUM).requiresCorrectToolForDrops().strength(5.0F, 6.0F), BLOCK_ITEM);
-  public static final ItemObject<Item> RAW_TIN = ITEMS.register("raw_tin");
+  public static final DeferredBlock<Block> TIN_ORE = BLOCKS.register("tin_ore", BlockBehaviour.Properties.of().mapColor(MapColor.STONE).instrument(NoteBlockInstrument.BASEDRUM).requiresCorrectToolForDrops().strength(3.0F, 3.0F), BLOCK_ITEM);
+  public static final DeferredBlock<Block> DEEPSLATE_TIN_ORE = BLOCKS.register("deepslate_tin_ore", BlockBehaviour.Properties.of().mapColor(MapColor.DEEPSLATE).instrument(NoteBlockInstrument.BASEDRUM).requiresCorrectToolForDrops().strength(4.5F, 3.0F).sound(SoundType.DEEPSLATE), BLOCK_ITEM);
+  public static final DeferredBlock<Block> RAW_TIN_BLOCK = BLOCKS.register("raw_tin_block", BlockBehaviour.Properties.of().mapColor(MapColor.RAW_IRON).instrument(NoteBlockInstrument.BASEDRUM).requiresCorrectToolForDrops().strength(5.0F, 6.0F), BLOCK_ITEM);
+  public static final DeferredItem<Item> RAW_TIN = ITEMS.register("raw_tin");
 
   // metal item tags
   /** List of metalminds to display in the book, should implement {@link MetalItem} */
@@ -183,29 +175,29 @@ public class Registration {
 
   // metal items
   // metalminds
-  public static final ItemObject<PowerMetalmindItem> BRACER = ITEMS.register("bracer", () -> new PowerMetalmindItem(new Item.Properties().stacksTo(8), 10));
-  public static final ItemObject<PowerMetalmindItem> RING = ITEMS.register("ring", () -> new PowerMetalmindItem(new Item.Properties().stacksTo(8), 1));
-  public static final ItemObject<PowerMetalmindItem> UNSEALED_RING = ITEMS.register("unsealed_ring", () -> new UnsealedMetalmindItem(new Item.Properties().stacksTo(8).fireResistant(), 1));
-  public static final ItemObject<PowerMetalmindItem> SOULBOUND_RING = ITEMS.register("soulbound_ring", () -> new PowerMetalmindItem(new Item.Properties().stacksTo(8), 1));
+  public static final DeferredItem<PowerMetalmindItem> BRACER = ITEMS.register("bracer", () -> new PowerMetalmindItem(new Item.Properties().stacksTo(8), 10));
+  public static final DeferredItem<PowerMetalmindItem> RING = ITEMS.register("ring", () -> new PowerMetalmindItem(new Item.Properties().stacksTo(8), 1));
+  public static final DeferredItem<PowerMetalmindItem> UNSEALED_RING = ITEMS.register("unsealed_ring", () -> new UnsealedMetalmindItem(new Item.Properties().stacksTo(8).fireResistant(), 1));
+  public static final DeferredItem<PowerMetalmindItem> SOULBOUND_RING = ITEMS.register("soulbound_ring", () -> new PowerMetalmindItem(new Item.Properties().stacksTo(8), 1));
   // investiture metalminds
-  public static final ItemObject<InvestitureMetalmindItem> INVESTITURE_BRACER = ITEMS.register("investiture_bracer", () -> new InvestitureMetalmindItem(new Item.Properties().stacksTo(8), 10));
-  public static final ItemObject<InvestitureMetalmindItem> INVESTITURE_RING = ITEMS.register("investiture_ring", () -> new InvestitureMetalmindItem(new Item.Properties().stacksTo(8), 1));
-  public static final ItemObject<InvestitureMetalmindItem> SOULBOUND_INVESTITURE_RING = ITEMS.register("soulbound_investiture_ring", () -> new InvestitureMetalmindItem(new Item.Properties().stacksTo(8), 1));
+  public static final DeferredItem<InvestitureMetalmindItem> INVESTITURE_BRACER = ITEMS.register("investiture_bracer", () -> new InvestitureMetalmindItem(new Item.Properties().stacksTo(8), 10));
+  public static final DeferredItem<InvestitureMetalmindItem> INVESTITURE_RING = ITEMS.register("investiture_ring", () -> new InvestitureMetalmindItem(new Item.Properties().stacksTo(8), 1));
+  public static final DeferredItem<InvestitureMetalmindItem> SOULBOUND_INVESTITURE_RING = ITEMS.register("soulbound_investiture_ring", () -> new InvestitureMetalmindItem(new Item.Properties().stacksTo(8), 1));
   // identity metalminds
-  public static final ItemObject<IdentityMetalmindItem> IDENTITY_BRACER = ITEMS.register("identity_bracer", () -> new IdentityMetalmindItem(new Item.Properties().stacksTo(8), 10));
-  public static final ItemObject<IdentityMetalmindItem> IDENTITY_RING = ITEMS.register("identity_ring", () -> new IdentityMetalmindItem(new Item.Properties().stacksTo(8), 1));
-  public static final ItemObject<IdentityMetalmindItem> SOULBOUND_IDENTITY_RING = ITEMS.register("soulbound_identity_ring", () -> new IdentityMetalmindItem(new Item.Properties().stacksTo(8), 1));
+  public static final DeferredItem<IdentityMetalmindItem> IDENTITY_BRACER = ITEMS.register("identity_bracer", () -> new IdentityMetalmindItem(new Item.Properties().stacksTo(8), 10));
+  public static final DeferredItem<IdentityMetalmindItem> IDENTITY_RING = ITEMS.register("identity_ring", () -> new IdentityMetalmindItem(new Item.Properties().stacksTo(8), 1));
+  public static final DeferredItem<IdentityMetalmindItem> SOULBOUND_IDENTITY_RING = ITEMS.register("soulbound_identity_ring", () -> new IdentityMetalmindItem(new Item.Properties().stacksTo(8), 1));
   // spikes
-  public static final ItemObject<MonsterSpikeItem> SPIKE = ITEMS.register("spike", () -> new MonsterSpikeItem(new Item.Properties().stacksTo(1)));
-  public static final ItemObject<InvestitureSpikeItem> INVESTITURE_SPIKE = ITEMS.register("investiture_spike", () -> new InvestitureSpikeItem(new Item.Properties().stacksTo(1)));
-  public static final ItemObject<SpikeItem> SOULBOUND_SPIKE = ITEMS.register("soulbound_spike", () -> new SpikeItem(new Item.Properties().stacksTo(1)));
+  public static final DeferredItem<MonsterSpikeItem> SPIKE = ITEMS.register("spike", () -> new MonsterSpikeItem(new Item.Properties().stacksTo(1)));
+  public static final DeferredItem<InvestitureSpikeItem> INVESTITURE_SPIKE = ITEMS.register("investiture_spike", () -> new InvestitureSpikeItem(new Item.Properties().stacksTo(1)));
+  public static final DeferredItem<SpikeItem> SOULBOUND_SPIKE = ITEMS.register("soulbound_spike", () -> new SpikeItem(new Item.Properties().stacksTo(1)));
 
   // metal forge
-  public static final ItemObject<ForgeBlock> FORGE = BLOCKS.register("forge", () -> new ForgeBlock(BlockBehaviour.Properties.of().mapColor(MapColor.STONE).instrument(NoteBlockInstrument.BASEDRUM).requiresCorrectToolForDrops().strength(3.5F).lightLevel(s -> s.getValue(BlockStateProperties.LIT) ? 13 : 0)), BLOCK_ITEM);
-  public static final RegistryObject<BlockEntityType<ForgeBlockEntity>> FORGE_BLOCK_ENTITY = BLOCK_ENTITIES.register("forge", ForgeBlockEntity::new, FORGE);
+  public static final DeferredBlock<ForgeBlock> FORGE = BLOCKS.register("forge", () -> new ForgeBlock(BlockBehaviour.Properties.of().mapColor(MapColor.STONE).instrument(NoteBlockInstrument.BASEDRUM).requiresCorrectToolForDrops().strength(3.5F).lightLevel(s -> s.getValue(BlockStateProperties.LIT) ? 13 : 0)), BLOCK_ITEM);
+  public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<ForgeBlockEntity>> FORGE_BLOCK_ENTITY = BLOCK_ENTITIES.register("forge", ForgeBlockEntity::new, FORGE);
 
   // satchels
-  public static final EnumObject<SatchelType, SatchelItem> SATCHEL = ITEMS.registerEnum(SatchelType.values(), "satchel", type -> {
+  public static final EnumObject<SatchelType,Item> SATCHEL = ITEMS.registerEnum(SatchelType.values(), "satchel", type -> {
     Item.Properties props = new Item.Properties().stacksTo(1);
     if (type == SatchelType.STEEL) {
       props.fireResistant();
@@ -225,54 +217,54 @@ public class Registration {
   public static final ResourceKey<DamageType> UPDATE_HEALTH = ResourceKey.create(Registries.DAMAGE_TYPE, resource("update_health"));
 
   // menus
-  public static final RegistryObject<MenuType<MetalbornMenu>> METALBORN_MENU = MENUS.register("metalborn", MetalbornMenu::forClient);
-  public static final RegistryObject<MenuType<ForgeMenu>> FORGE_MENU = MENUS.register("forge", ForgeMenu::new);
+  public static final DeferredHolder<MenuType<?>,MenuType<MetalbornMenu>> METALBORN_MENU = MENUS.register("metalborn", MetalbornMenu::forClient);
+  public static final DeferredHolder<MenuType<?>,MenuType<ForgeMenu>> FORGE_MENU = MENUS.register("forge", ForgeMenu::new);
 
   // recipe
-  public static final RegistryObject<RecipeType<ForgeRecipe>> FORGE_RECIPE = RECIPE_TYPES.register("forge", () -> RecipeType.simple(Metalborn.resource("forge")));
-  public static final RegistryObject<RecipeSerializer<ShapelessForgeRecipe>> SHAPELESS_FORGE = RECIPES.register("shapeless_forge", () -> LoadableRecipeSerializer.of(ShapelessForgeRecipe.LOADABLE));
-  public static final RegistryObject<RecipeSerializer<ShapedForgeRecipe>> SHAPED_FORGE = RECIPES.register("shaped_forge", () -> new ShapedForgeRecipe.Serializer<>(ShapedForgeRecipe::new));
-  public static final RegistryObject<RecipeSerializer<MetalShapelessForgeRecipe>> METAL_SHAPELESS_FORGE = RECIPES.register("metal_shapeless_forge", () -> LoadableRecipeSerializer.of(MetalShapelessForgeRecipe.LOADABLE));
-  public static final RegistryObject<RecipeSerializer<MetalShapedForgeRecipe>> METAL_SHAPED_FORGE = RECIPES.register("metal_shaped_forge", () -> new ShapedForgeRecipe.Serializer<>(MetalShapedForgeRecipe::new));
+  public static final DeferredHolder<RecipeType<?>,RecipeType<ForgeRecipe>> FORGE_RECIPE = RECIPE_TYPES.register("forge", () -> RecipeType.simple(Metalborn.resource("forge")));
+  public static final DeferredHolder<RecipeSerializer<?>,RecipeSerializer<ShapelessForgeRecipe>> SHAPELESS_FORGE = RECIPES.register("shapeless_forge", () -> LoadableRecipeSerializer.of(ShapelessForgeRecipe.LOADABLE));
+  public static final DeferredHolder<RecipeSerializer<?>,RecipeSerializer<ShapedForgeRecipe>> SHAPED_FORGE = RECIPES.register("shaped_forge", () -> new ShapedForgeRecipe.Serializer<>(ShapedForgeRecipe::new));
+  public static final DeferredHolder<RecipeSerializer<?>,RecipeSerializer<MetalShapelessForgeRecipe>> METAL_SHAPELESS_FORGE = RECIPES.register("metal_shapeless_forge", () -> LoadableRecipeSerializer.of(MetalShapelessForgeRecipe.LOADABLE));
+  public static final DeferredHolder<RecipeSerializer<?>,RecipeSerializer<MetalShapedForgeRecipe>> METAL_SHAPED_FORGE = RECIPES.register("metal_shaped_forge", () -> new ShapedForgeRecipe.Serializer<>(MetalShapedForgeRecipe::new));
   // furnace
-  public static final RegistryObject<RecipeSerializer<SmeltingMetalRecyclingRecipe>> SMELTING_METAL_RECYCLING = RECIPES.register("smelting_metal_recycling", () -> LoadableRecipeSerializer.of(SmeltingMetalRecyclingRecipe.LOADABLE));
-  public static final RegistryObject<RecipeSerializer<BlastingMetalRecyclingRecipe>> BLASTING_METAL_RECYCLING = RECIPES.register("blasting_metal_recycling", () -> LoadableRecipeSerializer.of(BlastingMetalRecyclingRecipe.LOADABLE));
+  public static final DeferredHolder<RecipeSerializer<?>,RecipeSerializer<SmeltingMetalRecyclingRecipe>> SMELTING_METAL_RECYCLING = RECIPES.register("smelting_metal_recycling", () -> LoadableRecipeSerializer.of(SmeltingMetalRecyclingRecipe.LOADABLE));
+  public static final DeferredHolder<RecipeSerializer<?>,RecipeSerializer<BlastingMetalRecyclingRecipe>> BLASTING_METAL_RECYCLING = RECIPES.register("blasting_metal_recycling", () -> LoadableRecipeSerializer.of(BlastingMetalRecyclingRecipe.LOADABLE));
 
   // Tinkers' compat
   /** Serializer ID for the metal basin casting recipe, added via the Tinkers' Construct plugin */
-  public static final RegistryObject<RecipeSerializer<?>> METAL_CASTING_BASIN = RegistryObject.create(resource("metal_casting_basin"), ForgeRegistries.RECIPE_SERIALIZERS);
+  public static final DeferredHolder<RecipeSerializer<?>,RecipeSerializer<?>> METAL_CASTING_BASIN = DeferredHolder.create(Registries.RECIPE_SERIALIZER, resource("metal_casting_basin"));
   /** Serializer ID for the metal table casting recipe, added via the Tinkers' Construct plugin */
-  public static final RegistryObject<RecipeSerializer<?>> METAL_CASTING_TABLE = RegistryObject.create(resource("metal_casting_table"), ForgeRegistries.RECIPE_SERIALIZERS);
+  public static final DeferredHolder<RecipeSerializer<?>,RecipeSerializer<?>> METAL_CASTING_TABLE = DeferredHolder.create(Registries.RECIPE_SERIALIZER, resource("metal_casting_table"));
   /** Serializer ID for the metal melting recipe, added via the Tinkers' Construct plugin */
-  public static final RegistryObject<RecipeSerializer<?>> METAL_MELTING = RegistryObject.create(resource("metal_melting"), ForgeRegistries.RECIPE_SERIALIZERS);
+  public static final DeferredHolder<RecipeSerializer<?>,RecipeSerializer<?>> METAL_MELTING = DeferredHolder.create(Registries.RECIPE_SERIALIZER, resource("metal_melting"));
   /** Serializer ID for the copy metal basin casting recipe, added via the Tinkers' Construct plugin */
-  public static final RegistryObject<RecipeSerializer<?>> COPY_METAL_BASIN = RegistryObject.create(resource("copy_metal_basin"), ForgeRegistries.RECIPE_SERIALIZERS);
+  public static final DeferredHolder<RecipeSerializer<?>,RecipeSerializer<?>> COPY_METAL_BASIN = DeferredHolder.create(Registries.RECIPE_SERIALIZER, resource("copy_metal_basin"));
   /** Serializer ID for the copy metal table casting recipe, added via the Tinkers' Construct plugin */
-  public static final RegistryObject<RecipeSerializer<?>> COPY_METAL_TABLE = RegistryObject.create(resource("copy_metal_table"), ForgeRegistries.RECIPE_SERIALIZERS);
+  public static final DeferredHolder<RecipeSerializer<?>,RecipeSerializer<?>> COPY_METAL_TABLE = DeferredHolder.create(Registries.RECIPE_SERIALIZER, resource("copy_metal_table"));
 
   // attributes
   /** Multiplier on the distance you can safely fall without damage */
-  public static final RegistryObject<Attribute> FALL_DISTANCE_MULTIPLIER = ATTRIBUTES.registerMultiplier("fall_distance_multiplier", true);
+  public static final DeferredHolder<Attribute,Attribute> FALL_DISTANCE_MULTIPLIER = ATTRIBUTES.registerMultiplier("fall_distance_multiplier", true);
   /** Multiplier for knockback this entity takes. Similar to {@link net.minecraft.world.entity.ai.attributes.Attributes#KNOCKBACK_RESISTANCE} but can be used to increase knockback */
-  public static final RegistryObject<Attribute> KNOCKBACK_MULTIPLIER = ATTRIBUTES.registerMultiplier("knockback_multiplier", true);
+  public static final DeferredHolder<Attribute,Attribute> KNOCKBACK_MULTIPLIER = ATTRIBUTES.registerMultiplier("knockback_multiplier", true);
   /** Player modifier data key for mining speed multiplier as an additive percentage boost on mining speed. */
-  public static final RegistryObject<Attribute> MINING_SPEED_MULTIPLIER = ATTRIBUTES.registerMultiplier("mining_speed_multiplier", true);
+  public static final DeferredHolder<Attribute,Attribute> MINING_SPEED_MULTIPLIER = ATTRIBUTES.registerMultiplier("mining_speed_multiplier", true);
   /** Chance that loot in a loot table will drop. */
-  public static final RegistryObject<Attribute> DROP_CHANCE = ATTRIBUTES.registerPercent("drop_chance", 1, false);
+  public static final DeferredHolder<Attribute,Attribute> DROP_CHANCE = ATTRIBUTES.registerPercent("drop_chance", 1, false);
   /** Boost to level of looting in loot tables. */
-  public static final RegistryObject<Attribute> LOOTING_BOOST = ATTRIBUTES.register("looting_boost", 0, -10, 10, false);
+  public static final DeferredHolder<Attribute,Attribute> LOOTING_BOOST = ATTRIBUTES.register("looting_boost", 0, -10, 10, false);
   /** Multiplier to amount of experience gained. */
-  public static final RegistryObject<Attribute> EXPERIENCE_MULTIPLIER = ATTRIBUTES.registerMultiplier("experience_multiplier", false);
+  public static final DeferredHolder<Attribute,Attribute> EXPERIENCE_MULTIPLIER = ATTRIBUTES.registerMultiplier("experience_multiplier", false);
   /** Changes the amount of damage taken. */
-  public static final RegistryObject<Attribute> DETERMINATION  = ATTRIBUTES.register("determination", 1, 0, 2, true);
+  public static final DeferredHolder<Attribute,Attribute> DETERMINATION  = ATTRIBUTES.register("determination", 1, 0, 2, true);
   /** Above 1, reduces cold damage and increases heat damage. Below 1, reduces heat damage and increases cold damage. */
-  public static final RegistryObject<Attribute> WARMTH  = ATTRIBUTES.register("warmth", 1, 0, 2, true);
+  public static final DeferredHolder<Attribute,Attribute> WARMTH  = ATTRIBUTES.register("warmth", 1, 0, 2, true);
   /** Applies bonus damage to melee attacks in the form of a fiery attack. */
-  public static final RegistryObject<Attribute> HEAT_DAMAGE  = ATTRIBUTES.register("heat_damage", 0, 0, 1024, true);
+  public static final DeferredHolder<Attribute,Attribute> HEAT_DAMAGE  = ATTRIBUTES.register("heat_damage", 0, 0, 1024, true);
   /** Changes visibility as seen by monsters. */
-  public static final RegistryObject<Attribute> VISIBILITY_MULTIPLIER = ATTRIBUTES.registerMultiplier("visibility_multiplier", false);
+  public static final DeferredHolder<Attribute,Attribute> VISIBILITY_MULTIPLIER = ATTRIBUTES.registerMultiplier("visibility_multiplier", false);
   /** Makes it easier or harder for the entity to breath. */
-  public static final RegistryObject<Attribute> RESPIRATION = ATTRIBUTES.register("respiration", 0, -10, 10, true);
+  public static final DeferredHolder<Attribute,Attribute> RESPIRATION = ATTRIBUTES.register("respiration", 0, -10, 10, true);
 
   // Tinkers' Construct compat
   public static final CastItemObject BRACER_CAST = ITEMS.registerCast("bracer");
@@ -280,7 +272,7 @@ public class Registration {
   public static final CastItemObject SPIKE_CAST = ITEMS.registerCast("spike");
 
   // loot
-  public static final RegistryObject<LootItemConditionType> CONFIG = LOOT_CONDITIONS.register("config", () -> new LootItemConditionType(ConfigEnabledCondition.Serializer.INSTANCE));
+  public static final DeferredHolder<LootItemConditionType,LootItemConditionType> CONFIG = LOOT_CONDITIONS.register("config", () -> new LootItemConditionType(ConfigEnabledCondition.Serializer.INSTANCE));
 
 
   /** Registers any relevant static entries */
@@ -302,11 +294,11 @@ public class Registration {
       MetalEffect.REGISTRY.register(resource("update_health"), UpdateHealthEffect.LOADER);
       MetalEffect.REGISTRY.register(resource("energy"), EnergyMetalEffect.LOADER);
       MetalEffect.REGISTRY.register(resource("warmth"), WarmthMetalEffect.LOADER);
-      // ingredients
-      CraftingHelper.register(MetalShapeIngredient.ID, MetalShapeIngredient.SERIALIZER);
-      CraftingHelper.register(MetalItemIngredient.ID, MetalItemIngredient.SERIALIZER);
-      CraftingHelper.register(FillableIngredient.ID, FillableIngredient.SERIALIZER);
-      CraftingHelper.register(ConfigEnabledCondition.Serializer.INSTANCE);
+      // ingredients - TODO: migrate
+//      CraftingHelper.register(MetalShapeIngredient.ID, MetalShapeIngredient.SERIALIZER);
+//      CraftingHelper.register(MetalItemIngredient.ID, MetalItemIngredient.SERIALIZER);
+//      CraftingHelper.register(FillableIngredient.ID, FillableIngredient.SERIALIZER);
+//      CraftingHelper.register(ConfigEnabledCondition.Serializer.INSTANCE);
 
     // creative tabs
     } else if (key == Registries.CREATIVE_MODE_TAB) {
@@ -314,7 +306,7 @@ public class Registration {
         CreativeModeTab.builder()
           .title(Component.translatable("creative_tab.metalborn"))
           .icon(() -> {
-            ItemStack stack = MetalItem.setMetal(new ItemStack(RING), new MetalId(MOD_ID, "pewter"));
+            ItemStack stack = MetalItem.setMetal(RING.toStack(), new MetalId(MOD_ID, "pewter"));
             stack.getOrCreateTag().putInt(MetalmindItem.TAG_AMOUNT, 20 * 60 * 2); // about half full
             return stack;
           })
@@ -322,17 +314,17 @@ public class Registration {
           .build());
 
     // loot modifiers
-    } else if (key == ForgeRegistries.Keys.GLOBAL_LOOT_MODIFIER_SERIALIZERS) {
-      ForgeRegistries.GLOBAL_LOOT_MODIFIER_SERIALIZERS.get().register(resource("apply_drop_chance"), ApplyDropChanceLootModifier.CODEC);
+    } else if (key == NeoForgeRegistries.Keys.GLOBAL_LOOT_MODIFIER_SERIALIZERS) {
+      Registry.register(NeoForgeRegistries.GLOBAL_LOOT_MODIFIER_SERIALIZERS, resource("apply_drop_chance"), ApplyDropChanceLootModifier.CODEC);
     }
   }
 
   /** Adds new attributes to entities */
   private static void addAttributes(EntityAttributeModificationEvent event) {
-    event.add(EntityType.PLAYER, MINING_SPEED_MULTIPLIER.get());
-    event.add(EntityType.PLAYER, LOOTING_BOOST.get());
-    event.add(EntityType.PLAYER, EXPERIENCE_MULTIPLIER.get());
-    event.add(EntityType.PLAYER, RESPIRATION.get());
+    event.add(EntityType.PLAYER, MINING_SPEED_MULTIPLIER);
+    event.add(EntityType.PLAYER, LOOTING_BOOST);
+    event.add(EntityType.PLAYER, EXPERIENCE_MULTIPLIER);
+    event.add(EntityType.PLAYER, RESPIRATION);
     // general attributes
     addToAll(event, KNOCKBACK_MULTIPLIER);
     addToAll(event, FALL_DISTANCE_MULTIPLIER);
@@ -344,20 +336,10 @@ public class Registration {
   }
 
   /** Adds an attribute to all entities */
-  private static void addToAll(EntityAttributeModificationEvent event, RegistryObject<Attribute> attribute) {
-    Attribute attr = attribute.get();
+  private static void addToAll(EntityAttributeModificationEvent event, Holder<Attribute> attribute) {
     for (EntityType<? extends LivingEntity> entity : event.getTypes()) {
-      event.add(entity, attr, attr.getDefaultValue());
+      event.add(entity, attribute, attribute.value().getDefaultValue());
     }
-  }
-
-  /** Handles registry renames */
-  private static void missingMappings(MissingMappingsEvent event) {
-    RegistrationHelper.handleMissingMappings(event, MOD_ID, Registries.ITEM, name -> switch (name) {
-      case "lerasium_alloy_nugget" -> CHANGE_FERRING.get();
-      case "lerasium_nicrosil_nugget" -> RANDOM_FERRING.get();
-      default -> null;
-    });
   }
 
   /** Adds all items to the creative tab */

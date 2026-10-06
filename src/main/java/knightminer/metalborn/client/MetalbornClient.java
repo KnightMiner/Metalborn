@@ -20,7 +20,12 @@ import net.minecraft.client.renderer.item.ItemPropertyFunction;
 import net.minecraft.client.renderer.texture.atlas.SpriteSourceType;
 import net.minecraft.client.renderer.texture.atlas.SpriteSources;
 import net.minecraft.resources.ResourceLocation;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.fml.common.EventBusSubscriber;
+import net.neoforged.fml.common.Mod;
 import net.neoforged.neoforge.api.distmarker.Dist;
+import net.neoforged.neoforge.client.event.ClientTickEvent;
 import net.neoforged.neoforge.client.event.ModelEvent;
 import net.neoforged.neoforge.client.event.RegisterClientReloadListenersEvent;
 import net.neoforged.neoforge.client.event.RegisterColorHandlersEvent;
@@ -37,7 +42,8 @@ import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
 import static knightminer.metalborn.Metalborn.resource;
 
 /** Handles any client specific registrations */
-@EventBusSubscriber(modid = Metalborn.MOD_ID, value = Dist.CLIENT, bus = Bus.MOD)
+@Mod(value = Metalborn.MOD_ID, dist = Dist.CLIENT)
+@EventBusSubscriber(modid = Metalborn.MOD_ID, value = Dist.CLIENT)
 public class MetalbornClient {
   public static final SpriteSourceType EXTENDABLE_PALETTE = SpriteSources.register(resource("extendable_palette").toString(), ExtendablePalettedPermutations.CODEC);
   /** Universal keybinding */
@@ -48,9 +54,8 @@ public class MetalbornClient {
   public static final ResourceLocation NO_METAL = Metalborn.resource("no_metal");
 
   /** Runs during mod constructor to register any important client only things */
-  public static void onConstruct() {
+  public MetalbornClient() {
     MetalbornBook.init();
-    MinecraftForge.EVENT_BUS.addListener(MetalbornClient::clientTick);
   }
 
   @SubscribeEvent
@@ -110,11 +115,10 @@ public class MetalbornClient {
     });
   }
 
-  private static void clientTick(ClientTickEvent event) {
-    if (event.phase == TickEvent.Phase.END) {
-      while (KEY.consumeClick()) {
-        MetalbornNetwork.getInstance().sendToServer(ControlPacket.INVENTORY);
-      }
+  @SubscribeEvent
+  static void clientTick(ClientTickEvent.Post event) {
+    while (KEY.consumeClick()) {
+      MetalbornNetwork.getInstance().sendToServer(ControlPacket.INVENTORY);
     }
   }
 }

@@ -1,6 +1,7 @@
 package knightminer.metalborn.json.loot;
 
 import com.mojang.serialization.Codec;
+import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import knightminer.metalborn.core.Registration;
@@ -18,7 +19,7 @@ import slimeknights.mantle.loot.AbstractLootModifierBuilder.GenericLootModifierB
 
 /** Loot modifier that applies {@link Registration#DROP_CHANCE} to loot. */
 public class ApplyDropChanceLootModifier extends LootModifier {
-  public static final Codec<ApplyDropChanceLootModifier> CODEC = RecordCodecBuilder.create(instance -> codecStart(instance).apply(instance, ApplyDropChanceLootModifier::new));
+  public static final MapCodec<ApplyDropChanceLootModifier> CODEC = RecordCodecBuilder.mapCodec(instance -> codecStart(instance).apply(instance, ApplyDropChanceLootModifier::new));
 
   protected ApplyDropChanceLootModifier(LootItemCondition[] conditions) {
     super(conditions);

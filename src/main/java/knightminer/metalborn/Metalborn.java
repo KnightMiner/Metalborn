@@ -1,6 +1,5 @@
 package knightminer.metalborn;
 
-import knightminer.metalborn.client.MetalbornClient;
 import knightminer.metalborn.command.MetalbornCommand;
 import knightminer.metalborn.core.Config;
 import knightminer.metalborn.core.MetalbornCapability;
@@ -30,18 +29,15 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
-import net.neoforged.neoforge.api.distmarker.Dist;
-import net.neoforged.neoforge.common.data.DatapackBuiltinEntriesProvider;
-import net.neoforged.neoforge.common.data.ExistingFileHelper;
-import net.neoforged.neoforge.data.event.GatherDataEvent;
-import net.neoforged.neoforge.eventbus.api.IEventBus;
-import net.neoforged.fml.DistExecutor;
+import net.neoforged.bus.api.IEventBus;
+import net.neoforged.fml.ModContainer;
 import net.neoforged.fml.ModList;
-import net.neoforged.fml.ModLoadingContext;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.config.ModConfig.Type;
 import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
-import net.neoforged.fml.javafmlmod.FMLJavaModLoadingContext;
+import net.neoforged.neoforge.common.data.DatapackBuiltinEntriesProvider;
+import net.neoforged.neoforge.common.data.ExistingFileHelper;
+import net.neoforged.neoforge.data.event.GatherDataEvent;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -59,11 +55,11 @@ public class Metalborn {
   /** Tinkers' Construct mod ID for various compat */
   public static final String TINKERS = "tconstruct";
 
-  public Metalborn() {
-    ModLoadingContext.get().registerConfig(Type.COMMON, Config.COMMON_SPEC);
+  public Metalborn(IEventBus modEventBus, ModContainer modContainer) {
+    modContainer.registerConfig(Type.COMMON, Config.COMMON_SPEC);
     MetalbornNetwork.setup();
     MetalManager.INSTANCE.init();
-    Registration.init();
+    Registration.init(modEventBus);
     MetalbornCommand.init();
 
     // Tinkers' Construct support
@@ -71,12 +67,8 @@ public class Metalborn {
       TinkersPlugin.init();
     }
 
-    IEventBus bus = FMLJavaModLoadingContext.get().getModEventBus();
-    bus.addListener(this::commonSetup);
-    bus.addListener(Metalborn::gatherData);
-
-    // client setup
-    DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> MetalbornClient::onConstruct);
+    modEventBus.addListener(this::commonSetup);
+    modEventBus.addListener(Metalborn::gatherData);
   }
 
   private void commonSetup(FMLCommonSetupEvent event) {
@@ -95,7 +87,7 @@ public class Metalborn {
     DatapackBuiltinEntriesProvider datapackRegistry = RegistryProvider.prepare(packOutput, lookupProvider);
     generator.addProvider(server, datapackRegistry);
     generator.addProvider(server, new MetalPowerProvider(packOutput));
-    generator.addProvider(server, new LootTableProvider(packOutput, Set.of(), List.of(new SubProviderEntry(BlockLootTableProvider::new, LootContextParamSets.BLOCK))));
+    generator.addProvider(server, new LootTableProvider(packOutput, Set.of(), List.of(new SubProviderEntry(BlockLootTableProvider::new, LootContextParamSets.BLOCK)), lookupProvider));
     generator.addProvider(server, new RecipeProvider(packOutput));
     generator.addProvider(server, new GlobalLootModifiersProvider(packOutput));
     // tags
@@ -121,7 +113,7 @@ public class Metalborn {
    * @return  Resource location for Ceramics
    */
   public static ResourceLocation resource(String name) {
-    return new ResourceLocation(MOD_ID, name);
+    return ResourceLocation.fromNamespaceAndPath(MOD_ID, name);
   }
 
   /**

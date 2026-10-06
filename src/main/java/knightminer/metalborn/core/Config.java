@@ -1,12 +1,12 @@
 package knightminer.metalborn.core;
 
 import knightminer.metalborn.metal.MetalId;
-import net.neoforged.neoforge.common.ForgeConfigSpec;
-import net.neoforged.neoforge.common.ForgeConfigSpec.BooleanValue;
-import net.neoforged.neoforge.common.ForgeConfigSpec.ConfigValue;
+import net.neoforged.neoforge.common.ModConfigSpec;
+import net.neoforged.neoforge.common.ModConfigSpec.BooleanValue;
+import net.neoforged.neoforge.common.ModConfigSpec.ConfigValue;
 
 public class Config {
-  public static final ForgeConfigSpec COMMON_SPEC;
+  public static final ModConfigSpec COMMON_SPEC;
 
   /** Ferring type the player will spawn as */
   public static final ConfigValue<String> SPAWN_AS_FERRING;
@@ -23,7 +23,7 @@ public class Config {
   public static final BooleanValue FORCE_INTEGRATION;
 
   static {
-    ForgeConfigSpec.Builder builder = new ForgeConfigSpec.Builder();
+    ModConfigSpec.Builder builder = new ModConfigSpec.Builder();
 
 
     builder.push("gameplay");
