@@ -23,8 +23,8 @@ import net.minecraft.tags.FluidTags;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier.Operation;
 import net.minecraft.world.entity.ai.attributes.Attributes;
-import net.minecraftforge.common.ForgeMod;
-import net.minecraftforge.common.Tags;
+import net.neoforged.neoforge.common.ForgeMod;
+import net.neoforged.neoforge.common.Tags;
 import org.jetbrains.annotations.ApiStatus.Internal;
 
 /** Adds powers from metalborn to the mod */

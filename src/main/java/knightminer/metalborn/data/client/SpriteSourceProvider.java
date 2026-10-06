@@ -3,14 +3,14 @@ package knightminer.metalborn.data.client;
 import knightminer.metalborn.Metalborn;
 import knightminer.metalborn.client.model.ExtendablePalettedPermutations;
 import net.minecraft.data.PackOutput;
-import net.minecraftforge.common.data.ExistingFileHelper;
+import net.neoforged.neoforge.common.data.ExistingFileHelper;
 
 import java.util.List;
 
 import static knightminer.metalborn.Metalborn.resource;
 
 /** Adds any relevant sprite source providers, such as the metal texture generator */
-public class SpriteSourceProvider extends net.minecraftforge.common.data.SpriteSourceProvider {
+public class SpriteSourceProvider extends net.neoforged.neoforge.common.data.SpriteSourceProvider {
   public SpriteSourceProvider(PackOutput output, ExistingFileHelper fileHelper) {
     super(output, fileHelper, Metalborn.MOD_ID);
   }

@@ -2,7 +2,7 @@ package knightminer.metalborn.network;
 
 import knightminer.metalborn.Metalborn;
 import knightminer.metalborn.metal.UpdateMetalPowerPacket;
-import net.minecraftforge.network.NetworkDirection;
+import net.neoforged.neoforge.network.NetworkDirection;
 import org.jetbrains.annotations.ApiStatus.Internal;
 import slimeknights.mantle.network.NetworkWrapper;
 

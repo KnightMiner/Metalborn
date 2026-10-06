@@ -1,9 +1,9 @@
 package knightminer.metalborn.core;
 
 import knightminer.metalborn.metal.MetalId;
-import net.minecraftforge.common.ForgeConfigSpec;
-import net.minecraftforge.common.ForgeConfigSpec.BooleanValue;
-import net.minecraftforge.common.ForgeConfigSpec.ConfigValue;
+import net.neoforged.neoforge.common.ForgeConfigSpec;
+import net.neoforged.neoforge.common.ForgeConfigSpec.BooleanValue;
+import net.neoforged.neoforge.common.ForgeConfigSpec.ConfigValue;
 
 public class Config {
   public static final ForgeConfigSpec COMMON_SPEC;

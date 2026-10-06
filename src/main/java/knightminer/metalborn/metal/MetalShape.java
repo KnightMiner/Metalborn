@@ -2,7 +2,7 @@ package knightminer.metalborn.metal;
 
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
-import net.minecraftforge.common.Tags;
+import net.neoforged.neoforge.common.Tags;
 import slimeknights.mantle.data.loadable.primitive.EnumLoadable;
 
 /**

@@ -3,7 +3,7 @@ package knightminer.metalborn.util;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.RangedAttribute;
-import net.minecraftforge.registries.RegistryObject;
+import net.neoforged.neoforge.registries.RegistryObject;
 import slimeknights.mantle.registration.deferred.DeferredRegisterWrapper;
 
 public class AttributeDeferredRegister extends DeferredRegisterWrapper<Attribute> {

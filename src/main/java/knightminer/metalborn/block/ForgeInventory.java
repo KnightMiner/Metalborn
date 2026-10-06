@@ -2,8 +2,8 @@ package knightminer.metalborn.block;
 
 import knightminer.metalborn.core.Registration;
 import net.minecraft.world.item.ItemStack;
-import net.minecraftforge.common.ForgeHooks;
-import net.minecraftforge.items.ItemStackHandler;
+import net.neoforged.neoforge.common.ForgeHooks;
+import net.neoforged.neoforge.items.ItemStackHandler;
 
 public class ForgeInventory extends ItemStackHandler {
   // slots

@@ -5,9 +5,9 @@ import knightminer.metalborn.Metalborn;
 import knightminer.metalborn.item.MetalItem;
 import knightminer.metalborn.metal.MetalShape;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraftforge.client.model.generators.CustomLoaderBuilder;
-import net.minecraftforge.client.model.generators.ModelBuilder;
-import net.minecraftforge.common.data.ExistingFileHelper;
+import net.neoforged.neoforge.client.model.generators.CustomLoaderBuilder;
+import net.neoforged.neoforge.client.model.generators.ModelBuilder;
+import net.neoforged.neoforge.common.data.ExistingFileHelper;
 import org.jetbrains.annotations.Nullable;
 
 /** Builder for {@link MetalShapeModel} */

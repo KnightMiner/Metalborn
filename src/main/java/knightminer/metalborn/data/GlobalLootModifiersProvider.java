@@ -5,7 +5,7 @@ import knightminer.metalborn.json.loot.ApplyDropChanceLootModifier;
 import net.minecraft.data.PackOutput;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
 import net.minecraft.world.level.storage.loot.predicates.AnyOfCondition;
-import net.minecraftforge.common.data.GlobalLootModifierProvider;
+import net.neoforged.neoforge.common.data.GlobalLootModifierProvider;
 import slimeknights.mantle.loot.condition.HasLootContextSetCondition;
 
 /** Provider for custom global loot modifiers */
