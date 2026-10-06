@@ -3,7 +3,6 @@ package knightminer.metalborn.metal;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import knightminer.metalborn.Metalborn;
-import knightminer.metalborn.network.MetalbornNetwork;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.server.packs.resources.SimpleJsonResourceReloadListener;
@@ -14,17 +13,15 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.material.Fluid;
-import net.neoforged.neoforge.common.MinecraftForge;
-import net.neoforged.neoforge.common.crafting.CraftingHelper;
-import net.neoforged.neoforge.common.crafting.conditions.ICondition.IContext;
+import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.event.AddReloadListenerEvent;
 import net.neoforged.neoforge.event.OnDatapackSyncEvent;
-import net.neoforged.neoforge.eventbus.api.EventPriority;
 import org.jetbrains.annotations.ApiStatus.Internal;
 import org.jetbrains.annotations.Nullable;
 import slimeknights.mantle.data.loadable.Loadable;
 import slimeknights.mantle.data.loadable.array.ArrayLoadable;
 import slimeknights.mantle.data.loadable.field.ContextKey;
+import slimeknights.mantle.network.PacketHelper;
 import slimeknights.mantle.util.JsonHelper;
 import slimeknights.mantle.util.typed.TypedMap;
 import slimeknights.mantle.util.typed.TypedMapBuilder;
@@ -36,6 +33,9 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.function.Function;
 
+/**
+ * Handles loading {@link MetalPower} from datapacks.
+ */
 public class MetalManager extends SimpleJsonResourceReloadListener {
   /** Location of dynamic modifiers */
   public static final String FOLDER = "metalborn/effects";
@@ -89,8 +89,6 @@ public class MetalManager extends SimpleJsonResourceReloadListener {
     return MetalPower.DEFAULT;
   };
 
-  /** Condition context for loading */
-  private IContext conditionContext = IContext.EMPTY;
 
   private MetalManager() {
     super(JsonHelper.DEFAULT_GSON, FOLDER);
@@ -101,14 +99,13 @@ public class MetalManager extends SimpleJsonResourceReloadListener {
 
   @Internal
   public void init() {
-    MinecraftForge.EVENT_BUS.addListener(EventPriority.NORMAL, false, AddReloadListenerEvent.class, this::addDataPackListeners);
-    MinecraftForge.EVENT_BUS.addListener(EventPriority.NORMAL, false, OnDatapackSyncEvent.class, e -> JsonHelper.syncPackets(e, MetalbornNetwork.getInstance(), new UpdateMetalPowerPacket(this.powers, this.redirects)));
+    NeoForge.EVENT_BUS.addListener(AddReloadListenerEvent.class, this::addDataPackListeners);
+    NeoForge.EVENT_BUS.addListener(OnDatapackSyncEvent.class, e -> PacketHelper.syncPackets(e, new UpdateMetalPowerPacket(this.powers, this.redirects)));
   }
 
   /** Adds the managers as datapack listeners */
   private void addDataPackListeners(final AddReloadListenerEvent event) {
     event.addListener(this);
-    conditionContext = event.getConditionContext();
   }
 
   /** Updates the list of metal powers from the given map */
@@ -140,7 +137,7 @@ public class MetalManager extends SimpleJsonResourceReloadListener {
       JsonObject json = GsonHelper.convertToJsonObject(entry.getValue(), "metal");
       // ensure load conditions pass
       try {
-        if (CraftingHelper.processConditions(json, "conditions", conditionContext)) {
+        if (JsonHelper.processConditions(json, "conditions", getContext())) {
           // load the power
           MetalPower power = MetalPower.LOADABLE.deserialize(json, createContext(entry.getKey()));
           // store it into the map
