@@ -1,12 +1,12 @@
 package knightminer.metalborn.item;
 
 import knightminer.metalborn.Metalborn;
+import knightminer.metalborn.core.Registration;
+import knightminer.metalborn.metal.MetalHolder;
 import knightminer.metalborn.metal.MetalId;
 import knightminer.metalborn.metal.MetalManager;
 import knightminer.metalborn.metal.MetalPower;
 import net.minecraft.ChatFormatting;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.Tag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.ItemLike;
@@ -24,25 +24,29 @@ public interface MetalItem extends ItemLike {
 
   /** Gets the metal contained in this stack */
   static MetalId getMetal(ItemStack stack) {
-    CompoundTag tag = stack.getTag();
-    if (tag != null && tag.contains(TAG_METAL, Tag.TAG_STRING)) {
-      MetalId id = MetalId.tryParse(tag.getString(TAG_METAL));
-      if (id != null) {
-        return id;
-      }
-    }
-    return MetalId.NONE;
+    return stack.getOrDefault(Registration.METAL, MetalHolder.EMPTY).id();
+  }
+
+  /** Gets the metal contained in this stack */
+  static MetalPower getMetalPower(ItemStack stack) {
+    return stack.getOrDefault(Registration.METAL, MetalHolder.EMPTY).getPower();
   }
 
   /** Sets the metal on the stack */
   static ItemStack setMetal(ItemStack stack, MetalId metal) {
-    if (metal != MetalId.NONE) {
-      stack.getOrCreateTag().putString(TAG_METAL, metal.toString());
+    if (metal == MetalId.NONE) {
+      stack.remove(Registration.METAL);
+    } else {
+      stack.set(Registration.METAL, MetalManager.INSTANCE.getHolder(metal));
     }
     return stack;
   }
 
-  /** {@return true if the metal is usable by this metal item} */
+  /**
+   * {@return true if the metal is usable by this metal item}
+   * @deprecated use {@link #canUseMetal(MetalPower)}
+   */
+  @Deprecated
   default boolean canUseMetal(MetalId metal) {
     return canUseMetal(MetalManager.INSTANCE.get(metal));
   }
@@ -55,20 +59,8 @@ public interface MetalItem extends ItemLike {
   /** Creates a stack with the given metal ID */
   default ItemStack withMetal(MetalId id) {
     ItemStack stack = new ItemStack(this);
-    stack.getOrCreateTag().putString(TAG_METAL, id.toString());
+    setMetal(stack, id);
     return stack;
-  }
-
-  /** Helper to resolve redirects in the metal */
-  static void verifyTagAfterLoad(CompoundTag tag) {
-    MetalId metal = MetalId.tryParse(tag.getString(TAG_METAL));
-    if (metal != null) {
-      MetalPower power = MetalManager.INSTANCE.resolve(metal);
-      // ensure we don't delete the metal just because it has no match
-      if (power != null) {
-        tag.putString(TAG_METAL, power.id().toString());
-      }
-    }
   }
 
 

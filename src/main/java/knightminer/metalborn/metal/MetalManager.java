@@ -52,6 +52,8 @@ public class MetalManager extends SimpleJsonResourceReloadListener {
   private List<MetalPower> ferrings = List.of();
   /** Mapping from unused metal IDs to existing powers, for migrating power list changes. */
   private Map<MetalId, MetalPower> redirects = Map.of();
+  /** Map of {@link MetalHolder} used on items */
+  private final Map<MetalId,MetalHolder> holders = new HashMap<>();
 
   /** Cache of the metal power for each item type */
   private final Map<Item,MetalPower> itemCache = new HashMap<>();
@@ -117,6 +119,7 @@ public class MetalManager extends SimpleJsonResourceReloadListener {
     this.ferrings = sortedPowers.stream().filter(power -> power.ferring() && !power.feruchemy().isEmpty()).toList();
     this.itemCache.clear();
     this.entityCache.clear();
+    this.holders.values().forEach(MetalHolder::clearCache);
   }
 
 
@@ -174,15 +177,33 @@ public class MetalManager extends SimpleJsonResourceReloadListener {
 
   /* Querying */
 
-  /** Gets the power with the given ID */
+  /** Gets the power with the given ID, following redirects, returning {@link MetalPower#DEFAULT} if missing. */
   public MetalPower get(MetalId id) {
-    return powers.getOrDefault(id, MetalPower.DEFAULT);
+    MetalPower power = powers.get(id);
+    if (power == null) {
+      power = redirects.getOrDefault(id, MetalPower.DEFAULT);
+    }
+    return power;
   }
 
   /** Resolves the given redirect, returning null if its not redirected. */
   @Nullable
   public MetalPower resolve(MetalId id) {
     return redirects.get(id);
+  }
+
+  /** Gets the power with the given ID, bypassing redirects, returning {@code null} if missing. Useful for checking if an ID is registered. */
+  @Nullable
+  public MetalPower getDirect(MetalId id) {
+    return powers.getOrDefault(id, MetalPower.DEFAULT);
+  }
+
+  /** Gets a metal holder for the given ID, which lazily fetches a metal power and refreshes on reload. */
+  public MetalHolder getHolder(MetalId id) {
+    if (MetalId.NONE.equals(id)) {
+      return MetalHolder.EMPTY;
+    }
+    return holders.computeIfAbsent(id, MetalHolder::new);
   }
 
   /** Gets a list of all powers in sorted order */

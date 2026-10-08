@@ -14,6 +14,7 @@ import slimeknights.mantle.data.loadable.field.ContextKey;
 import slimeknights.mantle.data.loadable.primitive.EnumLoadable;
 import slimeknights.mantle.data.loadable.primitive.IntLoadable;
 import slimeknights.mantle.data.loadable.record.RecordLoadable;
+import slimeknights.mantle.registration.object.IdAwareObject;
 import slimeknights.mantle.util.RegistryHelper;
 
 import java.util.List;
@@ -40,7 +41,7 @@ public record MetalPower(
   boolean ferring, List<MetalEffect> feruchemy,
   int capacity, MetalFormat format,
   int hemalurgyCharge
-) {
+) implements IdAwareObject {
   /** Loader instane for parsing from JSON and syncing over the network */
   public static final RecordLoadable<MetalPower> LOADABLE = RecordLoadable.create(
     ContextKey.ID.mappedField((id, error) -> new MetalId(id)),

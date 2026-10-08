@@ -30,6 +30,7 @@ import knightminer.metalborn.json.recipe.forge.ShapedForgeRecipe;
 import knightminer.metalborn.json.recipe.forge.ShapelessForgeRecipe;
 import knightminer.metalborn.menu.ForgeMenu;
 import knightminer.metalborn.menu.MetalbornMenu;
+import knightminer.metalborn.metal.MetalHolder;
 import knightminer.metalborn.metal.MetalId;
 import knightminer.metalborn.metal.effects.MetalEffect;
 import knightminer.metalborn.metal.effects.general.AttributeMetalEffect;
@@ -47,6 +48,7 @@ import knightminer.metalborn.util.CastItemObject;
 import knightminer.metalborn.util.ItemDeferredRegisterExtension;
 import net.minecraft.core.Holder;
 import net.minecraft.core.Registry;
+import net.minecraft.core.component.DataComponentType;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
@@ -113,6 +115,7 @@ public class Registration {
   private static final DeferredRegister<RecipeSerializer<?>> RECIPES = DeferredRegister.create(Registries.RECIPE_SERIALIZER, Metalborn.MOD_ID);
   private static final AttributeDeferredRegister ATTRIBUTES = new AttributeDeferredRegister(Metalborn.MOD_ID);
   private static final DeferredRegister<LootItemConditionType> LOOT_CONDITIONS = DeferredRegister.create(Registries.LOOT_CONDITION_TYPE, MOD_ID);
+  private static final DeferredRegister<DataComponentType<?>> DATA_COMPONENTS = DeferredRegister.create(Registries.DATA_COMPONENT_TYPE, MOD_ID);
 
   private static final Item.Properties PROPS = new Item.Properties();
   private static final Function<Block, BlockItem> BLOCK_ITEM = block -> new BlockItem(block, PROPS);
@@ -132,6 +135,7 @@ public class Registration {
     RECIPES.register(bus);
     ATTRIBUTES.register(bus);
     LOOT_CONDITIONS.register(bus);
+    DATA_COMPONENTS.register(bus);
   }
 
   public static final DeferredItem<Item> METALLIC_ARTS = ITEMS.register("metallic_arts", () -> new MetalbornBookItem(new Properties().stacksTo(1)));
@@ -205,6 +209,11 @@ public class Registration {
     return new SatchelItem(props, type);
   });
 
+  // data components
+  public static final DeferredHolder<DataComponentType<?>, DataComponentType<MetalHolder>> METAL = DATA_COMPONENTS.register("metal", () -> DataComponentType.<MetalHolder>builder()
+    .persistent(MetalHolder.CODEC).networkSynchronized(MetalHolder.STREAM_CODEC).build());
+
+  // damage types
   /** Damage type for metal damaging the player, used in gold's effect */
   public static final ResourceKey<DamageType> METAL_HURT = ResourceKey.create(Registries.DAMAGE_TYPE, resource("metal_hurt"));
   /** Damage type when using a spike */
