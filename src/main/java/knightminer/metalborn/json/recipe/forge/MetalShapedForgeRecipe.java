@@ -35,8 +35,8 @@ public class MetalShapedForgeRecipe extends ShapedForgeRecipe {
 
   /** Fetches the ingredient outside the fillable ingredient */
   public static Ingredient unwrap(Ingredient ingredient) {
-    if (ingredient instanceof FillableIngredient fillable) {
-      return fillable.getInner();
+    if (ingredient.getCustomIngredient() instanceof FillableIngredient fillable) {
+      return fillable.inner();
     }
     return ingredient;
   }
@@ -44,8 +44,8 @@ public class MetalShapedForgeRecipe extends ShapedForgeRecipe {
   /** Finds the first metal ingredient in the input list */
   static Predicate<MetalPower> getMetalFilter(List<Ingredient> ingredients) {
     Set<MetalFilter> filters = ingredients.stream().flatMap(ingredient -> {
-      if (unwrap(ingredient) instanceof IngredientWithMetal metal) {
-        return Stream.of(metal.getFilter());
+      if (unwrap(ingredient).getCustomIngredient() instanceof IngredientWithMetal metal) {
+        return Stream.of(metal.filter());
       }
       return Stream.empty();
     }).collect(Collectors.toSet());
@@ -137,7 +137,7 @@ public class MetalShapedForgeRecipe extends ShapedForgeRecipe {
     // search for metal ingredients
     for (int i = 0; i < ingredients.size(); i++) {
       Ingredient ingredient = ingredients.get(i);
-      if (unwrap(ingredient) instanceof IngredientWithMetal) {
+      if (unwrap(ingredient).getCustomIngredient() instanceof IngredientWithMetal) {
         // if we have not yet found an ingredient, use this one for our input stacks
         if (inputExample == null) {
           indices.add(i);

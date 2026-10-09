@@ -20,6 +20,9 @@ import knightminer.metalborn.item.spike.InvestitureSpikeItem;
 import knightminer.metalborn.item.spike.MonsterSpikeItem;
 import knightminer.metalborn.item.spike.SpikeItem;
 import knightminer.metalborn.json.ConfigEnabledCondition;
+import knightminer.metalborn.json.ingredient.FillableIngredient;
+import knightminer.metalborn.json.ingredient.MetalItemIngredient;
+import knightminer.metalborn.json.ingredient.MetalShapeIngredient;
 import knightminer.metalborn.json.loot.ApplyDropChanceLootModifier;
 import knightminer.metalborn.json.recipe.cooking.BlastingMetalRecyclingRecipe;
 import knightminer.metalborn.json.recipe.cooking.SmeltingMetalRecyclingRecipe;
@@ -81,6 +84,7 @@ import net.minecraft.world.level.storage.loot.predicates.LootItemConditionType;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.ModList;
 import net.neoforged.neoforge.attachment.AttachmentType;
+import net.neoforged.neoforge.common.crafting.IngredientType;
 import net.neoforged.neoforge.event.entity.EntityAttributeModificationEvent;
 import net.neoforged.neoforge.registries.DeferredBlock;
 import net.neoforged.neoforge.registries.DeferredHolder;
@@ -114,6 +118,7 @@ public class Registration {
   private static final BlockEntityTypeDeferredRegister BLOCK_ENTITIES = new BlockEntityTypeDeferredRegister(Metalborn.MOD_ID);
   private static final DeferredRegister<RecipeType<?>> RECIPE_TYPES = DeferredRegister.create(Registries.RECIPE_TYPE, Metalborn.MOD_ID);
   private static final DeferredRegister<RecipeSerializer<?>> RECIPES = DeferredRegister.create(Registries.RECIPE_SERIALIZER, Metalborn.MOD_ID);
+  private static final DeferredRegister<IngredientType<?>> INGREDIENTS = DeferredRegister.create(NeoForgeRegistries.Keys.INGREDIENT_TYPES, Metalborn.MOD_ID);
   private static final AttributeDeferredRegister ATTRIBUTES = new AttributeDeferredRegister(Metalborn.MOD_ID);
   private static final DeferredRegister<LootItemConditionType> LOOT_CONDITIONS = DeferredRegister.create(Registries.LOOT_CONDITION_TYPE, MOD_ID);
   private static final DeferredRegister<DataComponentType<?>> DATA_COMPONENTS = DeferredRegister.create(Registries.DATA_COMPONENT_TYPE, MOD_ID);
@@ -135,6 +140,7 @@ public class Registration {
     MENUS.register(bus);
     RECIPE_TYPES.register(bus);
     RECIPES.register(bus);
+    INGREDIENTS.register(bus);
     ATTRIBUTES.register(bus);
     LOOT_CONDITIONS.register(bus);
     DATA_COMPONENTS.register(bus);
@@ -244,6 +250,10 @@ public class Registration {
   // furnace
   public static final DeferredHolder<RecipeSerializer<?>,RecipeSerializer<SmeltingMetalRecyclingRecipe>> SMELTING_METAL_RECYCLING = RECIPES.register("smelting_metal_recycling", () -> LoadableRecipeSerializer.of(SmeltingMetalRecyclingRecipe.LOADABLE));
   public static final DeferredHolder<RecipeSerializer<?>,RecipeSerializer<BlastingMetalRecyclingRecipe>> BLASTING_METAL_RECYCLING = RECIPES.register("blasting_metal_recycling", () -> LoadableRecipeSerializer.of(BlastingMetalRecyclingRecipe.LOADABLE));
+  // ingredient
+  public static final DeferredHolder<IngredientType<?>,IngredientType<FillableIngredient>> FILLABLE_INGREDIENT = INGREDIENTS.register("fillable", () -> new IngredientType<>(FillableIngredient.CODEC, FillableIngredient.STREAM_CODEC));
+  public static final DeferredHolder<IngredientType<?>,IngredientType<MetalItemIngredient>> METAL_ITEM_INGREDIENT = INGREDIENTS.register("metal_item", () -> new IngredientType<>(MetalItemIngredient.CODEC, MetalItemIngredient.STREAM_CODEC));
+  public static final DeferredHolder<IngredientType<?>,IngredientType<MetalShapeIngredient>> METAL_SHAPE_INGREDIENT = INGREDIENTS.register("metal_shape", () -> new IngredientType<>(MetalShapeIngredient.CODEC, MetalShapeIngredient.STREAM_CODEC));
 
   // Tinkers' compat
   /** Serializer ID for the metal basin casting recipe, added via the Tinkers' Construct plugin */
@@ -309,10 +319,7 @@ public class Registration {
       MetalEffect.REGISTRY.register(resource("update_health"), UpdateHealthEffect.LOADER);
       MetalEffect.REGISTRY.register(resource("energy"), EnergyMetalEffect.LOADER);
       MetalEffect.REGISTRY.register(resource("warmth"), WarmthMetalEffect.LOADER);
-      // ingredients - TODO: migrate
-//      CraftingHelper.register(MetalShapeIngredient.ID, MetalShapeIngredient.SERIALIZER);
-//      CraftingHelper.register(MetalItemIngredient.ID, MetalItemIngredient.SERIALIZER);
-//      CraftingHelper.register(FillableIngredient.ID, FillableIngredient.SERIALIZER);
+      // conditions - TODO: migrate
 //      CraftingHelper.register(ConfigEnabledCondition.Serializer.INSTANCE);
 
     // creative tabs

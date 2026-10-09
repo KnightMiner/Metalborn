@@ -1,35 +1,31 @@
 package knightminer.metalborn.json.ingredient;
 
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import knightminer.metalborn.Metalborn;
+import com.mojang.serialization.MapCodec;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
+import knightminer.metalborn.core.Registration;
 import knightminer.metalborn.metal.MetalManager;
 import knightminer.metalborn.metal.MetalPower;
 import knightminer.metalborn.metal.MetalShape;
 import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.network.RegistryFriendlyByteBuf;
+import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.world.item.ItemStack;
-import net.neoforged.neoforge.common.crafting.AbstractIngredient;
-import net.neoforged.neoforge.common.crafting.IIngredientSerializer;
-import org.jetbrains.annotations.Nullable;
+import net.neoforged.neoforge.common.crafting.ICustomIngredient;
+import net.neoforged.neoforge.common.crafting.IngredientType;
 import slimeknights.mantle.util.RegistryHelper;
 
-import java.util.Collection;
 import java.util.stream.Stream;
 
 /** Ingredient matching a metal. Does not match a metal item with NBT metal. */
-public class MetalShapeIngredient extends AbstractIngredient implements IngredientWithMetal {
-  public static final ResourceLocation ID = Metalborn.resource("metal_shape");
-
-  /** Shape to match, if null then any shape is valid */
-  private final MetalShape shape;
-  private final MetalFilter filter;
-  private MetalShapeIngredient(MetalShape shape, MetalFilter filter) {
-    super(Stream.of(new MetalValue(shape, filter)));
-    this.filter = filter;
-    this.shape = shape;
-  }
+public record MetalShapeIngredient(MetalShape shape, MetalFilter filter) implements ICustomIngredient, IngredientWithMetal {
+  public static final MapCodec<MetalShapeIngredient> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
+    MetalShape.CODEC.fieldOf("shape").forGetter(MetalShapeIngredient::shape),
+    MetalFilter.CODEC.optionalFieldOf("filter", MetalFilter.ANY).forGetter(MetalShapeIngredient::filter)
+  ).apply(instance, MetalShapeIngredient::new));
+  public static final StreamCodec<RegistryFriendlyByteBuf,MetalShapeIngredient> STREAM_CODEC = StreamCodec.composite(
+    MetalShape.STREAM_CODEC, MetalShapeIngredient::shape,
+    MetalFilter.STREAM_CODEC, MetalShapeIngredient::filter,
+    MetalShapeIngredient::new);
 
   /** Creates an ingredient matching ingots */
   public static MetalShapeIngredient ingot(MetalFilter filter) {
@@ -42,7 +38,12 @@ public class MetalShapeIngredient extends AbstractIngredient implements Ingredie
   }
 
   @Override
-  public MetalFilter getFilter() {
+  public IngredientType<MetalShapeIngredient> getType() {
+    return Registration.METAL_SHAPE_INGREDIENT.get();
+  }
+
+  @Override
+  public MetalFilter filter() {
     return filter;
   }
 
@@ -58,8 +59,8 @@ public class MetalShapeIngredient extends AbstractIngredient implements Ingredie
   }
 
   @Override
-  public boolean test(@Nullable ItemStack stack) {
-    return stack != null && getMetal(stack) != MetalPower.DEFAULT;
+  public boolean test(ItemStack stack) {
+    return getMetal(stack) != MetalPower.DEFAULT;
   }
 
   @Override
@@ -69,68 +70,11 @@ public class MetalShapeIngredient extends AbstractIngredient implements Ingredie
   }
 
   @Override
-  public IIngredientSerializer<MetalShapeIngredient> getSerializer() {
-    return SERIALIZER;
+  public Stream<ItemStack> getItems() {
+    return MetalManager.INSTANCE.getSortedPowers()
+      .stream()
+      .filter(filter)
+      .flatMap(power -> RegistryHelper.getTagValueStream(BuiltInRegistries.ITEM, power.tag(shape)))
+      .map(ItemStack::new);
   }
-
-  /** Serializes this to JSON */
-  private static JsonObject serialize(MetalShape shape, MetalFilter filter) {
-    JsonObject json = new JsonObject();
-    json.addProperty("shape", MetalShape.LOADABLE.getString(shape));
-    if (filter != MetalFilter.ANY) {
-      json.addProperty("filter", MetalFilter.LOADABLE.getString(filter));
-    }
-    return json;
-  }
-
-  @Override
-  public JsonElement toJson() {
-    JsonObject json = serialize(shape, filter);
-    json.addProperty("type", ID.toString());
-    return json;
-  }
-
-  /** Ingredient value for a metal */
-  private record MetalValue(MetalShape shape, MetalFilter filter) implements Value {
-    @SuppressWarnings("deprecation")
-    @Override
-    public Collection<ItemStack> getItems() {
-      return MetalManager.INSTANCE.getSortedPowers()
-        .stream()
-        .filter(filter)
-        .flatMap(power -> RegistryHelper.getTagValueStream(BuiltInRegistries.ITEM, power.tag(shape)))
-        .map(ItemStack::new)
-        .toList();
-    }
-
-    @Override
-    public JsonObject serialize() {
-      return MetalShapeIngredient.serialize(shape, filter);
-    }
-  }
-
-  /** Serializer instance */
-  public static final IIngredientSerializer<MetalShapeIngredient> SERIALIZER = new IIngredientSerializer<>() {
-    @Override
-    public MetalShapeIngredient parse(JsonObject json) {
-      return new MetalShapeIngredient(
-        MetalShape.LOADABLE.getIfPresent(json, "shape"),
-        MetalFilter.LOADABLE.getOrDefault(json, "filter", MetalFilter.ANY)
-      );
-    }
-
-    @Override
-    public MetalShapeIngredient parse(FriendlyByteBuf buffer) {
-      return new MetalShapeIngredient(
-        MetalShape.LOADABLE.decode(buffer),
-        MetalFilter.LOADABLE.decode(buffer)
-      );
-    }
-
-    @Override
-    public void write(FriendlyByteBuf buffer, MetalShapeIngredient ingredient) {
-      MetalShape.LOADABLE.encode(buffer, ingredient.shape);
-      MetalFilter.LOADABLE.encode(buffer, ingredient.filter);
-    }
-  };
 }

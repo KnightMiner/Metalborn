@@ -58,7 +58,7 @@ public class BlastingMetalRecyclingRecipe extends BlastingRecipe implements Cook
   public Predicate<MetalPower> getFilter() {
     if (filter == null) {
       if (MetalShapedForgeRecipe.unwrap(ingredient) instanceof IngredientWithMetal metal) {
-        filter = metal.getFilter();
+        filter = metal.filter();
       } else {
         filter = MetalFilter.ANY;
       }
