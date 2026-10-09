@@ -1,20 +1,14 @@
 package knightminer.metalborn.json;
 
-import com.google.gson.JsonDeserializationContext;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonSerializationContext;
-import com.google.gson.JsonSyntaxException;
-import knightminer.metalborn.Metalborn;
+import com.mojang.serialization.Codec;
+import com.mojang.serialization.MapCodec;
 import knightminer.metalborn.core.Config;
 import knightminer.metalborn.core.Registration;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.util.GsonHelper;
 import net.minecraft.world.level.storage.loot.LootContext;
 import net.minecraft.world.level.storage.loot.predicates.LootItemCondition;
 import net.minecraft.world.level.storage.loot.predicates.LootItemConditionType;
-import net.neoforged.neoforge.common.ForgeConfigSpec.BooleanValue;
-import net.neoforged.neoforge.common.crafting.conditions.ICondition;
-import net.neoforged.neoforge.common.crafting.conditions.IConditionSerializer;
+import net.neoforged.neoforge.common.ModConfigSpec;
+import net.neoforged.neoforge.common.conditions.ICondition;
 import org.jetbrains.annotations.ApiStatus.Internal;
 
 import java.util.HashMap;
@@ -24,17 +18,20 @@ import java.util.function.BooleanSupplier;
 
 /** Condition that checks the config */
 public record ConfigEnabledCondition(String name, BooleanSupplier supplier) implements ICondition, LootItemCondition {
-  public static final ResourceLocation ID = Metalborn.resource("config");
   /** Map of config names to condition cache */
   private static final Map<String,ConfigEnabledCondition> PROPERTIES = new HashMap<>();
+  /** Codec mapping from string to condition instance */
+  private static final Codec<ConfigEnabledCondition> BY_NAME_CODEC = Codec.stringResolver(ConfigEnabledCondition::name, PROPERTIES::get);
+  /** Map codec used for condition registration */
+  public static final MapCodec<ConfigEnabledCondition> CODEC = BY_NAME_CODEC.fieldOf("name");
 
   /** @apiNote use static fields */
   @Internal
   public ConfigEnabledCondition {}
 
   @Override
-  public ResourceLocation getID() {
-    return ID;
+  public MapCodec<ConfigEnabledCondition> codec() {
+    return CODEC;
   }
 
   @Override
@@ -52,41 +49,6 @@ public record ConfigEnabledCondition(String name, BooleanSupplier supplier) impl
     return supplier.getAsBoolean();
   }
 
-  /** Serializer instance */
-  public enum Serializer implements net.minecraft.world.level.storage.loot.Serializer<ConfigEnabledCondition>, IConditionSerializer<ConfigEnabledCondition> {
-    INSTANCE;
-
-    @Override
-    public ResourceLocation getID() {
-      return ID;
-    }
-
-    @Override
-    public void write(JsonObject json, ConfigEnabledCondition value) {
-      json.addProperty("name", value.name());
-    }
-
-    @Override
-    public void serialize(JsonObject json, ConfigEnabledCondition value, JsonSerializationContext context) {
-      write(json, value);
-    }
-
-    @Override
-    public ConfigEnabledCondition read(JsonObject json) {
-      String name = GsonHelper.getAsString(json, "name");
-      ConfigEnabledCondition condition = PROPERTIES.get(name);
-      if (condition == null) {
-        throw new JsonSyntaxException("Unknown config property: " + name);
-      }
-      return condition;
-    }
-
-    @Override
-    public ConfigEnabledCondition deserialize(JsonObject json, JsonDeserializationContext context) {
-      return read(json);
-    }
-  }
-
 
   /* Properties */
   /** Adds a condition */
@@ -98,7 +60,7 @@ public record ConfigEnabledCondition(String name, BooleanSupplier supplier) impl
 
   /** Adds a condition */
   @SuppressWarnings("SameParameterValue")
-  private static ConfigEnabledCondition add(String prop, BooleanValue supplier) {
+  private static ConfigEnabledCondition add(String prop, ModConfigSpec.BooleanValue supplier) {
     return add(prop, supplier::get);
   }
 

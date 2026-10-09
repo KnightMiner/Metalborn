@@ -51,6 +51,7 @@ import knightminer.metalborn.util.CastItemObject;
 import knightminer.metalborn.util.ItemDeferredRegisterExtension;
 import net.minecraft.core.Holder;
 import net.minecraft.core.Registry;
+import net.minecraft.core.UUIDUtil;
 import net.minecraft.core.component.DataComponentType;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
@@ -102,6 +103,7 @@ import slimeknights.mantle.registration.object.EnumObject;
 import slimeknights.mantle.registration.object.MetalItemObject;
 import slimeknights.mantle.registration.object.MultiObject;
 
+import java.util.UUID;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Supplier;
@@ -221,6 +223,8 @@ public class Registration {
   // data components
   public static final DeferredHolder<DataComponentType<?>, DataComponentType<MetalHolder>> METAL = DATA_COMPONENTS.register("metal", () -> DataComponentType.<MetalHolder>builder()
     .persistent(MetalHolder.CODEC).networkSynchronized(MetalHolder.STREAM_CODEC).build());
+  public static final DeferredHolder<DataComponentType<?>, DataComponentType<UUID>> OWNER = DATA_COMPONENTS.register("owner", () -> DataComponentType.<UUID>builder()
+    .persistent(UUIDUtil.STRING_CODEC).networkSynchronized(UUIDUtil.STREAM_CODEC).build());
 
   // data attachments
   public static final DeferredHolder<AttachmentType<?>, AttachmentType<MetalbornData>> METALBORN_DATA = ATTACHMENTS.register("metal", () -> AttachmentType.serializable(MetalbornData::create).copyHandler(MetalbornData.COPY_HANDLER).build());
@@ -296,8 +300,8 @@ public class Registration {
   public static final CastItemObject RING_CAST = ITEMS.registerCast("ring");
   public static final CastItemObject SPIKE_CAST = ITEMS.registerCast("spike");
 
-  // loot
-  public static final DeferredHolder<LootItemConditionType,LootItemConditionType> CONFIG = LOOT_CONDITIONS.register("config", () -> new LootItemConditionType(ConfigEnabledCondition.Serializer.INSTANCE));
+  // conditions
+  public static final DeferredHolder<LootItemConditionType,LootItemConditionType> CONFIG = LOOT_CONDITIONS.register("config", () -> new LootItemConditionType(ConfigEnabledCondition.CODEC));
 
 
   /** Registers any relevant static entries */
@@ -319,8 +323,10 @@ public class Registration {
       MetalEffect.REGISTRY.register(resource("update_health"), UpdateHealthEffect.LOADER);
       MetalEffect.REGISTRY.register(resource("energy"), EnergyMetalEffect.LOADER);
       MetalEffect.REGISTRY.register(resource("warmth"), WarmthMetalEffect.LOADER);
-      // conditions - TODO: migrate
-//      CraftingHelper.register(ConfigEnabledCondition.Serializer.INSTANCE);
+
+    // config conditions
+    } else if (key == NeoForgeRegistries.Keys.CONDITION_CODECS) {
+      Registry.register(NeoForgeRegistries.CONDITION_SERIALIZERS, CONFIG.getId(), ConfigEnabledCondition.CODEC);
 
     // creative tabs
     } else if (key == Registries.CREATIVE_MODE_TAB) {
@@ -328,7 +334,7 @@ public class Registration {
         CreativeModeTab.builder()
           .title(Component.translatable("creative_tab.metalborn"))
           .icon(() -> {
-            ItemStack stack = MetalItem.setMetal(RING.toStack(), new MetalId(MOD_ID, "pewter"));
+            ItemStack stack = MetalItem.setMetal(RING.toStack(), MetalId.fromNamespaceAndPath(MOD_ID, "pewter"));
             stack.getOrCreateTag().putInt(MetalmindItem.TAG_AMOUNT, 20 * 60 * 2); // about half full
             return stack;
           })
