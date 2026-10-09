@@ -19,17 +19,20 @@ import java.util.function.Consumer;
 public interface MetalItem extends ItemLike {
   // translation keys
   String KEY_METAL_ID = Metalborn.key("item", "metalmind.metal_id");
-  // NBT keys
-  String TAG_METAL = "metal";
+
+  /** Gets the metal contained in this stack */
+  static MetalHolder getMetalHolder(ItemStack stack) {
+    return stack.getOrDefault(Registration.METAL, MetalHolder.EMPTY);
+  }
 
   /** Gets the metal contained in this stack */
   static MetalId getMetal(ItemStack stack) {
-    return stack.getOrDefault(Registration.METAL, MetalHolder.EMPTY).id();
+    return getMetalHolder(stack).id();
   }
 
   /** Gets the metal contained in this stack */
   static MetalPower getMetalPower(ItemStack stack) {
-    return stack.getOrDefault(Registration.METAL, MetalHolder.EMPTY).getPower();
+    return getMetalHolder(stack).power();
   }
 
   /** Sets the metal on the stack */
@@ -38,6 +41,16 @@ public interface MetalItem extends ItemLike {
       stack.remove(Registration.METAL);
     } else {
       stack.set(Registration.METAL, MetalManager.INSTANCE.getHolder(metal));
+    }
+    return stack;
+  }
+
+  /** Sets the metal on the stack */
+  static ItemStack setMetal(ItemStack stack, MetalHolder metal) {
+    if (metal == MetalHolder.EMPTY) {
+      stack.remove(Registration.METAL);
+    } else {
+      stack.set(Registration.METAL, metal);
     }
     return stack;
   }
@@ -57,9 +70,9 @@ public interface MetalItem extends ItemLike {
   }
 
   /** Creates a stack with the given metal ID */
-  default ItemStack withMetal(MetalId id) {
+  default ItemStack withMetal(MetalHolder metal) {
     ItemStack stack = new ItemStack(this);
-    setMetal(stack, id);
+    setMetal(stack, metal);
     return stack;
   }
 
@@ -102,7 +115,7 @@ public interface MetalItem extends ItemLike {
   default void addVariants(Consumer<ItemStack> consumer) {
     for (MetalPower power : MetalManager.INSTANCE.getSortedPowers()) {
       if (canUseMetal(power)) {
-        consumer.accept(withMetal(power.id()));
+        consumer.accept(withMetal(power.holder()));
       }
     }
   }

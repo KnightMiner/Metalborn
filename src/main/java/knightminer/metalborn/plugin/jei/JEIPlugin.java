@@ -12,7 +12,6 @@ import knightminer.metalborn.json.recipe.cooking.CookingMetalRecyclingRecipe;
 import knightminer.metalborn.json.recipe.forge.ForgeRecipe;
 import knightminer.metalborn.menu.ForgeMenu;
 import knightminer.metalborn.metal.MetalId;
-import knightminer.metalborn.metal.MetalManager;
 import knightminer.metalborn.metal.MetalPower;
 import mezz.jei.api.IModPlugin;
 import mezz.jei.api.JeiPlugin;
@@ -121,7 +120,7 @@ public class JEIPlugin implements IModPlugin {
         if (recipe instanceof CookingMetalRecyclingRecipe metal) {
           return Arrays.stream(recipe.getIngredients().get(0).getItems())
             .flatMap(input -> {
-              MetalPower power = MetalManager.INSTANCE.get(MetalItem.getMetal(input));
+              MetalPower power = MetalItem.getMetalPower(input);
               MetalResult result = metal.getResult();
               if (power != MetalPower.DEFAULT && result.isPresent(power)) {
                 return Stream.of(constructor.apply(recipe.getId(), recipe.getGroup(), recipe.category(), Ingredient.of(input), result.get(power), recipe.getExperience(), recipe.getCookingTime()));

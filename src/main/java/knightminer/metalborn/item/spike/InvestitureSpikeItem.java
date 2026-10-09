@@ -9,8 +9,6 @@ import knightminer.metalborn.metal.MetalId;
 import knightminer.metalborn.metal.MetalManager;
 import knightminer.metalborn.metal.MetalPower;
 import net.minecraft.ChatFormatting;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.Tag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
@@ -22,12 +20,13 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.UseAnim;
 import net.minecraft.world.level.Level;
-import org.jetbrains.annotations.Nullable;
 import slimeknights.mantle.util.CombatHelper;
 
 import java.util.List;
 import java.util.function.Consumer;
 
+import static knightminer.metalborn.core.Registration.FULL;
+import static knightminer.metalborn.core.Registration.METAL;
 import static knightminer.metalborn.item.metalmind.InvestitureMetalmindItem.KEY_METAL;
 
 /** Spike that steals powers from players */
@@ -48,43 +47,34 @@ public class InvestitureSpikeItem extends SpikeItem {
   }
 
   /** Ensures the metal is set, setting randomly if missing */
-  private static void ensureMetalSet(CompoundTag tag) {
+  private static void ensureMetalSet(ItemStack stack) {
     // if missing metal, set it randomly as we lack player access
-    if (!tag.contains(TAG_METAL, Tag.TAG_STRING)) {
-      tag.putString(TAG_METAL, MetalManager.INSTANCE.getRandomFerring(RandomSource.create()).id().toString());
+    if (!stack.has(METAL)) {
+      MetalItem.setMetal(stack, MetalManager.INSTANCE.getRandomFerring(RandomSource.create()).id());
     }
   }
 
   @Override
   public int setCharge(ItemStack stack, int amount) {
     if (amount <= 0) {
-      CompoundTag tag = stack.getTag();
-      if (tag != null) {
-        tag.remove(TAG_FULL);
-        tag.remove(TAG_METAL);
-        if (tag.isEmpty()) {
-          stack.setTag(null);
-        }
-      }
+      stack.remove(FULL);
+      stack.remove(METAL);
       return 0;
     }
     // set to full
-    CompoundTag tag = stack.getOrCreateTag();
-    tag.putBoolean(TAG_FULL, true);
-    ensureMetalSet(tag);
+    stack.set(FULL, true);
+    ensureMetalSet(stack);
     return 1;
   }
 
   @Override
   public boolean isFull(ItemStack stack) {
-    CompoundTag tag = stack.getTag();
-    return tag != null && tag.getBoolean(TAG_FULL);
+    return stack.getOrDefault(FULL, false);
   }
 
   @Override
   public boolean isEmpty(ItemStack stack) {
-    CompoundTag tag = stack.getTag();
-    return tag == null || !tag.getBoolean(TAG_FULL);
+    return !isFull(stack);
   }
 
   @Override
@@ -92,13 +82,12 @@ public class InvestitureSpikeItem extends SpikeItem {
     if (amount <= 0) {
       return 0;
     }
-    CompoundTag tag = stack.getOrCreateTag();
-    if (tag.getBoolean(TAG_FULL)) {
+    if (stack.getOrDefault(FULL, false)) {
       return 0;
     }
     // fill it
-    tag.putBoolean(TAG_FULL, true);
-    ensureMetalSet(tag);
+    stack.set(FULL, true);
+    ensureMetalSet(stack);
     return 1;
   }
 
@@ -112,7 +101,7 @@ public class InvestitureSpikeItem extends SpikeItem {
   }
 
   @Override
-  public void appendHoverText(ItemStack stack, @Nullable Level pLevel, List<Component> tooltip, TooltipFlag flag) {
+  public void appendHoverText(ItemStack stack, TooltipContext context, List<Component> tooltip, TooltipFlag flag) {
     // if filled, we have a metal, so display metal info
     if (isFull(stack)) {
       MetalId metal = getMetal(stack);
@@ -137,8 +126,8 @@ public class InvestitureSpikeItem extends SpikeItem {
     consumer.accept(new ItemStack(this));
     for (MetalPower power : MetalManager.INSTANCE.getSortedPowers()) {
       if (!power.feruchemy().isEmpty() && power.hemalurgyCharge() > 0) {
-        ItemStack stack = withMetal(power.id());
-        stack.getOrCreateTag().putBoolean(TAG_FULL, true);
+        ItemStack stack = withMetal(power.holder());
+        stack.set(FULL, true);
         consumer.accept(stack);
       }
     }
@@ -182,7 +171,7 @@ public class InvestitureSpikeItem extends SpikeItem {
   }
 
   @Override
-  public int getUseDuration(ItemStack pStack) {
+  public int getUseDuration(ItemStack stack, LivingEntity entity) {
     return 72000;
   }
 

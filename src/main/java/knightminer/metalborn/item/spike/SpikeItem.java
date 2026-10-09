@@ -1,7 +1,5 @@
 package knightminer.metalborn.item.spike;
 
-import com.google.common.collect.ImmutableMultimap;
-import com.google.common.collect.Multimap;
 import knightminer.metalborn.Metalborn;
 import knightminer.metalborn.core.Config;
 import knightminer.metalborn.core.MetalbornData;
@@ -11,22 +9,20 @@ import knightminer.metalborn.metal.MetalId;
 import knightminer.metalborn.metal.MetalManager;
 import knightminer.metalborn.metal.MetalPower;
 import net.minecraft.ChatFormatting;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.InteractionResultHolder;
-import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.EquipmentSlotGroup;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.item.component.ItemAttributeModifiers;
 import net.minecraft.world.level.Level;
-import org.jetbrains.annotations.Nullable;
 import slimeknights.mantle.util.CombatHelper;
 import slimeknights.mantle.util.OffhandCooldownTracker;
 
@@ -43,18 +39,15 @@ public class SpikeItem extends Item implements MetalItem, Spike {
   // weapon properties
   private static final float ATTACK_DAMAGE = 2;
   private static final float ATTACK_SPEED = 2;
-  // NBT keys
-  /** Tag marking a spike as full. Ensures datapack changes don't change a spike's fullness. */
-  protected static final String TAG_FULL = "full";
 
   /** Attribute modifiers for this as a weapon */
-  private static final Multimap<Attribute,AttributeModifier> DEFAULT_MODIFIERS;
-  static {
-    ImmutableMultimap.Builder<Attribute, AttributeModifier> builder = ImmutableMultimap.builder();
-    builder.put(Attributes.ATTACK_DAMAGE, new AttributeModifier(BASE_ATTACK_DAMAGE_UUID, "Weapon modifier", ATTACK_DAMAGE, AttributeModifier.Operation.ADDITION));
-    builder.put(Attributes.ATTACK_SPEED, new AttributeModifier(BASE_ATTACK_SPEED_UUID, "Weapon modifier", ATTACK_SPEED - 4, AttributeModifier.Operation.ADDITION));
-    DEFAULT_MODIFIERS = builder.build();
+  public static ItemAttributeModifiers createAttributes() {
+    return ItemAttributeModifiers.builder()
+      .add(Attributes.ATTACK_DAMAGE, new AttributeModifier(BASE_ATTACK_DAMAGE_ID, ATTACK_DAMAGE, AttributeModifier.Operation.ADD_VALUE), EquipmentSlotGroup.MAINHAND)
+      .add(Attributes.ATTACK_SPEED, new AttributeModifier(BASE_ATTACK_SPEED_ID, ATTACK_SPEED - 4, AttributeModifier.Operation.ADD_VALUE), EquipmentSlotGroup.MAINHAND)
+      .build();
   }
+
 
   public SpikeItem(Properties props) {
     super(props);
@@ -87,14 +80,9 @@ public class SpikeItem extends Item implements MetalItem, Spike {
   public void addVariants(Consumer<ItemStack> consumer) {
     for (MetalPower power : MetalManager.INSTANCE.getSortedPowers()) {
       if (!power.feruchemy().isEmpty() && power.hemalurgyCharge() > 0) {
-        consumer.accept(withMetal(power.id()));
+        consumer.accept(withMetal(power.holder()));
       }
     }
-  }
-
-  @Override
-  public void verifyTagAfterLoad(CompoundTag tag) {
-    MetalItem.verifyTagAfterLoad(tag);
   }
 
 
@@ -111,7 +99,7 @@ public class SpikeItem extends Item implements MetalItem, Spike {
   }
 
   @Override
-  public void appendHoverText(ItemStack stack, @Nullable Level pLevel, List<Component> tooltip, TooltipFlag flag) {
+  public void appendHoverText(ItemStack stack, TooltipContext context, List<Component> tooltip, TooltipFlag flag) {
     MetalId metal = getMetal(stack);
     if (metal != MetalId.NONE) {
       if (flag.isAdvanced()) {
@@ -138,17 +126,6 @@ public class SpikeItem extends Item implements MetalItem, Spike {
 
 
   /* Stabbing */
-
-  @Override
-  public Multimap<Attribute, AttributeModifier> getAttributeModifiers(EquipmentSlot slot, ItemStack stack) {
-    return slot == EquipmentSlot.MAINHAND ? DEFAULT_MODIFIERS : ImmutableMultimap.of();
-  }
-
-  @SuppressWarnings("deprecation") // this is faster if someone uses the old API, we don't need stack sensitive here
-  @Override
-  public Multimap<Attribute, AttributeModifier> getDefaultAttributeModifiers(EquipmentSlot slot) {
-    return slot == EquipmentSlot.MAINHAND ? DEFAULT_MODIFIERS : ImmutableMultimap.of();
-  }
 
   @Override
   public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {

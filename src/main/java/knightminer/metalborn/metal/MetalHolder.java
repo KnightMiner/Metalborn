@@ -14,7 +14,7 @@ public class MetalHolder implements IdAwareObject {
   /** Empty instance, always resolves to {@link MetalPower#DEFAULT}. */
   public static final MetalHolder EMPTY = new MetalHolder(MetalId.NONE, MetalPower.DEFAULT);
   /** Codec creating metal holders by ID. */
-  public static final Codec<MetalHolder> CODEC = MetalId.CODEC.xmap(MetalManager.INSTANCE::getHolder, holder -> holder.getPower().id());
+  public static final Codec<MetalHolder> CODEC = MetalId.CODEC.xmap(MetalManager.INSTANCE::getHolder, holder -> holder.power().id());
   /** Stream codec syncing metal holders by ID */
   public static final StreamCodec<ByteBuf,MetalHolder> STREAM_CODEC = MetalId.STREAM_CODEC.map(MetalManager.INSTANCE::getHolder, MetalHolder::id);
 
@@ -38,7 +38,7 @@ public class MetalHolder implements IdAwareObject {
   }
 
   /** Gets the metal power, or {@link MetalPower#DEFAULT} if absent. */
-  public MetalPower getPower() {
+  public MetalPower power() {
     if (power == null) {
       power = MetalManager.INSTANCE.get(id);
     }
@@ -47,12 +47,12 @@ public class MetalHolder implements IdAwareObject {
 
   /** Checks if this power is present in the datapack. */
   public boolean isPresent() {
-    return getPower().isPresent();
+    return power().isPresent();
   }
 
   /** Gets a holder instance after applying redirects. */
   public MetalHolder resolve() {
-    MetalId resolved = getPower().id();
+    MetalId resolved = power().id();
     if (resolved.equals(id)) {
       return this;
     }

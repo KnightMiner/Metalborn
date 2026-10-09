@@ -79,7 +79,7 @@ public class MetalShapedForgeRecipe extends ShapedForgeRecipe {
   private static MetalPower getMetal(ItemStack stack) {
     // map metal items to the metal in NBT
     if (stack.getItem() instanceof MetalItem) {
-      return MetalManager.INSTANCE.get(MetalItem.getMetal(stack));
+      return MetalItem.getMetalPower(stack);
     } else {
       // other items try to do a tag match on ingot or nugget
       return MetalManager.INSTANCE.fromIngotOrNugget(stack.getItem());

@@ -3,14 +3,11 @@ package knightminer.metalborn.item.metalmind;
 import knightminer.metalborn.core.MetalbornData;
 import knightminer.metalborn.item.MetalItem;
 import knightminer.metalborn.metal.MetalId;
-import knightminer.metalborn.metal.MetalManager;
-import net.minecraft.nbt.CompoundTag;
+import knightminer.metalborn.metal.MetalPower;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
-import net.minecraft.world.level.Level;
-import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
@@ -18,7 +15,6 @@ import static knightminer.metalborn.item.MetalItem.getMetal;
 
 /** Metalmind that grants a power */
 public class PowerMetalmindItem extends MetalmindItem implements MetalItem {
-
   public PowerMetalmindItem(Properties props, int capacityMultiplier) {
     super(props, capacityMultiplier);
   }
@@ -40,9 +36,9 @@ public class PowerMetalmindItem extends MetalmindItem implements MetalItem {
   /** Gets the capacity of this metalmind */
   @Override
   public int getCapacity(ItemStack stack) {
-    MetalId metal = getMetal(stack);
-    if (metal != MetalId.NONE) {
-      return MetalManager.INSTANCE.get(metal).capacity() * this.capacityMultiplier;
+    MetalPower metal = MetalItem.getMetalPower(stack);
+    if (metal.isPresent()) {
+      return metal.capacity() * this.capacityMultiplier;
     }
     return 0;
   }
@@ -66,11 +62,6 @@ public class PowerMetalmindItem extends MetalmindItem implements MetalItem {
     return source.getItem() instanceof PowerMetalmindItem && isSamePower(destination, source) && isSameIdentity(destination, source);
   }
 
-  @Override
-  public void verifyTagAfterLoad(CompoundTag tag) {
-    MetalItem.verifyTagAfterLoad(tag);
-  }
-
 
   /* Tooltip */
 
@@ -80,14 +71,15 @@ public class PowerMetalmindItem extends MetalmindItem implements MetalItem {
   }
 
   @Override
-  public void appendHoverText(ItemStack stack, @Nullable Level pLevel, List<Component> tooltip, TooltipFlag flag) {
-    MetalId metal = getMetal(stack);
-    if (metal != MetalId.NONE) {
+  public void appendHoverText(ItemStack stack, TooltipContext context, List<Component> tooltip, TooltipFlag flag) {
+    MetalPower metal = MetalItem.getMetalPower(stack);
+    if (metal.isPresent()) {
+      MetalId id = metal.id();
       if (flag.isAdvanced()) {
-        MetalItem.appendMetalId(metal, tooltip);
+        MetalItem.appendMetalId(id, tooltip);
       }
       // stores
-      tooltip.add(makeStores(metal));
+      tooltip.add(makeStores(id));
 
       // amount
       int amount = getAmount(stack);

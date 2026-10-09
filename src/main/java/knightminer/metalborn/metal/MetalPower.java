@@ -69,6 +69,11 @@ public record MetalPower(
   @Internal
   public MetalPower {}
 
+  /** Gets the metal holder for storing this on items */
+  public MetalHolder holder() {
+    return MetalManager.INSTANCE.getHolder(id);
+  }
+
   /** Checks if this metal power is registered in datapacks */
   public boolean isPresent() {
     return this != DEFAULT;

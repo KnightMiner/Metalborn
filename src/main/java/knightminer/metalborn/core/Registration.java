@@ -1,6 +1,7 @@
 package knightminer.metalborn.core;
 
 
+import com.mojang.serialization.Codec;
 import knightminer.metalborn.Metalborn;
 import knightminer.metalborn.block.ForgeBlock;
 import knightminer.metalborn.block.ForgeBlockEntity;
@@ -13,7 +14,6 @@ import knightminer.metalborn.item.SatchelItem.SatchelType;
 import knightminer.metalborn.item.metalmind.IdentityMetalmindItem;
 import knightminer.metalborn.item.metalmind.InvestitureMetalmindItem;
 import knightminer.metalborn.item.metalmind.Metalmind;
-import knightminer.metalborn.item.metalmind.MetalmindItem;
 import knightminer.metalborn.item.metalmind.PowerMetalmindItem;
 import knightminer.metalborn.item.metalmind.UnsealedMetalmindItem;
 import knightminer.metalborn.item.spike.InvestitureSpikeItem;
@@ -56,9 +56,11 @@ import net.minecraft.core.component.DataComponentType;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.tags.TagKey;
+import net.minecraft.util.ExtraCodecs;
 import net.minecraft.world.damagesource.DamageType;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
@@ -85,6 +87,8 @@ import net.minecraft.world.level.storage.loot.predicates.LootItemConditionType;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.ModList;
 import net.neoforged.neoforge.attachment.AttachmentType;
+import net.neoforged.neoforge.capabilities.Capabilities;
+import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent;
 import net.neoforged.neoforge.common.crafting.IngredientType;
 import net.neoforged.neoforge.event.entity.EntityAttributeModificationEvent;
 import net.neoforged.neoforge.registries.DeferredBlock;
@@ -134,6 +138,7 @@ public class Registration {
   /** Initializes the registration event buses */
   @Internal
   public static void init(IEventBus bus) {
+    bus.addListener(Registration::registerCapabilities);
     bus.addListener(Registration::registerMisc);
     bus.addListener(Registration::addAttributes);
     BLOCKS.register(bus);
@@ -203,9 +208,15 @@ public class Registration {
   public static final DeferredItem<IdentityMetalmindItem> IDENTITY_RING = ITEMS.register("identity_ring", () -> new IdentityMetalmindItem(new Item.Properties().stacksTo(8), 1));
   public static final DeferredItem<IdentityMetalmindItem> SOULBOUND_IDENTITY_RING = ITEMS.register("soulbound_identity_ring", () -> new IdentityMetalmindItem(new Item.Properties().stacksTo(8), 1));
   // spikes
-  public static final DeferredItem<MonsterSpikeItem> SPIKE = ITEMS.register("spike", () -> new MonsterSpikeItem(new Item.Properties().stacksTo(1)));
-  public static final DeferredItem<InvestitureSpikeItem> INVESTITURE_SPIKE = ITEMS.register("investiture_spike", () -> new InvestitureSpikeItem(new Item.Properties().stacksTo(1)));
-  public static final DeferredItem<SpikeItem> SOULBOUND_SPIKE = ITEMS.register("soulbound_spike", () -> new SpikeItem(new Item.Properties().stacksTo(1)));
+  public static final DeferredItem<MonsterSpikeItem> SPIKE;
+  public static final DeferredItem<InvestitureSpikeItem> INVESTITURE_SPIKE;
+  public static final DeferredItem<SpikeItem> SOULBOUND_SPIKE;
+  static {
+    Item.Properties spikeProperties = new Item.Properties().stacksTo(1).attributes(SpikeItem.createAttributes());
+    SPIKE = ITEMS.register("spike", () -> new MonsterSpikeItem(spikeProperties));
+    INVESTITURE_SPIKE = ITEMS.register("investiture_spike", () -> new InvestitureSpikeItem(spikeProperties));
+    SOULBOUND_SPIKE = ITEMS.register("soulbound_spike", () -> new SpikeItem(spikeProperties));
+  }
 
   // metal forge
   public static final DeferredBlock<ForgeBlock> FORGE = BLOCKS.register("forge", () -> new ForgeBlock(BlockBehaviour.Properties.of().mapColor(MapColor.STONE).instrument(NoteBlockInstrument.BASEDRUM).requiresCorrectToolForDrops().strength(3.5F).lightLevel(s -> s.getValue(BlockStateProperties.LIT) ? 13 : 0)), BLOCK_ITEM);
@@ -221,10 +232,20 @@ public class Registration {
   });
 
   // data components
+  /** Metal type for a {@link MetalItem} */
   public static final DeferredHolder<DataComponentType<?>, DataComponentType<MetalHolder>> METAL = DATA_COMPONENTS.register("metal", () -> DataComponentType.<MetalHolder>builder()
     .persistent(MetalHolder.CODEC).networkSynchronized(MetalHolder.STREAM_CODEC).build());
+  /** Current amount for a {@link Metalmind} or spike. Max is determined by the {@link knightminer.metalborn.metal.MetalPower}. */
+  public static final DeferredHolder<DataComponentType<?>, DataComponentType<Integer>> AMOUNT = DATA_COMPONENTS.register("amount", () -> DataComponentType.<Integer>builder()
+    .persistent(ExtraCodecs.NON_NEGATIVE_INT).networkSynchronized(ByteBufCodecs.VAR_INT).build());
+  public static final DeferredHolder<DataComponentType<?>, DataComponentType<Boolean>> FULL = DATA_COMPONENTS.register("full", () -> DataComponentType.<Boolean>builder()
+    .persistent(Codec.BOOL).networkSynchronized(ByteBufCodecs.BOOL).build());
+  /** Owner UUID for a {@link Metalmind}. Represents a player UUID. */
   public static final DeferredHolder<DataComponentType<?>, DataComponentType<UUID>> OWNER = DATA_COMPONENTS.register("owner", () -> DataComponentType.<UUID>builder()
     .persistent(UUIDUtil.STRING_CODEC).networkSynchronized(UUIDUtil.STREAM_CODEC).build());
+  /** Display name for {@link #OWNER}. */
+  public static final DeferredHolder<DataComponentType<?>, DataComponentType<String>> OWNER_NAME = DATA_COMPONENTS.register("owner_name", () -> DataComponentType.<String>builder()
+    .persistent(ExtraCodecs.NON_EMPTY_STRING).networkSynchronized(ByteBufCodecs.STRING_UTF8).build());
 
   // data attachments
   public static final DeferredHolder<AttachmentType<?>, AttachmentType<MetalbornData>> METALBORN_DATA = ATTACHMENTS.register("metal", () -> AttachmentType.serializable(MetalbornData::create).copyHandler(MetalbornData.COPY_HANDLER).build());
@@ -304,6 +325,11 @@ public class Registration {
   public static final DeferredHolder<LootItemConditionType,LootItemConditionType> CONFIG = LOOT_CONDITIONS.register("config", () -> new LootItemConditionType(ConfigEnabledCondition.CODEC));
 
 
+  /** Registers capabilities for items, blocks and alike */
+  private static void registerCapabilities(RegisterCapabilitiesEvent event) {
+    SATCHEL.forEach((type, item) -> event.registerItem(Capabilities.ItemHandler.ITEM, (stack, context) -> new SatchelItem.SatchelInventory(stack, type), item));
+  }
+
   /** Registers any relevant static entries */
   private static void registerMisc(RegisterEvent event) {
     ResourceKey<? extends Registry<?>> key = event.getRegistryKey();
@@ -335,7 +361,7 @@ public class Registration {
           .title(Component.translatable("creative_tab.metalborn"))
           .icon(() -> {
             ItemStack stack = MetalItem.setMetal(RING.toStack(), MetalId.fromNamespaceAndPath(MOD_ID, "pewter"));
-            stack.getOrCreateTag().putInt(MetalmindItem.TAG_AMOUNT, 20 * 60 * 2); // about half full
+            stack.set(AMOUNT, 20 * 60 * 2); // about half full with default metal
             return stack;
           })
           .displayItems(Registration::addTabItems)

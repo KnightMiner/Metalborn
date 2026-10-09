@@ -2,16 +2,15 @@ package knightminer.metalborn.item.metalmind;
 
 import knightminer.metalborn.Metalborn;
 import knightminer.metalborn.core.MetalbornData;
+import knightminer.metalborn.core.Registration;
+import knightminer.metalborn.metal.MetalHolder;
 import knightminer.metalborn.metal.MetalId;
 import knightminer.metalborn.metal.MetalManager;
 import knightminer.metalborn.metal.MetalPower;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
-import net.minecraft.world.level.Level;
-import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 import java.util.Objects;
@@ -19,9 +18,11 @@ import java.util.Objects;
 /** Metalmind that allows storing and tapping identity */
 public class IdentityMetalmindItem extends MetalmindItem {
   /** Preferred metal ID for identity metalminds */
-  public static final MetalId ALUMINUM = new MetalId(Metalborn.MOD_ID, "aluminum");
+  public static final MetalId ALUMINUM = Metalborn.metal("aluminum");
+  private static final MetalHolder ALUMINUM_HOLDER = MetalManager.INSTANCE.getHolder(ALUMINUM);
   /** Fallback metal ID for identity metalminds */
-  public static final MetalId QUARTZ = new MetalId(Metalborn.MOD_ID, "quartz");
+  public static final MetalId QUARTZ = Metalborn.metal("quartz");
+  private static final MetalHolder QUARTZ_HOLDER = MetalManager.INSTANCE.getHolder(QUARTZ);
   private static final Component STORES = makeStores(QUARTZ);
 
   public IdentityMetalmindItem(Properties props, int capacityMultiplier) {
@@ -44,8 +45,7 @@ public class IdentityMetalmindItem extends MetalmindItem {
 
   /** Gets the power instance for this metalmind */
   private static MetalPower getPower() {
-    MetalPower power = MetalManager.INSTANCE.get(ALUMINUM);
-    return power != MetalPower.DEFAULT ? power : MetalManager.INSTANCE.get(QUARTZ);
+    return (ALUMINUM_HOLDER.isPresent() ? ALUMINUM_HOLDER : QUARTZ_HOLDER).power();
   }
 
   @Override
@@ -69,8 +69,7 @@ public class IdentityMetalmindItem extends MetalmindItem {
   public boolean onUpdate(ItemStack stack, int index, int newLevel, int oldLevel, Player player, MetalbornData data) {
     // was not tapping identity, now is
     if (newLevel > 0 && oldLevel <= 0) {
-      CompoundTag tag = stack.getTag();
-      data.updateTappingIdentity(index, getIdentity(stack), tag != null ? tag.getString(TAG_OWNER_NAME) : "");
+      data.updateTappingIdentity(index, getIdentity(stack), stack.getOrDefault(Registration.OWNER_NAME, ""));
     }
     // was tapping identity, no longer
     else if (newLevel <= 0 && oldLevel > 0) {
@@ -93,9 +92,10 @@ public class IdentityMetalmindItem extends MetalmindItem {
 
   /** Called when the metalmind is first filled to set any relevant data */
   @Override
-  protected void startFillingMetalmind(CompoundTag tag, Player player, MetalbornData data) {
-    tag.putUUID(TAG_OWNER, player.getUUID());
-    tag.putString(TAG_OWNER_NAME, player.getGameProfile().getName());
+  protected void startFillingMetalmind(ItemStack stack, Player player, MetalbornData data) {
+    // filled with current player regardless of current identity
+    stack.set(Registration.OWNER, player.getUUID());
+    stack.set(Registration.OWNER_NAME, player.getGameProfile().getName());
   }
 
   @Override
@@ -110,14 +110,14 @@ public class IdentityMetalmindItem extends MetalmindItem {
   @Override
   public String getDescriptionId() {
     String id = this.getOrCreateDescriptionId();
-    if (MetalManager.INSTANCE.get(ALUMINUM) != MetalPower.DEFAULT) {
+    if (ALUMINUM_HOLDER.isPresent()) {
       return id + ".aluminum";
     }
     return id + ".quartz";
   }
 
   @Override
-  public void appendHoverText(ItemStack stack, @Nullable Level pLevel, List<Component> tooltip, TooltipFlag flag) {
+  public void appendHoverText(ItemStack stack, TooltipContext context, List<Component> tooltip, TooltipFlag flag) {
     // stores
     tooltip.add(STORES);
 

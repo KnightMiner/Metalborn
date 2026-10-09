@@ -16,6 +16,7 @@ import knightminer.metalborn.data.tag.DamageTypeTagProvider;
 import knightminer.metalborn.data.tag.EntityTagProvider;
 import knightminer.metalborn.data.tag.ItemTagProvider;
 import knightminer.metalborn.data.tag.MenuTagProvider;
+import knightminer.metalborn.metal.MetalId;
 import knightminer.metalborn.metal.MetalManager;
 import knightminer.metalborn.plugin.tinkers.TinkersPlugin;
 import net.minecraft.core.HolderLookup.Provider;
@@ -98,12 +99,21 @@ public class Metalborn {
   /* Mod ID helpers */
 
   /**
-   * Gets a resource location at the Ceramics namespace
+   * Gets a resource location at the Metalborn namespace
    * @param name  Resource path
-   * @return  Resource location for Ceramics
+   * @return  Resource location for Metalborn
    */
   public static ResourceLocation resource(String name) {
     return ResourceLocation.fromNamespaceAndPath(MOD_ID, name);
+  }
+
+  /**
+   * Gets a Metal ID at the Metalborn namespace
+   * @param name  Resource path
+   * @return  Metal ID for Metalborn
+   */
+  public static MetalId metal(String name) {
+    return MetalId.fromNamespaceAndPath(MOD_ID, name);
   }
 
   /**

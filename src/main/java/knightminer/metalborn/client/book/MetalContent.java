@@ -22,7 +22,6 @@ import net.minecraft.tags.TagKey;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.TooltipFlag;
 import org.apache.commons.lang3.mutable.MutableObject;
 import slimeknights.mantle.client.book.HTMLUtils;
 import slimeknights.mantle.client.book.data.BookData;
@@ -125,7 +124,7 @@ public class MetalContent extends PageContent {
       MetalPower power = getPower();
       metalminds = IngredientData.getItemStackData(RegistryHelper.getTagValueStream(BuiltInRegistries.ITEM, Registration.METALMINDS).flatMap(item -> {
         if (item instanceof MetalItem metalItem && metalItem.canUseMetal(power)) {
-          ItemStack stack = metalItem.withMetal(power.id());
+          ItemStack stack = metalItem.withMetal(power.holder());
           if (item instanceof Metalmind metalmind) {
             metalmind.setAmount(stack, null, metalmind.getCapacity(stack) / 2, null);
           }
@@ -143,7 +142,7 @@ public class MetalContent extends PageContent {
       SpikeItem spike = Registration.SPIKE.get();
       MetalPower power = getPower();
       if (spike.canUseMetal(power)) {
-        ItemStack stack = spike.withMetal(power.id());
+        ItemStack stack = spike.withMetal(power.holder());
         spike.setCharge(stack, spike.getMaxCharge(stack) / 2);
         spikes = IngredientData.getItemStackData(stack);
       } else {
@@ -330,15 +329,6 @@ public class MetalContent extends PageContent {
     return HtmlElement.p().add(toHtml(Component.translatable(key, text.withStyle(style))));
   }
 
-  /** Creates an item tooltip as a serializable component, for use in minetips. */
-  private static HtmlSerializable itemTooltip(ItemStack stack) {
-    HtmlGroup group = HtmlGroup.indent();
-    for (Component component : stack.getTooltipLines(Minecraft.getInstance().player, TooltipFlag.NORMAL)) {
-      group.add(toHtml(component));
-    }
-    return group;
-  }
-
   @Nullable
   @Override
   public HtmlSerializable toHTML(BookData book) {
@@ -349,11 +339,11 @@ public class MetalContent extends PageContent {
     MetalPower power = getPower();
     List<ItemStack> items = getItems(power.ingot());
     if (!items.isEmpty()) {
-      page.add(HtmlElement.div().classes("metal-ingot").minetip(itemTooltip(items.get(0))));
+      page.add(HtmlElement.div().classes("metal-ingot").minetip(HTMLUtils.itemTooltip(items.getFirst())));
     }
     items = getItems(power.nugget());
     if (!items.isEmpty()) {
-      page.add(HtmlElement.div().classes("metal-nugget").minetip(itemTooltip(items.get(0))));
+      page.add(HtmlElement.div().classes("metal-nugget").minetip(HTMLUtils.itemTooltip(items.getFirst())));
     }
 
     // add metalmind
@@ -362,7 +352,7 @@ public class MetalContent extends PageContent {
     page.add(metalmindElement);
     if (!metalminds.isEmpty()) {
       metalmindElement
-        .add(HtmlElement.div().classes("item").minetip(itemTooltip(metalminds.get(0))))
+        .add(HtmlElement.div().classes("item").minetip(HTMLUtils.itemTooltip(metalminds.getFirst())))
         .add(HtmlElement.div().classes("item-text")
           .add(metalText(KEY_FERRING, metal.getFerring(), ChatFormatting.DARK_AQUA))
           .add(metalText(KEY_STORES, metal.getStores(), ChatFormatting.DARK_GREEN))
@@ -375,7 +365,7 @@ public class MetalContent extends PageContent {
     page.add(spikeElement);
     if (!spikes.isEmpty()) {
       spikeElement
-        .add(HtmlElement.div().classes("item").minetip(itemTooltip(spikes.get(0))))
+        .add(HtmlElement.div().classes("item").minetip(HTMLUtils.itemTooltip(spikes.getFirst())))
         .add(HtmlElement.div().classes("item-text").add(metalText(KEY_TARGET, metal.getTarget(), ChatFormatting.DARK_RED)));
     }
     // add effects

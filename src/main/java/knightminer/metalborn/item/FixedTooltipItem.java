@@ -4,12 +4,10 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
-import net.minecraft.world.level.Level;
 
-import javax.annotation.Nullable;
 import java.util.List;
 
-/** Similar to {@link slimeknights.mantle.item.TooltipItem}, except the tooltip is always added */
+/** Similar to {@link slimeknights.mantle.item.tooltip.TooltipItem}, except the tooltip is always added */
 public class FixedTooltipItem extends Item {
   private final Component tooltip;
   public FixedTooltipItem(Properties props, Component tooltip) {
@@ -18,7 +16,7 @@ public class FixedTooltipItem extends Item {
   }
 
   @Override
-  public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag flag) {
+  public void appendHoverText(ItemStack stack, TooltipContext context, List<Component> tooltip, TooltipFlag flag) {
     tooltip.add(this.tooltip);
   }
 }

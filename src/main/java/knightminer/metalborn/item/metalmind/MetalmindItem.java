@@ -3,11 +3,8 @@ package knightminer.metalborn.item.metalmind;
 import knightminer.metalborn.Metalborn;
 import knightminer.metalborn.core.MetalbornData;
 import knightminer.metalborn.metal.MetalId;
-import knightminer.metalborn.metal.MetalManager;
 import knightminer.metalborn.metal.MetalPower;
 import net.minecraft.ChatFormatting;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.Tag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
@@ -24,6 +21,10 @@ import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
 
+import static knightminer.metalborn.core.Registration.AMOUNT;
+import static knightminer.metalborn.core.Registration.OWNER;
+import static knightminer.metalborn.core.Registration.OWNER_NAME;
+
 /** Common logic for a metalmind, with or without metal variants. */
 public abstract class MetalmindItem extends Item implements Metalmind {
   // translation keys
@@ -32,10 +33,6 @@ public abstract class MetalmindItem extends Item implements Metalmind {
   private static final String KEY_OWNER = Metalborn.key("item", "metalmind.owner");
   public static final Component UNKNOWN_OWNER = ownerComponent(Metalborn.component("item", "metalmind.owner.unknown").withStyle(ChatFormatting.RED));
   public static final Component UNKEYED = ownerComponent(Metalborn.component("item", "metalmind.owner.none").withStyle(ChatFormatting.ITALIC));
-  // NBT keys
-  public static final String TAG_AMOUNT = "amount";
-  public static final String TAG_OWNER = "owner";
-  public static final String TAG_OWNER_NAME = "owner_name";
 
   /** Amount to multiply capacity by, for larger metalminds */
   protected final int capacityMultiplier;
@@ -51,10 +48,10 @@ public abstract class MetalmindItem extends Item implements Metalmind {
   /** Checks if the given player has the same identity as this metalmind */
   protected static Usable matchesIdentity(ItemStack stack, MetalbornData data, boolean isTransfer) {
     UUID identity = data.getIdentity();
-    CompoundTag tag = stack.getTag();
-    if (tag != null && tag.hasUUID(TAG_OWNER)) {
+    UUID owner = stack.get(OWNER);
+    if (owner != null) {
       // identity must match that inside the metalmind to use
-      return identity != null && identity.equals(tag.getUUID(TAG_OWNER)) ? Usable.ALWAYS : Usable.NEVER;
+      return identity != null && identity.equals(owner) ? Usable.ALWAYS : Usable.NEVER;
     }
     // no identity stored? tapping is always fine but storing is only fine if we also lack identity or are transferring; no overwriting identity
     return identity == null || isTransfer ? Usable.ALWAYS : Usable.TAPPING;
@@ -69,11 +66,7 @@ public abstract class MetalmindItem extends Item implements Metalmind {
   /** Gets the identity of the given metalmind */
   @Nullable
   protected static UUID getIdentity(ItemStack stack) {
-    CompoundTag tag = stack.getTag();
-    if (tag != null && tag.hasUUID(TAG_OWNER)) {
-      return tag.getUUID(TAG_OWNER);
-    }
-    return null;
+    return stack.get(OWNER);
   }
 
   /** Checks if the two stacks contain the same identity, or one of them has no identity */
@@ -88,11 +81,7 @@ public abstract class MetalmindItem extends Item implements Metalmind {
 
   /** Gets the amount stored in this stack */
   public static int getAmount(ItemStack stack) {
-    CompoundTag tag = stack.getTag();
-    if (tag != null) {
-      return tag.getInt(TAG_AMOUNT);
-    }
-    return 0;
+    return stack.getOrDefault(AMOUNT, 0);
   }
 
   /** Sets the amount on the stack */
@@ -100,21 +89,14 @@ public abstract class MetalmindItem extends Item implements Metalmind {
   public void setAmount(ItemStack stack, @Nullable Player player, int amount, @Nullable MetalbornData data) {
     // if amount is 0, empty it out
     if (amount <= 0) {
-      CompoundTag tag = stack.getTag();
-      if (tag != null) {
-        emptyMetalmind(tag);
-        if (tag.isEmpty()) {
-          stack.setTag(null);
-        }
-      }
+      emptyMetalmind(stack);
     } else {
       // if amount is non-zero, start filling
-      CompoundTag tag = stack.getOrCreateTag();
       // if we were empty before, set on fill properties
-      if (player != null && data != null && tag.getInt(TAG_AMOUNT) == 0) {
-        startFillingMetalmind(tag, player, data);
+      if (player != null && data != null && getAmount(stack) == 0) {
+        startFillingMetalmind(stack, player, data);
       }
-      tag.putInt(TAG_AMOUNT, amount);
+      stack.set(AMOUNT, amount);
     }
   }
 
@@ -135,18 +117,18 @@ public abstract class MetalmindItem extends Item implements Metalmind {
   /* Filling and draining */
 
   /** Empties out the metalmind entirely */
-  protected void emptyMetalmind(CompoundTag tag) {
-    tag.remove(TAG_AMOUNT);
-    tag.remove(TAG_OWNER);
-    tag.remove(TAG_OWNER_NAME);
+  protected void emptyMetalmind(ItemStack stack) {
+    stack.remove(AMOUNT);
+    stack.remove(OWNER);
+    stack.remove(OWNER_NAME);
   }
 
   /** Called when the metalmind is first filled to set any relevant data */
-  protected void startFillingMetalmind(CompoundTag tag, Player player, MetalbornData data) {
+  protected void startFillingMetalmind(ItemStack stack, Player player, MetalbornData data) {
     UUID identity = data.getIdentity();
     if (identity != null) {
-      tag.putUUID(TAG_OWNER, identity);
-      tag.putString(TAG_OWNER_NAME, data.getIdentityName());
+      stack.set(OWNER, identity);
+      stack.set(OWNER_NAME, data.getIdentityName());
     }
   }
 
@@ -165,40 +147,37 @@ public abstract class MetalmindItem extends Item implements Metalmind {
     }
 
     // set any data set when you first start storing
-    CompoundTag tag = stack.getOrCreateTag();
     if (stored == 0) {
-      startFillingMetalmind(tag, player, data);
+      startFillingMetalmind(stack, player, data);
     }
-
-    return fill(tag, stored, capacity, amount) * size;
+    return fill(stack, stored, capacity, amount) * size;
   }
 
   /** Adds the given amount into the tag */
-  protected static int fill(CompoundTag tag, int stored, int capacity, int amount) {
+  protected static int fill(ItemStack stack, int stored, int capacity, int amount) {
     int updated = stored + amount;
     // if unable to use the full amount, return the remainder
     if (updated >= capacity) {
-      tag.putInt(TAG_AMOUNT, capacity);
+      stack.set(AMOUNT, capacity);
       return capacity - stored;
     } else {
       // store everything
-      tag.putInt(TAG_AMOUNT, updated);
+      stack.set(AMOUNT, updated);
       return amount;
     }
   }
 
   @Override
   public void setFull(ItemStack stack) {
-    CompoundTag tag = stack.getOrCreateTag();
-    tag.putInt(TAG_AMOUNT, getCapacity(stack));
+    stack.set(AMOUNT, getCapacity(stack));
   }
 
   /** Copies fill related data (other than amount) from the passed source to the given tag. */
-  protected void copyDataFrom(CompoundTag tag, ItemStack source) {
-    UUID owner = getIdentity(source);
+  protected void copyDataFrom(ItemStack to, ItemStack from) {
+    UUID owner = getIdentity(from);
     if (owner != null) {
-      tag.putUUID(TAG_OWNER, owner);
-      tag.putString(TAG_OWNER_NAME, source.getOrCreateTag().getString(TAG_OWNER_NAME));
+      to.set(OWNER, owner);
+      to.set(OWNER_NAME, from.get(OWNER_NAME));
     }
   }
 
@@ -216,12 +195,11 @@ public abstract class MetalmindItem extends Item implements Metalmind {
     }
 
     // copy properties from the target into the destination. Since we are transferring, it should keep identity the same
-    CompoundTag tag = stack.getOrCreateTag();
     if (stored == 0) {
-      copyDataFrom(tag, source);
+      copyDataFrom(stack, source);
     }
 
-    return fill(tag, stored, capacity, amount) * stack.getCount();
+    return fill(stack, stored, capacity, amount) * stack.getCount();
   }
 
   @Override
@@ -235,17 +213,11 @@ public abstract class MetalmindItem extends Item implements Metalmind {
     int updated = current - amount;
     if (updated > 0) {
       // drained but not completely?
-      stack.getOrCreateTag().putInt(TAG_AMOUNT, updated);
+      stack.set(AMOUNT, updated);
       return amount * size;
     } else {
       // completely drained? clear amount and owner
-      CompoundTag tag = stack.getTag();
-      if (tag != null) {
-        emptyMetalmind(tag);
-        if (tag.isEmpty()) {
-          stack.setTag(null);
-        }
-      }
+      emptyMetalmind(stack);
       return current * size;
     }
   }
@@ -264,7 +236,7 @@ public abstract class MetalmindItem extends Item implements Metalmind {
     // we can transfer a single metalmind of power into the slot stack, provided its the same power
     if (action == ClickAction.SECONDARY && slot.allowModification(player) && isTransferrable(stack, held)
         // if stackable, do not attempt transfer if either empty or full
-        && (!ItemStack.isSameItemSameTags(stack, held) || !isEmpty(stack) && !isFull(stack))) {
+        && (!ItemStack.isSameItemSameComponents(stack, held) || !isEmpty(stack) && !isFull(stack))) {
       MetalmindItem other = (MetalmindItem) held.getItem();
       MetalbornData data = MetalbornData.getData(player);
       // ensure both are usable (e.g. no identity issues)
@@ -341,11 +313,6 @@ public abstract class MetalmindItem extends Item implements Metalmind {
     tooltip.add(Component.translatable(KEY_AMOUNT, power.format(amount, capacityMultiplier)).withStyle(ChatFormatting.GRAY));
   }
 
-  /** Appends the current amount to the tooltip */
-  protected void appendAmount(MetalId metal, int amount, List<Component> tooltip) {
-    appendAmount(MetalManager.INSTANCE.get(metal), amount, tooltip);
-  }
-
   /** Gets the name of the owner */
   public static Component ownerComponent(Component name) {
     return Component.translatable(KEY_OWNER, name).withStyle(ChatFormatting.GRAY);
@@ -358,15 +325,13 @@ public abstract class MetalmindItem extends Item implements Metalmind {
 
   /** Appends the owner to the tooltip */
   protected static void appendOwner(ItemStack stack, List<Component> tooltip, boolean showUnkeyed) {
-    CompoundTag tag = stack.getTag();
-    if (tag != null) {
-      if (tag.contains(TAG_OWNER_NAME, Tag.TAG_STRING)) {
-        tooltip.add(ownerComponent(tag.getString(TAG_OWNER_NAME)));
-      } else if (tag.hasUUID(TAG_OWNER)) {
-        tooltip.add(UNKNOWN_OWNER);
-      } else if (showUnkeyed) {
-        tooltip.add(UNKEYED);
-      }
+    String ownerName = stack.getOrDefault(OWNER_NAME, "");
+    if (!ownerName.isEmpty()) {
+      tooltip.add(ownerComponent(ownerName));
+    } else if (stack.has(OWNER)) {
+      tooltip.add(UNKNOWN_OWNER);
+    } else if (showUnkeyed) {
+      tooltip.add(UNKEYED);
     }
   }
 }

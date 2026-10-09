@@ -6,8 +6,7 @@ import knightminer.metalborn.core.Registration;
 import knightminer.metalborn.menu.MetalbornMenu;
 import knightminer.metalborn.metal.MetalId;
 import net.minecraft.ChatFormatting;
-import net.minecraft.core.Direction;
-import net.minecraft.nbt.CompoundTag;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.tags.DamageTypeTags;
@@ -22,26 +21,18 @@ import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.ClickAction;
 import net.minecraft.world.inventory.Slot;
-import net.minecraft.world.item.DyeableLeatherItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.ItemUtils;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
-import net.neoforged.neoforge.common.capabilities.Capability;
-import net.neoforged.neoforge.common.capabilities.ForgeCapabilities;
-import net.neoforged.neoforge.common.capabilities.ICapabilityProvider;
-import net.neoforged.neoforge.common.capabilities.ICapabilitySerializable;
-import net.neoforged.neoforge.common.util.LazyOptional;
+import net.neoforged.neoforge.capabilities.Capabilities;
+import net.neoforged.neoforge.common.MutableDataComponentHolder;
+import net.neoforged.neoforge.items.ComponentItemHandler;
 import net.neoforged.neoforge.items.IItemHandler;
-import net.neoforged.neoforge.items.ItemStackHandler;
-import net.neoforged.neoforge.network.NetworkHooks;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 import slimeknights.mantle.Mantle;
 import slimeknights.mantle.client.SafeClientAccess;
-import slimeknights.mantle.inventory.EmptyItemHandler;
-import slimeknights.mantle.item.AbstractBookItem;
+import slimeknights.mantle.item.book.AbstractBookItem;
 
 import java.util.List;
 import java.util.Locale;
@@ -50,7 +41,7 @@ import java.util.stream.IntStream;
 /**
  * Implements the satchel item, which stores metalminds and has a UI that can unequip and reequip metalminds.
  */
-public class SatchelItem extends Item implements DyeableLeatherItem {
+public class SatchelItem extends Item {
   private static final Component CLICK_TO_OPEN = Mantle.makeComponent("item", "book.click_to_open").withStyle(ChatFormatting.YELLOW, ChatFormatting.ITALIC);
 
   private final SatchelType type;
@@ -59,6 +50,7 @@ public class SatchelItem extends Item implements DyeableLeatherItem {
     this.type = type;
   }
 
+  @SuppressWarnings("deprecation") // don't need the context
   @Override
   public boolean canFitInsideContainerItems() {
     return false;
@@ -70,7 +62,7 @@ public class SatchelItem extends Item implements DyeableLeatherItem {
   }
 
   @Override
-  public boolean canBeHurtBy(DamageSource source) {
+  public boolean canBeHurtBy(ItemStack stack, DamageSource source) {
     // anything that is not steel takes normal damage. Steel only takes damage from things that hurt creative (e.g. the void)
     return type != SatchelType.STEEL || source.is(DamageTypeTags.BYPASSES_INVULNERABILITY);
   }
@@ -89,22 +81,17 @@ public class SatchelItem extends Item implements DyeableLeatherItem {
   @Override
   public void onDestroyed(ItemEntity entity) {
     if (!entity.level().isClientSide) {
-      IItemHandler handler = entity.getItem().getCapability(ForgeCapabilities.ITEM_HANDLER).orElse(EmptyItemHandler.INSTANCE);
-      if (handler.getSlots() > 0) {
-        ItemUtils.onContainerDestroyed(entity,
-          IntStream.range(0, handler.getSlots()).mapToObj(handler::getStackInSlot).filter(stack -> !stack.isEmpty()));
+      IItemHandler handler = entity.getItem().getCapability(Capabilities.ItemHandler.ITEM);
+      if (handler != null && handler.getSlots() > 0) {
+        ItemUtils.onContainerDestroyed(entity, IntStream.range(0, handler.getSlots()).mapToObj(handler::getStackInSlot).filter(stack -> !stack.isEmpty()).map(ItemStack::copy).toList());
       }
     }
   }
 
   @Override
-  public ICapabilityProvider initCapabilities(ItemStack stack, @Nullable CompoundTag nbt) {
-    return new SatchelCapability(type);
-  }
-
-  @Override
-  public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag flag) {
+  public void appendHoverText(ItemStack stack, TooltipContext context, List<Component> tooltip, TooltipFlag flag) {
     // if the stack is in the player inventory, show the right click to open tooltip
+    Level level = context.level();
     if (level != null && level.isClientSide) {
       Player player = SafeClientAccess.getPlayer();
       if (player != null && AbstractBookItem.isValidContainer(player.containerMenu)) {
@@ -125,7 +112,7 @@ public class SatchelItem extends Item implements DyeableLeatherItem {
   private void openMenu(Player player, ItemStack stack, int slot) {
     if (player instanceof ServerPlayer serverPlayer) {
       MetalId ferringType = MetalbornData.getData(player).getFerringType();
-      NetworkHooks.openScreen(serverPlayer, new SimpleMenuProvider(
+      serverPlayer.openMenu(new SimpleMenuProvider(
         (id, inventory, p) -> new MetalbornMenu(id, inventory, stack, type, slot),
         stack.getHoverName()
       ), buffer -> {
@@ -198,15 +185,15 @@ public class SatchelItem extends Item implements DyeableLeatherItem {
   }
 
   /** Inventory for satchel items */
-  public static class SatchelInventory extends ItemStackHandler {
+  public static class SatchelInventory extends ComponentItemHandler {
     private final SatchelType type;
-    public SatchelInventory(SatchelType type) {
-      super(type.size);
+    public SatchelInventory(MutableDataComponentHolder stack, SatchelType type) {
+      super(stack, DataComponents.CONTAINER, type.size);
       this.type = type;
     }
 
     @Override
-    public boolean isItemValid(int slot, @NotNull ItemStack stack) {
+    public boolean isItemValid(int slot, ItemStack stack) {
       if (stack.isEmpty()) {
         return true;
       }
@@ -219,39 +206,7 @@ public class SatchelItem extends Item implements DyeableLeatherItem {
         return false;
       }
       // no bags
-      return stack.getItem().canFitInsideContainerItems() && !stack.getCapability(ForgeCapabilities.ITEM_HANDLER).isPresent();
-    }
-  }
-
-  /** Capability logic for a satchel item. Instantiated on the item class. */
-  public static class SatchelCapability implements ICapabilitySerializable<CompoundTag> {
-    private final ItemStackHandler inventory;
-    private final LazyOptional<IItemHandler> capability;
-    public SatchelCapability(SatchelType type) {
-      inventory = new SatchelInventory(type);
-      capability = LazyOptional.of(() -> inventory);
-    }
-
-    @Override
-    public <T> LazyOptional<T> getCapability(Capability<T> cap, @javax.annotation.Nullable Direction side) {
-      if (cap == ForgeCapabilities.ITEM_HANDLER) {
-        return capability.cast();
-      }
-      return LazyOptional.empty();
-    }
-
-    @Override
-    public CompoundTag serializeNBT() {
-      CompoundTag tag = inventory.serializeNBT();
-      // serializing size is dumb, we want size to be the one we were passed
-      tag.remove("Size");
-      return tag;
-    }
-
-    @Override
-    public void deserializeNBT(CompoundTag nbt) {
-      nbt.remove("Size");
-      inventory.deserializeNBT(nbt);
+      return stack.canFitInsideContainerItems() && stack.getCapability(Capabilities.ItemHandler.ITEM) == null;
     }
   }
 }
