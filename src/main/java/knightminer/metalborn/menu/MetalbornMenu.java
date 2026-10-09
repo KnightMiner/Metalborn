@@ -1,8 +1,8 @@
 package knightminer.metalborn.menu;
 
 import knightminer.metalborn.Metalborn;
-import knightminer.metalborn.core.MetalbornCapability;
 import knightminer.metalborn.core.MetalbornData;
+import knightminer.metalborn.core.MetalbornPlayer;
 import knightminer.metalborn.core.Registration;
 import knightminer.metalborn.core.inventory.MetalmindInventory;
 import knightminer.metalborn.core.inventory.MetalmindInventory.MetalmindStack;
@@ -19,7 +19,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
-import net.neoforged.neoforge.common.capabilities.ForgeCapabilities;
+import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.items.IItemHandler;
 import org.jetbrains.annotations.Nullable;
 import slimeknights.mantle.inventory.EmptyItemHandler;
@@ -37,6 +37,7 @@ public class MetalbornMenu extends BaseMenu {
   private final List<Slot> metalmindSlots;
   private final ItemStack satchelStack;
   /** Reference to the satchel inventory, for clearing the satchel stack on inventory close */
+  @Nullable
   private final IItemHandler satchelInventory;
   @Nullable
   private final SatchelType satchelType;
@@ -46,13 +47,13 @@ public class MetalbornMenu extends BaseMenu {
   private final int highlightSlot;
   /** First slot in the player inventory */
   private final int playerStart;
-  protected MetalbornMenu(@Nullable MenuType<?> type, int id, Inventory inventory, ItemStack satchelStack, IItemHandler satchelInventory, @Nullable SatchelType satchelType, int satchelSlot) {
+  protected MetalbornMenu(@Nullable MenuType<?> type, int id, Inventory inventory, ItemStack satchelStack, @Nullable IItemHandler satchelInventory, @Nullable SatchelType satchelType, int satchelSlot) {
     super(type, id);
     this.satchelStack = satchelStack;
     this.satchelInventory = satchelInventory;
     this.satchelType = satchelType;
     this.satchelSlot = satchelSlot;
-    if (MetalbornData.getData(inventory.player) instanceof MetalbornCapability capability) {
+    if (MetalbornData.getData(inventory.player) instanceof MetalbornPlayer capability) {
       metalminds = capability.getMetalminds();
       metalmindSlots = List.of(
         addSlot(new SmartItemHandlerSlot(metalminds, 0,  26, 57)),
@@ -73,7 +74,7 @@ public class MetalbornMenu extends BaseMenu {
       addSlot(new SmartItemHandlerSlot(spikes, 3, 89, 44));
 
       // add satchel slots if passed
-      if (satchelType != null) {
+      if (satchelType != null && satchelInventory != null) {
         int slots = satchelType.getSize();
         // first row
         int max = Math.min(slots, 9);
@@ -121,7 +122,7 @@ public class MetalbornMenu extends BaseMenu {
   }
 
   /** Opens the menu for a satchel */
-  protected MetalbornMenu(int id, Inventory inventory, ItemStack stack, IItemHandler itemHandler, @Nullable SatchelType satchelType, int satchelSlot) {
+  protected MetalbornMenu(int id, Inventory inventory, ItemStack stack, @Nullable IItemHandler itemHandler, @Nullable SatchelType satchelType, int satchelSlot) {
     this(Registration.METALBORN_MENU.get(), id, inventory, stack, itemHandler, satchelType, satchelSlot);
   }
 
@@ -132,7 +133,7 @@ public class MetalbornMenu extends BaseMenu {
 
   /** Opens the menu for a satchel */
   public MetalbornMenu(int id, Inventory inventory, ItemStack stack, SatchelType satchelType, int satchelSlot) {
-    this(id, inventory, stack, stack.getCapability(ForgeCapabilities.ITEM_HANDLER).orElse(EmptyItemHandler.INSTANCE), satchelType, satchelSlot);
+    this(id, inventory, stack, stack.getCapability(Capabilities.ItemHandler.ITEM), satchelType, satchelSlot);
   }
 
   /** Opens the menu on the client */
@@ -170,7 +171,7 @@ public class MetalbornMenu extends BaseMenu {
     super.removed(player);
     // if a mist satchel is now empty, remove it from the inventory
     // though make sure its still in the proper slot
-    if (satchelType == SatchelType.MIST && player.isAlive() && player.getInventory().getItem(satchelSlot) == satchelStack
+    if (satchelType == SatchelType.MIST && satchelInventory != null && player.isAlive() && player.getInventory().getItem(satchelSlot) == satchelStack
         && player instanceof ServerPlayer serverPlayer && !serverPlayer.hasDisconnected()) {
       // empty check
       for (int i = 0; i < satchelInventory.getSlots(); i++) {

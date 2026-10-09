@@ -2,7 +2,6 @@ package knightminer.metalborn;
 
 import knightminer.metalborn.command.MetalbornCommand;
 import knightminer.metalborn.core.Config;
-import knightminer.metalborn.core.MetalbornCapability;
 import knightminer.metalborn.core.Registration;
 import knightminer.metalborn.data.BlockLootTableProvider;
 import knightminer.metalborn.data.GlobalLootModifiersProvider;
@@ -33,7 +32,6 @@ import net.neoforged.fml.ModContainer;
 import net.neoforged.fml.ModList;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.config.ModConfig.Type;
-import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.neoforged.neoforge.common.data.DatapackBuiltinEntriesProvider;
 import net.neoforged.neoforge.common.data.ExistingFileHelper;
 import net.neoforged.neoforge.data.event.GatherDataEvent;
@@ -64,13 +62,7 @@ public class Metalborn {
     if (ModList.get().isLoaded(TINKERS)) {
       TinkersPlugin.init();
     }
-
-    modEventBus.addListener(this::commonSetup);
     modEventBus.addListener(Metalborn::gatherData);
-  }
-
-  private void commonSetup(FMLCommonSetupEvent event) {
-    MetalbornCapability.register();
   }
 
   private static void gatherData(GatherDataEvent event) {

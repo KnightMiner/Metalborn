@@ -3,14 +3,16 @@ package knightminer.metalborn.core.inventory;
 import com.google.common.collect.HashMultiset;
 import com.google.common.collect.Multiset;
 import knightminer.metalborn.Metalborn;
-import knightminer.metalborn.core.MetalbornCapability;
+import knightminer.metalborn.core.MetalbornPlayer;
 import knightminer.metalborn.core.Registration;
 import knightminer.metalborn.core.inventory.SpikeInventory.SpikeStack;
 import knightminer.metalborn.item.spike.Spike;
 import knightminer.metalborn.metal.MetalId;
 import net.minecraft.ChatFormatting;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
@@ -18,11 +20,11 @@ import net.minecraft.world.entity.ai.attributes.AttributeModifier.Operation;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.TooltipFlag;
 import slimeknights.mantle.data.loadable.Loadables;
 import slimeknights.mantle.util.CombatHelper;
 
 import java.util.List;
-import java.util.UUID;
 import java.util.stream.IntStream;
 
 /** Inventory of all spikes on the target */
@@ -30,17 +32,17 @@ public class SpikeInventory extends MetalInventory<SpikeStack> {
   private static final Component SPIKE_EFFECTS = Metalborn.component("gui", "spikes.effects");
   private static final Component NO_SPIKES = Metalborn.component("gui", "spikes.none").withStyle(ChatFormatting.GRAY);
   private static final String KEY_GRANTS = Metalborn.key("gui", "spikes.grants");
-  /** UUID for any attribute debuffs */
-  private static final UUID DEBUFF_UUID = UUID.fromString("8c2b195c-dbf0-44a1-9e04-47db33c6bc17");
+  /** ID for any attribute debuffs */
+  private static final ResourceLocation DEBUFF_ID = Metalborn.resource("spike");
   /** Health loss per spike */
   private static final int HEALTH_PER_SPIKE = 2;
   /** Language key for the power granting list */
 
-  private final MetalbornCapability data;
+  private final MetalbornPlayer data;
   private final LivingEntity entity;
   private final Multiset<MetalId> extraPowers = HashMultiset.create();
   private int lastSize = 0;
-  public SpikeInventory(MetalbornCapability data, LivingEntity entity) {
+  public SpikeInventory(MetalbornPlayer data, LivingEntity entity) {
     this.data = data;
     this.entity = entity;
     this.inventory = IntStream.range(0, 4).mapToObj(i -> new SpikeStack()).toList();
@@ -64,9 +66,9 @@ public class SpikeInventory extends MetalInventory<SpikeStack> {
       if (instance == null) {
         Metalborn.LOG.warn("Entity {} does not support attribute {}", entity, Loadables.ATTRIBUTE.getString(Attributes.MAX_HEALTH));
       } else {
-        instance.removeModifier(DEBUFF_UUID);
+        instance.removeModifier(DEBUFF_ID);
         if (currentSize != 0) {
-          instance.addTransientModifier(new AttributeModifier(DEBUFF_UUID, "metalborn.spikes", currentSize * -HEALTH_PER_SPIKE, Operation.ADDITION));
+          instance.addTransientModifier(new AttributeModifier(DEBUFF_ID, currentSize * -HEALTH_PER_SPIKE, Operation.ADD_VALUE));
         }
       }
       lastSize = currentSize;
@@ -102,11 +104,8 @@ public class SpikeInventory extends MetalInventory<SpikeStack> {
     tooltip.add(SPIKE_EFFECTS);
     int health = extraPowers.size() * HEALTH_PER_SPIKE;
     if (health != 0) {
-      tooltip.add(Component.translatable(
-        "attribute.modifier.take.0",
-        ItemStack.ATTRIBUTE_MODIFIER_FORMAT.format(health),
-      Component.translatable(Attributes.MAX_HEALTH.getDescriptionId())
-    ).withStyle(ChatFormatting.RED));
+      // just use a fake instance as client side may not have the real one
+      tooltip.add(Attributes.MAX_HEALTH.value().toComponent(new AttributeModifier(DEBUFF_ID, -health, Operation.ADD_VALUE), TooltipFlag.NORMAL));
       for (MetalId metal : extraPowers.elementSet()) {
         if (metal != MetalId.NONE) {
           tooltip.add(Component.translatable(KEY_GRANTS, metal.getStores()).withStyle(ChatFormatting.BLUE));
@@ -173,8 +172,8 @@ public class SpikeInventory extends MetalInventory<SpikeStack> {
     }
 
     @Override
-    public void deserializeNBT(CompoundTag tag) {
-      super.deserializeNBT(tag);
+    public void deserializeNBT(HolderLookup.Provider provider, CompoundTag tag) {
+      super.deserializeNBT(provider, tag);
       metal = stack.getItem() instanceof Spike spike && spike.isFull(stack) ? spike.getMetal(stack) : MetalId.NONE;
     }
   }

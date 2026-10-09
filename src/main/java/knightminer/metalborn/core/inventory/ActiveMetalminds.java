@@ -1,7 +1,7 @@
 package knightminer.metalborn.core.inventory;
 
 import knightminer.metalborn.Metalborn;
-import knightminer.metalborn.core.MetalbornCapability;
+import knightminer.metalborn.core.MetalbornPlayer;
 import knightminer.metalborn.core.inventory.MetalmindInventory.MetalmindStack;
 import knightminer.metalborn.item.metalmind.MetalmindItem;
 import knightminer.metalborn.metal.MetalId;
@@ -40,7 +40,7 @@ public class ActiveMetalminds {
   public static final ResourceManagerReloadListener RELOAD_LISTENER = manager -> reloadCount += 1;
 
   /** Reference to the parent object */
-  private final MetalbornCapability data;
+  private final MetalbornPlayer data;
   /** Reference to the parent player */
   private final Player player;
 
@@ -65,7 +65,7 @@ public class ActiveMetalminds {
   /** Name of current identity we are tapping */
   private String identityName = "";
 
-  public ActiveMetalminds(MetalbornCapability data, Player player) {
+  public ActiveMetalminds(MetalbornPlayer data, Player player) {
     this.data = data;
     this.player = player;
     this.constructor = ActiveMetalmind::new;

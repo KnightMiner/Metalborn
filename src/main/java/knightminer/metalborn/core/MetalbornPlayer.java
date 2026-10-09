@@ -1,6 +1,5 @@
 package knightminer.metalborn.core;
 
-import knightminer.metalborn.Metalborn;
 import knightminer.metalborn.core.inventory.ActiveMetalminds;
 import knightminer.metalborn.core.inventory.MetalmindInventory;
 import knightminer.metalborn.core.inventory.MetalmindInventory.MetalmindStack;
@@ -9,47 +8,26 @@ import knightminer.metalborn.item.SatchelItem.SatchelType;
 import knightminer.metalborn.metal.MetalId;
 import knightminer.metalborn.metal.MetalManager;
 import knightminer.metalborn.metal.MetalPower;
-import net.minecraft.core.Direction;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
-import net.neoforged.neoforge.common.MinecraftForge;
-import net.neoforged.neoforge.common.capabilities.Capability;
-import net.neoforged.neoforge.common.capabilities.CapabilityManager;
-import net.neoforged.neoforge.common.capabilities.CapabilityToken;
-import net.neoforged.neoforge.common.capabilities.ForgeCapabilities;
-import net.neoforged.neoforge.common.capabilities.ICapabilitySerializable;
-import net.neoforged.neoforge.common.capabilities.RegisterCapabilitiesEvent;
-import net.neoforged.neoforge.common.util.LazyOptional;
-import net.neoforged.neoforge.event.AttachCapabilitiesEvent;
-import net.neoforged.neoforge.eventbus.api.EventPriority;
-import net.neoforged.fml.javafmlmod.FMLJavaModLoadingContext;
+import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.items.IItemHandler;
 import net.neoforged.neoforge.items.IItemHandlerModifiable;
 import org.jetbrains.annotations.Nullable;
-import slimeknights.mantle.inventory.EmptyItemHandler;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.UUID;
 
-/** Capability containing all data related to metalborn status. Includes ferring type, tapping/storing, metalminds, spikes, and alike. */
-public class MetalbornCapability implements ICapabilitySerializable<CompoundTag>, MetalbornData, Runnable {
-  /** Capability ID */
-  private static final ResourceLocation ID = Metalborn.resource("metal");
-  /** Capability token */
-  public static final Capability<MetalbornData> CAPABILITY = CapabilityManager.get(new CapabilityToken<>() {});
-
-  /* Fields */
-  /** Current capability instance for listeners */
-  private LazyOptional<MetalbornData> capability = LazyOptional.of(() -> this);
-
+/** Instance of {@link MetalbornData} containing all data related to metalborn status for players. Includes ferring type, tapping/storing, metalminds, spikes, and alike. */
+public class MetalbornPlayer implements MetalbornData {
   /** Player with this metal */
   private final Player player;
   /** Type of ferring for the player */
@@ -65,7 +43,7 @@ public class MetalbornCapability implements ICapabilitySerializable<CompoundTag>
   /** Copy of {@link Entity#walkDistO} for usage in ticking logic since it gets cleared at start of tick. */
   private float lastWalkDistance = 0;
 
-  private MetalbornCapability(Player player) {
+  MetalbornPlayer(Player player) {
     this.player = player;
     this.activeMetalminds = new ActiveMetalminds(this, player);
     this.metalminds = new MetalmindInventory(this, player);
@@ -104,11 +82,13 @@ public class MetalbornCapability implements ICapabilitySerializable<CompoundTag>
   public MetalId getFerringType() {
     if (ferringType == null) {
       String spawnType = Config.SPAWN_AS_FERRING.get();
-      if (spawnType.isEmpty()) {
-        ferringType = MetalManager.INSTANCE.getRandomFerring(player.getRandom()).id();
-      } else {
-        ferringType = new MetalId(spawnType);
+      if (!spawnType.isEmpty()) {
+        ferringType = MetalId.tryParse(spawnType);
+        if (ferringType != null) {
+          return ferringType;
+        }
       }
+      ferringType = MetalManager.INSTANCE.getRandomFerring(player.getRandom()).id();
     }
     return ferringType;
   }
@@ -267,10 +247,10 @@ public class MetalbornCapability implements ICapabilitySerializable<CompoundTag>
     // if we have at least 2 items and are using the mist satchel, drop as that
     if (stacks.size() > 1 && Config.DROP_AS_SATCHEL.get()) {
       ItemStack satchel = new ItemStack(Registration.SATCHEL.get(SatchelType.MIST));
-      IItemHandler inventory = satchel.getCapability(ForgeCapabilities.ITEM_HANDLER).orElse(EmptyItemHandler.INSTANCE);
+      IItemHandler inventory = satchel.getCapability(Capabilities.ItemHandler.ITEM);
 
       // ensure we have enough slots in the satchel for all items and can quickly fill, should always be true but better to be safe
-      if (inventory.getSlots() >= stacks.size() && inventory instanceof IItemHandlerModifiable modifiable) {
+      if (inventory != null && inventory.getSlots() >= stacks.size() && inventory instanceof IItemHandlerModifiable modifiable) {
         for (int i = 0; i < stacks.size(); i++) {
           modifiable.setStackInSlot(i, stacks.get(i));
         }
@@ -306,17 +286,12 @@ public class MetalbornCapability implements ICapabilitySerializable<CompoundTag>
   }
   
 
-  /* Capability logic */
-
-  @Override
-  public <T> LazyOptional<T> getCapability(Capability<T> cap, @Nullable Direction side) {
-    return CAPABILITY.orEmpty(cap, capability);
-  }
+  /* Attachment logic */
 
   @Override
   public void copyFrom(MetalbornData data, boolean wasDeath) {
     // the only reason this should fail is if the original player had no data
-    if (data instanceof MetalbornCapability other) {
+    if (data instanceof MetalbornPlayer other) {
       if (!wasDeath || Config.KEEP_ON_DEATH.get()) {
         this.ferringType = other.ferringType;
       }
@@ -329,13 +304,6 @@ public class MetalbornCapability implements ICapabilitySerializable<CompoundTag>
     }
   }
 
-  @Override
-  public void run() {
-    // called when capabilities invalidate, create a new cap just in case they are revived later
-    capability.invalidate();
-    capability = LazyOptional.of(() -> this);
-  }
-
 
   /* NBT */
 
@@ -344,18 +312,18 @@ public class MetalbornCapability implements ICapabilitySerializable<CompoundTag>
   private static final String SPIKES = "spikes";
 
   @Override
-  public CompoundTag serializeNBT() {
+  public CompoundTag serializeNBT(HolderLookup.Provider provider) {
     CompoundTag tag = new CompoundTag();
     if (ferringType != null) {
       tag.putString(FERRING_TYPE, ferringType.toString());
     }
-    tag.put(METALMINDS, metalminds.serializeNBT());
-    tag.put(SPIKES, spikes.serializeNBT());
+    tag.put(METALMINDS, metalminds.serializeNBT(provider));
+    tag.put(SPIKES, spikes.serializeNBT(provider));
     return tag;
   }
 
   @Override
-  public void deserializeNBT(CompoundTag nbt) {
+  public void deserializeNBT(HolderLookup.Provider provider, CompoundTag nbt) {
     if (nbt.contains(FERRING_TYPE, Tag.TAG_STRING)) {
       this.ferringType = MetalId.tryParse(nbt.getString(FERRING_TYPE));
       // resolve the redirect in the metal power ID if present
@@ -370,32 +338,7 @@ public class MetalbornCapability implements ICapabilitySerializable<CompoundTag>
     // clear any active powers, ensures we don't apply double effects upon refreshing metalminds
     this.activeMetalminds.clear();
     // read both inventories from NBT, this will automatically update any relevant effects
-    this.spikes.deserializeNBT(nbt.getList(SPIKES, Tag.TAG_COMPOUND));
-    this.metalminds.deserializeNBT(nbt.getList(METALMINDS, Tag.TAG_COMPOUND));
-  }
-
-
-  /* Capability registration */
-
-  /** Registers this capability with any relevant events */
-  public static void register() {
-    FMLJavaModLoadingContext.get().getModEventBus().addListener(EventPriority.NORMAL, false, RegisterCapabilitiesEvent.class, MetalbornCapability::register);
-    MinecraftForge.EVENT_BUS.addGenericListener(Entity.class, MetalbornCapability::attachCapability);
-  }
-
-  /** Registers the capability with the event bus */
-  private static void register(RegisterCapabilitiesEvent event) {
-    event.register(MetalbornData.class);
-  }
-
-  /** Event listener to attach the capability */
-  private static void attachCapability(AttachCapabilitiesEvent<Entity> event) {
-    Entity entity = event.getObject();
-    // must be on living entities as we use this for potions, but also support anything else with modifiers, this is their data
-    if (entity instanceof Player player) {
-      MetalbornCapability provider = new MetalbornCapability(player);
-      event.addCapability(ID, provider);
-      event.addListener(provider);
-    }
+    this.spikes.deserializeNBT(provider, nbt.getList(SPIKES, Tag.TAG_COMPOUND));
+    this.metalminds.deserializeNBT(provider, nbt.getList(METALMINDS, Tag.TAG_COMPOUND));
   }
 }

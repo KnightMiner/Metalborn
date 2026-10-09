@@ -80,6 +80,7 @@ import net.minecraft.world.level.material.MapColor;
 import net.minecraft.world.level.storage.loot.predicates.LootItemConditionType;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.ModList;
+import net.neoforged.neoforge.attachment.AttachmentType;
 import net.neoforged.neoforge.event.entity.EntityAttributeModificationEvent;
 import net.neoforged.neoforge.registries.DeferredBlock;
 import net.neoforged.neoforge.registries.DeferredHolder;
@@ -116,6 +117,7 @@ public class Registration {
   private static final AttributeDeferredRegister ATTRIBUTES = new AttributeDeferredRegister(Metalborn.MOD_ID);
   private static final DeferredRegister<LootItemConditionType> LOOT_CONDITIONS = DeferredRegister.create(Registries.LOOT_CONDITION_TYPE, MOD_ID);
   private static final DeferredRegister<DataComponentType<?>> DATA_COMPONENTS = DeferredRegister.create(Registries.DATA_COMPONENT_TYPE, MOD_ID);
+  private static final DeferredRegister<AttachmentType<?>> ATTACHMENTS = DeferredRegister.create(NeoForgeRegistries.Keys.ATTACHMENT_TYPES, MOD_ID);
 
   private static final Item.Properties PROPS = new Item.Properties();
   private static final Function<Block, BlockItem> BLOCK_ITEM = block -> new BlockItem(block, PROPS);
@@ -136,6 +138,7 @@ public class Registration {
     ATTRIBUTES.register(bus);
     LOOT_CONDITIONS.register(bus);
     DATA_COMPONENTS.register(bus);
+    ATTACHMENTS.register(bus);
   }
 
   public static final DeferredItem<Item> METALLIC_ARTS = ITEMS.register("metallic_arts", () -> new MetalbornBookItem(new Properties().stacksTo(1)));
@@ -212,6 +215,9 @@ public class Registration {
   // data components
   public static final DeferredHolder<DataComponentType<?>, DataComponentType<MetalHolder>> METAL = DATA_COMPONENTS.register("metal", () -> DataComponentType.<MetalHolder>builder()
     .persistent(MetalHolder.CODEC).networkSynchronized(MetalHolder.STREAM_CODEC).build());
+
+  // data attachments
+  public static final DeferredHolder<AttachmentType<?>, AttachmentType<MetalbornData>> METALBORN_DATA = ATTACHMENTS.register("metal", () -> AttachmentType.serializable(MetalbornData::create).copyHandler(MetalbornData.COPY_HANDLER).build());
 
   // damage types
   /** Damage type for metal damaging the player, used in gold's effect */

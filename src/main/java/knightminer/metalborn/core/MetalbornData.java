@@ -1,11 +1,15 @@
 package knightminer.metalborn.core;
 
 import knightminer.metalborn.metal.MetalId;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.item.ItemEntity;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.neoforged.neoforge.attachment.IAttachmentCopyHandler;
+import net.neoforged.neoforge.attachment.IAttachmentHolder;
 import net.neoforged.neoforge.common.util.INBTSerializable;
 import org.jetbrains.annotations.ApiStatus.NonExtendable;
 import org.jetbrains.annotations.Nullable;
@@ -145,17 +149,33 @@ public interface MetalbornData extends INBTSerializable<CompoundTag> {
 
   /** Empty instance for defaulting data related methods */
   MetalbornData EMPTY = new MetalbornData() {
+    @Nullable
     @Override
-    public CompoundTag serializeNBT() {
-      return new CompoundTag();
+    public CompoundTag serializeNBT(HolderLookup.Provider provider) {
+      return null;
     }
 
     @Override
-    public void deserializeNBT(CompoundTag nbt) {}
+    public void deserializeNBT(HolderLookup.Provider provider, CompoundTag nbt) {}
   };
+
+  /** Creates a data instance for the given attachment holder. */
+  static MetalbornData create(IAttachmentHolder holder) {
+    return holder instanceof Player player ? new MetalbornPlayer(player) : MetalbornData.EMPTY;
+  }
 
   /** Gets the data for the given player */
   static MetalbornData getData(LivingEntity player) {
-    return player.getCapability(MetalbornCapability.CAPABILITY).orElse(EMPTY);
+    return player.getData(Registration.METALBORN_DATA);
   }
+
+  /** Handler for copying this data on an entity */
+  IAttachmentCopyHandler<MetalbornData> COPY_HANDLER = (data, holder, provider) -> {
+    if (holder instanceof Player player) {
+      MetalbornPlayer copy = new MetalbornPlayer(player);
+      copy.copyFrom(data, false);
+      return copy;
+    }
+    return EMPTY;
+  };
 }

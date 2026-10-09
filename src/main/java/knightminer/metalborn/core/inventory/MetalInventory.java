@@ -1,6 +1,7 @@
 package knightminer.metalborn.core.inventory;
 
 import knightminer.metalborn.core.inventory.MetalInventory.StackHolder;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.world.entity.Entity;
@@ -9,6 +10,7 @@ import net.neoforged.neoforge.common.util.INBTSerializable;
 import net.neoforged.neoforge.items.IItemHandlerModifiable;
 import slimeknights.mantle.datagen.MantleTags;
 
+import javax.annotation.Nonnull;
 import java.util.Collection;
 import java.util.List;
 
@@ -86,13 +88,14 @@ public abstract class MetalInventory<T extends StackHolder<T>> implements IItemH
     return currentStack.copyWithCount(1);
   }
 
+  @Nonnull
   @Override
-  public ListTag serializeNBT() {
+  public ListTag serializeNBT(HolderLookup.Provider provider) {
     ListTag list = new ListTag();
     for (int i = 0; i < inventory.size(); i++) {
       StackHolder<?> stack = inventory.get(i);
       if (!stack.stack.isEmpty()) {
-        CompoundTag tag = stack.serializeNBT();
+        CompoundTag tag = stack.serializeNBT(provider);
         tag.putInt("Slot", i);
         list.add(tag);
       }
@@ -101,14 +104,14 @@ public abstract class MetalInventory<T extends StackHolder<T>> implements IItemH
   }
 
   @Override
-  public void deserializeNBT(ListTag list) {
+  public void deserializeNBT(HolderLookup.Provider provider, ListTag list) {
     clear();
     for (int i = 0; i < list.size(); i++) {
       CompoundTag tag = list.getCompound(i);
       int slot = tag.getInt("Slot");
       if (slot >= 0 && slot < inventory.size()) {
         StackHolder<?> current = inventory.get(slot);
-        current.deserializeNBT(tag);
+        current.deserializeNBT(provider, tag);
       }
     }
     refreshActive(false);
@@ -179,13 +182,17 @@ public abstract class MetalInventory<T extends StackHolder<T>> implements IItemH
     }
 
     @Override
-    public CompoundTag serializeNBT() {
-      return stack.serializeNBT();
+    public CompoundTag serializeNBT(HolderLookup.Provider provider) {
+      CompoundTag tag = new CompoundTag();
+      if (!stack.isEmpty()) {
+        stack.save(provider, tag);
+      }
+      return tag;
     }
 
     @Override
-    public void deserializeNBT(CompoundTag tag) {
-      stack = ItemStack.of(tag);
+    public void deserializeNBT(HolderLookup.Provider provider, CompoundTag tag) {
+      stack = ItemStack.parse(provider, tag).orElse(ItemStack.EMPTY);
     }
   }
 }

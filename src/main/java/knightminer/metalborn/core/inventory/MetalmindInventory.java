@@ -5,6 +5,7 @@ import knightminer.metalborn.core.Registration;
 import knightminer.metalborn.core.inventory.MetalmindInventory.MetalmindStack;
 import knightminer.metalborn.item.metalmind.Metalmind;
 import knightminer.metalborn.item.metalmind.Metalmind.Usable;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.network.chat.Component;
@@ -282,15 +283,15 @@ public class MetalmindInventory extends MetalInventory<MetalmindStack> implement
     }
 
     @Override
-    public CompoundTag serializeNBT() {
-      CompoundTag tag = super.serializeNBT();
+    public CompoundTag serializeNBT(HolderLookup.Provider provider) {
+      CompoundTag tag = super.serializeNBT(provider);
       tag.putInt("level", level);
       return tag;
     }
 
     @Override
-    public void deserializeNBT(CompoundTag tag) {
-      super.deserializeNBT(tag);
+    public void deserializeNBT(HolderLookup.Provider provider, CompoundTag tag) {
+      super.deserializeNBT(provider, tag);
       this.metalmind = stack.getItem() instanceof Metalmind m ? m : Metalmind.EMPTY;
       if (!stack.isEmpty()) {
         level = tag.getInt("level");

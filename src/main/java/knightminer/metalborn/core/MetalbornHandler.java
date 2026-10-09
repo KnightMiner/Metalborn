@@ -5,43 +5,34 @@ import knightminer.metalborn.core.inventory.ActiveMetalminds;
 import knightminer.metalborn.metal.MetalManager;
 import knightminer.metalborn.metal.MetalPower;
 import net.minecraft.network.chat.Component;
-import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.world.InteractionResult;
-import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.GameRules;
+import net.neoforged.bus.api.EventPriority;
+import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.common.util.FakePlayer;
 import net.neoforged.neoforge.event.AddReloadListenerEvent;
-import net.neoforged.neoforge.event.TickEvent.Phase;
-import net.neoforged.neoforge.event.TickEvent.PlayerTickEvent;
-import net.neoforged.neoforge.event.entity.living.LivingAttackEvent;
 import net.neoforged.neoforge.event.entity.living.LivingBreatheEvent;
 import net.neoforged.neoforge.event.entity.living.LivingDropsEvent;
 import net.neoforged.neoforge.event.entity.living.LivingEvent.LivingVisibilityEvent;
 import net.neoforged.neoforge.event.entity.living.LivingExperienceDropEvent;
 import net.neoforged.neoforge.event.entity.living.LivingFallEvent;
-import net.neoforged.neoforge.event.entity.living.LivingHurtEvent;
 import net.neoforged.neoforge.event.entity.living.LivingKnockBackEvent;
-import net.neoforged.neoforge.event.entity.living.LootingLevelEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerEvent.BreakSpeed;
 import net.neoforged.neoforge.event.entity.player.PlayerInteractEvent.RightClickItem;
-import net.neoforged.neoforge.event.level.BlockEvent.BreakEvent;
-import net.neoforged.neoforge.eventbus.api.EventPriority;
-import net.neoforged.neoforge.eventbus.api.SubscribeEvent;
-import net.neoforged.fml.common.Mod.EventBusSubscriber;
-import net.neoforged.fml.common.Mod.EventBusSubscriber.Bus;
-import slimeknights.mantle.util.CombatHelper;
+import net.neoforged.neoforge.event.level.BlockDropsEvent;
+import net.neoforged.neoforge.event.tick.PlayerTickEvent;
 
 import java.util.Collection;
 
 /** Event handlers for metalborn */
-@EventBusSubscriber(modid = Metalborn.MOD_ID, bus = Bus.FORGE)
+@EventBusSubscriber(modid = Metalborn.MOD_ID)
 public class MetalbornHandler {
   /* Identifying ferring type */
   private static final Component CORRECT_METAL = Metalborn.component("item", "ferring.matches");
@@ -73,16 +64,17 @@ public class MetalbornHandler {
   @SubscribeEvent
   static void playerClone(PlayerEvent.Clone event) {
     Player original = event.getOriginal();
-    original.reviveCaps();
     MetalbornData.getData(event.getEntity()).copyFrom(MetalbornData.getData(original), event.isWasDeath());
-    original.invalidateCaps();
   }
 
   /** Handles ticking all active metalminds */
   @SubscribeEvent
-  static void playerTick(PlayerTickEvent event) {
-    if (event.phase == Phase.START && !event.player.level().isClientSide) {
-      MetalbornData.getData(event.player).tick();
+  static void playerTick(PlayerTickEvent.Pre event) {
+    Player player = event.getEntity();
+    MetalbornData data = MetalbornData.getData(player);
+    data.setLastWalkDistance(player.walkDistO);
+    if (!player.level().isClientSide) {
+      MetalbornData.getData(player).tick();
     }
   }
 
@@ -102,25 +94,26 @@ public class MetalbornHandler {
 
   @SubscribeEvent
   static void onKnockback(LivingKnockBackEvent event) {
-    event.setStrength((float) (event.getStrength() * event.getEntity().getAttributeValue(Registration.KNOCKBACK_MULTIPLIER.get())));
+    event.setStrength((float) (event.getStrength() * event.getEntity().getAttributeValue(Registration.KNOCKBACK_MULTIPLIER)));
   }
 
   @SubscribeEvent
   static void onLivingFall(LivingFallEvent event) {
-    event.setDistance((float) (event.getDistance() * event.getEntity().getAttributeValue(Registration.FALL_DISTANCE_MULTIPLIER.get())));
+    event.setDistance((float) (event.getDistance() * event.getEntity().getAttributeValue(Registration.FALL_DISTANCE_MULTIPLIER)));
   }
 
   @SubscribeEvent
   static void onBreakSpeed(BreakSpeed event) {
-    event.setNewSpeed((float) (event.getNewSpeed() * event.getEntity().getAttributeValue(Registration.MINING_SPEED_MULTIPLIER.get())));
+    event.setNewSpeed((float) (event.getNewSpeed() * event.getEntity().getAttributeValue(Registration.MINING_SPEED_MULTIPLIER)));
   }
 
+  /* TODO: need a backport of https://github.com/neoforged/NeoForge/pull/3065
   @SubscribeEvent(priority = EventPriority.LOW)
   static void onLooting(LootingLevelEvent event) {
     // apply looting bonus based on killer
     DamageSource source = event.getDamageSource();
     if (source != null && source.getEntity() instanceof Player killer) {
-      double lootingAttribute = killer.getAttributeValue(Registration.LOOTING_BOOST.get());
+      double lootingAttribute = killer.getAttributeValue(Registration.LOOTING_BOOST);
       // each integer value gives +1 looting
       int lootingBonus = (int)lootingAttribute;
       // partial values are treated as a chance at a higher level
@@ -131,20 +124,24 @@ public class MetalbornHandler {
       event.setLootingLevel(Math.max(event.getLootingLevel() + lootingBonus, 0));
     }
   }
+  */
 
   @SubscribeEvent
-  static void beforeBlockBreak(BreakEvent event) {
-    event.setExpToDrop((int) Math.round(event.getExpToDrop() * event.getPlayer().getAttributeValue(Registration.EXPERIENCE_MULTIPLIER.get())));
+  static void blockDrops(BlockDropsEvent event) {
+    if (event.getBreaker() instanceof LivingEntity living) {
+      event.setDroppedExperience((int) Math.round(event.getDroppedExperience() * living.getAttributeValue(Registration.EXPERIENCE_MULTIPLIER)));
+    }
   }
 
   @SubscribeEvent
   static void livingExperienceDrop(LivingExperienceDropEvent event) {
     Player player = event.getAttackingPlayer();
     if (player != null) {
-      event.setDroppedExperience((int) Math.round(event.getDroppedExperience() * player.getAttributeValue(Registration.EXPERIENCE_MULTIPLIER.get())));
+      event.setDroppedExperience((int) Math.round(event.getDroppedExperience() * player.getAttributeValue(Registration.EXPERIENCE_MULTIPLIER)));
     }
   }
 
+  /* TODO: switch to damage containers
   @SubscribeEvent
   static void livingAttack(LivingAttackEvent event) {
     LivingEntity target = event.getEntity();
@@ -199,14 +196,14 @@ public class MetalbornHandler {
 
       // warmth will increase fire damage and decrease freezing damage
       if (source.is(DamageTypeTags.IS_FREEZING)) {
-        double warmth = entity.getAttributeValue(Registration.WARMTH.get());
+        double warmth = entity.getAttributeValue(Registration.WARMTH);
         // just use a simple linear scale for freezing damage, means less extreme penalties and more extreme benefits
         if (warmth != 1) {
           damage = (float) (damage * (2 - warmth));
         }
       }
       if (source.is(DamageTypeTags.IS_FIRE)) {
-        double warmth = entity.getAttributeValue(Registration.WARMTH.get());
+        double warmth = entity.getAttributeValue(Registration.WARMTH);
         // just use a simple linear scale for heat damage too
         if (warmth != 1) {
           damage = (float) (damage * warmth);
@@ -216,19 +213,13 @@ public class MetalbornHandler {
       event.setAmount(damage);
     }
   }
+  */
 
   @SubscribeEvent
   static void livingVisibility(LivingVisibilityEvent event) {
-    double visibility = event.getEntity().getAttributeValue(Registration.VISIBILITY_MULTIPLIER.get());
+    double visibility = event.getEntity().getAttributeValue(Registration.VISIBILITY_MULTIPLIER);
     if (visibility != 1) {
       event.modifyVisibility(visibility);
-    }
-  }
-
-  @SubscribeEvent
-  static void livingTick(PlayerTickEvent event) {
-    if (event.phase == Phase.START) {
-      MetalbornData.getData(event.player).setLastWalkDistance(event.player.walkDistO);
     }
   }
 
@@ -238,7 +229,7 @@ public class MetalbornHandler {
     if (entity.getType() != EntityType.PLAYER) {
       return;
     }
-    double respiration = entity.getAttributeValue(Registration.RESPIRATION.get());
+    double respiration = entity.getAttributeValue(Registration.RESPIRATION);
     if (respiration == 0) {
       return;
     }
@@ -250,7 +241,7 @@ public class MetalbornHandler {
 
       // if walking or running, lose air
       } else if (entity.walkDist - MetalbornData.getData(entity).getLastWalkDistance() > entity.getSpeed()) {
-        event.setCanRefillAir(false);
+        event.setRefillAirAmount(0);
         event.setCanBreathe(false);
         // sprinting is the same above ground and underwater. Just walking is only half as bad as underwater.
         if (!entity.isSprinting()) {
@@ -262,11 +253,7 @@ public class MetalbornHandler {
         }
       } else {
         // when not moving, can refill air, but it gets slower the more we store breath
-        int refill = Math.max(0, (int) (event.getRefillAirAmount() + respiration));
-        event.setRefillAirAmount(refill);
-        if (refill <= 0) {
-          event.setCanRefillAir(false);
-        }
+        event.setRefillAirAmount(Math.max(0, (int) (event.getRefillAirAmount() + respiration)));
       }
     } else {
       // underwater
