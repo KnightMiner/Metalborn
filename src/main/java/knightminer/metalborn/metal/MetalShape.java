@@ -8,7 +8,7 @@ import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.item.Item;
 import net.neoforged.neoforge.common.Tags;
 import slimeknights.mantle.data.loadable.primitive.EnumLoadable;
-import slimeknights.mantle.network.MantleStreamCodecs;
+import slimeknights.mantle.network.codec.MantleStreamCodecs;
 
 import java.util.Locale;
 

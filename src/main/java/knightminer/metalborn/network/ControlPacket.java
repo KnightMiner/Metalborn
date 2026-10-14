@@ -12,7 +12,7 @@ import net.minecraft.world.SimpleMenuProvider;
 import net.minecraft.world.entity.player.Player;
 import net.neoforged.neoforge.network.handling.IPayloadContext;
 import slimeknights.mantle.network.ISimplePacket;
-import slimeknights.mantle.network.MantleStreamCodecs;
+import slimeknights.mantle.network.codec.MantleStreamCodecs;
 
 /** Packet sent from client to server when keybindings are pressed */
 public enum ControlPacket implements ISimplePacket {
