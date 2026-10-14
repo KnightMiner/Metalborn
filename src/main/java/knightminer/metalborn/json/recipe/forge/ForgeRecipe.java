@@ -1,15 +1,15 @@
 package knightminer.metalborn.json.recipe.forge;
 
 import knightminer.metalborn.core.Registration;
-import net.minecraft.world.inventory.CraftingContainer;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.CraftingInput;
 import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.item.crafting.RecipeType;
 
 import java.util.List;
 
 /** Base interface for forge recipes */
-public interface ForgeRecipe extends Recipe<CraftingContainer> {
+public interface ForgeRecipe extends Recipe<CraftingInput> {
   int DEFAULT_COOKING_TIME = 100;
   int[] NO_LINKS = new int[0];
 

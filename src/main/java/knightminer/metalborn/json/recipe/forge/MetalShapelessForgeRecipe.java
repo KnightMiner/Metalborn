@@ -4,11 +4,10 @@ import knightminer.metalborn.core.Registration;
 import knightminer.metalborn.item.MetalItem;
 import knightminer.metalborn.json.recipe.forge.MetalShapedForgeRecipe.JEIInfo;
 import knightminer.metalborn.metal.MetalPower;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.core.NonNullList;
-import net.minecraft.core.RegistryAccess;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.inventory.CraftingContainer;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.CraftingInput;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.level.Level;
@@ -24,8 +23,8 @@ public class MetalShapelessForgeRecipe extends ShapelessForgeRecipe {
   public static final RecordLoadable<MetalShapelessForgeRecipe> LOADABLE = makeLoader(MetalShapelessForgeRecipe::new);
 
   private Predicate<MetalPower> metalFilter;
-  protected MetalShapelessForgeRecipe(ResourceLocation id, ItemOutput result, NonNullList<Ingredient> ingredients, float experience, int cookingTime) {
-    super(id, result, ingredients, experience, cookingTime);
+  protected MetalShapelessForgeRecipe(NonNullList<Ingredient> ingredients, ItemOutput result, float experience, int cookingTime) {
+    super(ingredients, result, experience, cookingTime);
   }
 
   /** Finds the first metal ingredient in the input list */
@@ -37,13 +36,13 @@ public class MetalShapelessForgeRecipe extends ShapelessForgeRecipe {
   }
 
   @Override
-  public boolean matches(CraftingContainer inv, Level level) {
-    return super.matches(inv, level) && MetalShapedForgeRecipe.findMetal(inv, getMetalFilter()) != MetalPower.DEFAULT;
+  public boolean matches(CraftingInput input, Level level) {
+    return super.matches(input, level) && MetalShapedForgeRecipe.findMetal(input, getMetalFilter()) != MetalPower.DEFAULT;
   }
 
   @Override
-  public ItemStack assemble(CraftingContainer inv, RegistryAccess registryAccess) {
-    return MetalItem.setMetal(super.assemble(inv, registryAccess), MetalShapedForgeRecipe.findMetal(inv, getMetalFilter()).id());
+  public ItemStack assemble(CraftingInput input, HolderLookup.Provider lookup) {
+    return MetalItem.setMetal(super.assemble(input, lookup), MetalShapedForgeRecipe.findMetal(input, getMetalFilter()).id());
   }
 
   @Override

@@ -1,18 +1,16 @@
 package knightminer.metalborn.json.recipe.forge;
 
-import com.mojang.datafixers.util.Function5;
+import com.mojang.datafixers.util.Function4;
 import knightminer.metalborn.core.Registration;
 import net.minecraft.core.NonNullList;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.entity.player.StackedContents;
-import net.minecraft.world.inventory.CraftingContainer;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.CraftingInput;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.RecipeSerializer;
+import net.minecraft.world.item.crafting.ShapedRecipePattern;
 import net.minecraft.world.level.Level;
 import net.neoforged.neoforge.common.util.RecipeMatcher;
-import slimeknights.mantle.data.loadable.common.IngredientLoadable;
-import slimeknights.mantle.data.loadable.field.ContextKey;
+import slimeknights.mantle.data.loadable.Loadables;
 import slimeknights.mantle.data.loadable.record.RecordLoadable;
 import slimeknights.mantle.recipe.helper.ItemOutput;
 
@@ -21,14 +19,13 @@ import java.util.List;
 
 /** Forge recipe matching a number of ingredients which can go in any slot */
 public class ShapelessForgeRecipe extends AbstractForgeRecipe {
-  /** Loadable instance to create the serializer */
   public static final RecordLoadable<ShapelessForgeRecipe> LOADABLE = makeLoader(ShapelessForgeRecipe::new);
 
   final NonNullList<Ingredient> ingredients;
   private final boolean isSimple;
-  protected ShapelessForgeRecipe(ResourceLocation id, ItemOutput result, NonNullList<Ingredient> ingredients, float experience, int cookingTime) {
-    super(id, result, experience, cookingTime);
-    this.ingredients = ingredients;
+  protected ShapelessForgeRecipe(NonNullList<Ingredient> ingredients, ItemOutput result, float experience, int cookingTime) {
+    super(result, experience, cookingTime);
+    this.ingredients = new NonNullList<>(List.copyOf(ingredients), Ingredient.EMPTY);
     this.isSimple = ingredients.stream().allMatch(Ingredient::isSimple);
   }
 
@@ -48,38 +45,44 @@ public class ShapelessForgeRecipe extends AbstractForgeRecipe {
   }
 
   @Override
-  public boolean matches(CraftingContainer inv, Level level) {
+  public boolean matches(CraftingInput input, Level level) {
+    // if the count does not match, recipe will not match
+    if (input.ingredientCount() != ingredients.size()) {
+      return false;
+    }
+    // if the sizes are both 1, just check the first ingredient, saves some data structures
+    if (input.size() == 1 && ingredients.size() == 1) {
+      return ingredients.getFirst().test(input.getItem(0));
+    }
     // simple matching lets us use the mojang helper, its faster
     if (isSimple) {
-      StackedContents contents = new StackedContents();
-      int stacks = 0;
-      for (int slot = 0; slot < inv.getContainerSize(); slot++) {
-        ItemStack itemstack = inv.getItem(slot);
-        if (!itemstack.isEmpty()) {
-          stacks++;
-          contents.accountStack(itemstack, 1);
-        }
-      }
-      return stacks == this.ingredients.size() && contents.canCraft(this, null);
+      return input.stackedContents().canCraft(this, null);
     } else {
-      // if not simple, use the forge matcher for full NBT checks
-      List<ItemStack> inputs = new ArrayList<>();
-      for (int slot = 0; slot < inv.getContainerSize(); slot++) {
-        ItemStack itemstack = inv.getItem(slot);
-        if (!itemstack.isEmpty()) {
-          inputs.add(itemstack);
+      // if not simple, use the neo matcher for full NBT checks
+      List<ItemStack> inputs = new ArrayList<>(input.ingredientCount());
+      for (ItemStack stack : input.items()) {
+        if (!stack.isEmpty()) {
+          inputs.add(stack);
         }
       }
-      return inputs.size() == this.ingredients.size() && RecipeMatcher.findMatches(inputs, this.ingredients) != null;
+      return RecipeMatcher.findMatches(inputs, this.ingredients) != null;
     }
   }
 
   /** Makes a loader for this recipe */
-  public static <T extends ShapelessForgeRecipe> RecordLoadable<T> makeLoader(Function5<ResourceLocation,ItemOutput,NonNullList<Ingredient>,Float,Integer,T> constructor) {
+  public static <T extends ShapelessForgeRecipe> RecordLoadable<T> makeLoader(Function4<NonNullList<Ingredient>,ItemOutput,Float,Integer,T> constructor) {
     return RecordLoadable.create(
-      ContextKey.ID.requiredField(), RESULT_FIELD,
-      IngredientLoadable.DISALLOW_EMPTY.list(1).xmap((l, error) -> new NonNullList<>(l, null), (l, error) -> l).requiredField("ingredients", r -> r.ingredients),
-      EXPERIENCE_FIELD, TIME_FIELD,
+      Loadables.ITEM_INGREDIENT_NONEMPTY.list(1).xmap(
+        (list, error) -> {
+          int max = ShapedRecipePattern.getMaxHeight() * ShapedRecipePattern.getMaxWidth();
+          if (list.size() > max) {
+            throw error.create("Too many ingredients for shapeless forge recipe. The maximum is: " + max);
+          }
+          return new NonNullList<>(list, Ingredient.EMPTY);
+        },
+        (l, error) -> l
+      ).requiredField("ingredients", r -> r.ingredients),
+      RESULT_FIELD, EXPERIENCE_FIELD, TIME_FIELD,
       constructor);
   }
 }

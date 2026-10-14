@@ -1,5 +1,6 @@
 package knightminer.metalborn.json.recipe.forge;
 
+import com.mojang.serialization.MapCodec;
 import knightminer.metalborn.core.Registration;
 import knightminer.metalborn.item.MetalItem;
 import knightminer.metalborn.json.ingredient.FillableIngredient;
@@ -7,13 +8,14 @@ import knightminer.metalborn.json.ingredient.IngredientWithMetal;
 import knightminer.metalborn.json.ingredient.IngredientWithMetal.MetalFilter;
 import knightminer.metalborn.metal.MetalManager;
 import knightminer.metalborn.metal.MetalPower;
-import net.minecraft.core.NonNullList;
-import net.minecraft.core.RegistryAccess;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.inventory.CraftingContainer;
+import net.minecraft.core.HolderLookup;
+import net.minecraft.network.RegistryFriendlyByteBuf;
+import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.CraftingInput;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.RecipeSerializer;
+import net.minecraft.world.item.crafting.ShapedRecipePattern;
 import net.minecraft.world.level.Level;
 import slimeknights.mantle.recipe.helper.ItemOutput;
 
@@ -28,9 +30,12 @@ import java.util.stream.Stream;
 
 /** Forge recipe which sets a metal to the result */
 public class MetalShapedForgeRecipe extends ShapedForgeRecipe {
+  public static final MapCodec<MetalShapedForgeRecipe> CODEC = codec(MetalShapedForgeRecipe::new);
+  public static final StreamCodec<RegistryFriendlyByteBuf,MetalShapedForgeRecipe> STREAM_CODEC = streamCodec(MetalShapedForgeRecipe::new);
+
   private Predicate<MetalPower> metalFilter;
-  public MetalShapedForgeRecipe(ResourceLocation id, int width, int height, NonNullList<Ingredient> grid, ItemOutput result, float experience, int cookingTime) {
-    super(id, width, height, grid, result, experience, cookingTime);
+  public MetalShapedForgeRecipe(ShapedRecipePattern pattern, ItemOutput result, float experience, int cookingTime) {
+    super(pattern, result, experience, cookingTime);
   }
 
   /** Fetches the ingredient outside the fillable ingredient */
@@ -87,11 +92,11 @@ public class MetalShapedForgeRecipe extends ShapedForgeRecipe {
   }
 
   /** Finds the metal in the given grid */
-  static MetalPower findMetal(CraftingContainer inventory, Predicate<MetalPower> metal) {
+  static MetalPower findMetal(CraftingInput input, Predicate<MetalPower> metal) {
     // ensure same metal is in all slots
     MetalPower first = null;
-    for (int i = 0; i < inventory.getContainerSize(); i++) {
-      ItemStack stack = inventory.getItem(i);
+    for (int i = 0; i < input.size(); i++) {
+      ItemStack stack = input.getItem(i);
       if (!stack.isEmpty()) {
         // if we found a metal, work with it
         MetalPower power = getMetal(stack);
@@ -109,13 +114,13 @@ public class MetalShapedForgeRecipe extends ShapedForgeRecipe {
   }
 
   @Override
-  public boolean matches(CraftingContainer inv, Level level) {
-    return super.matches(inv, level) && findMetal(inv, getMetalFilter()) != MetalPower.DEFAULT;
+  public boolean matches(CraftingInput input, Level level) {
+    return super.matches(input, level) && findMetal(input, getMetalFilter()) != MetalPower.DEFAULT;
   }
 
   @Override
-  public ItemStack assemble(CraftingContainer inv, RegistryAccess registryAccess) {
-    return MetalItem.setMetal(super.assemble(inv, registryAccess), findMetal(inv, getMetalFilter()).id());
+  public ItemStack assemble(CraftingInput input, HolderLookup.Provider lookup) {
+    return MetalItem.setMetal(super.assemble(input, lookup), findMetal(input, getMetalFilter()).id());
   }
 
   @Override

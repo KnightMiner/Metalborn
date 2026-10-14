@@ -1,8 +1,10 @@
 package knightminer.metalborn.json.recipe.forge;
 
+import com.mojang.datafixers.util.Function4;
 import knightminer.metalborn.json.ingredient.MetalShapeIngredient;
+import net.minecraft.advancements.AdvancementHolder;
 import net.minecraft.core.NonNullList;
-import net.minecraft.data.recipes.FinishedRecipe;
+import net.minecraft.data.recipes.RecipeOutput;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
@@ -13,11 +15,10 @@ import slimeknights.mantle.recipe.helper.ItemOutput;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.function.Consumer;
 
 /** Builder for shapeless forge recipes */
 public class ShapelessForgeRecipeBuilder extends AbstractForgeRecipeBuilder<ShapelessForgeRecipeBuilder> {
-  private boolean metal = false;
+  private Function4<NonNullList<Ingredient>,ItemOutput,Float,Integer,ShapelessForgeRecipe> constructor = ShapelessForgeRecipe::new;
   private final List<Ingredient> ingredients = new ArrayList<>();
   protected ShapelessForgeRecipeBuilder(ItemOutput result) {
     super(result);
@@ -82,19 +83,16 @@ public class ShapelessForgeRecipeBuilder extends AbstractForgeRecipeBuilder<Shap
     return requires(tag, 1);
   }
 
+
   /** Makes this a metal recipe, setting the output metal based on input ingredients. Should have at least one {@link MetalShapeIngredient} for best results. */
   public ShapelessForgeRecipeBuilder metal() {
-    this.metal = true;
+    this.constructor = MetalShapelessForgeRecipe::new;
     return this;
   }
 
   @Override
-  public void save(Consumer<FinishedRecipe> consumer, ResourceLocation id) {
-    ResourceLocation advancementId = buildOptionalAdvancement(id, "forge");
-    if (metal) {
-      consumer.accept(new LoadableFinishedRecipe<>(new MetalShapelessForgeRecipe(id, result, new NonNullList<>(ingredients, null), experience, computeCookingTime()), MetalShapelessForgeRecipe.LOADABLE, advancementId));
-    } else {
-      consumer.accept(new LoadableFinishedRecipe<>(new ShapelessForgeRecipe(id, result, new NonNullList<>(ingredients, null), experience, computeCookingTime()), ShapelessForgeRecipe.LOADABLE, advancementId));
-    }
+  public void save(RecipeOutput output, ResourceLocation id) {
+    AdvancementHolder advancement = buildOptionalAdvancement(output, id, "forge");
+    output.accept(id, constructor.apply(new NonNullList<>(ingredients, null), result, experience, computeCookingTime()), advancement);
   }
 }

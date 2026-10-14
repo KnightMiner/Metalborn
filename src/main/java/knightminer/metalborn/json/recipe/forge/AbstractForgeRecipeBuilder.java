@@ -1,11 +1,9 @@
 package knightminer.metalborn.json.recipe.forge;
 
-import net.minecraft.data.recipes.FinishedRecipe;
+import net.minecraft.data.recipes.RecipeOutput;
 import slimeknights.mantle.data.loadable.Loadables;
 import slimeknights.mantle.recipe.data.AbstractRecipeBuilder;
 import slimeknights.mantle.recipe.helper.ItemOutput;
-
-import java.util.function.Consumer;
 
 import static knightminer.metalborn.json.recipe.forge.ForgeRecipe.DEFAULT_COOKING_TIME;
 
@@ -17,12 +15,6 @@ public abstract class AbstractForgeRecipeBuilder<T extends AbstractForgeRecipeBu
 
   protected AbstractForgeRecipeBuilder(ItemOutput result) {
     this.result = result;
-  }
-
-  /** Casts this builder to the T builder type */
-  @SuppressWarnings("unchecked")
-  private T self() {
-    return (T) this;
   }
 
   /** Sets the experience for this recipe */
@@ -51,7 +43,7 @@ public abstract class AbstractForgeRecipeBuilder<T extends AbstractForgeRecipeBu
   }
 
   @Override
-  public void save(Consumer<FinishedRecipe> consumer) {
-    save(consumer, Loadables.ITEM.getKey(result.get().getItem()));
+  public void save(RecipeOutput output) {
+    save(output, Loadables.ITEM.getKey(result.get().getItem()));
   }
 }

@@ -3,8 +3,8 @@ package knightminer.metalborn.json.recipe.cooking;
 import knightminer.metalborn.item.MetalItem;
 import knightminer.metalborn.json.recipe.MetalResult;
 import knightminer.metalborn.metal.MetalPower;
-import net.minecraft.world.Container;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.SingleRecipeInput;
 import slimeknights.mantle.data.loadable.field.LoadableField;
 
 import java.util.function.Predicate;
@@ -20,15 +20,15 @@ public interface CookingMetalRecyclingRecipe {
   MetalResult getResult();
 
   /** Checks if the result is present */
-  default boolean isPresent(Container inv) {
-    MetalPower metal = MetalItem.getMetalPower(inv.getItem(0));
+  default boolean isPresent(SingleRecipeInput input) {
+    MetalPower metal = MetalItem.getMetalPower(input.item());
     // must have a metal, that matches our filter, and has a value for the requested tag
     return metal.isPresent() && getFilter().test(metal) && getResult().isPresent(metal);
   }
 
   /** Gets the result for this recipe */
-  default ItemStack assembleMetal(Container inv) {
-    MetalPower metal = MetalItem.getMetalPower(inv.getItem(0));
+  default ItemStack assembleMetal(SingleRecipeInput input) {
+    MetalPower metal = MetalItem.getMetalPower(input.item());
     if (metal.isPresent()) {
       return getResult().get(metal);
     }

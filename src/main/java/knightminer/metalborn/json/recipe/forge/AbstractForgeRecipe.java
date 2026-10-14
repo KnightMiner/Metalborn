@@ -1,9 +1,11 @@
 package knightminer.metalborn.json.recipe.forge;
 
-import net.minecraft.core.RegistryAccess;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.inventory.CraftingContainer;
+import com.mojang.datafixers.Products;
+import com.mojang.serialization.Codec;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.CraftingInput;
 import slimeknights.mantle.data.loadable.field.LoadableField;
 import slimeknights.mantle.data.loadable.primitive.FloatLoadable;
 import slimeknights.mantle.data.loadable.primitive.IntLoadable;
@@ -13,25 +15,27 @@ import java.util.List;
 
 /** Common elements between {@link ShapedForgeRecipe} and {@link ShapelessForgeRecipe} */
 public abstract class AbstractForgeRecipe implements ForgeRecipe {
-  protected static final LoadableField<ItemOutput,AbstractForgeRecipe> RESULT_FIELD = ItemOutput.Loadable.REQUIRED_STACK.requiredField("result", r -> r.result);
+  protected static final LoadableField<ItemOutput,AbstractForgeRecipe> RESULT_FIELD = ItemOutput.REQUIRED_STACK_LOADABLE.requiredField("result", r -> r.result);
   protected static final LoadableField<Float,AbstractForgeRecipe> EXPERIENCE_FIELD = FloatLoadable.FROM_ZERO.defaultField("experience",0f, r -> r.experience);
   protected static final LoadableField<Integer,AbstractForgeRecipe> TIME_FIELD = IntLoadable.FROM_ONE.defaultField("cooking_time", DEFAULT_COOKING_TIME, true, r -> r.cookingTime);
 
-  private final ResourceLocation id;
-  protected final ItemOutput result;
-  private final float experience;
-  private final int cookingTime;
+  /** Ends the codec with the result, experience, and time fields. */
+  protected static <T extends AbstractForgeRecipe> Products.P3<RecordCodecBuilder.Mu<T>, ItemOutput, Float, Integer> codecEnd(RecordCodecBuilder.Instance<T> instance) {
+    return instance.group(
+      ItemOutput.REQUIRED_STACK_CODEC.fieldOf("result").forGetter(r -> r.result),
+      Codec.FLOAT.fieldOf("experience").orElse(0.0F).forGetter(r -> r.experience),
+      Codec.INT.fieldOf("cooking_time").orElse(DEFAULT_COOKING_TIME).forGetter(r -> r.cookingTime)
+    );
+  }
 
-  protected AbstractForgeRecipe(ResourceLocation id, ItemOutput result, float experience, int cookingTime) {
-    this.id = id;
+  protected final ItemOutput result;
+  protected final float experience;
+  protected final int cookingTime;
+
+  protected AbstractForgeRecipe(ItemOutput result, float experience, int cookingTime) {
     this.result = result;
     this.experience = experience;
     this.cookingTime = cookingTime;
-  }
-
-  @Override
-  public ResourceLocation getId() {
-    return id;
   }
 
   @Override
@@ -40,13 +44,13 @@ public abstract class AbstractForgeRecipe implements ForgeRecipe {
   }
 
   @Override
-  public ItemStack getResultItem(RegistryAccess registryAccess) {
+  public ItemStack getResultItem(HolderLookup.Provider lookup) {
     return result.get();
   }
 
   @Override
-  public ItemStack assemble(CraftingContainer container, RegistryAccess registryAccess) {
-    return getResultItem(registryAccess).copy();
+  public ItemStack assemble(CraftingInput input, HolderLookup.Provider lookup) {
+    return getResultItem(lookup).copy();
   }
 
   @Override

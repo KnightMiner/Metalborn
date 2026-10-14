@@ -99,6 +99,7 @@ import net.neoforged.neoforge.registries.NeoForgeRegistries;
 import net.neoforged.neoforge.registries.RegisterEvent;
 import org.jetbrains.annotations.ApiStatus.Internal;
 import slimeknights.mantle.recipe.helper.LoadableRecipeSerializer;
+import slimeknights.mantle.recipe.helper.SimpleRecipeSerializer;
 import slimeknights.mantle.registration.deferred.AttributeDeferredRegister;
 import slimeknights.mantle.registration.deferred.BlockDeferredRegister;
 import slimeknights.mantle.registration.deferred.BlockEntityTypeDeferredRegister;
@@ -269,9 +270,9 @@ public class Registration {
   // recipe
   public static final DeferredHolder<RecipeType<?>,RecipeType<ForgeRecipe>> FORGE_RECIPE = RECIPE_TYPES.register("forge", () -> RecipeType.simple(Metalborn.resource("forge")));
   public static final DeferredHolder<RecipeSerializer<?>,RecipeSerializer<ShapelessForgeRecipe>> SHAPELESS_FORGE = RECIPES.register("shapeless_forge", () -> LoadableRecipeSerializer.of(ShapelessForgeRecipe.LOADABLE));
-  public static final DeferredHolder<RecipeSerializer<?>,RecipeSerializer<ShapedForgeRecipe>> SHAPED_FORGE = RECIPES.register("shaped_forge", () -> new ShapedForgeRecipe.Serializer<>(ShapedForgeRecipe::new));
+  public static final DeferredHolder<RecipeSerializer<?>,RecipeSerializer<ShapedForgeRecipe>> SHAPED_FORGE = RECIPES.register("shaped_forge", () -> new SimpleRecipeSerializer<>(ShapedForgeRecipe.CODEC, ShapedForgeRecipe.STREAM_CODEC));
   public static final DeferredHolder<RecipeSerializer<?>,RecipeSerializer<MetalShapelessForgeRecipe>> METAL_SHAPELESS_FORGE = RECIPES.register("metal_shapeless_forge", () -> LoadableRecipeSerializer.of(MetalShapelessForgeRecipe.LOADABLE));
-  public static final DeferredHolder<RecipeSerializer<?>,RecipeSerializer<MetalShapedForgeRecipe>> METAL_SHAPED_FORGE = RECIPES.register("metal_shaped_forge", () -> new ShapedForgeRecipe.Serializer<>(MetalShapedForgeRecipe::new));
+  public static final DeferredHolder<RecipeSerializer<?>,RecipeSerializer<MetalShapedForgeRecipe>> METAL_SHAPED_FORGE = RECIPES.register("metal_shaped_forge", () -> new SimpleRecipeSerializer<>(MetalShapedForgeRecipe.CODEC, MetalShapedForgeRecipe.STREAM_CODEC));
   // furnace
   public static final DeferredHolder<RecipeSerializer<?>,RecipeSerializer<SmeltingMetalRecyclingRecipe>> SMELTING_METAL_RECYCLING = RECIPES.register("smelting_metal_recycling", () -> LoadableRecipeSerializer.of(SmeltingMetalRecyclingRecipe.LOADABLE));
   public static final DeferredHolder<RecipeSerializer<?>,RecipeSerializer<BlastingMetalRecyclingRecipe>> BLASTING_METAL_RECYCLING = RECIPES.register("blasting_metal_recycling", () -> LoadableRecipeSerializer.of(BlastingMetalRecyclingRecipe.LOADABLE));
