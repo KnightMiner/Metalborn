@@ -6,7 +6,6 @@ import knightminer.metalborn.client.model.MetalShapeModelBuilder;
 import knightminer.metalborn.client.model.PalettedModelBuilder;
 import knightminer.metalborn.core.Registration;
 import knightminer.metalborn.data.MetalIds;
-import knightminer.metalborn.item.MetalItem;
 import knightminer.metalborn.item.SatchelItem.SatchelType;
 import knightminer.metalborn.item.metalmind.IdentityMetalmindItem;
 import knightminer.metalborn.metal.MetalId;
@@ -20,9 +19,8 @@ import net.neoforged.neoforge.client.model.generators.ItemModelBuilder;
 import net.neoforged.neoforge.client.model.generators.ModelFile.UncheckedModelFile;
 import net.neoforged.neoforge.client.model.generators.ModelProvider;
 import net.neoforged.neoforge.common.data.ExistingFileHelper;
+import net.neoforged.neoforge.registries.DeferredItem;
 import slimeknights.mantle.data.loadable.Loadables;
-import slimeknights.mantle.registration.object.IdAwareObject;
-import slimeknights.mantle.registration.object.ItemObject;
 import slimeknights.mantle.registration.object.MetalItemObject;
 
 import static knightminer.metalborn.Metalborn.resource;
@@ -118,13 +116,13 @@ public class ItemModelProvider extends net.neoforged.neoforge.client.model.gener
 
   /** Generated item with a set texture */
   @SuppressWarnings("SameParameterValue")
-  private void basicItem(ItemObject<?> item, String texture) {
+  private void basicItem(DeferredItem<?> item, String texture) {
     basicItem(item.getId().getPath(), texture);
   }
 
   /** Generated item with a set texture */
   @SuppressWarnings("SameParameterValue")
-  private void basicItem(ItemObject<?> item) {
+  private void basicItem(DeferredItem<?> item) {
     basicItem(item.getId().getPath(), item.getId().getPath());
   }
 
@@ -156,12 +154,12 @@ public class ItemModelProvider extends net.neoforged.neoforge.client.model.gener
   }
 
   /** Adds a basic metal item */
-  private ItemModelBuilder metalItem(IdAwareObject item, String name, MetalId metal) {
+  private ItemModelBuilder metalItem(DeferredItem<?> item, String name, MetalId metal) {
     return metalItem(item.getId().getPath(), name, metal);
   }
 
   /** Adds a nugget model */
-  private void nugget(IdAwareObject item, MetalId metal) {
+  private void nugget(DeferredItem<?> item, MetalId metal) {
     metalItem(item, "nugget", metal);
   }
 
@@ -174,7 +172,7 @@ public class ItemModelProvider extends net.neoforged.neoforge.client.model.gener
 
   /** Creates a part model with the given texture */
   @SuppressWarnings("SameParameterValue")
-  private ItemModelBuilder customModel(ItemObject<?> item, String parent) {
+  private ItemModelBuilder customModel(DeferredItem<?> item, String parent) {
     return withExistingParent(item.getId().getPath(), parent);
   }
 
@@ -184,13 +182,13 @@ public class ItemModelProvider extends net.neoforged.neoforge.client.model.gener
     return withExistingParent(path, parent)
       .texture("layer0", resource(texture))
       .customLoader(PalettedModelBuilder::new)
-      .paletted(FERUCHEMY_METALS, MetalItem.TAG_METAL);
+      .paletted(FERUCHEMY_METALS, MetalbornClient.METAL_KEY);
   }
 
 
   /** Creates a part model with the given texture */
   @SuppressWarnings("UnusedReturnValue")
-  private PalettedModelBuilder<ItemModelBuilder> metal(ItemObject<?> item, String texture, String parent) {
+  private PalettedModelBuilder<ItemModelBuilder> metal(DeferredItem<?> item, String texture, String parent) {
     return metal(item.getId().getPath(), texture, parent);
   }
 

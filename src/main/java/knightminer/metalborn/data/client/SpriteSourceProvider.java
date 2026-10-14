@@ -2,21 +2,23 @@ package knightminer.metalborn.data.client;
 
 import knightminer.metalborn.Metalborn;
 import knightminer.metalborn.client.model.ExtendablePalettedPermutations;
+import net.minecraft.core.HolderLookup.Provider;
 import net.minecraft.data.PackOutput;
 import net.neoforged.neoforge.common.data.ExistingFileHelper;
 
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
 
 import static knightminer.metalborn.Metalborn.resource;
 
 /** Adds any relevant sprite source providers, such as the metal texture generator */
 public class SpriteSourceProvider extends net.neoforged.neoforge.common.data.SpriteSourceProvider {
-  public SpriteSourceProvider(PackOutput output, ExistingFileHelper fileHelper) {
-    super(output, fileHelper, Metalborn.MOD_ID);
+  public SpriteSourceProvider(PackOutput output, CompletableFuture<Provider> lookupProvider, ExistingFileHelper fileHelper) {
+    super(output, lookupProvider, Metalborn.MOD_ID, fileHelper);
   }
 
   @Override
-  protected void addSources() {
+  protected void gather() {
     atlas(BLOCKS_ATLAS)
       .addSource(new ExtendablePalettedPermutations(
         List.of(

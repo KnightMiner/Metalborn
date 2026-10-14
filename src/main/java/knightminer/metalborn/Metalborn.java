@@ -91,7 +91,7 @@ public class Metalborn {
     // client
     generator.addProvider(client, new ItemModelProvider(packOutput, existingFileHelper));
     generator.addProvider(client, new BlockModelProvider(packOutput, existingFileHelper));
-    generator.addProvider(client, new SpriteSourceProvider(packOutput, existingFileHelper));
+    generator.addProvider(client, new SpriteSourceProvider(packOutput, lookupProvider, existingFileHelper));
 
   }
 

@@ -65,10 +65,14 @@ public class MetalbornScreen extends AbstractContainerScreen<MetalbornMenu> {
   /** Size of the info icons */
   private static final int INFO_SIZE = 12;
 
-  /** X position of the center of the player */
-  private static final int PLAYER_X = 88;
-  /** Y position of the bottom of the player */
-  private static final int PLAYER_Y = 75;
+  /** X position of the left of the player */
+  private static final int PLAYER_LEFT = 63;
+  /** X position of the right of the player */
+  private static final int PLAYER_RIGHT = 112;
+  /** Y position of the top of the player */
+  private static final int PLAYER_TOP = 8;
+  /** Y position of the top of the player */
+  private static final int PLAYER_BOTTOM = 78;
 
 
   /** Metalborn data for the player */
@@ -113,7 +117,6 @@ public class MetalbornScreen extends AbstractContainerScreen<MetalbornMenu> {
 
   @Override
   public void render(GuiGraphics graphics, int mouseX, int mouseY, float partialTicks) {
-    this.renderBackground(graphics);
     super.render(graphics, mouseX, mouseY, partialTicks);
     this.renderTooltip(graphics, mouseX, mouseY);
   }
@@ -137,7 +140,7 @@ public class MetalbornScreen extends AbstractContainerScreen<MetalbornMenu> {
     // draw player in center, watching you
     assert this.minecraft != null;
     assert this.minecraft.player != null;
-    InventoryScreen.renderEntityInInventoryFollowsAngle(graphics, leftPos + PLAYER_X, topPos + PLAYER_Y, 30, 0, 0, this.minecraft.player);
+    InventoryScreen.renderEntityInInventoryFollowsAngle(graphics, leftPos + PLAYER_LEFT, topPos + PLAYER_TOP, leftPos + PLAYER_RIGHT, topPos + PLAYER_BOTTOM, 30, 0.0625F, 0f, 0f, this.minecraft.player);
 
     // highlight the satchel slot
     int highlightSlot = menu.getHighlightSlot();

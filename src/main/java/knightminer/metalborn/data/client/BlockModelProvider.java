@@ -11,7 +11,8 @@ import net.neoforged.neoforge.client.model.generators.BlockStateProvider;
 import net.neoforged.neoforge.client.model.generators.ModelFile;
 import net.neoforged.neoforge.client.model.generators.ModelProvider;
 import net.neoforged.neoforge.common.data.ExistingFileHelper;
-import slimeknights.mantle.registration.object.ItemObject;
+
+import java.util.function.Supplier;
 
 import static knightminer.metalborn.Metalborn.resource;
 
@@ -48,14 +49,14 @@ public class BlockModelProvider extends BlockStateProvider {
   }
 
   /** Adds a storage block with models under storage */
-  private void basic(ItemObject<? extends Block> block, String path) {
+  private void basic(Supplier<? extends Block> block, String path) {
     ModelFile model = models().cubeAll(path, resource(ModelProvider.BLOCK_FOLDER + '/' + path));
     simpleBlock(block.get(), model);
     simpleBlockItem(block.get(), model);
   }
 
   /** Adds a storage block with models under storage */
-  private void storage(ItemObject<? extends Block> block, MetalId metal) {
+  private void storage(Supplier<? extends Block> block, MetalId metal) {
     basic(block, metal.getPath());
   }
 }

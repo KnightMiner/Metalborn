@@ -1,6 +1,7 @@
 package knightminer.metalborn.client.model;
 
 import com.mojang.serialization.Codec;
+import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import knightminer.metalborn.client.MetalbornClient;
 import net.minecraft.client.renderer.texture.atlas.SpriteSourceType;
@@ -13,7 +14,7 @@ import java.util.List;
 
 /** Extension of {@link PalettedPermutations} to allow pulling the palette list from a mergable resource, making addons more practical. */
 public class ExtendablePalettedPermutations extends PalettedPermutations {
-  public static final Codec<ExtendablePalettedPermutations> CODEC = RecordCodecBuilder.create(inst -> inst.group(
+  public static final MapCodec<ExtendablePalettedPermutations> CODEC = RecordCodecBuilder.mapCodec(inst -> inst.group(
     Codec.list(ResourceLocation.CODEC).fieldOf("textures").forGetter(palette -> palette.textures),
     ResourceLocation.CODEC.fieldOf("palette_folder").forGetter(palette -> palette.paletteFolder),
     ResourceLocation.CODEC.fieldOf("permutation_list").forGetter(palette -> palette.permutationList)

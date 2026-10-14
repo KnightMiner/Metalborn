@@ -12,32 +12,28 @@ import knightminer.metalborn.item.MetalItem;
 import knightminer.metalborn.item.SatchelItem.SatchelType;
 import knightminer.metalborn.metal.MetalId;
 import knightminer.metalborn.network.ControlPacket;
-import knightminer.metalborn.network.MetalbornNetwork;
 import net.minecraft.client.KeyMapping;
-import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraft.client.renderer.item.ItemProperties;
 import net.minecraft.client.renderer.item.ItemPropertyFunction;
 import net.minecraft.client.renderer.texture.atlas.SpriteSourceType;
 import net.minecraft.client.renderer.texture.atlas.SpriteSources;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.component.DyedItemColor;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.fml.common.Mod;
-import net.neoforged.neoforge.api.distmarker.Dist;
+import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
 import net.neoforged.neoforge.client.event.ClientTickEvent;
 import net.neoforged.neoforge.client.event.ModelEvent;
 import net.neoforged.neoforge.client.event.RegisterClientReloadListenersEvent;
 import net.neoforged.neoforge.client.event.RegisterColorHandlersEvent;
 import net.neoforged.neoforge.client.event.RegisterKeyMappingsEvent;
+import net.neoforged.neoforge.client.event.RegisterMenuScreensEvent;
 import net.neoforged.neoforge.client.settings.KeyConflictContext;
-import net.neoforged.neoforge.common.MinecraftForge;
-import net.neoforged.neoforge.event.TickEvent;
-import net.neoforged.neoforge.event.TickEvent.ClientTickEvent;
-import net.neoforged.neoforge.eventbus.api.SubscribeEvent;
-import net.neoforged.fml.common.Mod.EventBusSubscriber;
-import net.neoforged.fml.common.Mod.EventBusSubscriber.Bus;
-import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
+import net.neoforged.neoforge.network.PacketDistributor;
+import slimeknights.mantle.client.model.ItemKey;
 
 import static knightminer.metalborn.Metalborn.resource;
 
@@ -46,6 +42,8 @@ import static knightminer.metalborn.Metalborn.resource;
 @EventBusSubscriber(modid = Metalborn.MOD_ID, value = Dist.CLIENT)
 public class MetalbornClient {
   public static final SpriteSourceType EXTENDABLE_PALETTE = SpriteSources.register(resource("extendable_palette").toString(), ExtendablePalettedPermutations.CODEC);
+  /** Item key instance for metal items */
+  public static final ItemKey METAL_KEY = ItemKey.simple(stack -> MetalItem.getMetal(stack).toString());
   /** Universal keybinding */
   private static final KeyMapping KEY = new KeyMapping(Metalborn.key("key", "binding"), KeyConflictContext.IN_GAME, InputConstants.getKey("key.keyboard.m"), "key.categories.metalborn");
   /** Item properties key for a satchel being dyed */
@@ -56,6 +54,7 @@ public class MetalbornClient {
   /** Runs during mod constructor to register any important client only things */
   public MetalbornClient() {
     MetalbornBook.init();
+    ItemKey.LOADER.register(resource("metal"), METAL_KEY.getLoader());
   }
 
   @SubscribeEvent
@@ -71,8 +70,8 @@ public class MetalbornClient {
 
   @SubscribeEvent
   static void registerModelLoaders(ModelEvent.RegisterGeometryLoaders event) {
-    event.register("paletted", PalettedItemModel.LOADER);
-    event.register("metal_shape", MetalShapeModel.LOADER);
+    event.register(resource("paletted"), PalettedItemModel.LOADER);
+    event.register(resource("metal_shape"), MetalShapeModel.LOADER);
   }
 
   @SubscribeEvent
@@ -80,16 +79,11 @@ public class MetalbornClient {
     Registration.SATCHEL.forEach((type, satchel) -> {
       // mist satchels want to tint layer 0
       if (type == SatchelType.MIST) {
-        event.register((stack, tintIndex) -> {
-          if (satchel.hasCustomColor(stack)) {
-            return satchel.getColor(stack);
-          }
-          return -1;
-        }, satchel);
+        event.register((stack, tintIndex) -> DyedItemColor.getOrDefault(stack, -1), satchel);
       } else {
         event.register((stack, tintIndex) -> {
           if (tintIndex == 1) {
-            return satchel.getColor(stack);
+            return DyedItemColor.getOrDefault(stack, -1);
           }
           return -1;
         }, satchel);
@@ -98,15 +92,16 @@ public class MetalbornClient {
   }
 
   @SubscribeEvent
+  static void registerScreens(RegisterMenuScreensEvent event) {
+    event.register(Registration.METALBORN_MENU.get(), MetalbornScreen::new);
+    event.register(Registration.FORGE_MENU.get(), ForgeScreen::new);
+  }
+
+  @SubscribeEvent
   static void clientSetup(FMLClientSetupEvent event) {
     event.enqueueWork(() -> {
-      MenuScreens.register(Registration.METALBORN_MENU.get(), MetalbornScreen::new);
-      MenuScreens.register(Registration.FORGE_MENU.get(), ForgeScreen::new);
-    });
-    event.enqueueWork(() -> {
-      Registration.SATCHEL.forEach(satchel -> {
-        ItemProperties.register(satchel, DYED, (stack, level, entity, seed) -> satchel.hasCustomColor(stack) ? 1 : 0);
-      });
+      ItemPropertyFunction isDyed = (stack, level, entity, seed) -> stack.has(DataComponents.DYED_COLOR) ? 1 : 0;
+      Registration.SATCHEL.forEach(satchel -> ItemProperties.register(satchel, DYED, isDyed));
       ItemPropertyFunction noMetal = (stack, level, entity, seed) -> MetalItem.getMetal(stack) != MetalId.NONE ? 0 : 1;
       ItemProperties.register(Registration.INVESTITURE_BRACER.get(), NO_METAL, noMetal);
       ItemProperties.register(Registration.INVESTITURE_RING.get(), NO_METAL, noMetal);
@@ -118,7 +113,7 @@ public class MetalbornClient {
   @SubscribeEvent
   static void clientTick(ClientTickEvent.Post event) {
     while (KEY.consumeClick()) {
-      MetalbornNetwork.getInstance().sendToServer(ControlPacket.INVENTORY);
+      PacketDistributor.sendToServer(ControlPacket.INVENTORY);
     }
   }
 }
