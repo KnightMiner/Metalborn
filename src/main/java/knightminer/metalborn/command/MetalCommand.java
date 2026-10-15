@@ -85,7 +85,7 @@ public class MetalCommand {
       throw MetalmindCommand.ERROR_NO_ITEM.create(player);
     }
     Item item = stack.getItem();
-    if (!(item instanceof MetalItem) && !(item instanceof InvestitureMetalmindItem)) {
+    if (!(item instanceof MetalItem)) {
       throw ERROR_NO_METAL.create(player);
     }
     MetalId metal = MetalItem.getMetal(stack);

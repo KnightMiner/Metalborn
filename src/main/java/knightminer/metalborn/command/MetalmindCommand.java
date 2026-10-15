@@ -9,13 +9,12 @@ import com.mojang.brigadier.exceptions.DynamicCommandExceptionType;
 import com.mojang.brigadier.exceptions.SimpleCommandExceptionType;
 import knightminer.metalborn.Metalborn;
 import knightminer.metalborn.core.MetalbornData;
+import knightminer.metalborn.core.Registration;
 import knightminer.metalborn.item.metalmind.Metalmind;
-import knightminer.metalborn.item.metalmind.MetalmindItem;
 import knightminer.metalborn.item.spike.Spike;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
 import net.minecraft.commands.arguments.EntityArgument;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -286,19 +285,12 @@ public class MetalmindCommand {
         if (stack.getItem() instanceof Metalmind) {
           // null means remove owner
           if (uuid == null) {
-            CompoundTag tag = stack.getTag();
-            if (tag != null) {
-              tag.remove(MetalmindItem.TAG_OWNER);
-              tag.remove(MetalmindItem.TAG_OWNER_NAME);
-              if (tag.isEmpty()) {
-                stack.setTag(null);
-              }
-            }
+            stack.remove(Registration.OWNER);
+            stack.remove(Registration.OWNER_NAME);
           } else {
             // nonnull means set owner
-            CompoundTag tag = stack.getOrCreateTag();
-            tag.putUUID(MetalmindItem.TAG_OWNER, uuid);
-            tag.putString(MetalmindItem.TAG_OWNER_NAME, name);
+            stack.set(Registration.OWNER, uuid);
+            stack.set(Registration.OWNER_NAME, name);
           }
           successes++;
         } else if (single) {

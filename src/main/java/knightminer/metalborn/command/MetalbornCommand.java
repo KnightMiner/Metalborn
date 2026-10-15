@@ -2,12 +2,12 @@ package knightminer.metalborn.command;
 
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import knightminer.metalborn.Metalborn;
-import knightminer.metalborn.util.ArgumentTypeDeferredRegister;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
-import net.neoforged.neoforge.common.MinecraftForge;
+import net.neoforged.bus.api.IEventBus;
+import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.event.RegisterCommandsEvent;
-import net.neoforged.fml.javafmlmod.FMLJavaModLoadingContext;
+import slimeknights.mantle.registration.deferred.ArgumentTypeDeferredRegister;
 
 import java.util.function.Consumer;
 
@@ -16,12 +16,12 @@ public class MetalbornCommand {
   private static final ArgumentTypeDeferredRegister ARGUMENT_TYPE = new ArgumentTypeDeferredRegister(Metalborn.MOD_ID);
 
   /** Registers all Metalborn command related content */
-  public static void init() {
-    ARGUMENT_TYPE.register(FMLJavaModLoadingContext.get().getModEventBus());
+  public static void init(IEventBus bus) {
+    ARGUMENT_TYPE.register(bus);
     // argument types
     ARGUMENT_TYPE.registerSingleton("metal_power", MetalArgument.class, MetalArgument::metal);
 
-    MinecraftForge.EVENT_BUS.addListener(MetalbornCommand::registerCommand);
+    NeoForge.EVENT_BUS.addListener(MetalbornCommand::registerCommand);
   }
 
   /** Registers a sub command for the root Mantle command */

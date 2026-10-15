@@ -48,7 +48,7 @@ public interface MetalbornSuggestionProvider {
     String string = reader.getString().substring(start, reader.getCursor());
     String[] parts = decompose(string);
     try {
-      return new ResourceLocation(parts[0], parts[1]);
+      return ResourceLocation.fromNamespaceAndPath(parts[0], parts[1]);
     } catch (ResourceLocationException ex) {
       reader.setCursor(start);
       throw ResourceLocation.ERROR_INVALID.createWithContext(reader);

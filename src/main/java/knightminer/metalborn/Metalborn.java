@@ -58,7 +58,7 @@ public class Metalborn {
     modContainer.registerConfig(Type.COMMON, Config.COMMON_SPEC);
     MetalManager.INSTANCE.init();
     Registration.init(modEventBus);
-    MetalbornCommand.init();
+    MetalbornCommand.init(modEventBus);
 
     // Tinkers' Construct support
     if (ModList.get().isLoaded(TINKERS)) {
