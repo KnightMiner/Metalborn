@@ -8,16 +8,16 @@ import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.level.block.Block;
 import net.neoforged.neoforge.common.Tags;
-import net.neoforged.neoforge.common.data.BlockTagsProvider;
 import net.neoforged.neoforge.common.data.ExistingFileHelper;
 import org.jetbrains.annotations.Nullable;
+import slimeknights.mantle.data.BlockTagProviderExtension;
 import slimeknights.mantle.registration.object.MetalItemObject;
 
 import java.util.concurrent.CompletableFuture;
 import java.util.function.Supplier;
 
 /** Registers any relevant tags for the mod */
-public class BlockTagProvider extends BlockTagsProvider {
+public class BlockTagProvider extends BlockTagProviderExtension {
   public BlockTagProvider(PackOutput output, CompletableFuture<Provider> lookupProvider, @Nullable ExistingFileHelper existingFileHelper) {
     super(output, lookupProvider, Metalborn.MOD_ID, existingFileHelper);
   }
@@ -37,16 +37,16 @@ public class BlockTagProvider extends BlockTagsProvider {
     // tin ore
     pickaxe(Registration.TIN_ORE, BlockTags.NEEDS_STONE_TOOL);
     pickaxe(Registration.DEEPSLATE_TIN_ORE, BlockTags.NEEDS_STONE_TOOL);
-    tag(MetalbornTags.Blocks.TIN_ORE).add(Registration.TIN_ORE.get(), Registration.DEEPSLATE_TIN_ORE.get());
+    tag(MetalbornTags.BlockItems.TIN_ORE).add(Registration.TIN_ORE.get(), Registration.DEEPSLATE_TIN_ORE.get());
     tag(Tags.Blocks.ORE_RATES_SINGULAR).add(Registration.TIN_ORE.get(), Registration.DEEPSLATE_TIN_ORE.get());
     tag(Tags.Blocks.ORES_IN_GROUND_STONE).add(Registration.TIN_ORE.get());
     tag(Tags.Blocks.ORES_IN_GROUND_DEEPSLATE).add(Registration.DEEPSLATE_TIN_ORE.get());
     tag(Tags.Blocks.ORE_RATES_SINGULAR).add(Registration.TIN_ORE.get(), Registration.DEEPSLATE_TIN_ORE.get());
-    tag(Tags.Blocks.ORES).addTag(MetalbornTags.Blocks.TIN_ORE);
+    tag(Tags.Blocks.ORES).addTag(MetalbornTags.BlockItems.TIN_ORE);
     // raw tin block
     pickaxe(Registration.RAW_TIN_BLOCK, BlockTags.NEEDS_STONE_TOOL);
-    tag(MetalbornTags.Blocks.RAW_TIN_BLOCK).add(Registration.RAW_TIN_BLOCK.get());
-    tag(Tags.Blocks.STORAGE_BLOCKS).addTag(MetalbornTags.Blocks.RAW_TIN_BLOCK);
+    tag(MetalbornTags.BlockItems.RAW_TIN_BLOCK).add(Registration.RAW_TIN_BLOCK.get());
+    tag(Tags.Blocks.STORAGE_BLOCKS).addTag(MetalbornTags.BlockItems.RAW_TIN_BLOCK);
   }
 
   /** Adds a pickaxe block */

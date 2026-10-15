@@ -3,25 +3,24 @@ package knightminer.metalborn.data.tag;
 import knightminer.metalborn.Metalborn;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.Item;
-import net.minecraft.world.level.block.Block;
+import slimeknights.mantle.registration.object.BlockItemTagKey;
 
 import static knightminer.metalborn.Metalborn.resource;
 import static slimeknights.mantle.Mantle.commonResource;
 
 /** Any tags defined by this mod that are used only in datagen */
 public class MetalbornTags {
-  public static class Blocks {
+  public static class BlockItems {
     // tin ore
-    public static final TagKey<Block> TIN_ORE = common("ores/tin");
-    public static final TagKey<Block> RAW_TIN_BLOCK = common("storage_blocks/raw_tin");
+    public static final BlockItemTagKey TIN_ORE = common("ores/tin");
+    public static final BlockItemTagKey RAW_TIN_BLOCK = common("storage_blocks/raw_tin");
 
-    private static TagKey<Block> common(String name) {
-      return BlockTags.create(commonResource(name));
+    private static BlockItemTagKey common(String name) {
+      return BlockItemTagKey.create(commonResource(name));
     }
   }
 
@@ -34,9 +33,7 @@ public class MetalbornTags {
     public static final TagKey<Item> NETHERITE_SCRAP_NUGGETS = common("nuggets/netherite_scrap");
     public static final TagKey<Item> NETHERITE_SCRAP_INGOTS = common("ingots/netherite_scrap");
     // tin ore
-    public static final TagKey<Item> TIN_ORE = common("ores/tin");
     public static final TagKey<Item> RAW_TIN = common("raw_materials/tin");
-    public static final TagKey<Item> RAW_TIN_BLOCK = common("storage_blocks/raw_tin");
 
     // ingot-like tags - contains ingots, raw ores, and ore blocks
     public static final TagKey<Item> SCRAP_LIKE = local("ingot_like/netherite_scrap");
@@ -63,7 +60,7 @@ public class MetalbornTags {
 
     /** Creates a Tinkers' Construct compat tag. Used to avoid a datagen dependency */
     private static TagKey<Item> tinkers(String name) {
-      return ItemTags.create(new ResourceLocation(Metalborn.TINKERS, name));
+      return ItemTags.create(ResourceLocation.fromNamespaceAndPath(Metalborn.TINKERS, name));
     }
   }
 

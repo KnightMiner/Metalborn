@@ -8,7 +8,6 @@ import knightminer.metalborn.metal.MetalId;
 import knightminer.metalborn.util.CastItemObject;
 import net.minecraft.core.HolderLookup.Provider;
 import net.minecraft.data.PackOutput;
-import net.minecraft.data.tags.ItemTagsProvider;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.tags.TagKey;
@@ -18,6 +17,7 @@ import net.minecraft.world.level.block.Block;
 import net.neoforged.neoforge.common.Tags;
 import net.neoforged.neoforge.common.data.ExistingFileHelper;
 import org.jetbrains.annotations.Nullable;
+import slimeknights.mantle.data.ItemTagProviderExtension;
 import slimeknights.mantle.datagen.MantleTags;
 import slimeknights.mantle.registration.object.MetalItemObject;
 
@@ -27,7 +27,7 @@ import static slimeknights.mantle.Mantle.commonResource;
 
 /** Registers item tags for Metalborn */
 @SuppressWarnings("unchecked")
-public class ItemTagProvider extends ItemTagsProvider {
+public class ItemTagProvider extends ItemTagProviderExtension {
   public ItemTagProvider(PackOutput packOutput, CompletableFuture<Provider> lookupProvider, CompletableFuture<TagLookup<Block>> blockTags, @Nullable ExistingFileHelper existingFileHelper) {
     super(packOutput, lookupProvider, blockTags, Metalborn.MOD_ID, existingFileHelper);
   }
@@ -70,8 +70,8 @@ public class ItemTagProvider extends ItemTagsProvider {
     tag(Tags.Items.NUGGETS).addTags(MetalbornTags.Items.COPPER_NUGGETS, MetalbornTags.Items.NETHERITE_NUGGETS);
 
     // tin ore
-    copy(MetalbornTags.Blocks.TIN_ORE, MetalbornTags.Items.TIN_ORE);
-    copy(MetalbornTags.Blocks.RAW_TIN_BLOCK, MetalbornTags.Items.RAW_TIN_BLOCK);
+    copy(MetalbornTags.BlockItems.TIN_ORE);
+    copy(MetalbornTags.BlockItems.RAW_TIN_BLOCK);
     tag(MetalbornTags.Items.RAW_TIN).add(Registration.RAW_TIN.get());
     tag(Tags.Items.RAW_MATERIALS).addTag(MetalbornTags.Items.RAW_TIN);
 
@@ -105,7 +105,7 @@ public class ItemTagProvider extends ItemTagsProvider {
 
   /** Adds all relevant tags to a metal */
   private void metal(MetalItemObject metal) {
-    copy(metal.getBlockTag(), metal.getBlockItemTag());
+    copy(metal.getBlockTag());
     tag(metal.getIngotTag()).add(metal.getIngot());
     tag(metal.getNuggetTag()).add(metal.getNugget());
     tag(Tags.Items.INGOTS).addTag(metal.getIngotTag());

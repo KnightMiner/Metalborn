@@ -38,6 +38,6 @@ public class DamageTypeTagProvider extends DamageTypeTagsProvider {
     tag(DamageTypeTags.BYPASSES_COOLDOWN).add(METAL_HURT, ADD_SPIKE, MAKE_SPIKE, UPDATE_HEALTH);
     tag(DamageTypeTags.BYPASSES_EFFECTS).add(METAL_HURT, ADD_SPIKE, MAKE_SPIKE, UPDATE_HEALTH);
     tag(DamageTypeTags.IS_FIRE).add(MELEE_HEAT);
-    tag(TagKey.create(Registries.DAMAGE_TYPE, new ResourceLocation(Metalborn.TINKERS, "protection/melee"))).add(MELEE_HEAT);
+    tag(TagKey.create(Registries.DAMAGE_TYPE, ResourceLocation.fromNamespaceAndPath(Metalborn.TINKERS, "protection/melee"))).add(MELEE_HEAT);
   }
 }
