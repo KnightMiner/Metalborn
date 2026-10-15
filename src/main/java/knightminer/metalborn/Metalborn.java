@@ -62,7 +62,7 @@ public class Metalborn {
 
     // Tinkers' Construct support
     if (ModList.get().isLoaded(TINKERS)) {
-      TinkersPlugin.init();
+      TinkersPlugin.init(modEventBus);
     }
     modEventBus.addListener(Metalborn::gatherData);
   }

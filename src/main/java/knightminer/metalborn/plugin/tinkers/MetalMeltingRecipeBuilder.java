@@ -8,6 +8,7 @@ import net.minecraft.data.recipes.RecipeOutput;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.ItemLike;
+import net.neoforged.neoforge.common.conditions.FalseCondition;
 import slimeknights.mantle.data.loadable.Loadables;
 import slimeknights.mantle.recipe.data.AbstractRecipeBuilder;
 import slimeknights.mantle.recipe.data.mock.MockRecipe;
@@ -52,9 +53,10 @@ public class MetalMeltingRecipeBuilder extends AbstractRecipeBuilder<MetalMeltin
 
   /** Saves this recipe without requiring tinkers during datagen. */
   public void save(MockRecipeConsumer consumer, ResourceLocation id) {
-    consumer.accept(new Finished(id), TinkersMockRecipeBuilder.MOD_LOADED);
+    // FIXME: switch condition to TinkersMockRecipeBuilder.MOD_LOADED when tinkers is ported
+    consumer.accept(new Finished(id), FalseCondition.INSTANCE);
     if (!criteria.isEmpty()) {
-      consumer.advancement(id, "melting", criteria, TinkersMockRecipeBuilder.MOD_LOADED);
+      consumer.advancement(id, "melting", criteria, FalseCondition.INSTANCE);
     }
   }
 

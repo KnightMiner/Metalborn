@@ -8,6 +8,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.level.ItemLike;
+import net.neoforged.neoforge.common.conditions.FalseCondition;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import slimeknights.mantle.data.loadable.Loadables;
 import slimeknights.mantle.recipe.data.AbstractRecipeBuilder;
@@ -102,9 +103,10 @@ public class MetalCastingRecipeBuilder extends AbstractRecipeBuilder<MetalCastin
 
   /** Saves this recipe without requiring tinkers during datagen. */
   public void save(MockRecipeConsumer consumer, ResourceLocation id) {
-    consumer.accept(new Finished(id), TinkersMockRecipeBuilder.MOD_LOADED);
+    // FIXME: switch condition to TinkersMockRecipeBuilder.MOD_LOADED when tinkers is ported
+    consumer.accept(new Finished(id), FalseCondition.INSTANCE);
     if (!criteria.isEmpty()) {
-      consumer.advancement(id, "casting", criteria, TinkersMockRecipeBuilder.MOD_LOADED);
+      consumer.advancement(id, "casting", criteria, FalseCondition.INSTANCE);
     }
   }
 

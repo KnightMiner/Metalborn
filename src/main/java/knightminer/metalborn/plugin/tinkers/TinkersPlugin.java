@@ -1,13 +1,11 @@
 package knightminer.metalborn.plugin.tinkers;
 
-import knightminer.metalborn.core.Registration;
-import net.minecraft.core.registries.Registries;
-import net.neoforged.fml.javafmlmod.FMLJavaModLoadingContext;
-import net.neoforged.neoforge.registries.ForgeRegistries;
-import net.neoforged.neoforge.registries.RegisterEvent;
+import net.minecraft.core.Registry;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.world.item.crafting.RecipeSerializer;
+import net.neoforged.bus.api.IEventBus;
+import net.neoforged.neoforge.registries.DeferredHolder;
 import org.jetbrains.annotations.ApiStatus.Internal;
-import slimeknights.mantle.recipe.helper.LoadableRecipeSerializer;
-import slimeknights.tconstruct.library.recipe.TinkerRecipeTypes;
 
 /** Plugin for Tinkers' Construct additional features */
 public class TinkersPlugin {
@@ -18,18 +16,25 @@ public class TinkersPlugin {
    * Should only be called if Tinkers' is loaded to prevent invalid class loading.
    */
   @Internal
-  public static void init() {
-    FMLJavaModLoadingContext.get().getModEventBus().addListener(TinkersPlugin::register);
+  public static void init(IEventBus bus) {
+    // bus.addListener(TinkersPlugin::registerSerializers);
   }
 
-  /** Handles any Tinkers' specific registrations */
-  private static void register(RegisterEvent event) {
+  /* FIXME: update when Tinkers' ports
+  /** Handles any Tinkers' specific registrations *//*
+  private static void registerSerializers(RegisterEvent event) {
     if (event.getRegistryKey() == Registries.RECIPE_SERIALIZER) {
-      ForgeRegistries.RECIPE_SERIALIZERS.register(Registration.METAL_CASTING_BASIN.getId(), LoadableRecipeSerializer.of(MetalCastingRecipe.LOADER, TinkerRecipeTypes.CASTING_BASIN));
-      ForgeRegistries.RECIPE_SERIALIZERS.register(Registration.METAL_CASTING_TABLE.getId(), LoadableRecipeSerializer.of(MetalCastingRecipe.LOADER, TinkerRecipeTypes.CASTING_TABLE));
-      ForgeRegistries.RECIPE_SERIALIZERS.register(Registration.METAL_MELTING.getId(), LoadableRecipeSerializer.of(MetalMeltingRecipe.LOADER));
-      ForgeRegistries.RECIPE_SERIALIZERS.register(Registration.COPY_METAL_BASIN.getId(), LoadableRecipeSerializer.of(CopyMetalCastingRecipe.LOADER, TinkerRecipeTypes.CASTING_BASIN));
-      ForgeRegistries.RECIPE_SERIALIZERS.register(Registration.COPY_METAL_TABLE.getId(), LoadableRecipeSerializer.of(CopyMetalCastingRecipe.LOADER, TinkerRecipeTypes.CASTING_TABLE));
+      register(Registration.METAL_CASTING_BASIN, LoadableRecipeSerializer.of(MetalCastingRecipe.LOADER, TinkerRecipeTypes.CASTING_BASIN));
+      register(Registration.METAL_CASTING_TABLE, LoadableRecipeSerializer.of(MetalCastingRecipe.LOADER, TinkerRecipeTypes.CASTING_TABLE));
+      register(Registration.METAL_MELTING, LoadableRecipeSerializer.of(MetalMeltingRecipe.LOADER));
+      register(Registration.COPY_METAL_BASIN, LoadableRecipeSerializer.of(CopyMetalCastingRecipe.LOADER, TinkerRecipeTypes.CASTING_BASIN));
+      register(Registration.COPY_METAL_TABLE, LoadableRecipeSerializer.of(CopyMetalCastingRecipe.LOADER, TinkerRecipeTypes.CASTING_TABLE));
     }
+  }
+  */
+
+  /** Registers the given serializer using the given ID. */
+  private static void register(DeferredHolder<?,?> id, RecipeSerializer<?> serializer) {
+    Registry.register(BuiltInRegistries.RECIPE_SERIALIZER, id.getId(), serializer);
   }
 }
