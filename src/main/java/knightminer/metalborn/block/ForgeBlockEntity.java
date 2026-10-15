@@ -8,6 +8,7 @@ import knightminer.metalborn.json.recipe.forge.ForgeRecipe;
 import knightminer.metalborn.menu.ForgeMenu;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.network.chat.Component;
@@ -20,10 +21,10 @@ import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.ContainerData;
-import net.minecraft.world.inventory.CraftingContainer;
-import net.minecraft.world.inventory.RecipeHolder;
+import net.minecraft.world.inventory.RecipeCraftingHolder;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.crafting.Recipe;
+import net.minecraft.world.item.crafting.CraftingInput;
+import net.minecraft.world.item.crafting.RecipeHolder;
 import net.minecraft.world.item.crafting.RecipeManager;
 import net.minecraft.world.level.block.Rotation;
 import net.minecraft.world.level.block.entity.AbstractFurnaceBlockEntity;
@@ -31,10 +32,6 @@ import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
-import net.neoforged.neoforge.common.ForgeHooks;
-import net.neoforged.neoforge.common.capabilities.Capability;
-import net.neoforged.neoforge.common.capabilities.ForgeCapabilities;
-import net.neoforged.neoforge.common.util.LazyOptional;
 import net.neoforged.neoforge.items.IItemHandler;
 import net.neoforged.neoforge.items.IItemHandlerModifiable;
 import net.neoforged.neoforge.items.wrapper.RangedWrapper;
@@ -50,7 +47,7 @@ import static knightminer.metalborn.block.ForgeInventory.RESULT_SLOT;
 import static net.minecraft.world.level.block.entity.AbstractFurnaceBlockEntity.BURN_COOL_SPEED;
 
 /** Block entity logic for the metal forge*/
-public class ForgeBlockEntity extends NameableBlockEntity implements ContainerData, RecipeHolder {
+public class ForgeBlockEntity extends NameableBlockEntity implements ContainerData, RecipeCraftingHolder {
   /** Ticking logic for serverside */
   public static final BlockEntityTicker<ForgeBlockEntity> SERVER_TICKER = (level, pos, state, be) -> be.serverTick();
   private static final Component TITLE = Metalborn.component("gui", "forge");
@@ -73,25 +70,23 @@ public class ForgeBlockEntity extends NameableBlockEntity implements ContainerDa
   /** Duration of the current recipe */
   private int recipeDuration = 0;
   /** Recipe currently in progress. If null, no recipe is in progress */
-  private ForgeRecipe currentRecipe;
+  private RecipeHolder<ForgeRecipe> currentRecipe;
 
   // recipe caches
   /** Helper to perform recipe lookups */
-  private final RecipeManager.CachedCheck<CraftingContainer,ForgeRecipe> quickCheck = RecipeManager.createCheck(Registration.FORGE_RECIPE.get());
+  private final RecipeManager.CachedCheck<CraftingInput,ForgeRecipe> quickCheck = RecipeManager.createCheck(Registration.FORGE_RECIPE.get());
   /** Map of all recipes used since a player last interacted */
   private final Object2IntOpenHashMap<ResourceLocation> recipesUsed = new Object2IntOpenHashMap<>();
 
   // inventory
   /** Inventory holding all items for this furnace */
   private final ForgeCraftingInventory inventory = new ForgeCraftingInventory(this);
-  /** General use item handler, exposed on null side */
-  private LazyOptional<IItemHandler> itemHandler;
   /** Item handlers exposed on all 6 block sides */
-  private LazyOptional<IItemHandler>[] sideHandlers;
+  private final IItemHandler[] sideHandlers;
 
   protected ForgeBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state) {
     super(type, pos, state, TITLE);
-    initializeCaps();
+    sideHandlers = buildSides();
   }
 
   public ForgeBlockEntity(BlockPos pos, BlockState state) {
@@ -110,7 +105,7 @@ public class ForgeBlockEntity extends NameableBlockEntity implements ContainerDa
   private boolean canForge(ForgeRecipe recipe) {
     // must of course have a recipe
     assert level != null;
-    ItemStack recipeResult = recipe.assemble(inventory, level.registryAccess());
+    ItemStack recipeResult = recipe.assemble(inventory.craftingInput(), level.registryAccess());
     // recipe must have a result
     if (recipeResult.isEmpty()) {
       return false;
@@ -122,7 +117,7 @@ public class ForgeBlockEntity extends NameableBlockEntity implements ContainerDa
     }
 
     // must match the current output
-    if (!ItemStack.isSameItemSameTags(currentResult, recipeResult)) {
+    if (!ItemStack.isSameItemSameComponents(currentResult, recipeResult)) {
       return false;
     }
     // must fit in the output
@@ -134,7 +129,7 @@ public class ForgeBlockEntity extends NameableBlockEntity implements ContainerDa
   private void forge(ForgeRecipe recipe) {
     assert level != null;
 
-    ItemStack recipeResult = recipe.assemble(inventory, level.registryAccess());
+    ItemStack recipeResult = recipe.assemble(inventory.craftingInput(), level.registryAccess());
     ItemStack currentResult = inventory.getStackInSlot(RESULT_SLOT);
     // if nothing is in the inventory currently, then replace it
     if (currentResult.isEmpty()) {
@@ -154,8 +149,8 @@ public class ForgeBlockEntity extends NameableBlockEntity implements ContainerDa
   public void resetRecipe() {
     assert level != null;
     recipeProgress = 0;
-    currentRecipe = quickCheck.getRecipeFor(inventory, level).orElse(null);
-    recipeDuration = currentRecipe != null ? currentRecipe.getCookingTime() : 0;
+    currentRecipe = quickCheck.getRecipeFor(inventory.craftingInput(), level).orElse(null);
+    recipeDuration = currentRecipe != null ? currentRecipe.value().getCookingTime() : 0;
   }
 
   private void serverTick() {
@@ -168,7 +163,7 @@ public class ForgeBlockEntity extends NameableBlockEntity implements ContainerDa
     }
 
     ItemStack fuel = this.inventory.getStackInSlot(FUEL_SLOT);
-    boolean hasInputs = !this.inventory.isEmpty();
+    boolean hasInputs = !this.inventory.isInputEmpty();
     boolean hasFuel = !fuel.isEmpty();
 
     // if we have fuel, or possibly have a recipe, it's time to do some work
@@ -181,19 +176,19 @@ public class ForgeBlockEntity extends NameableBlockEntity implements ContainerDa
       }
       // a non-zero duration with a null recipe indicates we were working on a recipe before world close, so refetch recipe
       else if (recipeDuration > 0 && currentRecipe == null) {
-        currentRecipe = quickCheck.getRecipeFor(inventory, level).orElse(null);
+        currentRecipe = quickCheck.getRecipeFor(inventory.craftingInput(), level).orElse(null);
         if (currentRecipe == null) {
           recipeDuration = 0;
         } else {
-          recipeDuration = currentRecipe.getCookingTime();
+          recipeDuration = currentRecipe.value().getCookingTime();
         }
       }
 
       // if we have a valid recipe, time to work
-      if (currentRecipe != null && canForge(currentRecipe)) {
+      if (currentRecipe != null && canForge(currentRecipe.value())) {
         // do we need fuel? if so try and find it
         if (!isFueled) {
-          this.fuel = ForgeHooks.getBurnTime(fuel, Registration.FORGE_RECIPE.get());
+          this.fuel = fuel.getBurnTime(Registration.FORGE_RECIPE.get());
           this.fuelDuration = this.fuel;
           // if we found fuel, consume fuel
           if (this.fuel > 0) {
@@ -218,7 +213,7 @@ public class ForgeBlockEntity extends NameableBlockEntity implements ContainerDa
           this.recipeProgress += 1;
           if (this.recipeProgress >= this.recipeDuration) {
             // shrink inputs and craft result
-            this.forge(currentRecipe);
+            this.forge(currentRecipe.value());
             this.setRecipeUsed(currentRecipe);
 
             // update current recipe
@@ -254,15 +249,15 @@ public class ForgeBlockEntity extends NameableBlockEntity implements ContainerDa
   /* Used recipes */
 
   @Override
-  public void setRecipeUsed(@Nullable Recipe<?> pRecipe) {
-    if (pRecipe != null) {
-      this.recipesUsed.addTo(pRecipe.getId(), 1);
+  public void setRecipeUsed(@Nullable RecipeHolder<?> recipe) {
+    if (recipe != null) {
+      this.recipesUsed.addTo(recipe.id(), 1);
     }
   }
 
   @Override
   @Nullable
-  public Recipe<?> getRecipeUsed() {
+  public RecipeHolder<?> getRecipeUsed() {
     return null;
   }
 
@@ -271,12 +266,12 @@ public class ForgeBlockEntity extends NameableBlockEntity implements ContainerDa
 
   /** Awards criteria and recipes for recently crafted items */
   public void awardUsedRecipesAndPopExperience(ServerPlayer player) {
-    List<Recipe<?>> list = this.getRecipesToAwardAndPopExperience(player.serverLevel(), player.position());
+    List<RecipeHolder<?>> list = this.getRecipesToAwardAndPopExperience(player.serverLevel(), player.position());
     player.awardRecipes(list);
 
     // alert everyone what we crafted
     List<ItemStack> resultStacks = inventory.getAllItems();
-    for (Recipe<?> recipe : list) {
+    for (RecipeHolder<?> recipe : list) {
       if (recipe != null) {
         player.triggerRecipeCrafted(recipe, resultStacks);
       }
@@ -285,17 +280,16 @@ public class ForgeBlockEntity extends NameableBlockEntity implements ContainerDa
   }
 
   /** Gets a list of all recently crafted recipes */
-  public List<Recipe<?>> getRecipesToAwardAndPopExperience(ServerLevel level, Vec3 location) {
-    List<Recipe<?>> recipes = new ArrayList<>();
+  public List<RecipeHolder<?>> getRecipesToAwardAndPopExperience(ServerLevel level, Vec3 location) {
+    List<RecipeHolder<?>> recipes = new ArrayList<>();
 
     // drop experience for all crafted recipes
     for (Object2IntMap.Entry<ResourceLocation> entry : this.recipesUsed.object2IntEntrySet()) {
-      level.getRecipeManager().byKey(entry.getKey()).ifPresent(recipe -> {
+      RecipeHolder<ForgeRecipe> recipe = level.getRecipeManager().byKeyTyped(Registration.FORGE_RECIPE.get(), entry.getKey());
+      if (recipe != null) {
         recipes.add(recipe);
-        if (recipe instanceof ForgeRecipe forgeRecipe) {
-          AbstractFurnaceBlockEntity.createExperience(level, location, entry.getIntValue(), forgeRecipe.getExperience());
-        }
-      });
+        AbstractFurnaceBlockEntity.createExperience(level, location, entry.getIntValue(), recipe.value().getExperience());
+      }
     }
 
     return recipes;
@@ -310,10 +304,8 @@ public class ForgeBlockEntity extends NameableBlockEntity implements ContainerDa
   }
 
   /** Creates all lazy optionals for all sides */
-  @SuppressWarnings("unchecked")
-  private void initializeCaps() {
-    itemHandler = LazyOptional.of(() -> inventory);
-    sideHandlers = new LazyOptional[6];
+  private IItemHandler[] buildSides() {
+    IItemHandler[] sideHandlers = new IItemHandlerModifiable[6];
     // map each facing to a rotation, need to reverse them though as west is a counterclockwise rotation from south
     Rotation rotation = Rotation.values()[3 - getBlockState().getValue(ForgeBlock.FACING).get2DDataValue()];
     for (Direction direction : Direction.values()) {
@@ -330,25 +322,17 @@ public class ForgeBlockEntity extends NameableBlockEntity implements ContainerDa
         case SOUTH -> 4;
         case WEST -> 2;
       };
-      sideHandlers[direction.get3DDataValue()] = LazyOptional.of(() -> new RangedWrapper(inventory, slotIndex, slotIndex + 1));
+      sideHandlers[direction.get3DDataValue()] = new RangedWrapper(inventory, slotIndex, slotIndex + 1);
     }
+    return sideHandlers;
   }
 
-  @Override
-  public <T> LazyOptional<T> getCapability(Capability<T> cap, @Nullable Direction side) {
-    if (cap == ForgeCapabilities.ITEM_HANDLER) {
-      if (side == null) {
-        return itemHandler.cast();
-      }
-      return sideHandlers[side.get3DDataValue()].cast();
+  /** Gets the item handler for the given side */
+  public IItemHandler getItemHandler(@Nullable Direction side) {
+    if (side == null) {
+      return inventory;
     }
-    return super.getCapability(cap, side);
-  }
-
-  @Override
-  public void invalidateCaps() {
-    super.invalidateCaps();
-    initializeCaps();
+    return sideHandlers[side.get3DDataValue()];
   }
 
 
@@ -392,10 +376,10 @@ public class ForgeBlockEntity extends NameableBlockEntity implements ContainerDa
   private static final String KEY_RECIPES_USED = "recipes_used";
 
   @Override
-  public void load(CompoundTag tag) {
-    super.load(tag);
+  protected void loadAdditional(CompoundTag tag, HolderLookup.Provider registries) {
+    super.loadAdditional(tag, registries);
     tag.remove(KEY_SIZE); // we don't want the inventory size changing due to NBT
-    inventory.deserializeNBT(tag);
+    inventory.deserializeNBT(registries, tag);
     fuel = tag.getInt(KEY_FUEL);
     fuelDuration = tag.getInt(KEY_FUEL_DURATION);
     recipeProgress = tag.getInt(KEY_RECIPE_PROGRESS);
@@ -414,9 +398,9 @@ public class ForgeBlockEntity extends NameableBlockEntity implements ContainerDa
   }
 
   @Override
-  public void saveAdditional(CompoundTag tag) {
-    super.saveAdditional(tag);
-    tag.put(KEY_ITEMS, Objects.requireNonNull(inventory.serializeNBT().get(KEY_ITEMS)));
+  public void saveAdditional(CompoundTag tag, HolderLookup.Provider registries) {
+    super.saveAdditional(tag, registries);
+    tag.put(KEY_ITEMS, Objects.requireNonNull(inventory.serializeNBT(registries).get(KEY_ITEMS)));
     tag.putInt(KEY_FUEL, fuel);
     tag.putInt(KEY_FUEL_DURATION, fuelDuration);
     tag.putInt(KEY_RECIPE_PROGRESS, recipeProgress);

@@ -12,7 +12,6 @@ import net.minecraft.world.inventory.ContainerData;
 import net.minecraft.world.inventory.SimpleContainerData;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
-import net.neoforged.neoforge.common.ForgeHooks;
 import net.neoforged.neoforge.items.IItemHandler;
 import net.neoforged.neoforge.items.IItemHandlerModifiable;
 import org.jetbrains.annotations.Nullable;
@@ -113,7 +112,7 @@ public class ForgeMenu extends BaseMenu {
       } else {
         // player inventory moves based on the item type
         // fuel goes in the fuel slot
-        if (ForgeHooks.getBurnTime(slotStack, Registration.FORGE_RECIPE.get()) > 0) {
+        if (slotStack.getBurnTime(Registration.FORGE_RECIPE.get()) > 0) {
           if (!this.moveItemStackTo(slotStack, FUEL_SLOT, FUEL_SLOT + 1, false)) {
             return ItemStack.EMPTY;
           }

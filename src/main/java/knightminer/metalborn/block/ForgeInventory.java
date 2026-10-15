@@ -2,9 +2,9 @@ package knightminer.metalborn.block;
 
 import knightminer.metalborn.core.Registration;
 import net.minecraft.world.item.ItemStack;
-import net.neoforged.neoforge.common.ForgeHooks;
 import net.neoforged.neoforge.items.ItemStackHandler;
 
+/** Inventory for {@link ForgeBlockEntity} */
 public class ForgeInventory extends ItemStackHandler {
   // slots
   public static final int RESULT_SLOT = 0;
@@ -32,7 +32,7 @@ public class ForgeInventory extends ItemStackHandler {
       return false;
     }
     if (slot == ForgeInventory.FUEL_SLOT) {
-      return ForgeHooks.getBurnTime(stack, Registration.FORGE_RECIPE.get()) > 0;
+      return stack.getBurnTime(Registration.FORGE_RECIPE.get()) > 0;
     }
     return true;
   }

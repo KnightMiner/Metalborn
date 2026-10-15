@@ -328,6 +328,7 @@ public class Registration {
 
   /** Registers capabilities for items, blocks and alike */
   private static void registerCapabilities(RegisterCapabilitiesEvent event) {
+    event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, FORGE_BLOCK_ENTITY.get(), ForgeBlockEntity::getItemHandler);
     SATCHEL.forEach((type, item) -> event.registerItem(Capabilities.ItemHandler.ITEM, (stack, context) -> new SatchelItem.SatchelInventory(stack, type), item));
   }
 
