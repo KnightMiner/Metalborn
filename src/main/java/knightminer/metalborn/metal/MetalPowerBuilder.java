@@ -2,7 +2,6 @@ package knightminer.metalborn.metal;
 
 import com.google.errorprone.annotations.CanIgnoreReturnValue;
 import com.google.errorprone.annotations.CheckReturnValue;
-import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import knightminer.metalborn.json.ConfigEnabledCondition;
 import knightminer.metalborn.metal.effects.MetalEffect;
@@ -13,14 +12,14 @@ import net.minecraft.tags.ItemTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.material.Fluid;
-import net.neoforged.neoforge.common.crafting.CraftingHelper;
-import net.neoforged.neoforge.common.crafting.conditions.AndCondition;
-import net.neoforged.neoforge.common.crafting.conditions.ICondition;
-import net.neoforged.neoforge.common.crafting.conditions.OrCondition;
+import net.neoforged.neoforge.common.conditions.AndCondition;
+import net.neoforged.neoforge.common.conditions.ICondition;
+import net.neoforged.neoforge.common.conditions.OrCondition;
 import org.jetbrains.annotations.Nullable;
 import slimeknights.mantle.Mantle;
 import slimeknights.mantle.recipe.condition.TagEmptyCondition;
 import slimeknights.mantle.recipe.condition.TagFilledCondition;
+import slimeknights.mantle.util.JsonHelper;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -112,6 +111,16 @@ public class MetalPowerBuilder {
 
   /* Conditions */
 
+  /** Combines the conditions using OR */
+  private static ICondition or(ICondition... conditions) {
+    return new OrCondition(List.of(conditions));
+  }
+
+  /** Combines the conditions using AND */
+  private static ICondition and(ICondition... conditions) {
+    return new AndCondition(List.of(conditions));
+  }
+
   /** Adds a condition to the builder */
   public MetalPowerBuilder condition(ICondition condition) {
     this.conditions.add(condition);
@@ -126,12 +135,13 @@ public class MetalPowerBuilder {
 
   /** Sets the metal to be optional based on the ingot and nugget. Must run after {@link #name(String)} for best results (or use the default). */
   public MetalPowerBuilder integrationNoForce() {
-    return condition(new OrCondition(new TagFilledCondition<>(getIngot()), new TagFilledCondition<>(getNugget())));
+    return condition(or(new TagFilledCondition<>(getIngot()), new TagFilledCondition<>(getNugget())));
   }
+
 
   /** Sets the metal to be optional based on the ingot and nugget. Must run after {@link #name(String)} for best results (or use the default). */
   public MetalPowerBuilder integration() {
-    return condition(new OrCondition(
+    return condition(or(
       ConfigEnabledCondition.FORCE_INTEGRATION,
       new TagFilledCondition<>(getIngot()),
       new TagFilledCondition<>(getNugget())
@@ -140,12 +150,12 @@ public class MetalPowerBuilder {
 
   /** Sets the metal to be optional based on the ingot and nugget, but only present if the listed metal is *not* present. */
   public MetalPowerBuilder alternative(String disable) {
-    return condition(new OrCondition(
+    return condition(or(
       ConfigEnabledCondition.FORCE_INTEGRATION,
-      new AndCondition(
+      and(
         new TagEmptyCondition<>(ItemTags.create(Mantle.commonResource("ingots/" + disable))),
         new TagEmptyCondition<>(ItemTags.create(Mantle.commonResource("nuggets/" + disable))),
-        new OrCondition(
+        or(
           new TagFilledCondition<>(getIngot()),
           new TagFilledCondition<>(getNugget())
         )
@@ -162,7 +172,7 @@ public class MetalPowerBuilder {
 
   /** Sets the metal to be enabled unless the specified metal is present. */
   public MetalPowerBuilder unless(String disable) {
-    return condition(new AndCondition(
+    return condition(and(
       new TagEmptyCondition<>(ItemTags.create(Mantle.commonResource("ingots/" + disable))),
       new TagEmptyCondition<>(ItemTags.create(Mantle.commonResource("nuggets/" + disable)))
     ));
@@ -238,13 +248,9 @@ public class MetalPowerBuilder {
     if (ingot == null || nugget == null || (temperature > 0 && fluid == null)) {
       json.addProperty("name", name);
     }
-    MetalPower.LOADABLE.serialize(buildInternal(), json);
+    MetalPower.LOADABLE.serializeInto(buildInternal(), json);
     if (!conditions.isEmpty()) {
-      JsonArray array = new JsonArray();
-      for (ICondition condition : conditions) {
-        array.add(CraftingHelper.serialize(condition));
-      }
-      json.add("conditions", array);
+      json.add("conditions", JsonHelper.serializeList(ICondition.CODEC, conditions));
       if (!fallback.isEmpty()) {
         json.add("fallback", MetalManager.FALLBACK_LOADABLE.serialize(fallback));
       }

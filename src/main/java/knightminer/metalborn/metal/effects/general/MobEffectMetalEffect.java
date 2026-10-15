@@ -5,18 +5,19 @@ import knightminer.metalborn.Metalborn;
 import knightminer.metalborn.metal.MetalPower;
 import knightminer.metalborn.metal.effects.MetalEffect;
 import net.minecraft.ChatFormatting;
+import net.minecraft.core.Holder;
 import net.minecraft.network.chat.CommonComponents;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.LivingEntity;
+import net.neoforged.neoforge.common.CommonHooks;
 import slimeknights.mantle.data.loadable.Loadables;
 import slimeknights.mantle.data.loadable.primitive.BooleanLoadable;
 import slimeknights.mantle.data.loadable.primitive.IntLoadable;
 import slimeknights.mantle.data.loadable.record.RecordLoadable;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /** Metal effect that applies a mob effect every second */
@@ -24,18 +25,18 @@ public interface MobEffectMetalEffect extends MetalEffect {
   String KEY_EFFECT = Metalborn.key("metal_effect", "apply_effect");
 
   /** Creates a builder for an effect applied on tapping */
-  static Builder tapping(MobEffect effect) {
+  static Builder tapping(Holder<MobEffect> effect) {
     return new Builder(TappingEffect::new, effect);
   }
 
   /** Creates a builder for an effect applied on storing */
-  static Builder storing(MobEffect effect) {
+  static Builder storing(Holder<MobEffect> effect) {
     return new Builder(StoringEffect::new, effect);
   }
 
 
   /** Gets the effect to apply */
-  MobEffect effect();
+  Holder<MobEffect> effect();
 
   /** Gets the base level of effect to apply. */
   int base();
@@ -71,13 +72,13 @@ public interface MobEffectMetalEffect extends MetalEffect {
     // add a new effect every so often
     if (entity.tickCount % frequency() == 0) {
       MobEffectInstance instance = makeEffect(level);
-      instance.setCurativeItems(new ArrayList<>());
+      instance.getCures().clear();
       if (entity.addEffect(instance)) {
         return multiplier() > 0 ? level : 1;
       }
 
     // if not adding the effect and we want to store every tick, ensure its at least possible apply
-    } else if (alwaysStore() && entity.canBeAffected(makeEffect(level))) {
+    } else if (alwaysStore() && CommonHooks.canMobEffectBeApplied(entity, makeEffect(level), null)) {
       return multiplier() > 0 ? level : 1;
     }
     return 0;
@@ -85,7 +86,7 @@ public interface MobEffectMetalEffect extends MetalEffect {
 
   /** Gets the component to display in {@link #getTooltip(MetalPower, LivingEntity, int, List)} */
   default Component effectComponent(int metalLevel) {
-    MobEffect effect = effect();
+    MobEffect effect = effect().value();
     MutableComponent name = Component.translatable(effect.getDescriptionId());
     int level = base() + multiplier() * metalLevel;
     if (level > 1) {
@@ -95,7 +96,7 @@ public interface MobEffectMetalEffect extends MetalEffect {
   }
 
   /** Creates a standard loader for a mob effect metal effect */
-  static RecordLoadable<MobEffectMetalEffect> makeLoader(Function6<MobEffect,Integer,Integer,Integer,Integer,Boolean,MobEffectMetalEffect> constructor) {
+  static RecordLoadable<MobEffectMetalEffect> makeLoader(Function6<Holder<MobEffect>,Integer,Integer,Integer,Integer,Boolean,MobEffectMetalEffect> constructor) {
     return RecordLoadable.create(
       Loadables.MOB_EFFECT.requiredField("effect", MobEffectMetalEffect::effect),
       IntLoadable.FROM_ZERO.defaultField("base", 0, MobEffectMetalEffect::base),
@@ -108,7 +109,7 @@ public interface MobEffectMetalEffect extends MetalEffect {
   }
 
   /** Effect that applies on tapping */
-  record TappingEffect(MobEffect effect, int base, int multiplier, int frequency, int duration, boolean alwaysStore) implements MobEffectMetalEffect {
+  record TappingEffect(Holder<MobEffect> effect, int base, int multiplier, int frequency, int duration, boolean alwaysStore) implements MobEffectMetalEffect {
     public static final RecordLoadable<MobEffectMetalEffect> LOADER = makeLoader(TappingEffect::new);
 
     @Override
@@ -142,7 +143,7 @@ public interface MobEffectMetalEffect extends MetalEffect {
   }
 
   /** Effect that applies on storing */
-  record StoringEffect(MobEffect effect, int base, int multiplier, int frequency, int duration, boolean alwaysStore) implements MobEffectMetalEffect {
+  record StoringEffect(Holder<MobEffect> effect, int base, int multiplier, int frequency, int duration, boolean alwaysStore) implements MobEffectMetalEffect {
     public static final RecordLoadable<MobEffectMetalEffect> LOADER = makeLoader(StoringEffect::new);
 
     @Override
@@ -177,13 +178,13 @@ public interface MobEffectMetalEffect extends MetalEffect {
 
   /** Builder for a metal effect */
   class Builder {
-    private final Function6<MobEffect,Integer,Integer,Integer,Integer,Boolean,MobEffectMetalEffect> constructor;
-    private final MobEffect effect;
+    private final Function6<Holder<MobEffect>,Integer,Integer,Integer,Integer,Boolean,MobEffectMetalEffect> constructor;
+    private final Holder<MobEffect> effect;
     private int frequency = 20;
     private int duration = 40;
     private boolean alwaysStore = false;
 
-    private Builder(Function6<MobEffect,Integer,Integer,Integer,Integer,Boolean,MobEffectMetalEffect> constructor, MobEffect effect) {
+    private Builder(Function6<Holder<MobEffect>,Integer,Integer,Integer,Integer,Boolean,MobEffectMetalEffect> constructor, Holder<MobEffect> effect) {
       this.constructor = constructor;
       this.effect = effect;
     }

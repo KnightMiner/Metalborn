@@ -33,6 +33,7 @@ public record EnergyMetalEffect(float saturation, float exhaustion) implements M
       FoodData data = player.getFoodData();
       int foodLevel = data.getFoodLevel();
       if (foodLevel < 20) {
+        // TODO: consider swapping to data.add() for exact saturation instead of saturation modifier
         data.eat(level, saturation);
         // only consume the levels worth if we are granting saturation
         // at 0 saturation be conservative instead of wasteful

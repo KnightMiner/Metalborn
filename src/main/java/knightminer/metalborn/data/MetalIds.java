@@ -1,43 +1,39 @@
 package knightminer.metalborn.data;
 
-import knightminer.metalborn.Metalborn;
 import knightminer.metalborn.metal.MetalId;
+
+import static knightminer.metalborn.Metalborn.metal;
 
 /** List of metal IDs in the mod */
 public class MetalIds {
   private MetalIds() {}
 
   // physical
-  public static final MetalId iron = id("iron");
-  public static final MetalId steel = id("steel");
-  public static final MetalId tin = id("tin");
-  public static final MetalId pewter = id("pewter");
+  public static final MetalId iron = metal("iron");
+  public static final MetalId steel = metal("steel");
+  public static final MetalId tin = metal("tin");
+  public static final MetalId pewter = metal("pewter");
   // cognitive
-  public static final MetalId copper = id("copper");
-  public static final MetalId bronze = id("bronze");
+  public static final MetalId copper = metal("copper");
+  public static final MetalId bronze = metal("bronze");
   // hybrid
-  public static final MetalId gold = id("gold");
-  public static final MetalId roseGold = id("rose_gold");
+  public static final MetalId gold = metal("gold");
+  public static final MetalId roseGold = metal("rose_gold");
   // spiritual
-  public static final MetalId nicrosil = id("nicrosil");
-  public static final MetalId netherite = id("netherite");
+  public static final MetalId nicrosil = metal("nicrosil");
+  public static final MetalId netherite = metal("netherite");
 
   // compat cognitive
-  public static final MetalId silver = id("silver");
-  public static final MetalId electrum = id("electrum");
+  public static final MetalId silver = metal("silver");
+  public static final MetalId electrum = metal("electrum");
   // compat hybrid
-  public static final MetalId zinc = id("zinc");
-  public static final MetalId brass = id("brass");
+  public static final MetalId zinc = metal("zinc");
+  public static final MetalId brass = metal("brass");
   // compat alternatives
-  public static final MetalId nickel = id("nickel");
-  public static final MetalId constantan = id("constantan");
-  public static final MetalId cadmium = id("cadmium");
-  public static final MetalId bendalloy = id("bendalloy");
+  public static final MetalId nickel = metal("nickel");
+  public static final MetalId constantan = metal("constantan");
+  public static final MetalId cadmium = metal("cadmium");
+  public static final MetalId bendalloy = metal("bendalloy");
   // compat spiritual
-  public static final MetalId chromium = id("chromium");
-
-  /** Creates a metalborn effect ID */
-  private static MetalId id(String name) {
-    return new MetalId(Metalborn.MOD_ID, name);
-  }
+  public static final MetalId chromium = metal("chromium");
 }

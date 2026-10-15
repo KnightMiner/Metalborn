@@ -1,7 +1,7 @@
 package knightminer.metalborn.metal;
 
 import com.google.gson.JsonObject;
-import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.util.GsonHelper;
 import slimeknights.mantle.data.loadable.field.RecordField;
 import slimeknights.mantle.util.typed.TypedMap;
@@ -17,19 +17,19 @@ record AllowFerringField(String key, String requireIf) implements RecordField<Bo
   }
 
   @Override
-  public void serialize(MetalPower parent, JsonObject json) {
+  public void serializeInto(MetalPower parent, JsonObject json, TypedMap context) {
     if (!parent.feruchemy().isEmpty()) {
       json.addProperty(key, parent.ferring());
     }
   }
 
   @Override
-  public Boolean decode(FriendlyByteBuf buffer, TypedMap context) {
+  public Boolean decode(RegistryFriendlyByteBuf buffer, TypedMap context) {
     return buffer.readBoolean();
   }
 
   @Override
-  public void encode(FriendlyByteBuf buffer, MetalPower parent) {
+  public void encode(RegistryFriendlyByteBuf buffer, MetalPower parent, TypedMap context) {
     buffer.writeBoolean(parent.ferring());
   }
 }

@@ -3,7 +3,7 @@ package knightminer.metalborn.metal;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonSyntaxException;
 import net.minecraft.core.Registry;
-import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
@@ -32,7 +32,7 @@ public record DefaultingTagField<T>(String key, ResourceKey<? extends Registry<T
   }
 
   @Override
-  public void serialize(MetalPower power, JsonObject json) {
+  public void serializeInto(MetalPower power, JsonObject json, TypedMap context) {
     // our question on serializing is whether the tag matches the default. If it does, skip it
     ResourceLocation location = getter.apply(power).location();
     if (Mantle.COMMON.equals(location.getNamespace())) {
@@ -45,12 +45,12 @@ public record DefaultingTagField<T>(String key, ResourceKey<? extends Registry<T
   }
 
   @Override
-  public TagKey<T> decode(FriendlyByteBuf buffer, TypedMap context) {
+  public TagKey<T> decode(RegistryFriendlyByteBuf buffer, TypedMap context) {
     return TagKey.create(registry, buffer.readResourceLocation());
   }
 
   @Override
-  public void encode(FriendlyByteBuf buffer, MetalPower power) {
+  public void encode(RegistryFriendlyByteBuf buffer, MetalPower power, TypedMap context) {
     buffer.writeResourceLocation(getter.apply(power).location());
   }
 }
