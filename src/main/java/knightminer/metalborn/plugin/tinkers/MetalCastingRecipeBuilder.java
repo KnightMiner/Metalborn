@@ -3,31 +3,30 @@ package knightminer.metalborn.plugin.tinkers;
 import com.google.gson.JsonObject;
 import knightminer.metalborn.core.Registration;
 import knightminer.metalborn.json.ingredient.IngredientWithMetal.MetalFilter;
-import net.minecraft.data.recipes.FinishedRecipe;
+import net.minecraft.data.recipes.RecipeOutput;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.level.ItemLike;
-import net.neoforged.neoforge.registries.RegistryObject;
-import org.jetbrains.annotations.Nullable;
+import net.neoforged.neoforge.registries.DeferredHolder;
 import slimeknights.mantle.data.loadable.Loadables;
 import slimeknights.mantle.recipe.data.AbstractRecipeBuilder;
+import slimeknights.mantle.recipe.data.mock.MockRecipe;
+import slimeknights.mantle.recipe.data.mock.MockRecipe.SimpleMockRecipe;
+import slimeknights.mantle.recipe.data.mock.MockRecipeConsumer;
 import slimeknights.mantle.recipe.helper.ItemOutput;
-
-import java.util.function.Consumer;
 
 /** Builder for {@link MetalCastingRecipe}. Safe to use even if Tinkers' Construct is not a runtime dependency. */
 public class MetalCastingRecipeBuilder extends AbstractRecipeBuilder<MetalCastingRecipeBuilder> {
-  private final RegistryObject<RecipeSerializer<?>> serializer;
+  private final DeferredHolder<RecipeSerializer<?>,RecipeSerializer<?>> serializer;
   private final ItemOutput result;
-  private boolean optional = true;
   private Ingredient cast = Ingredient.EMPTY;
   private MetalFilter filter = MetalFilter.ANY;
   private int amount;
   private boolean consumed = false;
   private boolean switchSlots = false;
 
-  private MetalCastingRecipeBuilder(RegistryObject<RecipeSerializer<?>> serializer, ItemOutput result) {
+  private MetalCastingRecipeBuilder(DeferredHolder<RecipeSerializer<?>,RecipeSerializer<?>> serializer, ItemOutput result) {
     this.serializer = serializer;
     this.result = result;
   }
@@ -85,66 +84,66 @@ public class MetalCastingRecipeBuilder extends AbstractRecipeBuilder<MetalCastin
     return this;
   }
 
-  /** Disables the recipe condition requiring Tinkers' Construct to be present. Use if adding via a Tinkers' Construct addon. */
-  public MetalCastingRecipeBuilder alwaysPresent() {
-    this.optional = false;
-    return this;
+  @Override
+  public void save(RecipeOutput output) {
+    save(output, Loadables.ITEM.getKey(result.get().getItem()));
   }
 
-
   @Override
-  public void save(Consumer<FinishedRecipe> consumer) {
+  public void save(RecipeOutput output, ResourceLocation id) {
+    // TODO: can I safely call the constructor here?
+    throw new UnsupportedOperationException();
+  }
+
+  /** Saves this recipe without requiring tinkers during datagen. */
+  public void save(MockRecipeConsumer consumer) {
     save(consumer, Loadables.ITEM.getKey(result.get().getItem()));
   }
 
-  @Override
-  public void save(Consumer<FinishedRecipe> consumer, ResourceLocation id) {
-    ResourceLocation advancementId = this.buildOptionalAdvancement(id, "casting");
-    // not using loadables to prevent class loading with the builder when Tinkers' Construct is absent
-    consumer.accept(new Finished(id, advancementId));
+  /** Saves this recipe without requiring tinkers during datagen. */
+  public void save(MockRecipeConsumer consumer, ResourceLocation id) {
+    consumer.accept(new Finished(id), TinkersMockRecipeBuilder.MOD_LOADED);
+    if (!criteria.isEmpty()) {
+      consumer.advancement(id, "casting", criteria, TinkersMockRecipeBuilder.MOD_LOADED);
+    }
   }
 
   /** Finished recipe instance */
-  private class Finished extends AbstractFinishedRecipe {
-    public Finished(ResourceLocation id, @Nullable ResourceLocation advancementId) {
-      super(id, advancementId);
+  private class Finished implements SimpleMockRecipe {
+    private final ResourceLocation id;
+    public Finished(ResourceLocation id) {
+      this.id = id;
     }
 
     @Override
-    public JsonObject serializeRecipe() {
-      JsonObject json = new JsonObject();
-      json.addProperty("type", serializer.getId().toString());
-      if (optional) {
-        json.add("conditions", TinkersMockRecipeBuilder.MOD_LOADED_CONDITION);
-      }
-      this.serializeRecipeData(json);
-      return json;
+    public ResourceLocation id() {
+      return id;
     }
 
     @Override
-    public void serializeRecipeData(JsonObject json) {
+    public ResourceLocation serializerId() {
+      return serializer.getId();
+    }
+
+    @Override
+    public void serializeRecipeData(JsonObject json, MockRecipe.Serializer serializer) {
       if (!group.isEmpty()) {
         json.addProperty("group", group);
       }
       if (cast != Ingredient.EMPTY) {
-        json.add("cast", cast.toJson());
+        json.add("cast", serializer.ingredient(cast));
       }
       if (filter != MetalFilter.ANY) {
         json.add("filter", MetalFilter.LOADABLE.serialize(filter));
       }
       json.addProperty("amount", amount);
-      json.add("result", result.serialize(false));
+      json.add("result", serializer.item(result));
       if (consumed) {
         json.addProperty("cast_consumed", consumed);
       }
       if (switchSlots) {
-        json.addProperty("switchSlots", switchSlots);
+        json.addProperty("switch_slots", switchSlots);
       }
-    }
-
-    @Override
-    public RecipeSerializer<?> getType() {
-      return serializer.get();
     }
   }
 }

@@ -1,6 +1,5 @@
 package knightminer.metalborn.plugin.tinkers;
 
-import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import knightminer.metalborn.core.Registration;
 import knightminer.metalborn.data.MetalIds;
@@ -9,57 +8,53 @@ import knightminer.metalborn.item.MetalItem;
 import knightminer.metalborn.json.ingredient.IngredientWithMetal.MetalFilter;
 import knightminer.metalborn.json.ingredient.MetalItemIngredient;
 import knightminer.metalborn.util.CastItemObject;
-import net.minecraft.data.recipes.FinishedRecipe;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
-import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.material.Fluid;
+import net.neoforged.neoforge.common.conditions.ICondition;
+import net.neoforged.neoforge.common.conditions.ModLoadedCondition;
+import net.neoforged.neoforge.common.conditions.NotCondition;
 import net.neoforged.neoforge.common.crafting.CompoundIngredient;
-import net.neoforged.neoforge.common.crafting.ConditionalRecipe;
-import net.neoforged.neoforge.common.crafting.CraftingHelper;
-import net.neoforged.neoforge.common.crafting.conditions.ICondition;
-import net.neoforged.neoforge.common.crafting.conditions.ModLoadedCondition;
-import net.neoforged.neoforge.common.crafting.conditions.TrueCondition;
+import net.neoforged.neoforge.fluids.crafting.SizedFluidIngredient;
+import net.neoforged.neoforge.registries.DeferredItem;
 import org.jetbrains.annotations.Nullable;
 import slimeknights.mantle.recipe.condition.TagFilledCondition;
-import slimeknights.mantle.recipe.data.ConsumerWrapperBuilder;
+import slimeknights.mantle.recipe.data.mock.MockRecipe.SimpleMockRecipe;
+import slimeknights.mantle.recipe.data.mock.MockRecipeConsumer;
 import slimeknights.mantle.recipe.helper.FluidOutput;
 import slimeknights.mantle.recipe.helper.ItemOutput;
-import slimeknights.mantle.recipe.ingredient.FluidIngredient;
-import slimeknights.mantle.registration.object.IdAwareObject;
 import slimeknights.tconstruct.library.recipe.FluidValues;
 
 import java.util.List;
-import java.util.function.Consumer;
 
 import static knightminer.metalborn.Metalborn.TINKERS;
 import static slimeknights.mantle.Mantle.commonResource;
 
 /** Helpers for datagenning Tinkers' Construct recipes without adding Tinkers' as a datagen dependency. */
 public class TinkersMockRecipeBuilder {
-  /** JSON for the conditions for a recipe dependant on tinkers */
-  static final JsonArray MOD_LOADED_CONDITION = CraftingHelper.serialize(new ICondition[]{new ModLoadedCondition(TINKERS)});
+  /** Condition for a recipe dependent on tinkers */
+  static final ICondition MOD_LOADED = new ModLoadedCondition(TINKERS);
   /** Input for the sand cast part builder recipe */
   private static final Ingredient SAND_CASTS = Ingredient.of(MetalbornTags.Items.SAND_CASTS);
   /** Input for the red sand cast part builder recipe */
   private static final Ingredient RED_SAND_CASTS = Ingredient.of(MetalbornTags.Items.RED_SAND_CASTS);
   /** Input for casting a gold cast */
-  private static final FluidIngredient GOLD_INGOT = FluidIngredient.of(FluidTags.create(commonResource("molten_gold")), 90);
+  private static final SizedFluidIngredient GOLD_INGOT = SizedFluidIngredient.of(FluidTags.create(commonResource("molten_gold")), 90);
   /** Time for casting a gold cast */
   private static final int GOLD_INGOT_TIME = 57;
   /** Material ID for copper, the one part builder metalmind recipe */
-  private static final ResourceLocation COPPER = new ResourceLocation(TINKERS, "copper");
+  private static final ResourceLocation COPPER = ResourceLocation.fromNamespaceAndPath(TINKERS, "copper");
   /** Title key for sand cast creation */
-  private static final ResourceLocation SAND_CAST_TITLE = new ResourceLocation(TINKERS, "sand_cast");
+  private static final ResourceLocation SAND_CAST_TITLE = ResourceLocation.fromNamespaceAndPath(TINKERS, "sand_cast");
 
   /** Creates all recipes for creating casts in Tinkers' Construct */
-  public static void castRecipes(Consumer<FinishedRecipe> consumer, ItemLike metalItem, List<ItemLike> otherItems, CastItemObject cast, MetalFilter filter, int cost, String folder) {
+  public static void castRecipes(MockRecipeConsumer consumer, ItemLike metalItem, List<ItemLike> otherItems, CastItemObject cast, MetalFilter filter, int cost, String folder) {
     ResourceLocation id = cast.getId();
     ResourceLocation root = id.withPrefix(folder);
     ResourceLocation casts = root.withSuffix("/cast/");
@@ -86,124 +81,87 @@ public class TinkersMockRecipeBuilder {
   }
 
   /** Creates recipe to cast the given item */
-  public static <T extends ItemLike & IdAwareObject> void casting(Consumer<FinishedRecipe> consumer, T item, boolean copyMetal, Ingredient cast, TagKey<Fluid> fluid, int amount, int temperature, String path) {
+  public static void casting(MockRecipeConsumer consumer, DeferredItem<?> item, boolean copyMetal, Ingredient cast, TagKey<Fluid> fluid, int amount, int temperature, String path) {
     int time = calcTimeForAmount(temperature, amount);
-    consumer.accept(new CastingTableRecipe(item.getId().withPath(path), cast, true, false, FluidIngredient.of(fluid, amount), time, ItemOutput.fromItem(item), copyMetal));
+    consumer.accept(new CastingTableRecipe(item.getId().withPath(path), cast, true, false, SizedFluidIngredient.of(fluid, amount), time, ItemOutput.fromItem(item), copyMetal));
   }
 
   /** Creates recipes for melting and casting the given item */
-  public static <T extends ItemLike & IdAwareObject> void meltingCasting(Consumer<FinishedRecipe> consumer, T item, CastItemObject cast, TagKey<Fluid> fluid, int amount, int temperature, String prefix) {
+  public static void meltingCasting(MockRecipeConsumer consumer, DeferredItem<?> item, CastItemObject cast, TagKey<Fluid> fluid, int amount, int temperature, String prefix) {
     ResourceLocation root = item.getId().withPath(prefix);
     consumer.accept(new MeltingRecipe(root.withSuffix("melting"), Ingredient.of(item), FluidOutput.fromTag(fluid, amount), temperature));
     int time = calcTimeForAmount(temperature, amount);
-    consumer.accept(new CastingTableRecipe(root.withSuffix("casting_gold_cast"), Ingredient.of(cast.getMultiUseTag()),  false, false, FluidIngredient.of(fluid, amount), time, ItemOutput.fromItem(item), false));
-    consumer.accept(new CastingTableRecipe(root.withSuffix("casting_sand_cast"), Ingredient.of(cast.getSingleUseTag()), true,  false, FluidIngredient.of(fluid, amount), time, ItemOutput.fromItem(item), false));
+    consumer.accept(new CastingTableRecipe(root.withSuffix("casting_gold_cast"), Ingredient.of(cast.getMultiUseTag()),  false, false, SizedFluidIngredient.of(fluid, amount), time, ItemOutput.fromItem(item), false));
+    consumer.accept(new CastingTableRecipe(root.withSuffix("casting_sand_cast"), Ingredient.of(cast.getSingleUseTag()), true,  false, SizedFluidIngredient.of(fluid, amount), time, ItemOutput.fromItem(item), false));
   }
 
   /** Creates recipes for melting and casting the given identity metal item */
-  public static <T extends ItemLike & IdAwareObject> void identityMeltingCasting(Consumer<FinishedRecipe> consumer, T item, CastItemObject cast, int aluminum, int quartz, String prefix) {
+  public static void identityMeltingCasting(MockRecipeConsumer consumer, DeferredItem<?> item, CastItemObject cast, int aluminum, int quartz, String prefix) {
     TagKey<Fluid> aluminumTag = FluidTags.create(commonResource("molten_aluminum"));
     int aluminumTemperature = 425;
-    TagKey<Fluid> quartzTag = FluidTags.create(new ResourceLocation(TINKERS, "molten_quartz"));
+    TagKey<Fluid> quartzTag = FluidTags.create(ResourceLocation.fromNamespaceAndPath(TINKERS, "molten_quartz"));
     int quartzTemperature = 637;
 
     // all recipes we plan to add will be conditioned on tinkers
-    consumer = ConsumerWrapperBuilder.wrap().addCondition(new ModLoadedCondition(TINKERS)).build(consumer);
-    addConditions = false;
     ResourceLocation root = item.getId().withPath(prefix);
 
     // if aluminum ingots are present, we use the aluminum recipes
     ICondition condition = new TagFilledCondition<>(ItemTags.create(commonResource("ingots/aluminum")));
+    // if not, use quartz recipes
+    ICondition notCondition = new NotCondition(condition);
 
     // melting
     Ingredient metalItem = Ingredient.of(item);
-    ConditionalRecipe.builder()
-      .addCondition(condition)
-      .addRecipe(new MeltingRecipe(COPPER, metalItem, FluidOutput.fromTag(aluminumTag, aluminum), aluminumTemperature))
-      .addCondition(TrueCondition.INSTANCE)
-      .addRecipe(new MeltingRecipe(COPPER, metalItem, FluidOutput.fromTag(quartzTag, quartz), quartzTemperature))
-      .build(consumer, root.withSuffix("melting"));
+    consumer.accept(new MeltingRecipe(root.withSuffix("melting_aluminum"), metalItem, FluidOutput.fromTag(aluminumTag, aluminum), aluminumTemperature), MOD_LOADED, condition);
+    consumer.accept(new MeltingRecipe(root.withSuffix("melting_quartz"),   metalItem, FluidOutput.fromTag(quartzTag, quartz),     quartzTemperature),   MOD_LOADED, notCondition);
 
     // casting
     int aluminumTime = calcTimeForAmount(aluminumTemperature, aluminum);
     int quartzTime = calcTimeForAmount(quartzTemperature, quartz);
-    FluidIngredient aluminumIngredient = FluidIngredient.of(aluminumTag, aluminum);
-    FluidIngredient quartzIngredient = FluidIngredient.of(quartzTag, quartz);
+    SizedFluidIngredient aluminumIngredient = SizedFluidIngredient.of(aluminumTag, aluminum);
+    SizedFluidIngredient quartzIngredient = SizedFluidIngredient.of(quartzTag, quartz);
     ItemOutput result = ItemOutput.fromItem(item);
     // gold cast
     Ingredient goldCast = Ingredient.of(cast.getMultiUseTag());
-    ConditionalRecipe.builder()
-      .addCondition(condition)
-      .addRecipe(new CastingTableRecipe(COPPER, goldCast,false, false, aluminumIngredient, aluminumTime, result, false))
-      .addCondition(TrueCondition.INSTANCE)
-      .addRecipe(new CastingTableRecipe(COPPER, goldCast,false, false, quartzIngredient, quartzTime, result, false))
-      .build(consumer, root.withSuffix("casting_gold_cast"));
+    consumer.accept(new CastingTableRecipe(root.withSuffix("casting_gold_cast_aluminum"), goldCast,false, false, aluminumIngredient, aluminumTime, result, false), MOD_LOADED, condition);
+    consumer.accept(new CastingTableRecipe(root.withSuffix("casting_gold_cast_quartz"),   goldCast,false, false, quartzIngredient,   quartzTime,   result, false), MOD_LOADED, notCondition);
     // sand cast
     Ingredient sandCast = Ingredient.of(cast.getSingleUseTag());
-    ConditionalRecipe.builder()
-      .addCondition(condition)
-      .addRecipe(new CastingTableRecipe(COPPER, sandCast, true, false, aluminumIngredient, aluminumTime, result, false))
-      .addCondition(TrueCondition.INSTANCE)
-      .addRecipe(new CastingTableRecipe(COPPER, sandCast, true, false, quartzIngredient, quartzTime, result, false))
-      .build(consumer, root.withSuffix("casting_sand_cast"));
-
-    addConditions = true;
+    consumer.accept(new CastingTableRecipe(root.withSuffix("casting_sand_cast_aluminum"), sandCast, true, false, aluminumIngredient, aluminumTime, result, false), MOD_LOADED, condition);
+    consumer.accept(new CastingTableRecipe(root.withSuffix("casting_sand_cast_quartz"),   sandCast, true, false, quartzIngredient,   quartzTime,   result, false), MOD_LOADED, notCondition);
   }
 
-  // simplest way to prevent the condition for the condition recipe, which will add it another way
-  private static boolean addConditions = true;
-
   /** Common logic for a mock recipe */
-  private interface MockRecipe extends FinishedRecipe {
-    @Override
-    default RecipeSerializer<?> getType() {
-      throw new UnsupportedOperationException();
-    }
-
+  private interface MockTinkersRecipe extends SimpleMockRecipe {
     /** Gets the recipe type ID */
-    String getTypeId();
+    String serializerName();
 
-    /** Gets the recipe type location */
-    default String getTypeLocation() {
-      return TINKERS + ':' + getTypeId();
+    @Override
+    default ResourceLocation serializerId() {
+      return ResourceLocation.fromNamespaceAndPath(TINKERS, serializerName());
     }
 
     @Override
-    default JsonObject serializeRecipe() {
-      JsonObject json = new JsonObject();
-      json.addProperty("type", getTypeLocation());
-      if (addConditions) {
-        json.add("conditions", MOD_LOADED_CONDITION);
-      }
-      this.serializeRecipeData(json);
+    default JsonObject serializeRecipe(Serializer serializer) {
+      JsonObject json = SimpleMockRecipe.super.serializeRecipe(serializer);
+      serializer.addConditions(json, MOD_LOADED);
       return json;
-    }
-
-    @Nullable
-    @Override
-    default JsonObject serializeAdvancement() {
-      return null;
-    }
-
-    @Override
-    default @Nullable ResourceLocation getAdvancementId() {
-      return null;
     }
   }
 
   /** Finished recipe for an item part recipe */
-  private record ItemPartRecipe(ResourceLocation getId, @Nullable ResourceLocation materialOrTitle, ResourceLocation pattern, Ingredient patternItem, int cost, ItemOutput result) implements MockRecipe {
+  private record ItemPartRecipe(ResourceLocation id, @Nullable ResourceLocation materialOrTitle, ResourceLocation pattern, Ingredient patternItem, int cost, ItemOutput result) implements MockTinkersRecipe {
     public ItemPartRecipe(ResourceLocation id, ResourceLocation title, ResourceLocation pattern, Ingredient patternItem, ItemOutput result) {
       this(id, title, pattern, patternItem, 0, result);
     }
 
     @Override
-    public String  getTypeId() {
+    public String serializerName() {
       return "item_part_builder";
     }
 
     @Override
-    public void serializeRecipeData(JsonObject json) {
+    public void serializeRecipeData(JsonObject json, Serializer serializer) {
       if (materialOrTitle != null) {
         if (cost > 0) {
           json.addProperty("material", materialOrTitle.toString());
@@ -214,24 +172,24 @@ public class TinkersMockRecipeBuilder {
       }
       json.addProperty("pattern", pattern.toString());
       if (patternItem != Ingredient.EMPTY) {
-        json.add("pattern_item", patternItem.toJson());
+        json.add("pattern_item", serializer.ingredient(patternItem));
       }
-      json.add("result", result.serialize(true));
+      json.add("result", serializer.stack(result));
     }
   }
 
   /** Creates a casting table molding recipe */
-  private record MoldingRecipe(ResourceLocation getId, Ingredient material, Ingredient pattern, ItemOutput result) implements MockRecipe {
+  private record MoldingRecipe(ResourceLocation id, Ingredient material, Ingredient pattern, ItemOutput result) implements MockTinkersRecipe {
     @Override
-    public String getTypeId() {
+    public String serializerName() {
       return "molding_table";
     }
 
     @Override
-    public void serializeRecipeData(JsonObject json) {
-      json.add("material", material.toJson());
-      json.add("pattern", pattern.toJson());
-      json.add("result", result.serialize(false));
+    public void serializeRecipeData(JsonObject json, Serializer serializer) {
+      json.add("material", serializer.serialize(Ingredient.CODEC_NONEMPTY, material));
+      json.add("pattern", serializer.serialize(Ingredient.CODEC_NONEMPTY, pattern));
+      json.add("result", serializer.item(result));
     }
   }
 
@@ -247,49 +205,49 @@ public class TinkersMockRecipeBuilder {
   }
 
   /** Creates a melting recipe with the given properties */
-  private record MeltingRecipe(ResourceLocation getId, Ingredient ingredient, FluidOutput result, int temperature, int time) implements MockRecipe {
+  private record MeltingRecipe(ResourceLocation id, Ingredient ingredient, FluidOutput result, int temperature, int time) implements MockTinkersRecipe {
     public MeltingRecipe(ResourceLocation getId, Ingredient ingredient, FluidOutput result, int temperature) {
       this(getId, ingredient, result, temperature, calcTimeForAmount(temperature, result.getAmount()));
     }
 
     @Override
-    public String getTypeId() {
+    public String serializerName() {
       return "melting";
     }
 
     @Override
-    public void serializeRecipeData(JsonObject json) {
-      json.add("ingredient", ingredient.toJson());
-      json.add("result", FluidOutput.Loadable.REQUIRED.serialize(result));
+    public void serializeRecipeData(JsonObject json, Serializer serializer) {
+      json.add("ingredient", serializer.ingredient(ingredient));
+      json.add("result", serializer.fluid(result));
       json.addProperty("temperature", temperature);
       json.addProperty("time", time);
     }
   }
 
   /** Creates a casting table recipe with the given properties */
-  private record CastingTableRecipe(ResourceLocation getId, Ingredient cast, boolean castConsumed, boolean switchSlots, FluidIngredient fluid, int time, ItemOutput result, boolean copyMetal) implements MockRecipe {
+  private record CastingTableRecipe(ResourceLocation id, Ingredient cast, boolean castConsumed, boolean switchSlots, SizedFluidIngredient fluid, int time, ItemOutput result, boolean copyMetal) implements MockTinkersRecipe {
     @Override
-    public String getTypeId() {
+    public String serializerName() {
       return "casting_table";
     }
 
     @Override
-    public String getTypeLocation() {
+    public ResourceLocation serializerId() {
       if (copyMetal) {
-        return Registration.COPY_METAL_TABLE.getId().toString();
+        return Registration.COPY_METAL_TABLE.getId();
       }
-      return MockRecipe.super.getTypeLocation();
+      return MockTinkersRecipe.super.serializerId();
     }
 
     @Override
-    public void serializeRecipeData(JsonObject json) {
-      json.add("cast", cast.toJson());
+    public void serializeRecipeData(JsonObject json, Serializer serializer) {
+      json.add("cast", serializer.ingredient(cast));
       json.addProperty("cast_consumed", castConsumed);
 
-      json.add("fluid", fluid.serialize());
+      json.add("fluid", serializer.fluidIngredient(fluid));
       json.addProperty("cooling_time", time);
 
-      json.add("result", result.serialize(false));
+      json.add("result", serializer.item(result));
       json.addProperty("switch_slots", switchSlots);
     }
   }

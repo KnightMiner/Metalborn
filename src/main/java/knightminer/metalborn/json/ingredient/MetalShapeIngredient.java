@@ -10,6 +10,7 @@ import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.Ingredient;
 import net.neoforged.neoforge.common.crafting.ICustomIngredient;
 import net.neoforged.neoforge.common.crafting.IngredientType;
 import slimeknights.mantle.util.RegistryHelper;
@@ -28,13 +29,13 @@ public record MetalShapeIngredient(MetalShape shape, MetalFilter filter) impleme
     MetalShapeIngredient::new);
 
   /** Creates an ingredient matching ingots */
-  public static MetalShapeIngredient ingot(MetalFilter filter) {
-    return new MetalShapeIngredient(MetalShape.INGOT, filter);
+  public static Ingredient ingot(MetalFilter filter) {
+    return new MetalShapeIngredient(MetalShape.INGOT, filter).toVanilla();
   }
 
   /** Creates an ingredient matching nuggets */
-  public static MetalShapeIngredient nugget(MetalFilter filter) {
-    return new MetalShapeIngredient(MetalShape.NUGGET, filter);
+  public static Ingredient nugget(MetalFilter filter) {
+    return new MetalShapeIngredient(MetalShape.NUGGET, filter).toVanilla();
   }
 
   @Override

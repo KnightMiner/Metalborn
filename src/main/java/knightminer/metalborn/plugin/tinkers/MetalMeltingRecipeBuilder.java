@@ -4,22 +4,20 @@ import com.google.gson.JsonObject;
 import knightminer.metalborn.core.Registration;
 import knightminer.metalborn.json.ingredient.IngredientWithMetal.MetalFilter;
 import knightminer.metalborn.json.ingredient.MetalItemIngredient;
-import net.minecraft.data.recipes.FinishedRecipe;
+import net.minecraft.data.recipes.RecipeOutput;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.crafting.Ingredient;
-import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.level.ItemLike;
-import org.jetbrains.annotations.Nullable;
 import slimeknights.mantle.data.loadable.Loadables;
 import slimeknights.mantle.recipe.data.AbstractRecipeBuilder;
-
-import java.util.function.Consumer;
+import slimeknights.mantle.recipe.data.mock.MockRecipe;
+import slimeknights.mantle.recipe.data.mock.MockRecipe.SimpleMockRecipe;
+import slimeknights.mantle.recipe.data.mock.MockRecipeConsumer;
 
 /** Builder for {@link MetalMeltingRecipe}. Safe to use even if Tinkers' Construct is not a runtime dependency. */
 public class MetalMeltingRecipeBuilder extends AbstractRecipeBuilder<MetalMeltingRecipeBuilder> {
   private final Ingredient ingredient;
   private final int amount;
-  private boolean optional = true;
 
   protected MetalMeltingRecipeBuilder(Ingredient ingredient, int amount) {
     this.ingredient = ingredient;
@@ -36,49 +34,51 @@ public class MetalMeltingRecipeBuilder extends AbstractRecipeBuilder<MetalMeltin
     return melting(MetalItemIngredient.of(item, filter), amount);
   }
 
-  /** Disables the recipe condition requiring Tinkers' Construct to be present. Use if adding via a Tinkers' Construct addon. */
-  public MetalMeltingRecipeBuilder alwaysPresent() {
-    this.optional = false;
-    return this;
+  @Override
+  public void save(RecipeOutput output) {
+    save(output, Loadables.ITEM.getKey(ingredient.getItems()[0].getItem()));
   }
 
   @Override
-  public void save(Consumer<FinishedRecipe> consumer) {
+  public void save(RecipeOutput output, ResourceLocation id) {
+    // TODO: can I safely call the constructor here?
+    throw new UnsupportedOperationException();
+  }
+
+  /** Saves this recipe without requiring tinkers during datagen. */
+  public void save(MockRecipeConsumer consumer) {
     save(consumer, Loadables.ITEM.getKey(ingredient.getItems()[0].getItem()));
   }
 
-  @Override
-  public void save(Consumer<FinishedRecipe> consumer, ResourceLocation id) {
-    ResourceLocation advancementId = this.buildOptionalAdvancement(id, "casting");
-    // not using loadables to prevent class loading with the builder when Tinkers' Construct is absent
-    consumer.accept(new Finished(id, advancementId));
+  /** Saves this recipe without requiring tinkers during datagen. */
+  public void save(MockRecipeConsumer consumer, ResourceLocation id) {
+    consumer.accept(new Finished(id), TinkersMockRecipeBuilder.MOD_LOADED);
+    if (!criteria.isEmpty()) {
+      consumer.advancement(id, "melting", criteria, TinkersMockRecipeBuilder.MOD_LOADED);
+    }
   }
 
-  private class Finished extends AbstractFinishedRecipe {
-    public Finished(ResourceLocation id, @Nullable ResourceLocation advancementId) {
-      super(id, advancementId);
+  /** Finished recipe instance */
+  private class Finished implements SimpleMockRecipe {
+    private final ResourceLocation id;
+    public Finished(ResourceLocation id) {
+      this.id = id;
     }
 
     @Override
-    public JsonObject serializeRecipe() {
-      JsonObject json = new JsonObject();
-      json.addProperty("type", Registration.METAL_MELTING.getId().toString());
-      if (optional) {
-        json.add("conditions", TinkersMockRecipeBuilder.MOD_LOADED_CONDITION);
-      }
-      this.serializeRecipeData(json);
-      return json;
+    public ResourceLocation id() {
+      return id;
     }
 
     @Override
-    public void serializeRecipeData(JsonObject json) {
-      json.add("ingredient", ingredient.toJson());
+    public ResourceLocation serializerId() {
+      return Registration.METAL_MELTING.getId();
+    }
+
+    @Override
+    public void serializeRecipeData(JsonObject json, MockRecipe.Serializer serializer) {
+      json.add("ingredient", serializer.ingredient(ingredient));
       json.addProperty("amount", amount);
-    }
-
-    @Override
-    public RecipeSerializer<?> getType() {
-      return Registration.METAL_MELTING.get();
     }
   }
 }
