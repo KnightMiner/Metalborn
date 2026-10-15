@@ -9,7 +9,7 @@ import net.minecraft.core.HolderSet;
 import net.minecraft.core.RegistrySetBuilder;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.PackOutput;
-import net.minecraft.data.worldgen.BootstapContext;
+import net.minecraft.data.worldgen.BootstrapContext;
 import net.minecraft.data.worldgen.features.FeatureUtils;
 import net.minecraft.data.worldgen.placement.PlacementUtils;
 import net.minecraft.tags.BiomeTags;
@@ -33,8 +33,8 @@ import net.minecraft.world.level.levelgen.placement.PlacementModifier;
 import net.minecraft.world.level.levelgen.structure.templatesystem.TagMatchTest;
 import net.neoforged.neoforge.common.data.DatapackBuiltinEntriesProvider;
 import net.neoforged.neoforge.common.world.BiomeModifier;
-import net.neoforged.neoforge.common.world.ForgeBiomeModifiers.AddFeaturesBiomeModifier;
-import net.neoforged.neoforge.registries.ForgeRegistries;
+import net.neoforged.neoforge.common.world.BiomeModifiers.AddFeaturesBiomeModifier;
+import net.neoforged.neoforge.registries.NeoForgeRegistries;
 import org.jetbrains.annotations.ApiStatus.Internal;
 
 import java.util.List;
@@ -52,12 +52,12 @@ public class RegistryProvider {
     builder.add(Registries.DAMAGE_TYPE, RegistryProvider::damageSources);
     builder.add(Registries.CONFIGURED_FEATURE, RegistryProvider::configuredFeatures);
     builder.add(Registries.PLACED_FEATURE, RegistryProvider::placedFeatures);
-    builder.add(ForgeRegistries.Keys.BIOME_MODIFIERS, RegistryProvider::biomeModifiers);
+    builder.add(NeoForgeRegistries.Keys.BIOME_MODIFIERS, RegistryProvider::biomeModifiers);
     return new DatapackBuiltinEntriesProvider(packOutput, lookupProvider, builder, Set.of(Metalborn.MOD_ID));
   }
 
   /** Adds damage sources */
-  private static void damageSources(BootstapContext<DamageType> context) {
+  private static void damageSources(BootstrapContext<DamageType> context) {
     context.register(Registration.METAL_HURT, new DamageType(prefix("metal_hurt"), DamageScaling.NEVER, 0f, DamageEffects.HURT));
     context.register(Registration.ADD_SPIKE, new DamageType(prefix("add_spike"), DamageScaling.NEVER, 0.1f, DamageEffects.THORNS));
     context.register(Registration.MAKE_SPIKE, new DamageType(prefix("make_spike"), DamageScaling.NEVER, 1f, DamageEffects.HURT));
@@ -65,7 +65,7 @@ public class RegistryProvider {
     context.register(Registration.UPDATE_HEALTH, new DamageType(prefix("update_health"), DamageScaling.NEVER, 0f, DamageEffects.DROWNING));
   }
 
-  private static void configuredFeatures(BootstapContext<ConfiguredFeature<?, ?>> context) {
+  private static void configuredFeatures(BootstrapContext<ConfiguredFeature<?, ?>> context) {
     List<TargetBlockState> tinOres = List.of(
       OreConfiguration.target(new TagMatchTest(BlockTags.STONE_ORE_REPLACEABLES), Registration.TIN_ORE.get().defaultBlockState()),
       OreConfiguration.target(new TagMatchTest(BlockTags.DEEPSLATE_ORE_REPLACEABLES), Registration.DEEPSLATE_TIN_ORE.get().defaultBlockState()));
@@ -77,7 +77,7 @@ public class RegistryProvider {
     return List.of(CountPlacement.of(pCount), InSquarePlacement.spread(), pHeightRange, BiomeFilter.biome());
   }
 
-  private static void placedFeatures(BootstapContext<PlacedFeature> context) {
+  private static void placedFeatures(BootstrapContext<PlacedFeature> context) {
     HolderGetter<ConfiguredFeature<?, ?>> holdergetter = context.lookup(Registries.CONFIGURED_FEATURE);
     Holder<ConfiguredFeature<?, ?>> tinOre = holdergetter.getOrThrow(MetalbornKeys.TIN_ORE);
     Holder<ConfiguredFeature<?, ?>> smallTinOre = holdergetter.getOrThrow(MetalbornKeys.TIN_ORE_SMALL);
@@ -85,7 +85,7 @@ public class RegistryProvider {
     PlacementUtils.register(context, MetalbornKeys.TIN_ORE_MIDDLE, tinOre, commonOrePlacement(5, HeightRangePlacement.triangle(VerticalAnchor.absolute(-24), VerticalAnchor.absolute(56))));
     PlacementUtils.register(context, MetalbornKeys.PLACED_TIN_ORE_SMALL, smallTinOre, commonOrePlacement(5, HeightRangePlacement.uniform(VerticalAnchor.bottom(), VerticalAnchor.absolute(72))));  }
 
-  private static void biomeModifiers(BootstapContext<BiomeModifier> context) {
+  private static void biomeModifiers(BootstrapContext<BiomeModifier> context) {
     HolderGetter<Biome> biomes = context.lookup(Registries.BIOME);
     HolderGetter<PlacedFeature> placed = context.lookup(Registries.PLACED_FEATURE);
     context.register(MetalbornKeys.OVERWORLD_ORES, new AddFeaturesBiomeModifier(biomes.getOrThrow(BiomeTags.IS_OVERWORLD), HolderSet.direct(

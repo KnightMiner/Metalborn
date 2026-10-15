@@ -6,7 +6,7 @@ import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
 import net.minecraft.world.level.levelgen.placement.PlacedFeature;
 import net.neoforged.neoforge.common.world.BiomeModifier;
-import net.neoforged.neoforge.registries.ForgeRegistries;
+import net.neoforged.neoforge.registries.NeoForgeRegistries;
 
 import static knightminer.metalborn.Metalborn.resource;
 
@@ -17,7 +17,7 @@ public class MetalbornKeys {
   public static final ResourceKey<PlacedFeature> TIN_ORE_UPPER = create(Registries.PLACED_FEATURE, "tin_ore_upper");
   public static final ResourceKey<PlacedFeature> TIN_ORE_MIDDLE = create(Registries.PLACED_FEATURE, "tin_ore_middle");
   public static final ResourceKey<PlacedFeature> PLACED_TIN_ORE_SMALL = create(Registries.PLACED_FEATURE, "tin_ore_small");
-  public static final ResourceKey<BiomeModifier> OVERWORLD_ORES = create(ForgeRegistries.Keys.BIOME_MODIFIERS, "overworld_ores");
+  public static final ResourceKey<BiomeModifier> OVERWORLD_ORES = create(NeoForgeRegistries.Keys.BIOME_MODIFIERS, "overworld_ores");
 
   private static <T> ResourceKey<T> create(ResourceKey<? extends Registry<T>> registry, String name) {
     return ResourceKey.create(registry, resource(name));
