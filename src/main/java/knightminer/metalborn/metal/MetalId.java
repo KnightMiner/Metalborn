@@ -12,7 +12,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.entity.EntityType;
 import org.jetbrains.annotations.Nullable;
-import slimeknights.mantle.data.loadable.Loadables;
+import slimeknights.mantle.data.loadable.primitive.ResourceLocationLoadable;
 import slimeknights.mantle.data.loadable.primitive.StringLoadable;
 
 /** Represents the ID of a metal. */
@@ -20,7 +20,7 @@ public class MetalId extends ResourceLocation {
   /** Metal ID for indicating something has no metal */
   public static final MetalId NONE = new MetalId(Metalborn.MOD_ID, "none");
   /** Loadable instance for parsing */
-  public static final StringLoadable<MetalId> LOADABLE = Loadables.RESOURCE_LOCATION.xmap((loc, error) -> new MetalId(loc), (id, error) -> id);
+  public static final StringLoadable<MetalId> LOADABLE = ResourceLocationLoadable.DEFAULT.xmap((loc, error) -> new MetalId(loc), (id, error) -> id);
   // codecs
   public static final Codec<MetalId> CODEC = ResourceLocation.CODEC.xmap(MetalId::new, id -> id);
   public static final StreamCodec<ByteBuf,MetalId> STREAM_CODEC = ResourceLocation.STREAM_CODEC.map(MetalId::new, id -> id);

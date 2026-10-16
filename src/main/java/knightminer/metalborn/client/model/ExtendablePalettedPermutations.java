@@ -3,7 +3,6 @@ package knightminer.metalborn.client.model;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import knightminer.metalborn.client.MetalbornClient;
 import net.minecraft.client.renderer.texture.atlas.SpriteSourceType;
 import net.minecraft.client.renderer.texture.atlas.sources.PalettedPermutations;
 import net.minecraft.resources.ResourceLocation;
@@ -19,6 +18,7 @@ public class ExtendablePalettedPermutations extends PalettedPermutations {
     ResourceLocation.CODEC.fieldOf("palette_folder").forGetter(palette -> palette.paletteFolder),
     ResourceLocation.CODEC.fieldOf("permutation_list").forGetter(palette -> palette.permutationList)
   ).apply(inst, ExtendablePalettedPermutations::new));
+  public static final SpriteSourceType TYPE = new SpriteSourceType(CODEC);
 
   private final ResourceLocation paletteFolder;
   private final ResourceLocation permutationList;
@@ -30,7 +30,7 @@ public class ExtendablePalettedPermutations extends PalettedPermutations {
 
   @Override
   public SpriteSourceType type() {
-    return MetalbornClient.EXTENDABLE_PALETTE;
+    return TYPE;
   }
 
   @Override

@@ -15,8 +15,6 @@ import knightminer.metalborn.network.ControlPacket;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.client.renderer.item.ItemProperties;
 import net.minecraft.client.renderer.item.ItemPropertyFunction;
-import net.minecraft.client.renderer.texture.atlas.SpriteSourceType;
-import net.minecraft.client.renderer.texture.atlas.SpriteSources;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.component.DyedItemColor;
@@ -31,6 +29,7 @@ import net.neoforged.neoforge.client.event.RegisterClientReloadListenersEvent;
 import net.neoforged.neoforge.client.event.RegisterColorHandlersEvent;
 import net.neoforged.neoforge.client.event.RegisterKeyMappingsEvent;
 import net.neoforged.neoforge.client.event.RegisterMenuScreensEvent;
+import net.neoforged.neoforge.client.event.RegisterSpriteSourceTypesEvent;
 import net.neoforged.neoforge.client.settings.KeyConflictContext;
 import net.neoforged.neoforge.network.PacketDistributor;
 import slimeknights.mantle.client.model.ItemKey;
@@ -41,15 +40,14 @@ import static knightminer.metalborn.Metalborn.resource;
 @Mod(value = Metalborn.MOD_ID, dist = Dist.CLIENT)
 @EventBusSubscriber(modid = Metalborn.MOD_ID, value = Dist.CLIENT)
 public class MetalbornClient {
-  public static final SpriteSourceType EXTENDABLE_PALETTE = SpriteSources.register(resource("extendable_palette").toString(), ExtendablePalettedPermutations.CODEC);
   /** Item key instance for metal items */
   public static final ItemKey METAL_KEY = ItemKey.simple(stack -> MetalItem.getMetal(stack).toString());
   /** Universal keybinding */
   private static final KeyMapping KEY = new KeyMapping(Metalborn.key("key", "binding"), KeyConflictContext.IN_GAME, InputConstants.getKey("key.keyboard.m"), "key.categories.metalborn");
   /** Item properties key for a satchel being dyed */
-  public static final ResourceLocation DYED = Metalborn.resource("dyed");
+  public static final ResourceLocation DYED = resource("dyed");
   /** Item properties key for an investiture metal item having no metal set */
-  public static final ResourceLocation NO_METAL = Metalborn.resource("no_metal");
+  public static final ResourceLocation NO_METAL = resource("no_metal");
 
   /** Runs during mod constructor to register any important client only things */
   public MetalbornClient() {
@@ -61,6 +59,11 @@ public class MetalbornClient {
   static void registerReloadListeners(RegisterClientReloadListenersEvent event) {
     event.registerReloadListener(PaletteListManager.INSTANCE);
     event.registerReloadListener(MetalColorManager.INSTANCE);
+  }
+
+  @SubscribeEvent
+  static void registerSpriteSourceType(RegisterSpriteSourceTypesEvent event) {
+    event.register(resource("extendable_palette"), ExtendablePalettedPermutations.TYPE);
   }
 
   @SubscribeEvent

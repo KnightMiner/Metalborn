@@ -14,7 +14,7 @@ public class MetalHolder implements IdAwareObject {
   /** Empty instance, always resolves to {@link MetalPower#DEFAULT}. */
   public static final MetalHolder EMPTY = new MetalHolder(MetalId.NONE, MetalPower.DEFAULT);
   /** Codec creating metal holders by ID. */
-  public static final Codec<MetalHolder> CODEC = MetalId.CODEC.xmap(MetalManager.INSTANCE::getHolder, holder -> holder.power().id());
+  public static final Codec<MetalHolder> CODEC = MetalId.CODEC.xmap(MetalManager.INSTANCE::getHolder, MetalHolder::serializedId);
   /** Stream codec syncing metal holders by ID */
   public static final StreamCodec<ByteBuf,MetalHolder> STREAM_CODEC = MetalId.STREAM_CODEC.map(MetalManager.INSTANCE::getHolder, MetalHolder::id);
 
@@ -35,6 +35,11 @@ public class MetalHolder implements IdAwareObject {
   @Override
   public MetalId id() {
     return id;
+  }
+
+  /** Gets the ID to use for serializing, using the power ID if fetched. */
+  protected MetalId serializedId() {
+    return power != null && power.isPresent() ? power.id() : id;
   }
 
   /** Gets the metal power, or {@link MetalPower#DEFAULT} if absent. */

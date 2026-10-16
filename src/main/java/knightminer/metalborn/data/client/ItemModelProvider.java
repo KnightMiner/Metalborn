@@ -29,9 +29,9 @@ import static knightminer.metalborn.client.model.PalettedItemModel.toSuffix;
 /** Data generator for all item models in this mod */
 public class ItemModelProvider extends net.neoforged.neoforge.client.model.generators.ItemModelProvider {
   /** Standard item transforms */
-  private static final String ITEM = "forge:item/default";
+  private static final String ITEM = "neoforge:item/default";
   /** Item held like a pickaxe or sword */
-  private static final String TOOL = "forge:item/default-tool";
+  private static final String TOOL = "neoforge:item/default-tool";
   /** Item held like a blaze rod or stick */
   private static final String ROD = "metalborn:item/default_rod";
   /** Parent for generated item models */
