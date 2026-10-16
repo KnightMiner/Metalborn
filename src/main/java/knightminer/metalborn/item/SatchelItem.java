@@ -13,12 +13,13 @@ import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
-import net.minecraft.world.SimpleMenuProvider;
+import net.minecraft.world.MenuProvider;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.SlotAccess;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.ClickAction;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.Item;
@@ -109,13 +110,10 @@ public class SatchelItem extends Item {
   /* Menu */
 
   /** Common logic to open the menu */
-  private void openMenu(Player player, ItemStack stack, int slot) {
+  private void openMenu(Player player, ItemStack stack, int slot, boolean isHeld) {
     if (player instanceof ServerPlayer serverPlayer) {
       MetalId ferringType = MetalbornData.getData(player).getFerringType();
-      serverPlayer.openMenu(new SimpleMenuProvider(
-        (id, inventory, p) -> new MetalbornMenu(id, inventory, stack, type, slot),
-        stack.getHoverName()
-      ), buffer -> {
+      serverPlayer.openMenu(new SatchelMenuProvider(stack, type, slot, isHeld), buffer -> {
         buffer.writeResourceLocation(ferringType);
         buffer.writeByte(slot);
         buffer.writeEnum(type);
@@ -129,7 +127,7 @@ public class SatchelItem extends Item {
     ItemStack stack = player.getItemInHand(hand);
     boolean isClient = player.level().isClientSide;
     if (!isClient) {
-      openMenu(player, stack, hand == InteractionHand.MAIN_HAND ? player.getInventory().selected : Inventory.SLOT_OFFHAND);
+      openMenu(player, stack, hand == InteractionHand.MAIN_HAND ? player.getInventory().selected : Inventory.SLOT_OFFHAND, true);
     }
     return InteractionResultHolder.sidedSuccess(stack, isClient);
   }
@@ -143,7 +141,7 @@ public class SatchelItem extends Item {
         // mostly is an issue for inventoryMenu itself
         // so resume updates on the container we are about to open
         player.containerMenu.resumeRemoteUpdates();
-        openMenu(player, stack, slot.getSlotIndex());
+        openMenu(player, stack, slot.getSlotIndex(), false);
         // then suppress updates on the new container after opening
         player.containerMenu.suppressRemoteUpdates();
       }
@@ -206,6 +204,25 @@ public class SatchelItem extends Item {
     @Override
     public boolean isItemValid(int slot, ItemStack stack) {
       return isValid(stack);
+    }
+  }
+
+  /** Menu provider for opening the satchel */
+  private record SatchelMenuProvider(ItemStack stack, SatchelType type, int slot, boolean isHeld) implements MenuProvider {
+    @Override
+    public Component getDisplayName() {
+      return stack.getHoverName();
+    }
+
+    @Override
+    public AbstractContainerMenu createMenu(int id, Inventory inventory, Player player) {
+      return new MetalbornMenu(id, inventory, stack, type, slot);
+    }
+
+    @Override
+    public boolean shouldTriggerClientSideContainerClosingOnOpen() {
+      return false;
+
     }
   }
 }
