@@ -55,7 +55,7 @@ public class TinkersMockRecipeBuilder {
 
   /** Creates all recipes for creating casts in Tinkers' Construct */
   public static void castRecipes(MockRecipeConsumer consumer, ItemLike metalItem, List<ItemLike> otherItems, CastItemObject cast, MetalFilter filter, int cost, String folder) {
-    ResourceLocation id = cast.getId();
+    ResourceLocation id = cast.id();
     ResourceLocation root = id.withPrefix(folder);
     ResourceLocation casts = root.withSuffix("/cast/");
     ItemOutput sandCast = ItemOutput.fromItem(cast.getSand());

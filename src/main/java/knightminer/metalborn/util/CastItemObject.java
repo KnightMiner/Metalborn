@@ -31,7 +31,7 @@ public class CastItemObject extends ItemObject<Item,Item> implements MultiObject
   }
 
   @Override
-  public ResourceLocation getId() {
+  public ResourceLocation id() {
     return name;
   }
 

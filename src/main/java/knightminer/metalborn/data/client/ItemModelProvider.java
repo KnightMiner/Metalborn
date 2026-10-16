@@ -194,7 +194,7 @@ public class ItemModelProvider extends net.neoforged.neoforge.client.model.gener
 
   /** Creates models for the given cast object */
   private void cast(CastItemObject cast) {
-    String name = cast.getId().getPath();
+    String name = cast.id().getPath();
     basicItem(path(cast.get()), "cast/" + name + "_gold");
     basicItem(path(cast.getSand()), "cast/" + name + "_sand");
     basicItem(path(cast.getRedSand()), "cast/" + name + "_red_sand");
