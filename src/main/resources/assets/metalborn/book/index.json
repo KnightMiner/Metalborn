@@ -11,11 +11,11 @@
     "data": "sections/feruchemy.json",
     "icon": {
       "item": {
-        "type": "forge:nbt",
-        "item": "metalborn:ring",
-        "nbt": {
-          "metal": "metalborn:pewter",
-          "amount": 2000
+        "type": "neoforge:components",
+        "items": "metalborn:ring",
+        "components": {
+          "metalborn:metal": "metalborn:pewter",
+          "metalborn:amount": 2000
         }
       }
     }
@@ -25,11 +25,11 @@
     "data": "sections/hemalurgy.json",
     "icon": {
       "item": {
-        "type": "forge:nbt",
-        "item": "metalborn:spike",
-        "nbt": {
-          "metal": "metalborn:gold",
-          "full": true
+        "type": "neoforge:components",
+        "items": "metalborn:spike",
+        "components": {
+          "metalborn:metal": "metalborn:gold",
+          "metalborn:full": true
         }
       }
     }

@@ -1,14 +1,14 @@
 {
   "metalminds": [
     {
-      "type": "forge:nbt",
-      "item": "metalborn:investiture_bracer",
-      "nbt": { "amount": 30000 }
+      "type": "neoforge:components",
+      "items": "metalborn:investiture_bracer",
+      "components": { "metalborn:amount": 30000 }
     },
     {
-      "type": "forge:nbt",
-      "item": "metalborn:investiture_ring",
-      "nbt": { "amount": 3000 }
+      "type": "neoforge:components",
+      "items": "metalborn:investiture_ring",
+      "components": { "metalborn:amount": 3000 }
     }
   ],
   "spikes": "metalborn:investiture_spike",

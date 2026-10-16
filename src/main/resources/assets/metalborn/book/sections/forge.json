@@ -19,14 +19,14 @@
     "name": "tinkers",
     "data": "forge/tinkers.json",
     "condition": {
-      "type": "forge:or",
+      "type": "neoforge:or",
       "values": [
         {
           "type": "metalborn:config",
           "name": "force_integration"
         },
         {
-          "type": "forge:mod_loaded",
+          "type": "neoforge:mod_loaded",
           "modid": "tconstruct"
         }
       ]

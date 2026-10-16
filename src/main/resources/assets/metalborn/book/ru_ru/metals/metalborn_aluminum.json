@@ -1,14 +1,14 @@
 {
   "metalminds": [
     {
-      "type": "forge:nbt",
-      "item": "metalborn:identity_bracer",
-      "nbt": { "amount": 30000, "owner_name": "Сазед" }
+      "type": "neoforge:components",
+      "items": "metalborn:identity_bracer",
+      "components": { "metalborn:amount": 30000, "metalborn:owner_name": "Sazed" }
     },
     {
-      "type": "forge:nbt",
-      "item": "metalborn:identity_ring",
-      "nbt": { "amount": 3000, "owner_name": "Сазед" }
+      "type": "neoforge:components",
+      "items": "metalborn:identity_ring",
+      "components": { "metalborn:amount": 3000, "metalborn:owner_name": "Sazed" }
     }
   ],
   "storing": [
