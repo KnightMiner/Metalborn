@@ -82,7 +82,7 @@ public class Metalborn {
     generator.addProvider(server, new LootTableProvider(packOutput, Set.of(), List.of(new SubProviderEntry(BlockLootTableProvider::new, LootContextParamSets.BLOCK)), lookupProvider));
     generator.addProvider(server, new RecipeProvider(packOutput, lookupProvider));
     generator.addProvider(server, new MockRecipeProvider(packOutput, lookupProvider));
-    generator.addProvider(server, new GlobalLootModifiersProvider(packOutput));
+    generator.addProvider(server, new GlobalLootModifiersProvider(packOutput, lookupProvider));
     // tags
     BlockTagProvider blockTags = new BlockTagProvider(packOutput, lookupProvider, existingFileHelper);
     generator.addProvider(server, blockTags);
