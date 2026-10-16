@@ -1,0 +1,35 @@
+{
+  "neoforge:conditions": [
+    {
+      "type": "neoforge:mod_loaded",
+      "modid": "tconstruct"
+    }
+  ],
+  "type": "tconstruct:casting_table",
+  "cast": [
+    {
+      "type": "metalborn:metal_item",
+      "filter": "metalmind",
+      "item": "metalborn:ring"
+    },
+    {
+      "type": "neoforge:compound",
+      "children": [
+        {
+          "item": "metalborn:investiture_ring"
+        },
+        {
+          "item": "metalborn:identity_ring"
+        }
+      ]
+    }
+  ],
+  "cast_consumed": true,
+  "cooling_time": 57,
+  "fluid": {
+    "amount": 90,
+    "tag": "c:molten_gold"
+  },
+  "result": "metalborn:ring_gold_cast",
+  "switch_slots": true
+}

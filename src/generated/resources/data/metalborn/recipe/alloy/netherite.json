@@ -1,0 +1,17 @@
+{
+  "type": "metalborn:shapeless_forge",
+  "cooking_time": 200,
+  "experience": 1,
+  "ingredients": [
+    {
+      "tag": "metalborn:ingot_like/gold"
+    },
+    {
+      "tag": "metalborn:ingot_like/netherite_scrap"
+    }
+  ],
+  "result": {
+    "count": 3,
+    "tag": "c:nuggets/netherite"
+  }
+}

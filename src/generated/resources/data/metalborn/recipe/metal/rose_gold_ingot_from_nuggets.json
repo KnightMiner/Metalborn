@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "group": "metalborn:rose_gold_ingot",
+  "key": {
+    "#": {
+      "tag": "c:nuggets/rose_gold"
+    },
+    "*": {
+      "item": "metalborn:rose_gold_nugget"
+    }
+  },
+  "pattern": [
+    "###",
+    "#*#",
+    "###"
+  ],
+  "result": {
+    "count": 1,
+    "id": "metalborn:rose_gold_ingot"
+  }
+}

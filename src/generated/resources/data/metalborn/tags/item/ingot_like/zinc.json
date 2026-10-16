@@ -1,0 +1,16 @@
+{
+  "values": [
+    {
+      "id": "#c:ingots/zinc",
+      "required": false
+    },
+    {
+      "id": "#c:raw_materials/zinc",
+      "required": false
+    },
+    {
+      "id": "#c:ores/zinc",
+      "required": false
+    }
+  ]
+}

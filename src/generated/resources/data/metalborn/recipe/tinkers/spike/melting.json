@@ -1,0 +1,14 @@
+{
+  "neoforge:conditions": [
+    {
+      "type": "neoforge:false"
+    }
+  ],
+  "type": "metalborn:metal_melting",
+  "amount": 180,
+  "ingredient": {
+    "type": "metalborn:metal_item",
+    "filter": "spike",
+    "item": "metalborn:spike"
+  }
+}

@@ -1,6 +1,5 @@
 {
-  "parent": "forge:item/default",
-  "key": "metal",
+  "parent": "neoforge:item/default",
   "loader": "metalborn:metal_shape",
   "palette_list": "metalborn:metals/nuggets",
   "shape": "nugget",

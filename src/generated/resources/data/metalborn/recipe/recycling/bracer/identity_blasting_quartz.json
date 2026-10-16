@@ -1,0 +1,22 @@
+{
+  "neoforge:conditions": [
+    {
+      "type": "neoforge:not",
+      "value": {
+        "type": "mantle:tag_filled",
+        "tag": "c:ingots/aluminum"
+      }
+    }
+  ],
+  "type": "minecraft:blasting",
+  "category": "misc",
+  "cookingtime": 400,
+  "experience": 0.5,
+  "ingredient": {
+    "item": "metalborn:identity_bracer"
+  },
+  "result": {
+    "count": 4,
+    "id": "minecraft:quartz"
+  }
+}

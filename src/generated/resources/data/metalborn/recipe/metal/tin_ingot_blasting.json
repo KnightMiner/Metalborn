@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:blasting",
+  "category": "misc",
+  "cookingtime": 100,
+  "experience": 0.7,
+  "ingredient": [
+    {
+      "item": "metalborn:raw_tin"
+    },
+    {
+      "item": "metalborn:tin_ore"
+    },
+    {
+      "item": "metalborn:deepslate_tin_ore"
+    }
+  ],
+  "result": {
+    "count": 1,
+    "id": "metalborn:tin_ingot"
+  }
+}

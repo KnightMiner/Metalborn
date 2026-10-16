@@ -3,7 +3,7 @@
   "capacity": 6000,
   "conditions": [
     {
-      "type": "forge:or",
+      "type": "neoforge:or",
       "values": [
         {
           "type": "metalborn:config",
@@ -11,11 +11,11 @@
         },
         {
           "type": "mantle:tag_filled",
-          "tag": "forge:ingots/electrum"
+          "tag": "c:ingots/electrum"
         },
         {
           "type": "mantle:tag_filled",
-          "tag": "forge:nuggets/electrum"
+          "tag": "c:nuggets/electrum"
         }
       ]
     }
@@ -25,7 +25,7 @@
       "type": "metalborn:attribute",
       "attribute": "metalborn:determination",
       "multiplier": 0.1,
-      "operation": "multiply_total"
+      "operation": "add_multiplied_total"
     }
   ],
   "format": "ticks",

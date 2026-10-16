@@ -1,0 +1,19 @@
+{
+  "neoforge:conditions": [
+    {
+      "type": "neoforge:mod_loaded",
+      "modid": "tconstruct"
+    }
+  ],
+  "type": "tconstruct:item_part_builder",
+  "cost": 2,
+  "material": "tconstruct:copper",
+  "pattern": "metalborn:spike",
+  "result": {
+    "components": {
+      "metalborn:metal": "metalborn:copper"
+    },
+    "count": 1,
+    "item": "metalborn:spike"
+  }
+}

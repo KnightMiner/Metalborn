@@ -6,13 +6,13 @@
       "type": "metalborn:attribute",
       "attribute": "minecraft:generic.attack_damage",
       "multiplier": 0.5,
-      "operation": "addition"
+      "operation": "add_value"
     },
     {
       "type": "metalborn:attribute",
       "attribute": "minecraft:generic.max_health",
       "multiplier": 2.0,
-      "operation": "addition"
+      "operation": "add_value"
     },
     {
       "type": "metalborn:tapping",

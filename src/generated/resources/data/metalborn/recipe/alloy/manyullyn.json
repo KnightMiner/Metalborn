@@ -1,0 +1,33 @@
+{
+  "neoforge:conditions": [
+    {
+      "type": "mantle:tag_filled",
+      "tag": "c:ingots/manyullyn"
+    },
+    {
+      "type": "mantle:tag_filled",
+      "tag": "metalborn:ingot_like/cobalt"
+    }
+  ],
+  "type": "metalborn:shapeless_forge",
+  "cooking_time": 400,
+  "experience": 2,
+  "ingredients": [
+    {
+      "tag": "metalborn:ingot_like/cobalt"
+    },
+    {
+      "tag": "metalborn:ingot_like/cobalt"
+    },
+    {
+      "tag": "metalborn:ingot_like/cobalt"
+    },
+    {
+      "tag": "metalborn:ingot_like/netherite_scrap"
+    }
+  ],
+  "result": {
+    "count": 4,
+    "tag": "c:ingots/manyullyn"
+  }
+}

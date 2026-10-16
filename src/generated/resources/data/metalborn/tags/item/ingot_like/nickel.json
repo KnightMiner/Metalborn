@@ -1,0 +1,16 @@
+{
+  "values": [
+    {
+      "id": "#c:ingots/nickel",
+      "required": false
+    },
+    {
+      "id": "#c:raw_materials/nickel",
+      "required": false
+    },
+    {
+      "id": "#c:ores/nickel",
+      "required": false
+    }
+  ]
+}

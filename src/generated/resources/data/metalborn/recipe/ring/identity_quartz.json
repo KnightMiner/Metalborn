@@ -1,0 +1,20 @@
+{
+  "neoforge:conditions": [
+    {
+      "type": "neoforge:not",
+      "value": {
+        "type": "mantle:tag_filled",
+        "tag": "c:nuggets/aluminum"
+      }
+    }
+  ],
+  "type": "metalborn:shapeless_forge",
+  "cooking_time": 100,
+  "experience": 1,
+  "ingredients": [
+    {
+      "tag": "c:gems/quartz"
+    }
+  ],
+  "result": "metalborn:identity_ring"
+}

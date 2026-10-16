@@ -1,0 +1,27 @@
+{
+  "neoforge:conditions": [
+    {
+      "type": "mantle:tag_filled",
+      "tag": "c:ingots/brass"
+    },
+    {
+      "type": "mantle:tag_filled",
+      "tag": "metalborn:ingot_like/zinc"
+    }
+  ],
+  "type": "metalborn:shapeless_forge",
+  "cooking_time": 200,
+  "experience": 1,
+  "ingredients": [
+    {
+      "tag": "metalborn:ingot_like/copper"
+    },
+    {
+      "tag": "metalborn:ingot_like/zinc"
+    }
+  ],
+  "result": {
+    "count": 2,
+    "tag": "c:ingots/brass"
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "neoforge:conditions": [
+    {
+      "type": "mantle:tag_filled",
+      "tag": "c:nuggets/aluminum"
+    }
+  ],
+  "type": "mantle:smelting",
+  "category": "misc",
+  "cooking_time": 200,
+  "experience": 0.5,
+  "ingredient": {
+    "item": "metalborn:identity_ring"
+  },
+  "result": {
+    "count": 4,
+    "tag": "c:nuggets/aluminum"
+  }
+}

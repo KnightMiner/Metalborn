@@ -1,0 +1,33 @@
+{
+  "neoforge:conditions": [
+    {
+      "type": "mantle:tag_filled",
+      "tag": "c:ingots/hepatizon"
+    },
+    {
+      "type": "mantle:tag_filled",
+      "tag": "metalborn:ingot_like/cobalt"
+    }
+  ],
+  "type": "metalborn:shapeless_forge",
+  "cooking_time": 200,
+  "experience": 2,
+  "ingredients": [
+    {
+      "tag": "metalborn:ingot_like/copper"
+    },
+    {
+      "tag": "metalborn:ingot_like/copper"
+    },
+    {
+      "tag": "metalborn:ingot_like/cobalt"
+    },
+    {
+      "tag": "metalborn:ingot_like/quartz"
+    }
+  ],
+  "result": {
+    "count": 2,
+    "tag": "c:ingots/hepatizon"
+  }
+}

@@ -1,0 +1,30 @@
+{
+  "neoforge:conditions": [
+    {
+      "type": "mantle:tag_filled",
+      "tag": "c:ingots/invar"
+    },
+    {
+      "type": "mantle:tag_filled",
+      "tag": "metalborn:ingot_like/nickel"
+    }
+  ],
+  "type": "metalborn:shapeless_forge",
+  "cooking_time": 300,
+  "experience": 1,
+  "ingredients": [
+    {
+      "tag": "metalborn:ingot_like/iron"
+    },
+    {
+      "tag": "metalborn:ingot_like/iron"
+    },
+    {
+      "tag": "metalborn:ingot_like/nickel"
+    }
+  ],
+  "result": {
+    "count": 3,
+    "tag": "c:ingots/invar"
+  }
+}

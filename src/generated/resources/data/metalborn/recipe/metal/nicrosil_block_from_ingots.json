@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "group": "metalborn:nicrosil_block",
+  "key": {
+    "#": {
+      "tag": "c:ingots/nicrosil"
+    },
+    "*": {
+      "item": "metalborn:nicrosil_ingot"
+    }
+  },
+  "pattern": [
+    "###",
+    "#*#",
+    "###"
+  ],
+  "result": {
+    "count": 1,
+    "id": "metalborn:nicrosil_block"
+  }
+}

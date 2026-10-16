@@ -1,0 +1,27 @@
+{
+  "neoforge:conditions": [
+    {
+      "type": "neoforge:mod_loaded",
+      "modid": "tconstruct"
+    }
+  ],
+  "type": "tconstruct:casting_table",
+  "cast": [
+    {
+      "type": "metalborn:metal_item",
+      "filter": "spike",
+      "item": "metalborn:spike"
+    },
+    {
+      "item": "metalborn:investiture_spike"
+    }
+  ],
+  "cast_consumed": true,
+  "cooling_time": 57,
+  "fluid": {
+    "amount": 90,
+    "tag": "c:molten_gold"
+  },
+  "result": "metalborn:spike_gold_cast",
+  "switch_slots": true
+}

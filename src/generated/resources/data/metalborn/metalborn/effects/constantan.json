@@ -3,33 +3,33 @@
   "capacity": 6000,
   "conditions": [
     {
-      "type": "forge:or",
+      "type": "neoforge:or",
       "values": [
         {
           "type": "metalborn:config",
           "name": "force_integration"
         },
         {
-          "type": "forge:and",
+          "type": "neoforge:and",
           "values": [
             {
               "type": "mantle:tag_empty",
-              "tag": "forge:ingots/brass"
+              "tag": "c:ingots/brass"
             },
             {
               "type": "mantle:tag_empty",
-              "tag": "forge:nuggets/brass"
+              "tag": "c:nuggets/brass"
             },
             {
-              "type": "forge:or",
+              "type": "neoforge:or",
               "values": [
                 {
                   "type": "mantle:tag_filled",
-                  "tag": "forge:ingots/constantan"
+                  "tag": "c:ingots/constantan"
                 },
                 {
                   "type": "mantle:tag_filled",
-                  "tag": "forge:nuggets/constantan"
+                  "tag": "c:nuggets/constantan"
                 }
               ]
             }
@@ -48,13 +48,13 @@
       "type": "metalborn:attribute",
       "attribute": "metalborn:warmth",
       "multiplier": 0.1,
-      "operation": "multiply_total"
+      "operation": "add_multiplied_total"
     },
     {
       "type": "metalborn:tapping",
       "attribute": "metalborn:heat_damage",
       "multiplier": 1.0,
-      "operation": "addition",
+      "operation": "add_value",
       "tapping_type": "metalborn:attribute"
     }
   ],

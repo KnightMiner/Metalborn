@@ -1,0 +1,21 @@
+{
+  "neoforge:conditions": [
+    {
+      "type": "mantle:tag_filled",
+      "tag": "c:ingots/aluminum"
+    }
+  ],
+  "type": "metalborn:shaped_forge",
+  "cooking_time": 400,
+  "experience": 2.0,
+  "key": {
+    "#": {
+      "tag": "c:ingots/aluminum"
+    }
+  },
+  "pattern": [
+    "##",
+    "##"
+  ],
+  "result": "metalborn:identity_bracer"
+}

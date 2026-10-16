@@ -1,0 +1,26 @@
+{
+  "neoforge:conditions": [
+    {
+      "type": "neoforge:mod_loaded",
+      "modid": "tconstruct"
+    }
+  ],
+  "type": "metalborn:copy_metal_table",
+  "cast": {
+    "type": "metalborn:fillable",
+    "match": {
+      "type": "metalborn:metal_item",
+      "filter": "spike",
+      "item": "metalborn:spike"
+    },
+    "when": "filled"
+  },
+  "cast_consumed": true,
+  "cooling_time": 25,
+  "fluid": {
+    "amount": 10,
+    "tag": "c:molten_netherite"
+  },
+  "result": "metalborn:change_ferring",
+  "switch_slots": false
+}

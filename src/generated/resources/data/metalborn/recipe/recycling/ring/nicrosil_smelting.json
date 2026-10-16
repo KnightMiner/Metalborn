@@ -1,0 +1,13 @@
+{
+  "type": "mantle:smelting",
+  "category": "misc",
+  "cooking_time": 200,
+  "experience": 0.5,
+  "ingredient": {
+    "item": "metalborn:investiture_ring"
+  },
+  "result": {
+    "count": 4,
+    "tag": "c:nuggets/nicrosil"
+  }
+}

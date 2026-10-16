@@ -3,15 +3,15 @@
   "capacity": 40,
   "conditions": [
     {
-      "type": "forge:and",
+      "type": "neoforge:and",
       "values": [
         {
           "type": "mantle:tag_empty",
-          "tag": "forge:ingots/bendalloy"
+          "tag": "c:ingots/bendalloy"
         },
         {
           "type": "mantle:tag_empty",
-          "tag": "forge:nuggets/bendalloy"
+          "tag": "c:nuggets/bendalloy"
         }
       ]
     }

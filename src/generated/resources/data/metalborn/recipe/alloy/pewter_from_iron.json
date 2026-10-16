@@ -1,0 +1,32 @@
+{
+  "neoforge:conditions": [
+    {
+      "type": "neoforge:not",
+      "value": {
+        "type": "mantle:tag_filled",
+        "tag": "metalborn:ingot_like/lead"
+      }
+    }
+  ],
+  "type": "metalborn:shapeless_forge",
+  "cooking_time": 400,
+  "experience": 1,
+  "ingredients": [
+    {
+      "tag": "metalborn:ingot_like/tin"
+    },
+    {
+      "tag": "metalborn:ingot_like/tin"
+    },
+    {
+      "tag": "metalborn:ingot_like/tin"
+    },
+    {
+      "tag": "metalborn:ingot_like/iron"
+    }
+  ],
+  "result": {
+    "count": 4,
+    "tag": "c:ingots/pewter"
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "values": [
+    {
+      "id": "#c:ingots/cadmium",
+      "required": false
+    },
+    {
+      "id": "#c:raw_materials/cadmium",
+      "required": false
+    },
+    {
+      "id": "#c:ores/cadmium",
+      "required": false
+    }
+  ]
+}

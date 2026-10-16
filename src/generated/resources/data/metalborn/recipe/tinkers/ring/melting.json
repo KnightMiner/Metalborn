@@ -1,0 +1,14 @@
+{
+  "neoforge:conditions": [
+    {
+      "type": "neoforge:false"
+    }
+  ],
+  "type": "metalborn:metal_melting",
+  "amount": 40,
+  "ingredient": {
+    "type": "metalborn:metal_item",
+    "filter": "metalmind",
+    "item": "metalborn:ring"
+  }
+}

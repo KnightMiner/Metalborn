@@ -1,0 +1,16 @@
+{
+  "values": [
+    {
+      "id": "#c:ingots/lead",
+      "required": false
+    },
+    {
+      "id": "#c:raw_materials/lead",
+      "required": false
+    },
+    {
+      "id": "#c:ores/lead",
+      "required": false
+    }
+  ]
+}

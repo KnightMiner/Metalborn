@@ -1,0 +1,9 @@
+{
+  "values": [
+    "minecraft:slime",
+    {
+      "id": "#c:slimes",
+      "required": false
+    }
+  ]
+}

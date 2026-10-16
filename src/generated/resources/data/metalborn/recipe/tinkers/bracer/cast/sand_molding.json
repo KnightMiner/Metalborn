@@ -1,0 +1,31 @@
+{
+  "neoforge:conditions": [
+    {
+      "type": "neoforge:mod_loaded",
+      "modid": "tconstruct"
+    }
+  ],
+  "type": "tconstruct:molding_table",
+  "material": {
+    "tag": "tconstruct:casts/sand"
+  },
+  "pattern": [
+    {
+      "type": "metalborn:metal_item",
+      "filter": "metalmind",
+      "item": "metalborn:bracer"
+    },
+    {
+      "type": "neoforge:compound",
+      "children": [
+        {
+          "item": "metalborn:investiture_bracer"
+        },
+        {
+          "item": "metalborn:identity_bracer"
+        }
+      ]
+    }
+  ],
+  "result": "metalborn:bracer_sand_cast"
+}

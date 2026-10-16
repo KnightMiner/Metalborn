@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "group": "metalborn:netherite_ingot",
+  "key": {
+    "#": {
+      "tag": "c:nuggets/netherite"
+    },
+    "*": {
+      "item": "metalborn:netherite_nugget"
+    }
+  },
+  "pattern": [
+    "###",
+    "#*#",
+    "###"
+  ],
+  "result": {
+    "count": 1,
+    "id": "minecraft:netherite_ingot"
+  }
+}

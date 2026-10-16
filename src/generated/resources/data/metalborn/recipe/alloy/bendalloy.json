@@ -1,0 +1,37 @@
+{
+  "neoforge:conditions": [
+    {
+      "type": "mantle:tag_filled",
+      "tag": "c:ingots/bendalloy"
+    },
+    {
+      "type": "mantle:tag_filled",
+      "tag": "metalborn:ingot_like/lead"
+    },
+    {
+      "type": "mantle:tag_filled",
+      "tag": "metalborn:ingot_like/cadmium"
+    }
+  ],
+  "type": "metalborn:shapeless_forge",
+  "cooking_time": 400,
+  "experience": 1,
+  "ingredients": [
+    {
+      "tag": "metalborn:ingot_like/lead"
+    },
+    {
+      "tag": "metalborn:ingot_like/lead"
+    },
+    {
+      "tag": "metalborn:ingot_like/tin"
+    },
+    {
+      "tag": "metalborn:ingot_like/cadmium"
+    }
+  ],
+  "result": {
+    "count": 4,
+    "tag": "c:ingots/bendalloy"
+  }
+}

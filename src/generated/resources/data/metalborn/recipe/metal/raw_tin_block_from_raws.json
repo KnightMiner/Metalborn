@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "group": "metalborn:raw_tin_block",
+  "key": {
+    "#": {
+      "tag": "c:raw_materials/tin"
+    },
+    "*": {
+      "item": "metalborn:raw_tin"
+    }
+  },
+  "pattern": [
+    "###",
+    "#*#",
+    "###"
+  ],
+  "result": {
+    "count": 1,
+    "id": "metalborn:raw_tin_block"
+  }
+}

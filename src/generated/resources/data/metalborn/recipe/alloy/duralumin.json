@@ -1,0 +1,33 @@
+{
+  "neoforge:conditions": [
+    {
+      "type": "mantle:tag_filled",
+      "tag": "c:ingots/duralumin"
+    },
+    {
+      "type": "mantle:tag_filled",
+      "tag": "metalborn:ingot_like/aluminum"
+    }
+  ],
+  "type": "metalborn:shapeless_forge",
+  "cooking_time": 300,
+  "experience": 1,
+  "ingredients": [
+    {
+      "tag": "metalborn:ingot_like/aluminum"
+    },
+    {
+      "tag": "metalborn:ingot_like/aluminum"
+    },
+    {
+      "tag": "metalborn:ingot_like/aluminum"
+    },
+    {
+      "tag": "metalborn:ingot_like/copper"
+    }
+  ],
+  "result": {
+    "count": 3,
+    "tag": "c:ingots/duralumin"
+  }
+}

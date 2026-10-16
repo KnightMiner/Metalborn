@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "group": "metalborn:steel_block",
+  "key": {
+    "#": {
+      "tag": "c:ingots/steel"
+    },
+    "*": {
+      "item": "metalborn:steel_ingot"
+    }
+  },
+  "pattern": [
+    "###",
+    "#*#",
+    "###"
+  ],
+  "result": {
+    "count": 1,
+    "id": "metalborn:steel_block"
+  }
+}

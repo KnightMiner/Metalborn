@@ -1,0 +1,20 @@
+{
+  "type": "metalborn:shapeless_forge",
+  "cooking_time": 400,
+  "experience": 1,
+  "ingredients": [
+    {
+      "tag": "metalborn:ingot_like/iron"
+    },
+    {
+      "item": "minecraft:blaze_powder"
+    },
+    {
+      "item": "minecraft:sand"
+    }
+  ],
+  "result": {
+    "count": 1,
+    "tag": "c:ingots/steel"
+  }
+}

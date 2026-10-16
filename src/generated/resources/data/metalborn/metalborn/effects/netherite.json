@@ -3,15 +3,15 @@
   "capacity": 6000,
   "conditions": [
     {
-      "type": "forge:and",
+      "type": "neoforge:and",
       "values": [
         {
           "type": "mantle:tag_empty",
-          "tag": "forge:ingots/chromium"
+          "tag": "c:ingots/chromium"
         },
         {
           "type": "mantle:tag_empty",
-          "tag": "forge:nuggets/chromium"
+          "tag": "c:nuggets/chromium"
         }
       ]
     }
@@ -22,26 +22,26 @@
       "type": "metalborn:attribute",
       "attribute": "minecraft:generic.luck",
       "multiplier": 0.5,
-      "operation": "addition"
+      "operation": "add_value"
     },
     {
       "type": "metalborn:attribute",
       "attribute": "metalborn:experience_multiplier",
       "multiplier": 0.1,
-      "operation": "multiply_total"
+      "operation": "add_multiplied_total"
     },
     {
       "type": "metalborn:tapping",
       "attribute": "metalborn:looting_boost",
       "multiplier": 0.25,
-      "operation": "addition",
+      "operation": "add_value",
       "tapping_type": "metalborn:attribute"
     },
     {
       "type": "metalborn:storing",
       "attribute": "metalborn:drop_chance",
       "multiplier": 0.1,
-      "operation": "multiply_total",
+      "operation": "add_multiplied_total",
       "storing_type": "metalborn:attribute"
     }
   ],

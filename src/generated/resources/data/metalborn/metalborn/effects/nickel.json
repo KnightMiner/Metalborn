@@ -3,33 +3,33 @@
   "capacity": 6000,
   "conditions": [
     {
-      "type": "forge:or",
+      "type": "neoforge:or",
       "values": [
         {
           "type": "metalborn:config",
           "name": "force_integration"
         },
         {
-          "type": "forge:and",
+          "type": "neoforge:and",
           "values": [
             {
               "type": "mantle:tag_empty",
-              "tag": "forge:ingots/zinc"
+              "tag": "c:ingots/zinc"
             },
             {
               "type": "mantle:tag_empty",
-              "tag": "forge:nuggets/zinc"
+              "tag": "c:nuggets/zinc"
             },
             {
-              "type": "forge:or",
+              "type": "neoforge:or",
               "values": [
                 {
                   "type": "mantle:tag_filled",
-                  "tag": "forge:ingots/nickel"
+                  "tag": "c:ingots/nickel"
                 },
                 {
                   "type": "mantle:tag_filled",
-                  "tag": "forge:nuggets/nickel"
+                  "tag": "c:nuggets/nickel"
                 }
               ]
             }
@@ -42,15 +42,15 @@
   "feruchemy": [
     {
       "type": "metalborn:attribute",
-      "attribute": "forge:swim_speed",
+      "attribute": "neoforge:swim_speed",
       "multiplier": 0.1,
-      "operation": "multiply_total"
+      "operation": "add_multiplied_total"
     },
     {
       "type": "metalborn:attribute",
       "attribute": "metalborn:respiration",
       "multiplier": 1.0,
-      "operation": "addition"
+      "operation": "add_value"
     }
   ],
   "format": "ticks",

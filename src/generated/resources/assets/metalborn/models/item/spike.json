@@ -2,7 +2,7 @@
   "parent": "metalborn:item/default_rod",
   "loader": "metalborn:paletted",
   "palette": {
-    "key": "metal",
+    "key": "metalborn:metal",
     "list": "metalborn:metals/feruchemy"
   },
   "textures": {

@@ -3,7 +3,7 @@
   "capacity": 40,
   "conditions": [
     {
-      "type": "forge:or",
+      "type": "neoforge:or",
       "values": [
         {
           "type": "metalborn:config",
@@ -11,11 +11,11 @@
         },
         {
           "type": "mantle:tag_filled",
-          "tag": "forge:ingots/bendalloy"
+          "tag": "c:ingots/bendalloy"
         },
         {
           "type": "mantle:tag_filled",
-          "tag": "forge:nuggets/bendalloy"
+          "tag": "c:nuggets/bendalloy"
         }
       ]
     }

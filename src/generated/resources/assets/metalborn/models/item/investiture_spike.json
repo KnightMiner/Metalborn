@@ -10,7 +10,7 @@
     }
   ],
   "palette": {
-    "key": "metal",
+    "key": "metalborn:metal",
     "list": "metalborn:metals/feruchemy"
   },
   "textures": {

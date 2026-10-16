@@ -1,0 +1,16 @@
+{
+  "values": [
+    {
+      "id": "#c:ingots/chromium",
+      "required": false
+    },
+    {
+      "id": "#c:raw_materials/chromium",
+      "required": false
+    },
+    {
+      "id": "#c:ores/chromium",
+      "required": false
+    }
+  ]
+}

@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "group": "metalborn:pewter_ingot",
+  "key": {
+    "#": {
+      "tag": "c:nuggets/pewter"
+    },
+    "*": {
+      "item": "metalborn:pewter_nugget"
+    }
+  },
+  "pattern": [
+    "###",
+    "#*#",
+    "###"
+  ],
+  "result": {
+    "count": 1,
+    "id": "metalborn:pewter_ingot"
+  }
+}

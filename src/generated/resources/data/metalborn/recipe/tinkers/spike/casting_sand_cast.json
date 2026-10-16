@@ -1,0 +1,15 @@
+{
+  "neoforge:conditions": [
+    {
+      "type": "neoforge:false"
+    }
+  ],
+  "type": "metalborn:metal_casting_table",
+  "amount": 180,
+  "cast": {
+    "tag": "metalborn:casts/spike_single_use"
+  },
+  "cast_consumed": true,
+  "filter": "spike",
+  "result": "metalborn:spike"
+}

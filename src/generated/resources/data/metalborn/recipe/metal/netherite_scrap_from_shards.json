@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "group": "metalborn:netherite_scrap",
+  "key": {
+    "#": {
+      "tag": "c:nuggets/netherite_scrap"
+    },
+    "*": {
+      "item": "metalborn:netherite_shard"
+    }
+  },
+  "pattern": [
+    "###",
+    "#*#",
+    "###"
+  ],
+  "result": {
+    "count": 1,
+    "id": "minecraft:netherite_scrap"
+  }
+}

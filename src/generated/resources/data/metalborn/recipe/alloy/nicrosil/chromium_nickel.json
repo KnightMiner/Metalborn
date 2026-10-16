@@ -1,0 +1,33 @@
+{
+  "neoforge:conditions": [
+    {
+      "type": "mantle:tag_filled",
+      "tag": "metalborn:ingot_like/chromium"
+    },
+    {
+      "type": "mantle:tag_filled",
+      "tag": "metalborn:ingot_like/nickel"
+    }
+  ],
+  "type": "metalborn:shapeless_forge",
+  "cooking_time": 400,
+  "experience": 1,
+  "ingredients": [
+    {
+      "tag": "metalborn:ingot_like/nickel"
+    },
+    {
+      "tag": "metalborn:ingot_like/nickel"
+    },
+    {
+      "tag": "metalborn:ingot_like/chromium"
+    },
+    {
+      "tag": "metalborn:ingot_like/quartz"
+    }
+  ],
+  "result": {
+    "count": 4,
+    "tag": "c:ingots/nicrosil"
+  }
+}

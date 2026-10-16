@@ -1,12 +1,12 @@
-// 1.20.1	2026-01-17T01:05:08.3489621	Item Models: metalborn
-4dc7437e56be8a51858b985325aa1570e1f93125 assets/metalborn/models/item/bracer.json
+// 1.21.1	2026-10-15T21:21:25.3948527	Item Models: metalborn
+f1590574627d4e7519733dece7d6324ad4fe45b0 assets/metalborn/models/item/bracer.json
 3c460b164754a3c0cfa46b79b0e3c3ccfb209045 assets/metalborn/models/item/bracer_gold_cast.json
 52b97c6dd950b6f560ab7d36946c354c5f99180d assets/metalborn/models/item/bracer_red_sand_cast.json
 e2eccae23e22d05c1832c9de4b99ef8fc915e13f assets/metalborn/models/item/bracer_sand_cast.json
 6cafe065b45e6f11f06b6fa72ae7ff33b5822c87 assets/metalborn/models/item/bronze_ingot.json
 57256b75590c4b4f2b4ec572a1338e13b49b2bb8 assets/metalborn/models/item/bronze_nugget.json
 f1c2cc61f4424f80f4885c86004b16952b36de0e assets/metalborn/models/item/bronze_satchel.json
-fa868387819f0bb1e95b80c31a7ae8165a4b9410 assets/metalborn/models/item/change_ferring.json
+cb5c9efb2be08b11ef43e1c1786d4816ea64be33 assets/metalborn/models/item/change_ferring.json
 eed68e86ae8578312b813454b280a9d33497dd8d assets/metalborn/models/item/copper_nugget.json
 30e236838ca6af3ddaa025ececabebb7b381c27b assets/metalborn/models/item/dyed_satchel/bronze.json
 ceb4203f1244ff0aa158ed80e8eed52243d49e7b assets/metalborn/models/item/dyed_satchel/nicrosil.json
@@ -16,7 +16,7 @@ beef8388f0756c5b58cc7570ea247a1ad37cce69 assets/metalborn/models/item/dyed_satch
 e88557079d1e141beb6ee00848eaf99bf36b7bc4 assets/metalborn/models/item/identity_ring.json
 e4731996004c6d29ece3d5cb07f5668a9ccf46ef assets/metalborn/models/item/investiture_bracer.json
 1fd633f8ce4dc856cdf2c53895a408e426e259f3 assets/metalborn/models/item/investiture_ring.json
-29cbe7a992cea87ab71ce5118ed38c8d79de6fb7 assets/metalborn/models/item/investiture_spike.json
+b8c6b98ac153784fded31159ef61b7e093515a3b assets/metalborn/models/item/investiture_spike.json
 0334aa010b06467760196bd770b77374b9d4b35b assets/metalborn/models/item/investiture_spike_empty.json
 aceb7e4e4ce67c0c1ca75de324b7ddcd3e3a28e6 assets/metalborn/models/item/metallic_arts.json
 cc33d8d16187f9ce383a00afa1b40604216b3e5e assets/metalborn/models/item/mist_satchel.json
@@ -30,7 +30,7 @@ fd788e2b5c57df2d9c1478b920604654fe8ca169 assets/metalborn/models/item/nicrosil_s
 e75073db3f69084a311a08f4fd66979d5da3ee48 assets/metalborn/models/item/pewter_satchel.json
 acd29b36cbccb6a214b36625dd08478e84a5a63e assets/metalborn/models/item/random_ferring.json
 2f9a7d7dddb76ab589a97ad8b10e75c5583bae9d assets/metalborn/models/item/raw_tin.json
-e51595d8b73d1c0867cc919972f7b9e7b9c92a6b assets/metalborn/models/item/ring.json
+e8469fb6430aeb424b1ab24aa1bce6c659317d30 assets/metalborn/models/item/ring.json
 c6241be96c4a02968c3d6f831e53f1f4db864357 assets/metalborn/models/item/ring_gold_cast.json
 f7bed48d71c1ac4fcbf911ec312cab4096035884 assets/metalborn/models/item/ring_red_sand_cast.json
 b2a55a3d119daeab2844b5b50f4c8da91fa2b61c assets/metalborn/models/item/ring_sand_cast.json
@@ -38,9 +38,9 @@ b2a55a3d119daeab2844b5b50f4c8da91fa2b61c assets/metalborn/models/item/ring_sand_
 855e5ecc9900899d52c02601845872cd4619db1a assets/metalborn/models/item/rose_gold_nugget.json
 b53db32261043a4551ba152a49755d78b6879463 assets/metalborn/models/item/soulbound_identity_ring.json
 217b6497dd0e42a2b484a4d5e9a7c14637b8b18a assets/metalborn/models/item/soulbound_investiture_ring.json
-3d255d5eaf5b9eff1a8d43b2affbe4e7847886bc assets/metalborn/models/item/soulbound_ring.json
-f3a24772d11dc177706db90f0bd53f585e4a1327 assets/metalborn/models/item/soulbound_spike.json
-92bb39bd4a6faee1ffe655404f1e8dede5b1e13b assets/metalborn/models/item/spike.json
+549dd368b81c334a35e23dcd3bfda3cd326bff26 assets/metalborn/models/item/soulbound_ring.json
+2e737c864b0d5c652048d575a7aa2f41b7e11c88 assets/metalborn/models/item/soulbound_spike.json
+e15c162a23d144a6187969ba446b2052e238a939 assets/metalborn/models/item/spike.json
 e64004241566a318e1c4fa07cf3da63512b65e3d assets/metalborn/models/item/spike_gold_cast.json
 d7e800d26e4c37be532a7bac5ea229e054af7dbc assets/metalborn/models/item/spike_red_sand_cast.json
 4af8e08690ea19c6c93b266e3bc8a33e7ba2c93c assets/metalborn/models/item/spike_sand_cast.json
@@ -49,4 +49,4 @@ d03592631d065af98197f4d43e454f36602bce8d assets/metalborn/models/item/steel_ingo
 fa87664398d1798d4dc6d716133636bd50241205 assets/metalborn/models/item/steel_satchel.json
 c482b24b8f5b3735c308d736d83cc9c87f560b26 assets/metalborn/models/item/tin_ingot.json
 4c0b7832011d7431c97b96655e0667f55fb129cb assets/metalborn/models/item/tin_nugget.json
-afb86dfefcc91707035288e0bca646d6dd55ce86 assets/metalborn/models/item/unsealed_ring.json
+184913ee028b8c40ed9bf146c557f31c8768e731 assets/metalborn/models/item/unsealed_ring.json

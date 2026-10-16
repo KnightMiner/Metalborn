@@ -1,0 +1,18 @@
+{
+  "neoforge:conditions": [
+    {
+      "type": "neoforge:mod_loaded",
+      "modid": "tconstruct"
+    }
+  ],
+  "type": "tconstruct:item_part_builder",
+  "pattern": "metalborn:spike",
+  "pattern_item": {
+    "item": "minecraft:sand"
+  },
+  "result": {
+    "count": 4,
+    "item": "metalborn:spike_sand_cast"
+  },
+  "title_key": "tconstruct:sand_cast"
+}

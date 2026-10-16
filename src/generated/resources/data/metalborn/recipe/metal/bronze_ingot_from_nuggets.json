@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "group": "metalborn:bronze_ingot",
+  "key": {
+    "#": {
+      "tag": "c:nuggets/bronze"
+    },
+    "*": {
+      "item": "metalborn:bronze_nugget"
+    }
+  },
+  "pattern": [
+    "###",
+    "#*#",
+    "###"
+  ],
+  "result": {
+    "count": 1,
+    "id": "metalborn:bronze_ingot"
+  }
+}

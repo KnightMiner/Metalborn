@@ -1,0 +1,16 @@
+{
+  "values": [
+    {
+      "id": "#c:ingots/silver",
+      "required": false
+    },
+    {
+      "id": "#c:raw_materials/silver",
+      "required": false
+    },
+    {
+      "id": "#c:ores/silver",
+      "required": false
+    }
+  ]
+}

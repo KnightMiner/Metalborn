@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "group": "metalborn:bronze_block",
+  "key": {
+    "#": {
+      "tag": "c:ingots/bronze"
+    },
+    "*": {
+      "item": "metalborn:bronze_ingot"
+    }
+  },
+  "pattern": [
+    "###",
+    "#*#",
+    "###"
+  ],
+  "result": {
+    "count": 1,
+    "id": "metalborn:bronze_block"
+  }
+}

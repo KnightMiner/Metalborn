@@ -1,0 +1,14 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "group": "metalborn:nicrosil_nugget",
+  "ingredients": [
+    {
+      "item": "metalborn:nicrosil_ingot"
+    }
+  ],
+  "result": {
+    "count": 9,
+    "id": "metalborn:nicrosil_nugget"
+  }
+}

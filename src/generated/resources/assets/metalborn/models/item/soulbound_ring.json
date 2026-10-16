@@ -1,8 +1,8 @@
 {
-  "parent": "forge:item/default",
+  "parent": "neoforge:item/default",
   "loader": "metalborn:paletted",
   "palette": {
-    "key": "metal",
+    "key": "metalborn:metal",
     "list": "metalborn:metals/feruchemy"
   },
   "textures": {

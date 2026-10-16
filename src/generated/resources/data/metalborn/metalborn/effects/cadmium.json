@@ -3,7 +3,7 @@
   "capacity": 6000,
   "conditions": [
     {
-      "type": "forge:or",
+      "type": "neoforge:or",
       "values": [
         {
           "type": "metalborn:config",
@@ -11,11 +11,11 @@
         },
         {
           "type": "mantle:tag_filled",
-          "tag": "forge:ingots/cadmium"
+          "tag": "c:ingots/cadmium"
         },
         {
           "type": "mantle:tag_filled",
-          "tag": "forge:nuggets/cadmium"
+          "tag": "c:nuggets/cadmium"
         }
       ]
     }
@@ -28,8 +28,7 @@
         "type": "metalborn:attribute",
         "attribute": "metalborn:visibility_multiplier",
         "multiplier": -1.0,
-        "operation": "multiply_total",
-        "swap_colors": true
+        "operation": "add_multiplied_total"
       },
       "level": 4,
       "storing_type": "metalborn:capped"
@@ -40,8 +39,7 @@
         "type": "metalborn:attribute",
         "attribute": "metalborn:visibility_multiplier",
         "multiplier": -0.25,
-        "operation": "multiply_total",
-        "swap_colors": true
+        "operation": "add_multiplied_total"
       },
       "level": 3,
       "tapping_type": "metalborn:capped"

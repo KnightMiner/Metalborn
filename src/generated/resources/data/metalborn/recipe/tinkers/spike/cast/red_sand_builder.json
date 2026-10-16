@@ -1,0 +1,15 @@
+{
+  "neoforge:conditions": [
+    {
+      "type": "neoforge:mod_loaded",
+      "modid": "tconstruct"
+    }
+  ],
+  "type": "tconstruct:item_part_builder",
+  "pattern": "metalborn:spike",
+  "pattern_item": {
+    "tag": "tconstruct:casts/red_sand"
+  },
+  "result": "metalborn:spike_red_sand_cast",
+  "title_key": "tconstruct:sand_cast"
+}

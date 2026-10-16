@@ -1,0 +1,23 @@
+{
+  "neoforge:conditions": [
+    {
+      "type": "neoforge:mod_loaded",
+      "modid": "tconstruct"
+    }
+  ],
+  "type": "tconstruct:molding_table",
+  "material": {
+    "tag": "tconstruct:casts/red_sand"
+  },
+  "pattern": [
+    {
+      "type": "metalborn:metal_item",
+      "filter": "spike",
+      "item": "metalborn:spike"
+    },
+    {
+      "item": "metalborn:investiture_spike"
+    }
+  ],
+  "result": "metalborn:spike_red_sand_cast"
+}

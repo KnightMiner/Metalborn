@@ -1,3 +1,3 @@
-// 1.20.1	2026-01-29T23:57:28.5497919	Global Loot Modifiers : metalborn
-c4cf815b9d1bab951ae5326a8986ec735456f3ec data/forge/loot_modifiers/global_loot_modifiers.json
+// 1.21.1	2026-10-15T21:21:25.3868654	Global Loot Modifiers : metalborn
 3fa3866eeb9d5ee6235e69e64d6d03ceab5dda21 data/metalborn/loot_modifiers/apply_drop_chance.json
+c4cf815b9d1bab951ae5326a8986ec735456f3ec data/neoforge/loot_modifiers/global_loot_modifiers.json

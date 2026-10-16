@@ -4,15 +4,15 @@
   "feruchemy": [
     {
       "type": "metalborn:attribute",
-      "attribute": "forge:entity_reach",
+      "attribute": "minecraft:player.entity_interaction_range",
       "multiplier": 0.25,
-      "operation": "addition"
+      "operation": "add_value"
     },
     {
       "type": "metalborn:attribute",
-      "attribute": "forge:block_reach",
+      "attribute": "minecraft:player.block_interaction_range",
       "multiplier": 0.5,
-      "operation": "addition"
+      "operation": "add_value"
     }
   ],
   "format": "ticks",

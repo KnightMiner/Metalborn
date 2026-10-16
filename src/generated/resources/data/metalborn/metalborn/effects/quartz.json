@@ -2,15 +2,15 @@
   "capacity": 6000,
   "conditions": [
     {
-      "type": "forge:and",
+      "type": "neoforge:and",
       "values": [
         {
           "type": "mantle:tag_empty",
-          "tag": "forge:ingots/aluminum"
+          "tag": "c:ingots/aluminum"
         },
         {
           "type": "mantle:tag_empty",
-          "tag": "forge:nuggets/aluminum"
+          "tag": "c:nuggets/aluminum"
         }
       ]
     }
@@ -18,7 +18,7 @@
   "fluid": "tconstruct:molten_quartz",
   "format": "ticks",
   "index": 16,
-  "ingot": "forge:gems/quartz",
+  "ingot": "c:gems/quartz",
   "name": "quartz",
   "temperature": 637
 }
