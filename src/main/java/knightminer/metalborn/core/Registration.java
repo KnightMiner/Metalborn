@@ -294,28 +294,28 @@ public class Registration {
   public static final DeferredHolder<RecipeSerializer<?>,RecipeSerializer<?>> COPY_METAL_TABLE = DeferredHolder.create(Registries.RECIPE_SERIALIZER, resource("copy_metal_table"));
 
   // attributes
-  /** Multiplier on the distance you can safely fall without damage */
-  public static final DeferredHolder<Attribute,Attribute> FALL_DISTANCE_MULTIPLIER = ATTRIBUTES.registerMultiplier("fall_distance_multiplier", true);
+  /** Multiplier on the distance you can safely fall without damage. Similar to {@link net.minecraft.world.entity.ai.attributes.Attributes#FALL_DAMAGE_MULTIPLIER} but applies before safe fall distance. */
+  public static final DeferredHolder<Attribute,Attribute> FALL_DISTANCE_MULTIPLIER = ATTRIBUTES.register("fall_distance_multiplier").sync().negative().multiplier();
   /** Multiplier for knockback this entity takes. Similar to {@link net.minecraft.world.entity.ai.attributes.Attributes#KNOCKBACK_RESISTANCE} but can be used to increase knockback */
-  public static final DeferredHolder<Attribute,Attribute> KNOCKBACK_MULTIPLIER = ATTRIBUTES.registerMultiplier("knockback_multiplier", true);
+  public static final DeferredHolder<Attribute,Attribute> KNOCKBACK_MULTIPLIER = ATTRIBUTES.register("knockback_multiplier").sync().negative().multiplier();
   /** Player modifier data key for mining speed multiplier as an additive percentage boost on mining speed. */
-  public static final DeferredHolder<Attribute,Attribute> MINING_SPEED_MULTIPLIER = ATTRIBUTES.registerMultiplier("mining_speed_multiplier", true);
+  public static final DeferredHolder<Attribute,Attribute> MINING_SPEED_MULTIPLIER = ATTRIBUTES.register("mining_speed_multiplier").sync().multiplier();
   /** Chance that loot in a loot table will drop. */
-  public static final DeferredHolder<Attribute,Attribute> DROP_CHANCE = ATTRIBUTES.registerPercent("drop_chance", 1, false);
+  public static final DeferredHolder<Attribute,Attribute> DROP_CHANCE = ATTRIBUTES.register("drop_chance").percent(1);
   /** Boost to level of looting in loot tables. */
-  public static final DeferredHolder<Attribute,Attribute> LOOTING_BOOST = ATTRIBUTES.register("looting_boost", 0, -10, 10, false);
+  public static final DeferredHolder<Attribute,Attribute> LOOTING_BOOST = ATTRIBUTES.register("looting_boost").ranged(0, -10, 10);
   /** Multiplier to amount of experience gained. */
-  public static final DeferredHolder<Attribute,Attribute> EXPERIENCE_MULTIPLIER = ATTRIBUTES.registerMultiplier("experience_multiplier", false);
+  public static final DeferredHolder<Attribute,Attribute> EXPERIENCE_MULTIPLIER = ATTRIBUTES.register("experience_multiplier").multiplier();
   /** Changes the amount of damage taken. */
-  public static final DeferredHolder<Attribute,Attribute> DETERMINATION  = ATTRIBUTES.register("determination", 1, 0, 2, true);
+  public static final DeferredHolder<Attribute,Attribute> DETERMINATION  = ATTRIBUTES.register("determination").sync().ranged(1, 0, 2);
   /** Above 1, reduces cold damage and increases heat damage. Below 1, reduces heat damage and increases cold damage. */
-  public static final DeferredHolder<Attribute,Attribute> WARMTH  = ATTRIBUTES.register("warmth", 1, 0, 2, true);
+  public static final DeferredHolder<Attribute,Attribute> WARMTH  = ATTRIBUTES.register("warmth").sync().neutral().ranged(1, 0, 2);
   /** Applies bonus damage to melee attacks in the form of a fiery attack. */
-  public static final DeferredHolder<Attribute,Attribute> HEAT_DAMAGE  = ATTRIBUTES.register("heat_damage", 0, 0, 1024, true);
+  public static final DeferredHolder<Attribute,Attribute> HEAT_DAMAGE  = ATTRIBUTES.register("heat_damage").sync().ranged(0, 0, 1024);
   /** Changes visibility as seen by monsters. */
-  public static final DeferredHolder<Attribute,Attribute> VISIBILITY_MULTIPLIER = ATTRIBUTES.registerMultiplier("visibility_multiplier", false);
+  public static final DeferredHolder<Attribute,Attribute> VISIBILITY_MULTIPLIER = ATTRIBUTES.register("visibility_multiplier").negative().multiplier();
   /** Makes it easier or harder for the entity to breath. */
-  public static final DeferredHolder<Attribute,Attribute> RESPIRATION = ATTRIBUTES.register("respiration", 0, -10, 10, true);
+  public static final DeferredHolder<Attribute,Attribute> RESPIRATION = ATTRIBUTES.register("respiration").sync().ranged(0, -10, 10);
 
   // Tinkers' Construct compat
   public static final CastItemObject BRACER_CAST = ITEMS.registerCast("bracer");
