@@ -184,6 +184,23 @@ public class SatchelItem extends Item {
     }
   }
 
+  /** Checks if the given stack is valid for the given satchel type. */
+  public static boolean isValid(SatchelType type, ItemStack stack) {
+    if (stack.isEmpty()) {
+      return true;
+    }
+    // mist is extract only
+    if (type == SatchelType.MIST) {
+      return false;
+    }
+    // limited satchels forces a tag whitelist
+    if (Config.LIMITED_SATCHELS.get() && !stack.is(Registration.SATCHEL_ITEMS)) {
+      return false;
+    }
+    // no bags
+    return stack.canFitInsideContainerItems() && stack.getCapability(Capabilities.ItemHandler.ITEM) == null;
+  }
+
   /** Inventory for satchel items */
   public static class SatchelInventory extends ComponentItemHandler {
     private final SatchelType type;
@@ -194,19 +211,7 @@ public class SatchelItem extends Item {
 
     @Override
     public boolean isItemValid(int slot, ItemStack stack) {
-      if (stack.isEmpty()) {
-        return true;
-      }
-      // mist is extract only
-      if (type == SatchelType.MIST) {
-        return false;
-      }
-      // limited satchels forces a tag whitelist
-      if (Config.LIMITED_SATCHELS.get() && !stack.is(Registration.SATCHEL_ITEMS)) {
-        return false;
-      }
-      // no bags
-      return stack.canFitInsideContainerItems() && stack.getCapability(Capabilities.ItemHandler.ITEM) == null;
+      return isValid(type, stack);
     }
   }
 }

@@ -7,7 +7,7 @@ import knightminer.metalborn.core.Registration;
 import knightminer.metalborn.core.inventory.MetalmindInventory;
 import knightminer.metalborn.core.inventory.MetalmindInventory.MetalmindStack;
 import knightminer.metalborn.core.inventory.SpikeInventory;
-import knightminer.metalborn.item.SatchelItem.SatchelInventory;
+import knightminer.metalborn.item.SatchelItem;
 import knightminer.metalborn.item.SatchelItem.SatchelType;
 import knightminer.metalborn.item.metalmind.Metalmind.Usable;
 import knightminer.metalborn.metal.MetalId;
@@ -21,8 +21,9 @@ import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.items.IItemHandler;
+import net.neoforged.neoforge.items.ItemStackHandler;
+import net.neoforged.neoforge.items.wrapper.EmptyItemHandler;
 import org.jetbrains.annotations.Nullable;
-import slimeknights.mantle.inventory.EmptyItemHandler;
 import slimeknights.mantle.inventory.SmartItemHandlerSlot;
 
 import java.util.List;
@@ -151,8 +152,8 @@ public class MetalbornMenu extends BaseMenu {
     if (satchelSlot >= 0) {
       satchelStack = inventory.getItem(satchelSlot);
       satchelType = buffer.readEnum(SatchelType.class);
-      // while we could fetch the cap from the satchel, it may not have synced properly, so just construct a dummy handler for the client
-      satchelInventory = new SatchelInventory(satchelType);
+      // while we could fetch the cap from the satchel, client container syncing gets a little odd, so easier to use a dummy container
+      satchelInventory = new DummySatchelInventory(satchelType);
     }
     return new MetalbornMenu(id, inventory, satchelStack, satchelInventory, satchelType, satchelSlot);
   }
@@ -317,5 +318,21 @@ public class MetalbornMenu extends BaseMenu {
       }
     }
     return Usable.NEVER;
+  }
+
+
+  /** Client side instance of the satchel inventory */
+  private static class DummySatchelInventory extends ItemStackHandler {
+    private final SatchelType type;
+
+    private DummySatchelInventory(SatchelType type) {
+      super(type.getSize());
+      this.type = type;
+    }
+
+    @Override
+    public boolean isItemValid(int slot, ItemStack stack) {
+      return SatchelItem.isValid(type, stack);
+    }
   }
 }
