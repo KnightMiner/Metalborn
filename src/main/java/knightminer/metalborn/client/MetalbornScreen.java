@@ -46,9 +46,9 @@ public class MetalbornScreen extends AbstractContainerScreen<MetalbornMenu> {
   private static final int TAPPING_V = 6 * BUTTON_HEIGHT;
 
   /** U coordinate of the read only slot background */
-  private static final int READ_ONLY_U = 193;
+  private static final int READ_ONLY_U = 176;
   /** V coordinate of the read only slot background */
-  private static final int READ_ONLY_V = 0;
+  private static final int READ_ONLY_V = 64;
   /** Size of the read only slot background */
   private static final int READ_ONLY_SIZE = 20;
 
