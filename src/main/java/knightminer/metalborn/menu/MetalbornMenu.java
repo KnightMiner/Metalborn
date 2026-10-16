@@ -80,13 +80,13 @@ public class MetalbornMenu extends BaseMenu {
         // first row
         int max = Math.min(slots, 9);
         for (int i = 0; i < max; i++) {
-          addSlot(new SmartItemHandlerSlot(satchelInventory, i, 8 + 18 * i, 92));
+          addSlot(new SatchelSlot(satchelInventory, satchelType, i, 8 + 18 * i, 92));
         }
         // second row
         if (slots > 9) {
           max = Math.min(slots - 9, 9);
           for (int i = 0; i < max; i++) {
-            addSlot(new SmartItemHandlerSlot(satchelInventory, i + 9, 8 + 18 * i, 110));
+            addSlot(new SatchelSlot(satchelInventory, satchelType, i + 9, 8 + 18 * i, 110));
           }
         }
         // inventory rows without satchel
@@ -320,19 +320,36 @@ public class MetalbornMenu extends BaseMenu {
     return Usable.NEVER;
   }
 
-
-  /** Client side instance of the satchel inventory */
-  private static class DummySatchelInventory extends ItemStackHandler {
+  /** Slot disallowing adding items to satches that are disallowed by type or config. Validated at a menu level to prevent exceptions  */
+  private static class SatchelSlot extends SmartItemHandlerSlot {
     private final SatchelType type;
-
-    private DummySatchelInventory(SatchelType type) {
-      super(type.getSize());
+    public SatchelSlot(IItemHandler inventory, SatchelType type, int slot, int x, int y) {
+      super(inventory, slot, x, y);
       this.type = type;
     }
 
     @Override
+    public boolean mayPlace(ItemStack stack) {
+      if (stack.isEmpty()) {
+        return true;
+      }
+      // mist is extract only
+      if (type == SatchelType.MIST) {
+        return false;
+      }
+      return super.mayPlace(stack);
+    }
+  }
+
+  /** Client side instance of the satchel inventory */
+  private static class DummySatchelInventory extends ItemStackHandler {
+    private DummySatchelInventory(SatchelType type) {
+      super(type.getSize());
+    }
+
+    @Override
     public boolean isItemValid(int slot, ItemStack stack) {
-      return SatchelItem.isValid(type, stack);
+      return SatchelItem.isValid(stack);
     }
   }
 }

@@ -185,13 +185,9 @@ public class SatchelItem extends Item {
   }
 
   /** Checks if the given stack is valid for the given satchel type. */
-  public static boolean isValid(SatchelType type, ItemStack stack) {
+  public static boolean isValid(ItemStack stack) {
     if (stack.isEmpty()) {
       return true;
-    }
-    // mist is extract only
-    if (type == SatchelType.MIST) {
-      return false;
     }
     // limited satchels forces a tag whitelist
     if (Config.LIMITED_SATCHELS.get() && !stack.is(Registration.SATCHEL_ITEMS)) {
@@ -203,15 +199,13 @@ public class SatchelItem extends Item {
 
   /** Inventory for satchel items */
   public static class SatchelInventory extends ComponentItemHandler {
-    private final SatchelType type;
     public SatchelInventory(MutableDataComponentHolder stack, SatchelType type) {
       super(stack, DataComponents.CONTAINER, type.size);
-      this.type = type;
     }
 
     @Override
     public boolean isItemValid(int slot, ItemStack stack) {
-      return isValid(type, stack);
+      return isValid(stack);
     }
   }
 }
