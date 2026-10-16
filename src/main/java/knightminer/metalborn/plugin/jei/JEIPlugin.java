@@ -1,6 +1,6 @@
 package knightminer.metalborn.plugin.jei;
 
-import com.mojang.datafixers.util.Function7;
+import com.mojang.datafixers.util.Function6;
 import knightminer.metalborn.Metalborn;
 import knightminer.metalborn.block.ForgeInventory;
 import knightminer.metalborn.core.Registration;
@@ -16,7 +16,8 @@ import knightminer.metalborn.metal.MetalPower;
 import mezz.jei.api.IModPlugin;
 import mezz.jei.api.JeiPlugin;
 import mezz.jei.api.constants.RecipeTypes;
-import mezz.jei.api.ingredients.subtypes.IIngredientSubtypeInterpreter;
+import mezz.jei.api.ingredients.subtypes.ISubtypeInterpreter;
+import mezz.jei.api.ingredients.subtypes.UidContext;
 import mezz.jei.api.registration.IRecipeCatalystRegistration;
 import mezz.jei.api.registration.IRecipeCategoryRegistration;
 import mezz.jei.api.registration.IRecipeRegistration;
@@ -28,13 +29,15 @@ import net.minecraft.world.item.crafting.AbstractCookingRecipe;
 import net.minecraft.world.item.crafting.BlastingRecipe;
 import net.minecraft.world.item.crafting.CookingBookCategory;
 import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.world.item.crafting.RecipeHolder;
 import net.minecraft.world.item.crafting.RecipeManager;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.item.crafting.SmeltingRecipe;
 import net.minecraft.world.level.Level;
 import slimeknights.mantle.client.SafeClientAccess;
-import slimeknights.mantle.recipe.helper.RecipeHelper;
+import slimeknights.mantle.recipe.MultiNamedRecipe;
 
+import javax.annotation.Nullable;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Stream;
@@ -51,9 +54,17 @@ public class JEIPlugin implements IModPlugin {
 
   @Override
   public void registerItemSubtypes(ISubtypeRegistration registration) {
-    IIngredientSubtypeInterpreter<ItemStack> metal = (stack, context) -> {
-      MetalId id = MetalItem.getMetal(stack);
-      return id == MetalId.NONE ? IIngredientSubtypeInterpreter.NONE : id.toString();
+    ISubtypeInterpreter<ItemStack> metal = new ISubtypeInterpreter<>() {
+      @Override
+      public MetalId getSubtypeData(ItemStack stack, UidContext context) {
+        return MetalItem.getMetal(stack);
+      }
+
+      @Override
+      public String getLegacyStringSubtypeInfo(ItemStack stack, UidContext context) {
+        MetalId id = MetalItem.getMetal(stack);
+        return id == MetalId.NONE ? "" : id.toString();
+      }
     };
 
     registration.registerSubtypeInterpreter(Registration.CHANGE_FERRING.asItem(), metal);
@@ -62,24 +73,51 @@ public class JEIPlugin implements IModPlugin {
     registration.registerSubtypeInterpreter(Registration.UNSEALED_RING.asItem(), metal);
     registration.registerSubtypeInterpreter(Registration.SOULBOUND_RING.asItem(), metal);
     registration.registerSubtypeInterpreter(Registration.SOULBOUND_SPIKE.asItem(), metal);
-    registration.registerSubtypeInterpreter(Registration.SPIKE.asItem(), (stack, context) -> {
-      MetalId id = MetalItem.getMetal(stack);
-      if (id == MetalId.NONE) {
-        return IIngredientSubtypeInterpreter.NONE;
+    registration.registerSubtypeInterpreter(Registration.SPIKE.asItem(), new ISubtypeInterpreter<>() {
+      private record FillableMetal(MetalId id, boolean full) {}
+
+      @Nullable
+      @Override
+      public Object getSubtypeData(ItemStack stack, UidContext context) {
+        MetalId metal = MetalItem.getMetal(stack);
+        if (metal == MetalId.NONE) {
+          return null;
+        }
+        return new FillableMetal(metal, ((Spike)stack.getItem()).isFull(stack));
       }
-      String type = id.toString();
-      if (((Spike)stack.getItem()).isFull(stack)) {
-        type += ",full";
+
+      @Override
+      public String getLegacyStringSubtypeInfo(ItemStack stack, UidContext context) {
+        MetalId id = MetalItem.getMetal(stack);
+        if (id == MetalId.NONE) {
+          return "";
+        }
+        String type = id.toString();
+        if (((Spike)stack.getItem()).isFull(stack)) {
+          type += ",full";
+        }
+        return type;
       }
-      return type;
     });
 
     // only set variant on investiture items if full
-    IIngredientSubtypeInterpreter<ItemStack> investiture = (stack, context) -> {
-      if (((Fillable)stack.getItem()).isFull(stack)) {
+    ISubtypeInterpreter<ItemStack> investiture = new ISubtypeInterpreter<>() {
+      @Nullable
+      @Override
+      public MetalId getSubtypeData(ItemStack stack, UidContext context) {
+        if (((Fillable)stack.getItem()).isFull(stack)) {
+          return MetalItem.getMetal(stack);
+        }
+        return null;
+      }
+
+      @Override
+      public String getLegacyStringSubtypeInfo(ItemStack stack, UidContext context) {
+        if (((Fillable)stack.getItem()).isEmpty(stack)) {
+          return "";
+        }
         return MetalItem.getMetal(stack).toString();
       }
-      return IIngredientSubtypeInterpreter.NONE;
     };
     registration.registerSubtypeInterpreter(Registration.INVESTITURE_RING.asItem(), investiture);
     registration.registerSubtypeInterpreter(Registration.INVESTITURE_BRACER.asItem(), investiture);
@@ -102,7 +140,7 @@ public class JEIPlugin implements IModPlugin {
     Level level = SafeClientAccess.getLevel();
     if (level != null) {
       RecipeManager manager = level.getRecipeManager();
-      registration.addRecipes(ForgeRecipeCategory.TYPE, RecipeHelper.getJEIRecipes(level.registryAccess(), manager, Registration.FORGE_RECIPE.get(), ForgeRecipe.class));
+      registration.addRecipes(ForgeRecipeCategory.TYPE, MultiNamedRecipe.getNamedRecipes(level.registryAccess(), manager, Registration.FORGE_RECIPE.get(), ForgeRecipe.class));
       registration.addRecipes(RecipeTypes.SMELTING, getRecycleRecipes(manager, RecipeType.SMELTING, SmeltingRecipe::new));
       registration.addRecipes(RecipeTypes.BLASTING, getRecycleRecipes(manager, RecipeType.BLASTING, BlastingRecipe::new));
     }
@@ -114,16 +152,18 @@ public class JEIPlugin implements IModPlugin {
   }
 
   /** Generates recycling recipes to show in JEI */
-  private static <T extends AbstractCookingRecipe> List<T> getRecycleRecipes(RecipeManager manager, RecipeType<T> type, Function7<ResourceLocation,String, CookingBookCategory, Ingredient,ItemStack,Float,Integer,T> constructor) {
+  private static <T extends AbstractCookingRecipe> List<RecipeHolder<T>> getRecycleRecipes(RecipeManager manager, RecipeType<T> type, Function6<String, CookingBookCategory, Ingredient,ItemStack,Float,Integer,T> constructor) {
+    // TODO: switch to a recipe category extension
     return manager.getAllRecipesFor(type).stream()
-      .flatMap(recipe -> {
+      .flatMap(holder -> {
+        AbstractCookingRecipe recipe = holder.value();
         if (recipe instanceof CookingMetalRecyclingRecipe metal) {
-          return Arrays.stream(recipe.getIngredients().get(0).getItems())
+          return Arrays.stream(recipe.getIngredients().getFirst().getItems())
             .flatMap(input -> {
               MetalPower power = MetalItem.getMetalPower(input);
               MetalResult result = metal.getResult();
               if (power != MetalPower.DEFAULT && result.isPresent(power)) {
-                return Stream.of(constructor.apply(recipe.getId(), recipe.getGroup(), recipe.category(), Ingredient.of(input), result.get(power), recipe.getExperience(), recipe.getCookingTime()));
+                return Stream.of(new RecipeHolder<>(holder.id(), constructor.apply(recipe.getGroup(), recipe.category(), Ingredient.of(input), result.get(power), recipe.getExperience(), recipe.getCookingTime())));
               }
               return Stream.empty();
             });

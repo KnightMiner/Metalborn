@@ -3,10 +3,10 @@ package knightminer.metalborn.plugin.jei;
 import knightminer.metalborn.Metalborn;
 import knightminer.metalborn.core.Registration;
 import knightminer.metalborn.json.recipe.forge.ForgeRecipe;
+import knightminer.metalborn.json.recipe.forge.ShapedForgeRecipe;
 import mezz.jei.api.gui.builder.IIngredientAcceptor;
 import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
 import mezz.jei.api.gui.builder.IRecipeSlotBuilder;
-import mezz.jei.api.gui.drawable.IDrawable;
 import mezz.jei.api.gui.placement.HorizontalAlignment;
 import mezz.jei.api.gui.placement.VerticalAlignment;
 import mezz.jei.api.gui.widgets.IRecipeExtrasBuilder;
@@ -15,12 +15,11 @@ import mezz.jei.api.ingredients.IIngredientType;
 import mezz.jei.api.recipe.IFocusGroup;
 import mezz.jei.api.recipe.RecipeIngredientRole;
 import mezz.jei.api.recipe.RecipeType;
-import mezz.jei.api.recipe.category.IRecipeCategory;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
-import net.neoforged.neoforge.common.crafting.IShapedRecipe;
+import slimeknights.mantle.plugin.jei.NamedRecipeCategory;
+import slimeknights.mantle.recipe.NamedRecipe;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,51 +27,22 @@ import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
 /** Recipe category for the forge */
-public class ForgeRecipeCategory implements IRecipeCategory<ForgeRecipe> {
+public class ForgeRecipeCategory extends NamedRecipeCategory<ForgeRecipe> {
   private static final int GRID_WIDTH = 2;
   private static final int GRID_HEIGHT = 2;
-  public static final RecipeType<ForgeRecipe> TYPE = RecipeType.create(Metalborn.MOD_ID, "forge", ForgeRecipe.class);
+
+  @SuppressWarnings({"unchecked", "RedundantCast"})
+  public static final RecipeType<NamedRecipe<ForgeRecipe>> TYPE = RecipeType.create(Metalborn.MOD_ID, "forge", (Class<? extends NamedRecipe<ForgeRecipe>>)(Class<?>) NamedRecipe.class);
   private static final Component TITLE = Metalborn.component("jei", "forge");
 
-  private final IDrawable icon;
-
   public ForgeRecipeCategory(IGuiHelper guiHelper) {
-    this.icon = guiHelper.createDrawableItemLike(Registration.FORGE);
-  }
-
-  @Override
-  public RecipeType<ForgeRecipe> getRecipeType() {
-    return TYPE;
-  }
-
-  @Override
-  public Component getTitle() {
-    return TITLE;
-  }
-
-  @Override
-  public IDrawable getIcon() {
-    return icon;
-  }
-
-  @Override
-  public int getWidth() {
-    return 122;
-  }
-
-  @Override
-  public int getHeight() {
-    return 46;
-  }
-
-  @Override
-  public ResourceLocation getRegistryName(ForgeRecipe recipe) {
-    return recipe.getId();
+    super(TYPE, TITLE, guiHelper.createDrawableItemLike(Registration.FORGE), 122, 46);
   }
 
   /** Based on {@link mezz.jei.api.recipe.category.extensions.vanilla.crafting.ICraftingCategoryExtension} for vanilla recipes */
   @Override
-  public void setRecipe(IRecipeLayoutBuilder builder, ForgeRecipe recipe, IFocusGroup focuses) {
+  public void setRecipe(IRecipeLayoutBuilder builder, NamedRecipe<ForgeRecipe> holder, IFocusGroup focuses) {
+    ForgeRecipe recipe = holder.recipe();
     List<List<ItemStack>> inputs = new ArrayList<>();
     for (Ingredient ingredient : recipe.getIngredients()) {
       List<ItemStack> items = List.of(ingredient.getItems());
@@ -83,9 +53,9 @@ public class ForgeRecipeCategory implements IRecipeCategory<ForgeRecipe> {
     // find recipe size
     int width;
     int height;
-    if (recipe instanceof IShapedRecipe<?> shaped) {
-      width = shaped.getRecipeWidth();
-      height = shaped.getRecipeHeight();
+    if (recipe instanceof ShapedForgeRecipe shaped) {
+      width = shaped.getWidth();
+      height = shaped.getHeight();
     } else {
       width = 0;
       height = 0;
@@ -177,13 +147,14 @@ public class ForgeRecipeCategory implements IRecipeCategory<ForgeRecipe> {
   /* Furnace display */
 
   @Override
-  public void createRecipeExtras(IRecipeExtrasBuilder builder, ForgeRecipe recipe, IFocusGroup focuses) {
+  public void createRecipeExtras(IRecipeExtrasBuilder builder, NamedRecipe<ForgeRecipe> holder, IFocusGroup focuses) {
+    ForgeRecipe recipe = holder.recipe();
     int cookTime = recipe.getCookingTime();
     if (cookTime <= 0) {
       cookTime = ForgeRecipe.DEFAULT_COOKING_TIME;
     }
-    builder.addAnimatedRecipeArrow(cookTime).setPosition(65, 14);
-    builder.addAnimatedRecipeFlame(300).setPosition(1, 7);
+    builder.addAnimatedRecipeArrowWidget(cookTime).setPosition(65, 14);
+    builder.addAnimatedRecipeFlameWidget(300).setPosition(1, 7);
 
     addExperience(builder, recipe);
     addCookTime(builder, cookTime);
