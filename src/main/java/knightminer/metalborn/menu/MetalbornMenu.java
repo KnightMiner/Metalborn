@@ -21,6 +21,7 @@ import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.items.IItemHandler;
+import net.neoforged.neoforge.items.ItemHandlerCopySlot;
 import net.neoforged.neoforge.items.ItemStackHandler;
 import net.neoforged.neoforge.items.wrapper.EmptyItemHandler;
 import org.jetbrains.annotations.Nullable;
@@ -321,7 +322,7 @@ public class MetalbornMenu extends BaseMenu {
   }
 
   /** Slot disallowing adding items to satches that are disallowed by type or config. Validated at a menu level to prevent exceptions  */
-  private static class SatchelSlot extends SmartItemHandlerSlot {
+  private static class SatchelSlot extends ItemHandlerCopySlot {
     private final SatchelType type;
     public SatchelSlot(IItemHandler inventory, SatchelType type, int slot, int x, int y) {
       super(inventory, slot, x, y);
