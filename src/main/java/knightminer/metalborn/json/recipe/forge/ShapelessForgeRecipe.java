@@ -72,7 +72,7 @@ public class ShapelessForgeRecipe extends AbstractForgeRecipe {
   /** Makes a loader for this recipe */
   public static <T extends ShapelessForgeRecipe> RecordLoadable<T> makeLoader(Function4<NonNullList<Ingredient>,ItemOutput,Float,Integer,T> constructor) {
     return RecordLoadable.create(
-      Loadables.ITEM_INGREDIENT_NONEMPTY.list(1).xmap(
+      Loadables.ITEM_INGREDIENT_NONEMPTY.list(1).mapChecked(
         (list, error) -> {
           int max = ShapedRecipePattern.getMaxHeight() * ShapedRecipePattern.getMaxWidth();
           if (list.size() > max) {

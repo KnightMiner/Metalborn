@@ -18,7 +18,7 @@ public record MetalResult(MetalShape shape, int amount) {
     MetalShape.LOADABLE.requiredField("shape", MetalResult::shape),
     IntLoadable.FROM_ONE.defaultField("amount", 1, false, MetalResult::amount),
     MetalResult::new
-  ).compact(MetalShape.LOADABLE.flatXmap(shape -> new MetalResult(shape, 1), MetalResult::shape), r -> r.amount == 1);
+  ).compact(MetalShape.LOADABLE.map(shape -> new MetalResult(shape, 1), MetalResult::shape), r -> r.amount == 1);
 
 
   /** Checks if this result is present */
