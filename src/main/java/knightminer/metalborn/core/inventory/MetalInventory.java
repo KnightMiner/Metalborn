@@ -185,7 +185,7 @@ public abstract class MetalInventory<T extends StackHolder<T>> implements IItemH
     public CompoundTag serializeNBT(HolderLookup.Provider provider) {
       CompoundTag tag = new CompoundTag();
       if (!stack.isEmpty()) {
-        stack.save(provider, tag);
+        tag = (CompoundTag) stack.save(provider, tag);
       }
       return tag;
     }
