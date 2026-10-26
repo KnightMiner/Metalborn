@@ -30,13 +30,26 @@
     },
     {
       "type": "metalborn:attribute",
-      "attribute": "metalborn:experience_multiplier",
+      "attribute": "mantle:experience_multiplier",
       "multiplier": 0.1,
       "operation": "add_multiplied_total"
     },
     {
+      "type": "metalborn:attribute",
+      "attribute": "mantle:equipment_drop_chance_boost",
+      "multiplier": 0.01,
+      "operation": "add_value"
+    },
+    {
       "type": "metalborn:tapping",
-      "attribute": "metalborn:looting_boost",
+      "attribute": "mantle:looting_boost",
+      "multiplier": 0.25,
+      "operation": "add_value",
+      "tapping_type": "metalborn:attribute"
+    },
+    {
+      "type": "metalborn:tapping",
+      "attribute": "mantle:fortune_boost",
       "multiplier": 0.25,
       "operation": "add_value",
       "tapping_type": "metalborn:attribute"

@@ -65,6 +65,7 @@ import net.minecraft.world.damagesource.DamageType;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attribute;
+import net.minecraft.world.entity.ai.attributes.RangedAttribute;
 import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.CreativeModeTab;
@@ -89,6 +90,7 @@ import net.neoforged.fml.ModList;
 import net.neoforged.neoforge.attachment.AttachmentType;
 import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent;
+import net.neoforged.neoforge.common.PercentageAttribute;
 import net.neoforged.neoforge.common.crafting.IngredientType;
 import net.neoforged.neoforge.event.entity.EntityAttributeModificationEvent;
 import net.neoforged.neoforge.registries.DeferredBlock;
@@ -104,6 +106,7 @@ import slimeknights.mantle.registration.deferred.AttributeDeferredRegister;
 import slimeknights.mantle.registration.deferred.BlockDeferredRegister;
 import slimeknights.mantle.registration.deferred.BlockEntityTypeDeferredRegister;
 import slimeknights.mantle.registration.deferred.MenuTypeDeferredRegister;
+import slimeknights.mantle.registration.holder.DeferredAttribute;
 import slimeknights.mantle.registration.object.EnumObject;
 import slimeknights.mantle.registration.object.MetalItemObject;
 import slimeknights.mantle.registration.object.MultiObject;
@@ -295,27 +298,19 @@ public class Registration {
 
   // attributes
   /** Multiplier on the distance you can safely fall without damage. Similar to {@link net.minecraft.world.entity.ai.attributes.Attributes#FALL_DAMAGE_MULTIPLIER} but applies before safe fall distance. */
-  public static final DeferredHolder<Attribute,Attribute> FALL_DISTANCE_MULTIPLIER = ATTRIBUTES.register("fall_distance_multiplier").sync().negative().multiplier();
-  /** Multiplier for knockback this entity takes. Similar to {@link net.minecraft.world.entity.ai.attributes.Attributes#KNOCKBACK_RESISTANCE} but can be used to increase knockback */
-  public static final DeferredHolder<Attribute,Attribute> KNOCKBACK_MULTIPLIER = ATTRIBUTES.register("knockback_multiplier").sync().negative().multiplier();
-  /** Player modifier data key for mining speed multiplier as an additive percentage boost on mining speed. */
-  public static final DeferredHolder<Attribute,Attribute> MINING_SPEED_MULTIPLIER = ATTRIBUTES.register("mining_speed_multiplier").sync().multiplier();
+  public static final DeferredAttribute<PercentageAttribute> FALL_DISTANCE_MULTIPLIER = ATTRIBUTES.register("fall_distance_multiplier").sync().negative().multiplier();
   /** Chance that loot in a loot table will drop. */
-  public static final DeferredHolder<Attribute,Attribute> DROP_CHANCE = ATTRIBUTES.register("drop_chance").percent(1);
-  /** Boost to level of looting in loot tables. */
-  public static final DeferredHolder<Attribute,Attribute> LOOTING_BOOST = ATTRIBUTES.register("looting_boost").ranged(0, -10, 10);
-  /** Multiplier to amount of experience gained. */
-  public static final DeferredHolder<Attribute,Attribute> EXPERIENCE_MULTIPLIER = ATTRIBUTES.register("experience_multiplier").multiplier();
+  public static final DeferredAttribute<PercentageAttribute> DROP_CHANCE = ATTRIBUTES.register("drop_chance").percent(1);
   /** Changes the amount of damage taken. */
-  public static final DeferredHolder<Attribute,Attribute> DETERMINATION  = ATTRIBUTES.register("determination").sync().ranged(1, 0, 2);
+  public static final DeferredAttribute<RangedAttribute> DETERMINATION  = ATTRIBUTES.register("determination").sync().ranged(1, 0, 2);
   /** Above 1, reduces cold damage and increases heat damage. Below 1, reduces heat damage and increases cold damage. */
-  public static final DeferredHolder<Attribute,Attribute> WARMTH  = ATTRIBUTES.register("warmth").sync().neutral().ranged(1, 0, 2);
+  public static final DeferredAttribute<RangedAttribute> WARMTH  = ATTRIBUTES.register("warmth").sync().neutral().ranged(1, 0, 2);
   /** Applies bonus damage to melee attacks in the form of a fiery attack. */
-  public static final DeferredHolder<Attribute,Attribute> HEAT_DAMAGE  = ATTRIBUTES.register("heat_damage").sync().ranged(0, 0, 1024);
+  public static final DeferredAttribute<RangedAttribute> HEAT_DAMAGE  = ATTRIBUTES.register("heat_damage").sync().ranged(0, 0, 1024);
   /** Changes visibility as seen by monsters. */
-  public static final DeferredHolder<Attribute,Attribute> VISIBILITY_MULTIPLIER = ATTRIBUTES.register("visibility_multiplier").negative().multiplier();
+  public static final DeferredAttribute<PercentageAttribute> VISIBILITY_MULTIPLIER = ATTRIBUTES.register("visibility_multiplier").negative().multiplier();
   /** Makes it easier or harder for the entity to breath. */
-  public static final DeferredHolder<Attribute,Attribute> RESPIRATION = ATTRIBUTES.register("respiration").sync().ranged(0, -10, 10);
+  public static final DeferredAttribute<RangedAttribute> RESPIRATION = ATTRIBUTES.register("respiration").sync().ranged(0, -10, 10);
 
   // Tinkers' Construct compat
   public static final CastItemObject BRACER_CAST = ITEMS.registerCast("bracer");
@@ -377,12 +372,8 @@ public class Registration {
 
   /** Adds new attributes to entities */
   private static void addAttributes(EntityAttributeModificationEvent event) {
-    event.add(EntityType.PLAYER, MINING_SPEED_MULTIPLIER);
-    event.add(EntityType.PLAYER, LOOTING_BOOST);
-    event.add(EntityType.PLAYER, EXPERIENCE_MULTIPLIER);
     event.add(EntityType.PLAYER, RESPIRATION);
     // general attributes
-    addToAll(event, KNOCKBACK_MULTIPLIER);
     addToAll(event, FALL_DISTANCE_MULTIPLIER);
     addToAll(event, DROP_CHANCE);
     addToAll(event, DETERMINATION);

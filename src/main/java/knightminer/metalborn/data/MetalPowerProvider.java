@@ -26,6 +26,7 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.neoforged.neoforge.common.NeoForgeMod;
 import net.neoforged.neoforge.common.Tags;
 import org.jetbrains.annotations.ApiStatus.Internal;
+import slimeknights.mantle.registration.MantleAttributes;
 
 /** Adds powers from metalborn to the mod */
 @Internal
@@ -41,11 +42,11 @@ public class MetalPowerProvider extends AbstractMetalPowerProvider {
       .feruchemy(AttributeMetalEffect.builder(Attributes.GRAVITY, Operation.ADD_MULTIPLIED_TOTAL).eachLevel(0.05f))
       .feruchemy(AttributeMetalEffect.builder(Registration.FALL_DISTANCE_MULTIPLIER, Operation.ADD_MULTIPLIED_TOTAL).eachLevel(0.05f))
       .feruchemy(new TappingMetalEffect(AttributeMetalEffect.builder(Attributes.KNOCKBACK_RESISTANCE, Operation.ADD_VALUE).eachLevel(0.1f)))
-      .feruchemy(new StoringMetalEffect(AttributeMetalEffect.builder(Registration.KNOCKBACK_MULTIPLIER, Operation.ADD_MULTIPLIED_TOTAL).eachLevel(-0.1f)));
+      .feruchemy(new StoringMetalEffect(AttributeMetalEffect.builder(MantleAttributes.KNOCKBACK_MULTIPLIER, Operation.ADD_MULTIPLIED_TOTAL).eachLevel(-0.1f)));
     metal(MetalIds.steel).index(2).temperature(950)
       .feruchemy(AttributeMetalEffect.builder(Attributes.MOVEMENT_SPEED, Operation.ADD_MULTIPLIED_TOTAL).eachLevel(0.1f))
       .feruchemy(AttributeMetalEffect.builder(Attributes.ATTACK_SPEED, Operation.ADD_MULTIPLIED_TOTAL).eachLevel(0.05f))
-      .feruchemy(AttributeMetalEffect.builder(Registration.MINING_SPEED_MULTIPLIER, Operation.ADD_MULTIPLIED_TOTAL).eachLevel(0.1f));
+      .feruchemy(AttributeMetalEffect.builder(Attributes.BLOCK_BREAK_SPEED, Operation.ADD_MULTIPLIED_TOTAL).eachLevel(0.1f));
     metal(MetalIds.tin).index(3).temperature(225).capacity(MetalFormat.SECONDS, 5 * 60)
       .feruchemy(MobEffectMetalEffect.storing(MobEffects.BLINDNESS).duration(60).flat(1))
       .feruchemy(MobEffectMetalEffect.tapping(MobEffects.NIGHT_VISION).duration(230).flat(1));
@@ -124,14 +125,17 @@ public class MetalPowerProvider extends AbstractMetalPowerProvider {
     metal(MetalIds.netherite).name("netherite_scrap").index(15).hemalurgyCharge(10).disallowFerring().unless(MetalIds.chromium)
       .fluid(FluidTags.create(ResourceLocation.fromNamespaceAndPath(Metalborn.TINKERS, "molten_debris"))).temperature(1175)
       .feruchemy(AttributeMetalEffect.builder(Attributes.LUCK, Operation.ADD_VALUE).eachLevel(0.5f))
-      .feruchemy(AttributeMetalEffect.builder(Registration.EXPERIENCE_MULTIPLIER, Operation.ADD_MULTIPLIED_TOTAL).eachLevel(0.1f))
-      .feruchemy(new TappingMetalEffect(AttributeMetalEffect.builder(Registration.LOOTING_BOOST, Operation.ADD_VALUE).eachLevel(0.25f)))
+      .feruchemy(AttributeMetalEffect.builder(MantleAttributes.EXPERIENCE_MULTIPLIER, Operation.ADD_MULTIPLIED_TOTAL).eachLevel(0.1f))
+      .feruchemy(AttributeMetalEffect.builder(MantleAttributes.EQUIPMENT_DROP_CHANCE_BOOST, Operation.ADD_VALUE).eachLevel(0.01f))
+      .feruchemy(new TappingMetalEffect(AttributeMetalEffect.builder(MantleAttributes.LOOTING_BOOST, Operation.ADD_VALUE).eachLevel(0.25f)))
+      .feruchemy(new TappingMetalEffect(AttributeMetalEffect.builder(MantleAttributes.FORTUNE_BOOST, Operation.ADD_VALUE).eachLevel(0.25f)))
       .feruchemy(new StoringMetalEffect(AttributeMetalEffect.builder(Registration.DROP_CHANCE, Operation.ADD_MULTIPLIED_TOTAL).eachLevel(0.1f)));
     metal(MetalIds.chromium).index(15).integration().hemalurgyCharge(10).temperature(1200).fallback(MetalIds.netherite)
-      // TOOD: fluid
       .feruchemy(AttributeMetalEffect.builder(Attributes.LUCK, Operation.ADD_VALUE).eachLevel(0.5f))
-      .feruchemy(AttributeMetalEffect.builder(Registration.EXPERIENCE_MULTIPLIER, Operation.ADD_MULTIPLIED_TOTAL).eachLevel(0.1f))
-      .feruchemy(new TappingMetalEffect(AttributeMetalEffect.builder(Registration.LOOTING_BOOST, Operation.ADD_VALUE).eachLevel(0.25f)))
+      .feruchemy(AttributeMetalEffect.builder(MantleAttributes.EXPERIENCE_MULTIPLIER, Operation.ADD_MULTIPLIED_TOTAL).eachLevel(0.1f))
+      .feruchemy(AttributeMetalEffect.builder(MantleAttributes.EQUIPMENT_DROP_CHANCE_BOOST, Operation.ADD_VALUE).eachLevel(0.01f))
+      .feruchemy(new TappingMetalEffect(AttributeMetalEffect.builder(MantleAttributes.LOOTING_BOOST, Operation.ADD_VALUE).eachLevel(0.25f)))
+      .feruchemy(new TappingMetalEffect(AttributeMetalEffect.builder(MantleAttributes.FORTUNE_BOOST, Operation.ADD_VALUE).eachLevel(0.25f)))
       .feruchemy(new StoringMetalEffect(AttributeMetalEffect.builder(Registration.DROP_CHANCE, Operation.ADD_MULTIPLIED_TOTAL).eachLevel(0.1f)));
   }
 

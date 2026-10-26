@@ -16,7 +16,7 @@
     },
     {
       "type": "metalborn:attribute",
-      "attribute": "metalborn:mining_speed_multiplier",
+      "attribute": "minecraft:player.block_break_speed",
       "multiplier": 0.1,
       "operation": "add_multiplied_total"
     }

@@ -220,11 +220,7 @@
   "item.metalborn.ferring.mismatches": "You do not feel anything from this metal.",
 
   "attribute.name.metalborn.fall_distance_multiplier": "Fall Distance",
-  "attribute.name.metalborn.knockback_multiplier": "Knockback",
-  "attribute.name.metalborn.mining_speed_multiplier": "Mining Speed",
-  "attribute.name.metalborn.experience_multiplier": "Experience",
   "attribute.name.metalborn.drop_chance": "Drop Chance",
-  "attribute.name.metalborn.looting_boost": "Looting",
   "attribute.name.metalborn.determination": "Determination",
   "attribute.name.metalborn.warmth": "Warmth",
   "attribute.name.metalborn.visibility_multiplier": "Visibility",

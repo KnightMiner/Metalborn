@@ -23,7 +23,7 @@
     },
     {
       "type": "metalborn:storing",
-      "attribute": "metalborn:knockback_multiplier",
+      "attribute": "mantle:knockback_multiplier",
       "multiplier": -0.1,
       "operation": "add_multiplied_total",
       "storing_type": "metalborn:attribute"

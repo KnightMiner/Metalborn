@@ -23,14 +23,10 @@ import net.neoforged.neoforge.event.AddReloadListenerEvent;
 import net.neoforged.neoforge.event.entity.living.LivingBreatheEvent;
 import net.neoforged.neoforge.event.entity.living.LivingDropsEvent;
 import net.neoforged.neoforge.event.entity.living.LivingEvent.LivingVisibilityEvent;
-import net.neoforged.neoforge.event.entity.living.LivingExperienceDropEvent;
 import net.neoforged.neoforge.event.entity.living.LivingFallEvent;
 import net.neoforged.neoforge.event.entity.living.LivingIncomingDamageEvent;
-import net.neoforged.neoforge.event.entity.living.LivingKnockBackEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerEvent;
-import net.neoforged.neoforge.event.entity.player.PlayerEvent.BreakSpeed;
 import net.neoforged.neoforge.event.entity.player.PlayerInteractEvent.RightClickItem;
-import net.neoforged.neoforge.event.level.BlockDropsEvent;
 import net.neoforged.neoforge.event.tick.PlayerTickEvent;
 
 import java.util.Collection;
@@ -97,52 +93,8 @@ public class MetalbornHandler {
   }
 
   @SubscribeEvent
-  static void onKnockback(LivingKnockBackEvent event) {
-    event.setStrength((float) (event.getStrength() * event.getEntity().getAttributeValue(Registration.KNOCKBACK_MULTIPLIER)));
-  }
-
-  @SubscribeEvent
   static void onLivingFall(LivingFallEvent event) {
     event.setDistance((float) (event.getDistance() * event.getEntity().getAttributeValue(Registration.FALL_DISTANCE_MULTIPLIER)));
-  }
-
-  @SubscribeEvent
-  static void onBreakSpeed(BreakSpeed event) {
-    event.setNewSpeed((float) (event.getNewSpeed() * event.getEntity().getAttributeValue(Registration.MINING_SPEED_MULTIPLIER)));
-  }
-
-  /* TODO: need a backport of https://github.com/neoforged/NeoForge/pull/3065
-  @SubscribeEvent(priority = EventPriority.LOW)
-  static void onLooting(LootingLevelEvent event) {
-    // apply looting bonus based on killer
-    DamageSource source = event.getDamageSource();
-    if (source != null && source.getEntity() instanceof Player killer) {
-      double lootingAttribute = killer.getAttributeValue(Registration.LOOTING_BOOST);
-      // each integer value gives +1 looting
-      int lootingBonus = (int)lootingAttribute;
-      // partial values are treated as a chance at a higher level
-      double higherChance = lootingAttribute % 1;
-      if (higherChance > 0 && killer.getRandom().nextFloat() < higherChance) {
-        lootingBonus++;
-      }
-      event.setLootingLevel(Math.max(event.getLootingLevel() + lootingBonus, 0));
-    }
-  }
-  */
-
-  @SubscribeEvent
-  static void blockDrops(BlockDropsEvent event) {
-    if (event.getBreaker() instanceof LivingEntity living) {
-      event.setDroppedExperience((int) Math.round(event.getDroppedExperience() * living.getAttributeValue(Registration.EXPERIENCE_MULTIPLIER)));
-    }
-  }
-
-  @SubscribeEvent
-  static void livingExperienceDrop(LivingExperienceDropEvent event) {
-    Player player = event.getAttackingPlayer();
-    if (player != null) {
-      event.setDroppedExperience((int) Math.round(event.getDroppedExperience() * player.getAttributeValue(Registration.EXPERIENCE_MULTIPLIER)));
-    }
   }
 
   /** Handles heat damage and damage modifications from determination and warmth */
