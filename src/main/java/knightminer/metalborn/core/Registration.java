@@ -52,7 +52,6 @@ import knightminer.metalborn.util.ItemDeferredRegisterExtension;
 import net.minecraft.core.Holder;
 import net.minecraft.core.Registry;
 import net.minecraft.core.UUIDUtil;
-import net.minecraft.core.component.DataComponentType;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
@@ -66,7 +65,6 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.RangedAttribute;
-import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.CreativeModeTab.ItemDisplayParameters;
@@ -74,12 +72,9 @@ import net.minecraft.world.item.CreativeModeTab.Output;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Item.Properties;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.crafting.RecipeSerializer;
-import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.SoundType;
-import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.NoteBlockInstrument;
@@ -91,22 +86,31 @@ import net.neoforged.neoforge.attachment.AttachmentType;
 import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent;
 import net.neoforged.neoforge.common.PercentageAttribute;
-import net.neoforged.neoforge.common.crafting.IngredientType;
 import net.neoforged.neoforge.event.entity.EntityAttributeModificationEvent;
 import net.neoforged.neoforge.registries.DeferredBlock;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredItem;
-import net.neoforged.neoforge.registries.DeferredRegister;
 import net.neoforged.neoforge.registries.NeoForgeRegistries;
 import net.neoforged.neoforge.registries.RegisterEvent;
 import org.jetbrains.annotations.ApiStatus.Internal;
-import slimeknights.mantle.recipe.helper.LoadableRecipeSerializer;
-import slimeknights.mantle.recipe.helper.SimpleRecipeSerializer;
+import slimeknights.mantle.registration.deferred.AttachmentTypeDeferredRegister;
 import slimeknights.mantle.registration.deferred.AttributeDeferredRegister;
 import slimeknights.mantle.registration.deferred.BlockDeferredRegister;
 import slimeknights.mantle.registration.deferred.BlockEntityTypeDeferredRegister;
+import slimeknights.mantle.registration.deferred.DataComponentTypeDeferredRegister;
+import slimeknights.mantle.registration.deferred.IngredientDeferredRegister;
+import slimeknights.mantle.registration.deferred.LootConditionDeferredRegister;
 import slimeknights.mantle.registration.deferred.MenuTypeDeferredRegister;
+import slimeknights.mantle.registration.deferred.RecipeSerializerDeferredRegister;
+import slimeknights.mantle.registration.deferred.RecipeTypeDeferredRegister;
+import slimeknights.mantle.registration.holder.DeferredAttachment;
 import slimeknights.mantle.registration.holder.DeferredAttribute;
+import slimeknights.mantle.registration.holder.DeferredBlockEntity;
+import slimeknights.mantle.registration.holder.DeferredDataComponent;
+import slimeknights.mantle.registration.holder.DeferredIngredient;
+import slimeknights.mantle.registration.holder.DeferredMenu;
+import slimeknights.mantle.registration.holder.DeferredRecipeSerializer;
+import slimeknights.mantle.registration.holder.DeferredRecipeType;
 import slimeknights.mantle.registration.object.EnumObject;
 import slimeknights.mantle.registration.object.MetalItemObject;
 import slimeknights.mantle.registration.object.MultiObject;
@@ -126,13 +130,13 @@ public class Registration {
   private static final ItemDeferredRegisterExtension ITEMS = new ItemDeferredRegisterExtension(Metalborn.MOD_ID);
   private static final MenuTypeDeferredRegister MENUS = new MenuTypeDeferredRegister(Metalborn.MOD_ID);
   private static final BlockEntityTypeDeferredRegister BLOCK_ENTITIES = new BlockEntityTypeDeferredRegister(Metalborn.MOD_ID);
-  private static final DeferredRegister<RecipeType<?>> RECIPE_TYPES = DeferredRegister.create(Registries.RECIPE_TYPE, Metalborn.MOD_ID);
-  private static final DeferredRegister<RecipeSerializer<?>> RECIPES = DeferredRegister.create(Registries.RECIPE_SERIALIZER, Metalborn.MOD_ID);
-  private static final DeferredRegister<IngredientType<?>> INGREDIENTS = DeferredRegister.create(NeoForgeRegistries.Keys.INGREDIENT_TYPES, Metalborn.MOD_ID);
+  private static final RecipeTypeDeferredRegister RECIPE_TYPES = new RecipeTypeDeferredRegister(Metalborn.MOD_ID);
+  private static final RecipeSerializerDeferredRegister RECIPES = new RecipeSerializerDeferredRegister(Metalborn.MOD_ID);
+  private static final IngredientDeferredRegister INGREDIENTS = new IngredientDeferredRegister(Metalborn.MOD_ID);
   private static final AttributeDeferredRegister ATTRIBUTES = new AttributeDeferredRegister(Metalborn.MOD_ID);
-  private static final DeferredRegister<LootItemConditionType> LOOT_CONDITIONS = DeferredRegister.create(Registries.LOOT_CONDITION_TYPE, MOD_ID);
-  private static final DeferredRegister<DataComponentType<?>> DATA_COMPONENTS = DeferredRegister.create(Registries.DATA_COMPONENT_TYPE, MOD_ID);
-  private static final DeferredRegister<AttachmentType<?>> ATTACHMENTS = DeferredRegister.create(NeoForgeRegistries.Keys.ATTACHMENT_TYPES, MOD_ID);
+  private static final LootConditionDeferredRegister LOOT_CONDITIONS = new LootConditionDeferredRegister(MOD_ID);
+  private static final DataComponentTypeDeferredRegister DATA_COMPONENTS = new DataComponentTypeDeferredRegister(Registries.DATA_COMPONENT_TYPE, MOD_ID);
+  private static final AttachmentTypeDeferredRegister ATTACHMENTS = new AttachmentTypeDeferredRegister(MOD_ID);
 
   private static final Item.Properties PROPS = new Item.Properties();
   private static final Function<Block, BlockItem> BLOCK_ITEM = block -> new BlockItem(block, PROPS);
@@ -224,7 +228,7 @@ public class Registration {
 
   // metal forge
   public static final DeferredBlock<ForgeBlock> FORGE = BLOCKS.register("forge", () -> new ForgeBlock(BlockBehaviour.Properties.of().mapColor(MapColor.STONE).instrument(NoteBlockInstrument.BASEDRUM).requiresCorrectToolForDrops().strength(3.5F).lightLevel(s -> s.getValue(BlockStateProperties.LIT) ? 13 : 0)), BLOCK_ITEM);
-  public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<ForgeBlockEntity>> FORGE_BLOCK_ENTITY = BLOCK_ENTITIES.register("forge", ForgeBlockEntity::new, FORGE);
+  public static final DeferredBlockEntity<ForgeBlockEntity> FORGE_BLOCK_ENTITY = BLOCK_ENTITIES.register("forge", ForgeBlockEntity::new, FORGE);
 
   // satchels
   public static final EnumObject<SatchelType,Item> SATCHEL = ITEMS.registerEnum(SatchelType.values(), "satchel", type -> {
@@ -237,22 +241,17 @@ public class Registration {
 
   // data components
   /** Metal type for a {@link MetalItem} */
-  public static final DeferredHolder<DataComponentType<?>, DataComponentType<MetalHolder>> METAL = DATA_COMPONENTS.register("metal", () -> DataComponentType.<MetalHolder>builder()
-    .persistent(MetalHolder.CODEC).networkSynchronized(MetalHolder.STREAM_CODEC).build());
+  public static final DeferredDataComponent<MetalHolder> METAL = DATA_COMPONENTS.registerPersistent("metal", MetalHolder.CODEC, MetalHolder.STREAM_CODEC);
   /** Current amount for a {@link Metalmind} or spike. Max is determined by the {@link knightminer.metalborn.metal.MetalPower}. */
-  public static final DeferredHolder<DataComponentType<?>, DataComponentType<Integer>> AMOUNT = DATA_COMPONENTS.register("amount", () -> DataComponentType.<Integer>builder()
-    .persistent(ExtraCodecs.NON_NEGATIVE_INT).networkSynchronized(ByteBufCodecs.VAR_INT).build());
-  public static final DeferredHolder<DataComponentType<?>, DataComponentType<Boolean>> FULL = DATA_COMPONENTS.register("full", () -> DataComponentType.<Boolean>builder()
-    .persistent(Codec.BOOL).networkSynchronized(ByteBufCodecs.BOOL).build());
+  public static final DeferredDataComponent<Integer> AMOUNT = DATA_COMPONENTS.registerPersistent("amount", ExtraCodecs.NON_NEGATIVE_INT, ByteBufCodecs.VAR_INT);
+  public static final DeferredDataComponent<Boolean> FULL = DATA_COMPONENTS.registerPersistent("full", Codec.BOOL, ByteBufCodecs.BOOL);
   /** Owner UUID for a {@link Metalmind}. Represents a player UUID. */
-  public static final DeferredHolder<DataComponentType<?>, DataComponentType<UUID>> OWNER = DATA_COMPONENTS.register("owner", () -> DataComponentType.<UUID>builder()
-    .persistent(UUIDUtil.STRING_CODEC).networkSynchronized(UUIDUtil.STREAM_CODEC).build());
+  public static final DeferredDataComponent<UUID> OWNER = DATA_COMPONENTS.registerPersistent("owner", UUIDUtil.STRING_CODEC, UUIDUtil.STREAM_CODEC);
   /** Display name for {@link #OWNER}. */
-  public static final DeferredHolder<DataComponentType<?>, DataComponentType<String>> OWNER_NAME = DATA_COMPONENTS.register("owner_name", () -> DataComponentType.<String>builder()
-    .persistent(ExtraCodecs.NON_EMPTY_STRING).networkSynchronized(ByteBufCodecs.STRING_UTF8).build());
+  public static final DeferredDataComponent<String> OWNER_NAME = DATA_COMPONENTS.registerPersistent("owner_name", ExtraCodecs.NON_EMPTY_STRING, ByteBufCodecs.STRING_UTF8);
 
   // data attachments
-  public static final DeferredHolder<AttachmentType<?>, AttachmentType<MetalbornData>> METALBORN_DATA = ATTACHMENTS.register("metal", () -> AttachmentType.serializable(MetalbornData::create).copyHandler(MetalbornData.COPY_HANDLER).build());
+  public static final DeferredAttachment<MetalbornData> METALBORN_DATA = ATTACHMENTS.registerType("metal", () -> AttachmentType.serializable(MetalbornData::create).copyHandler(MetalbornData.COPY_HANDLER));
 
   // damage types
   /** Damage type for metal damaging the player, used in gold's effect */
@@ -267,34 +266,34 @@ public class Registration {
   public static final ResourceKey<DamageType> UPDATE_HEALTH = ResourceKey.create(Registries.DAMAGE_TYPE, resource("update_health"));
 
   // menus
-  public static final DeferredHolder<MenuType<?>,MenuType<MetalbornMenu>> METALBORN_MENU = MENUS.register("metalborn", MetalbornMenu::forClient);
-  public static final DeferredHolder<MenuType<?>,MenuType<ForgeMenu>> FORGE_MENU = MENUS.register("forge", ForgeMenu::new);
+  public static final DeferredMenu<MetalbornMenu> METALBORN_MENU = MENUS.register("metalborn", MetalbornMenu::forClient);
+  public static final DeferredMenu<ForgeMenu> FORGE_MENU = MENUS.register("forge", ForgeMenu::new);
 
   // recipe
-  public static final DeferredHolder<RecipeType<?>,RecipeType<ForgeRecipe>> FORGE_RECIPE = RECIPE_TYPES.register("forge", () -> RecipeType.simple(Metalborn.resource("forge")));
-  public static final DeferredHolder<RecipeSerializer<?>,RecipeSerializer<ShapelessForgeRecipe>> SHAPELESS_FORGE = RECIPES.register("shapeless_forge", () -> LoadableRecipeSerializer.of(ShapelessForgeRecipe.LOADABLE));
-  public static final DeferredHolder<RecipeSerializer<?>,RecipeSerializer<ShapedForgeRecipe>> SHAPED_FORGE = RECIPES.register("shaped_forge", () -> new SimpleRecipeSerializer<>(ShapedForgeRecipe.CODEC, ShapedForgeRecipe.STREAM_CODEC));
-  public static final DeferredHolder<RecipeSerializer<?>,RecipeSerializer<MetalShapelessForgeRecipe>> METAL_SHAPELESS_FORGE = RECIPES.register("metal_shapeless_forge", () -> LoadableRecipeSerializer.of(MetalShapelessForgeRecipe.LOADABLE));
-  public static final DeferredHolder<RecipeSerializer<?>,RecipeSerializer<MetalShapedForgeRecipe>> METAL_SHAPED_FORGE = RECIPES.register("metal_shaped_forge", () -> new SimpleRecipeSerializer<>(MetalShapedForgeRecipe.CODEC, MetalShapedForgeRecipe.STREAM_CODEC));
+  public static final DeferredRecipeType<ForgeRecipe> FORGE_RECIPE = RECIPE_TYPES.registerType("forge");
+  public static final DeferredRecipeSerializer<ShapelessForgeRecipe> SHAPELESS_FORGE = RECIPES.registerLoadable("shapeless_forge", ShapelessForgeRecipe.LOADABLE);
+  public static final DeferredRecipeSerializer<ShapedForgeRecipe> SHAPED_FORGE = RECIPES.registerSimple("shaped_forge", ShapedForgeRecipe.CODEC, ShapedForgeRecipe.STREAM_CODEC);
+  public static final DeferredRecipeSerializer<MetalShapelessForgeRecipe> METAL_SHAPELESS_FORGE = RECIPES.registerLoadable("metal_shapeless_forge", MetalShapelessForgeRecipe.LOADABLE);
+  public static final DeferredRecipeSerializer<MetalShapedForgeRecipe> METAL_SHAPED_FORGE = RECIPES.registerSimple("metal_shaped_forge", MetalShapedForgeRecipe.CODEC, MetalShapedForgeRecipe.STREAM_CODEC);
   // furnace
-  public static final DeferredHolder<RecipeSerializer<?>,RecipeSerializer<SmeltingMetalRecyclingRecipe>> SMELTING_METAL_RECYCLING = RECIPES.register("smelting_metal_recycling", () -> LoadableRecipeSerializer.of(SmeltingMetalRecyclingRecipe.LOADABLE));
-  public static final DeferredHolder<RecipeSerializer<?>,RecipeSerializer<BlastingMetalRecyclingRecipe>> BLASTING_METAL_RECYCLING = RECIPES.register("blasting_metal_recycling", () -> LoadableRecipeSerializer.of(BlastingMetalRecyclingRecipe.LOADABLE));
+  public static final DeferredRecipeSerializer<SmeltingMetalRecyclingRecipe> SMELTING_METAL_RECYCLING = RECIPES.registerLoadable("smelting_metal_recycling", SmeltingMetalRecyclingRecipe.LOADABLE);
+  public static final DeferredRecipeSerializer<BlastingMetalRecyclingRecipe> BLASTING_METAL_RECYCLING = RECIPES.registerLoadable("blasting_metal_recycling", BlastingMetalRecyclingRecipe.LOADABLE);
   // ingredient
-  public static final DeferredHolder<IngredientType<?>,IngredientType<FillableIngredient>> FILLABLE_INGREDIENT = INGREDIENTS.register("fillable", () -> new IngredientType<>(FillableIngredient.CODEC, FillableIngredient.STREAM_CODEC));
-  public static final DeferredHolder<IngredientType<?>,IngredientType<MetalItemIngredient>> METAL_ITEM_INGREDIENT = INGREDIENTS.register("metal_item", () -> new IngredientType<>(MetalItemIngredient.CODEC, MetalItemIngredient.STREAM_CODEC));
-  public static final DeferredHolder<IngredientType<?>,IngredientType<MetalShapeIngredient>> METAL_SHAPE_INGREDIENT = INGREDIENTS.register("metal_shape", () -> new IngredientType<>(MetalShapeIngredient.CODEC, MetalShapeIngredient.STREAM_CODEC));
+  public static final DeferredIngredient<FillableIngredient> FILLABLE_INGREDIENT = INGREDIENTS.register("fillable", FillableIngredient.CODEC, FillableIngredient.STREAM_CODEC);
+  public static final DeferredIngredient<MetalItemIngredient> METAL_ITEM_INGREDIENT = INGREDIENTS.register("metal_item", MetalItemIngredient.CODEC, MetalItemIngredient.STREAM_CODEC);
+  public static final DeferredIngredient<MetalShapeIngredient> METAL_SHAPE_INGREDIENT = INGREDIENTS.register("metal_shape", MetalShapeIngredient.CODEC, MetalShapeIngredient.STREAM_CODEC);
 
   // Tinkers' compat
   /** Serializer ID for the metal basin casting recipe, added via the Tinkers' Construct plugin */
-  public static final DeferredHolder<RecipeSerializer<?>,RecipeSerializer<?>> METAL_CASTING_BASIN = DeferredHolder.create(Registries.RECIPE_SERIALIZER, resource("metal_casting_basin"));
+  public static final DeferredRecipeSerializer<?> METAL_CASTING_BASIN = DeferredRecipeSerializer.createSerializer(resource("metal_casting_basin"));
   /** Serializer ID for the metal table casting recipe, added via the Tinkers' Construct plugin */
-  public static final DeferredHolder<RecipeSerializer<?>,RecipeSerializer<?>> METAL_CASTING_TABLE = DeferredHolder.create(Registries.RECIPE_SERIALIZER, resource("metal_casting_table"));
+  public static final DeferredRecipeSerializer<?> METAL_CASTING_TABLE = DeferredRecipeSerializer.createSerializer(resource("metal_casting_table"));
   /** Serializer ID for the metal melting recipe, added via the Tinkers' Construct plugin */
-  public static final DeferredHolder<RecipeSerializer<?>,RecipeSerializer<?>> METAL_MELTING = DeferredHolder.create(Registries.RECIPE_SERIALIZER, resource("metal_melting"));
+  public static final DeferredRecipeSerializer<?> METAL_MELTING = DeferredRecipeSerializer.createSerializer(resource("metal_melting"));
   /** Serializer ID for the copy metal basin casting recipe, added via the Tinkers' Construct plugin */
-  public static final DeferredHolder<RecipeSerializer<?>,RecipeSerializer<?>> COPY_METAL_BASIN = DeferredHolder.create(Registries.RECIPE_SERIALIZER, resource("copy_metal_basin"));
+  public static final DeferredRecipeSerializer<?> COPY_METAL_BASIN = DeferredRecipeSerializer.createSerializer(resource("copy_metal_basin"));
   /** Serializer ID for the copy metal table casting recipe, added via the Tinkers' Construct plugin */
-  public static final DeferredHolder<RecipeSerializer<?>,RecipeSerializer<?>> COPY_METAL_TABLE = DeferredHolder.create(Registries.RECIPE_SERIALIZER, resource("copy_metal_table"));
+  public static final DeferredRecipeSerializer<?> COPY_METAL_TABLE = DeferredRecipeSerializer.createSerializer(resource("copy_metal_table"));
 
   // attributes
   /** Multiplier on the distance you can safely fall without damage. Similar to {@link net.minecraft.world.entity.ai.attributes.Attributes#FALL_DAMAGE_MULTIPLIER} but applies before safe fall distance. */
@@ -318,7 +317,7 @@ public class Registration {
   public static final CastItemObject SPIKE_CAST = ITEMS.registerCast("spike");
 
   // conditions
-  public static final DeferredHolder<LootItemConditionType,LootItemConditionType> CONFIG = LOOT_CONDITIONS.register("config", () -> new LootItemConditionType(ConfigEnabledCondition.CODEC));
+  public static final DeferredHolder<LootItemConditionType,LootItemConditionType> CONFIG = LOOT_CONDITIONS.register("config", ConfigEnabledCondition.CODEC);
 
 
   /** Registers capabilities for items, blocks and alike */

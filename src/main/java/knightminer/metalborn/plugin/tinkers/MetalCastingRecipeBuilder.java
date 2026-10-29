@@ -19,7 +19,7 @@ import slimeknights.mantle.recipe.helper.ItemOutput;
 
 /** Builder for {@link MetalCastingRecipe}. Safe to use even if Tinkers' Construct is not a runtime dependency. */
 public class MetalCastingRecipeBuilder extends AbstractRecipeBuilder<MetalCastingRecipeBuilder> {
-  private final DeferredHolder<RecipeSerializer<?>,RecipeSerializer<?>> serializer;
+  private final DeferredHolder<RecipeSerializer<?>,?> serializer;
   private final ItemOutput result;
   private Ingredient cast = Ingredient.EMPTY;
   private MetalFilter filter = MetalFilter.ANY;
@@ -27,7 +27,7 @@ public class MetalCastingRecipeBuilder extends AbstractRecipeBuilder<MetalCastin
   private boolean consumed = false;
   private boolean switchSlots = false;
 
-  private MetalCastingRecipeBuilder(DeferredHolder<RecipeSerializer<?>,RecipeSerializer<?>> serializer, ItemOutput result) {
+  private MetalCastingRecipeBuilder(DeferredHolder<RecipeSerializer<?>,?> serializer, ItemOutput result) {
     this.serializer = serializer;
     this.result = result;
   }
