@@ -213,6 +213,10 @@ public class MetalmindInventory extends MetalInventory<MetalmindStack> implement
       if (amount == 0) {
         return 0;
       }
+      if (!canUse().canStore()) {
+        stop();
+        return 0;
+      }
       // can't fill more than our current level
       if (amount > -this.level) {
         amount = -this.level;
