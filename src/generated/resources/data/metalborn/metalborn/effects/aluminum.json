@@ -1,6 +1,5 @@
 {
-  "capacity": 6000,
-  "conditions": [
+  "neoforge:conditions": [
     {
       "type": "neoforge:or",
       "values": [
@@ -15,6 +14,7 @@
       ]
     }
   ],
+  "capacity": 6000,
   "format": "ticks",
   "index": 18,
   "name": "aluminum",

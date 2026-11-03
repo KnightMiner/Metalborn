@@ -250,7 +250,7 @@ public class MetalPowerBuilder {
     }
     MetalPower.LOADABLE.serializeInto(buildInternal(), json);
     if (!conditions.isEmpty()) {
-      json.add("conditions", JsonHelper.serializeList(ICondition.CODEC, conditions));
+      json.add("neoforge:conditions", JsonHelper.serializeList(ICondition.CODEC, conditions));
       if (!fallback.isEmpty()) {
         json.add("fallback", MetalManager.FALLBACK_LOADABLE.serialize(fallback));
       }

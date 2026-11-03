@@ -1,7 +1,5 @@
 {
-  "allow_ferring": true,
-  "capacity": 6000,
-  "conditions": [
+  "neoforge:conditions": [
     {
       "type": "neoforge:or",
       "values": [
@@ -20,6 +18,8 @@
       ]
     }
   ],
+  "allow_ferring": true,
+  "capacity": 6000,
   "feruchemy": [
     {
       "type": "metalborn:attribute",

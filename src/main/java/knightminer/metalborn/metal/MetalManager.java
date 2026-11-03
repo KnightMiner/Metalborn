@@ -140,7 +140,7 @@ public class MetalManager extends SimpleJsonResourceReloadListener {
       JsonObject json = GsonHelper.convertToJsonObject(entry.getValue(), "metal");
       // ensure load conditions pass
       try {
-        if (JsonHelper.processConditions(json, "conditions", getContext())) {
+        if (JsonHelper.processConditions(json, "neoforge:conditions", getContext())) {
           // load the power
           MetalPower power = MetalPower.LOADABLE.deserialize(json, createContext(entry.getKey()));
           // store it into the map

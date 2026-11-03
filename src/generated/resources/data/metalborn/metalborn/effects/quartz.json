@@ -1,6 +1,5 @@
 {
-  "capacity": 6000,
-  "conditions": [
+  "neoforge:conditions": [
     {
       "type": "neoforge:and",
       "values": [
@@ -15,6 +14,7 @@
       ]
     }
   ],
+  "capacity": 6000,
   "fluid": "tconstruct:molten_quartz",
   "format": "ticks",
   "index": 16,
