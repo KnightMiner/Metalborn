@@ -20,7 +20,7 @@ import slimeknights.mantle.data.predicate.IJsonPredicate;
 import java.util.stream.Stream;
 
 /**
- * Ingredient that displays all metal variants for an item.
+ * Ingredient that matches all metal items with the given filter.
  * @see MetalShapeIngredient
  */
 public record MetalItemIngredient(Item item, IJsonPredicate<MetalPower> filter) implements ICustomIngredient, MetalPredicate.IngredientWithMetal {
@@ -42,7 +42,7 @@ public record MetalItemIngredient(Item item, IJsonPredicate<MetalPower> filter) 
 
   @Override
   public boolean test(ItemStack stack) {
-    return stack.is(item);
+    return stack.is(item) && filter.matches(MetalItem.getMetalPower(stack));
   }
 
   @Override

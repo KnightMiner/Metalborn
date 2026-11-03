@@ -16,7 +16,10 @@ import slimeknights.mantle.util.RegistryHelper;
 
 import java.util.stream.Stream;
 
-/** Ingredient matching a metal. Does not match a metal item with NBT metal. */
+/**
+ * Ingredient matching a metal ingot or nugget.
+ * @see MetalItemIngredient
+ */
 public record MetalShapeIngredient(MetalShape shape, IJsonPredicate<MetalPower> filter) implements ICustomIngredient, MetalPredicate.IngredientWithMetal {
   public static final RecordLoadable<MetalShapeIngredient> LOADER = RecordLoadable.create(
     MetalShape.LOADABLE.requiredField("shape", MetalShapeIngredient::shape),
@@ -50,7 +53,8 @@ public record MetalShapeIngredient(MetalShape shape, IJsonPredicate<MetalPower> 
 
   @Override
   public boolean test(ItemStack stack) {
-    return getMetal(stack) != MetalPower.DEFAULT;
+    MetalPower power = getMetal(stack);
+    return power != MetalPower.DEFAULT && filter.matches(power);
   }
 
   @Override
