@@ -1,22 +1,22 @@
-// 1.21.1	2026-11-03T04:01:46.284072	Metalborn Metal Powers
+// 1.21.1	2026-11-03T04:05:44.8270773	Metalborn Metal Powers
 4e2c1b26bf63991b181d39c96e477c753b5da7b4 data/metalborn/metalborn/effects/aluminum.json
 7c8a33901ba3177e466583e48ca484441ced92bc data/metalborn/metalborn/effects/bendalloy.json
 2eba96ff4936516ba451f0944b2bb15262ad6627 data/metalborn/metalborn/effects/brass.json
 967f0ad5416be9dc5201a914d55255c4060e315d data/metalborn/metalborn/effects/bronze.json
-7a544aac31c32ae87384b0ba72db3b0b00106ec8 data/metalborn/metalborn/effects/cadmium.json
-98f80346365d06cd03f4e49be19a9eee11914094 data/metalborn/metalborn/effects/chromium.json
+9b00cd8ae1a54e195f863f844df3f4b105157a51 data/metalborn/metalborn/effects/cadmium.json
+87f44e5eefda918768e76a1335c217be297295ad data/metalborn/metalborn/effects/chromium.json
 16d267fd30de56abe2079d7d90ca873e747b1bc0 data/metalborn/metalborn/effects/constantan.json
 c3e959026f0b67c8cec3a0d241ed94098610fe15 data/metalborn/metalborn/effects/copper.json
 6f7647ba88af22e321950606b3724c08ca1a7f01 data/metalborn/metalborn/effects/electrum.json
 60d1564f4c46bcf6c3ba5cd92b16e68aef273c87 data/metalborn/metalborn/effects/gold.json
 9c18a3d43c797edee036910c9711fbc2020d2285 data/metalborn/metalborn/effects/investiture.json
 9d789c3cab0621d80de450ae02529571eaf0ec3b data/metalborn/metalborn/effects/iron.json
-544fdcc4ccc10783036916bf62c7394ba8a26b16 data/metalborn/metalborn/effects/netherite.json
+65bffd7dbc97a9c267163ea61978713dbe76eff4 data/metalborn/metalborn/effects/netherite.json
 21b33ffc46c50294f1b8f608907507b37bccbb51 data/metalborn/metalborn/effects/nickel.json
 e4ef564bd2dc3f20f0679d605bb551090feb748c data/metalborn/metalborn/effects/pewter.json
 2cfa774cf58482034ca6c929fd79bf8eddd3ab0e data/metalborn/metalborn/effects/quartz.json
 8c8e16b7ff0cc0bbe5095f9d747148f5756ea921 data/metalborn/metalborn/effects/rose_gold.json
-7f19a7bc1950268e82014627ee29200c0046607d data/metalborn/metalborn/effects/silver.json
+4080ee5f496e3c05d4a96943dc2881b80170d26f data/metalborn/metalborn/effects/silver.json
 668bbc76fb696847899219e93128b3008033deab data/metalborn/metalborn/effects/steel.json
 4e6de4a92b64c9aecea881a3892a88d242e29606 data/metalborn/metalborn/effects/tin.json
 3413103077a8a5564a54538575808d8a8bd1e579 data/metalborn/metalborn/effects/zinc.json

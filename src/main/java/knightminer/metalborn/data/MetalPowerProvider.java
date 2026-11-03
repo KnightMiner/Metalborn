@@ -83,6 +83,8 @@ public class MetalPowerProvider extends AbstractMetalPowerProvider {
 
     // compat
     metal(MetalIds.cadmium).index(13).integration().hemalurgyCharge(13).temperature(594).fallback(MetalIds.silver)
+      // always grant some experience boost, that is kinda mental speed
+      .feruchemy(AttributeMetalEffect.builder(MantleAttributes.EXPERIENCE_MULTIPLIER, Operation.ADD_MULTIPLIED_TOTAL).eachLevel(0.1f))
       // when storing, go from 100% (default) to 200% ... 500%
       .feruchemy(new StoringMetalEffect(new CappedMetalEffect(4, AttributeMetalEffect.builder(Registration.VISIBILITY_MULTIPLIER, Operation.ADD_MULTIPLIED_TOTAL).eachLevel(-1))))
       // when tapping, go from 100% (default) to 75% ... 0%
@@ -92,6 +94,8 @@ public class MetalPowerProvider extends AbstractMetalPowerProvider {
       // when storing, apply invisibility at level 4
       .feruchemy(new OffsetMetalEffect(3, MobEffectMetalEffect.tapping(MobEffects.INVISIBILITY).alwaysStore().flat(1)));
     metal(MetalIds.silver).index(9).temperature(790).alternative(MetalIds.cadmium).hemalurgyCharge(15)
+      // always grant some experience boost, that is kinda mental speed
+      .feruchemy(AttributeMetalEffect.builder(MantleAttributes.EXPERIENCE_MULTIPLIER, Operation.ADD_MULTIPLIED_TOTAL).eachLevel(0.1f))
       // when storing, go from 100% (default) to 200% ... 500%
       .feruchemy(new StoringMetalEffect(new CappedMetalEffect(4, AttributeMetalEffect.builder(Registration.VISIBILITY_MULTIPLIER, Operation.ADD_MULTIPLIED_TOTAL).eachLevel(-1))))
       // when tapping, go from 100% (default) to 75% ... 0%
@@ -125,14 +129,12 @@ public class MetalPowerProvider extends AbstractMetalPowerProvider {
     metal(MetalIds.netherite).name("netherite_scrap").index(15).hemalurgyCharge(10).disallowFerring().unless(MetalIds.chromium)
       .fluid(FluidTags.create(ResourceLocation.fromNamespaceAndPath(Metalborn.TINKERS, "molten_debris"))).temperature(1175)
       .feruchemy(AttributeMetalEffect.builder(Attributes.LUCK, Operation.ADD_VALUE).eachLevel(0.5f))
-      .feruchemy(AttributeMetalEffect.builder(MantleAttributes.EXPERIENCE_MULTIPLIER, Operation.ADD_MULTIPLIED_TOTAL).eachLevel(0.1f))
       .feruchemy(AttributeMetalEffect.builder(MantleAttributes.EQUIPMENT_DROP_CHANCE_BOOST, Operation.ADD_VALUE).eachLevel(0.01f))
       .feruchemy(new TappingMetalEffect(AttributeMetalEffect.builder(MantleAttributes.LOOTING_BOOST, Operation.ADD_VALUE).eachLevel(0.25f)))
       .feruchemy(new TappingMetalEffect(AttributeMetalEffect.builder(MantleAttributes.FORTUNE_BOOST, Operation.ADD_VALUE).eachLevel(0.25f)))
       .feruchemy(new StoringMetalEffect(AttributeMetalEffect.builder(Registration.DROP_CHANCE, Operation.ADD_MULTIPLIED_TOTAL).eachLevel(0.1f)));
     metal(MetalIds.chromium).index(15).integration().hemalurgyCharge(10).temperature(1200).fallback(MetalIds.netherite)
       .feruchemy(AttributeMetalEffect.builder(Attributes.LUCK, Operation.ADD_VALUE).eachLevel(0.5f))
-      .feruchemy(AttributeMetalEffect.builder(MantleAttributes.EXPERIENCE_MULTIPLIER, Operation.ADD_MULTIPLIED_TOTAL).eachLevel(0.1f))
       .feruchemy(AttributeMetalEffect.builder(MantleAttributes.EQUIPMENT_DROP_CHANCE_BOOST, Operation.ADD_VALUE).eachLevel(0.01f))
       .feruchemy(new TappingMetalEffect(AttributeMetalEffect.builder(MantleAttributes.LOOTING_BOOST, Operation.ADD_VALUE).eachLevel(0.25f)))
       .feruchemy(new TappingMetalEffect(AttributeMetalEffect.builder(MantleAttributes.FORTUNE_BOOST, Operation.ADD_VALUE).eachLevel(0.25f)))

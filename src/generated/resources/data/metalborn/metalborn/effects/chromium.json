@@ -30,12 +30,6 @@
     },
     {
       "type": "metalborn:attribute",
-      "attribute": "mantle:experience_multiplier",
-      "multiplier": 0.1,
-      "operation": "add_multiplied_total"
-    },
-    {
-      "type": "metalborn:attribute",
       "attribute": "mantle:equipment_drop_chance_boost",
       "multiplier": 0.01,
       "operation": "add_value"

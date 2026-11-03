@@ -23,6 +23,12 @@
   "fallback": "metalborn:silver",
   "feruchemy": [
     {
+      "type": "metalborn:attribute",
+      "attribute": "mantle:experience_multiplier",
+      "multiplier": 0.1,
+      "operation": "add_multiplied_total"
+    },
+    {
       "type": "metalborn:storing",
       "capped": {
         "type": "metalborn:attribute",
