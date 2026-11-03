@@ -114,7 +114,7 @@ public abstract class MetalInventory<T extends StackHolder<T>> implements IItemH
         current.deserializeNBT(provider, tag);
       }
     }
-    refreshActive(false);
+    refreshActive(UpdateType.LOAD);
   }
 
   /** Attempts to equip the given item */
@@ -141,11 +141,20 @@ public abstract class MetalInventory<T extends StackHolder<T>> implements IItemH
     for (int i = 0; i < inventory.size(); i++) {
       inventory.get(i).copyFrom(other.inventory.get(i));
     }
-    refreshActive(wasDeath);
+    refreshActive(wasDeath ? UpdateType.DEATH : UpdateType.COPY);
+  }
+
+  protected enum UpdateType {
+    /** Update when loading a player from NBT. */
+    LOAD,
+    /** Update when copying a player, such as through an end portal. */
+    COPY,
+    /** Update when a player dies. */
+    DEATH
   }
 
   /** Refreshes the properties of this inventory */
-  protected abstract void refreshActive(boolean wasDeath);
+  protected abstract void refreshActive(UpdateType type);
 
   /** Clears the inventory */
   public void clear() {

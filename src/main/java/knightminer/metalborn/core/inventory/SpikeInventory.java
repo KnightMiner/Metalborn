@@ -89,7 +89,7 @@ public class SpikeInventory extends MetalInventory<SpikeStack> {
   }
 
   @Override
-  protected void refreshActive(boolean wasDeath) {
+  protected void refreshActive(UpdateType type) {
     extraPowers.clear();
     for (SpikeStack stack : inventory) {
       if (!stack.stack.isEmpty()) {

@@ -54,10 +54,10 @@ public class MetalmindInventory extends MetalInventory<MetalmindStack> implement
   }
 
   @Override
-  protected void refreshActive(boolean wasDeath) {
+  protected void refreshActive(UpdateType type) {
     // if we just died, make all metalminds inactive
     // need to call update methods as those were cleared earlier
-    if (wasDeath) {
+    if (type == UpdateType.DEATH) {
       for (MetalmindStack stack : inventory) {
         stack.level = 0;
       }
