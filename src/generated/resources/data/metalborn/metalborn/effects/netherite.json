@@ -1,17 +1,8 @@
 {
   "neoforge:conditions": [
     {
-      "type": "neoforge:and",
-      "values": [
-        {
-          "type": "mantle:tag_empty",
-          "tag": "c:ingots/chromium"
-        },
-        {
-          "type": "mantle:tag_empty",
-          "tag": "c:nuggets/chromium"
-        }
-      ]
+      "type": "mantle:tag_empty",
+      "tag": "c:ingots/chromium"
     }
   ],
   "allow_ferring": false,

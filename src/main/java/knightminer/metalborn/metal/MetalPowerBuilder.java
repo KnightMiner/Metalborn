@@ -133,37 +133,32 @@ public class MetalPowerBuilder {
     return this;
   }
 
-  /** Sets the metal to be optional based on the ingot and nugget. Must run after {@link #name(String)} for best results (or use the default). */
+  /** Sets the metal to be optional based on the ingot. Must run after {@link #name(String)} for best results (or use the default). */
   public MetalPowerBuilder integrationNoForce() {
-    return condition(or(new TagFilledCondition<>(getIngot()), new TagFilledCondition<>(getNugget())));
+    return condition(new TagFilledCondition<>(getIngot()));
   }
 
 
-  /** Sets the metal to be optional based on the ingot and nugget. Must run after {@link #name(String)} for best results (or use the default). */
+  /** Sets the metal to be optional based on the ingot. Must run after {@link #name(String)} for best results (or use the default). */
   public MetalPowerBuilder integration() {
     return condition(or(
       ConfigEnabledCondition.FORCE_INTEGRATION,
-      new TagFilledCondition<>(getIngot()),
-      new TagFilledCondition<>(getNugget())
+      new TagFilledCondition<>(getIngot())
     ));
   }
 
-  /** Sets the metal to be optional based on the ingot and nugget, but only present if the listed metal is *not* present. */
+  /** Sets the metal to be optional based on the ingot, but only present if the listed metal is *not* present. */
   public MetalPowerBuilder alternative(String disable) {
     return condition(or(
       ConfigEnabledCondition.FORCE_INTEGRATION,
       and(
         new TagEmptyCondition<>(ItemTags.create(Mantle.commonResource("ingots/" + disable))),
-        new TagEmptyCondition<>(ItemTags.create(Mantle.commonResource("nuggets/" + disable))),
-        or(
-          new TagFilledCondition<>(getIngot()),
-          new TagFilledCondition<>(getNugget())
-        )
+        new TagFilledCondition<>(getIngot())
       )
     ));
   }
 
-  /** Sets the metal to be optional based on the ingot and nugget, but only present if the listed metal is *not* present. */
+  /** Sets the metal to be optional based on the ingot, but only present if the listed metal is *not* present. */
   public MetalPowerBuilder alternative(MetalId disable) {
     alternative(disable.getPath());
     fallback(disable);
@@ -172,10 +167,7 @@ public class MetalPowerBuilder {
 
   /** Sets the metal to be enabled unless the specified metal is present. */
   public MetalPowerBuilder unless(String disable) {
-    return condition(and(
-      new TagEmptyCondition<>(ItemTags.create(Mantle.commonResource("ingots/" + disable))),
-      new TagEmptyCondition<>(ItemTags.create(Mantle.commonResource("nuggets/" + disable)))
-    ));
+    return condition(new TagEmptyCondition<>(ItemTags.create(Mantle.commonResource("ingots/" + disable))));
   }
 
   /** Sets the metal to be enabled unless the specified metal is present. */

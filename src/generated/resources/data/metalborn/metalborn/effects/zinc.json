@@ -10,10 +10,6 @@
         {
           "type": "mantle:tag_filled",
           "tag": "c:ingots/zinc"
-        },
-        {
-          "type": "mantle:tag_filled",
-          "tag": "c:nuggets/zinc"
         }
       ]
     }

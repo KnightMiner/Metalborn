@@ -12,6 +12,7 @@ import knightminer.metalborn.json.predicate.MetalPredicate;
 import knightminer.metalborn.json.recipe.cooking.CookingMetalRecyclingBuilder;
 import knightminer.metalborn.json.recipe.forge.ShapedForgeRecipeBuilder;
 import knightminer.metalborn.json.recipe.forge.ShapelessForgeRecipeBuilder;
+import knightminer.metalborn.metal.MetalPower;
 import knightminer.metalborn.metal.MetalShape;
 import net.minecraft.core.HolderLookup.Provider;
 import net.minecraft.data.PackOutput;
@@ -30,6 +31,7 @@ import net.minecraft.world.level.block.Blocks;
 import net.neoforged.neoforge.common.Tags;
 import net.neoforged.neoforge.common.conditions.ICondition;
 import net.neoforged.neoforge.common.conditions.NotCondition;
+import slimeknights.mantle.data.predicate.IJsonPredicate;
 import slimeknights.mantle.recipe.condition.TagFilledCondition;
 import slimeknights.mantle.recipe.cooking.CookingRecipeBuilder;
 import slimeknights.mantle.recipe.data.ICommonRecipeHelper;
@@ -137,11 +139,19 @@ public class RecipeProvider extends net.minecraft.data.recipes.RecipeProvider im
     // rings
     ShapedForgeRecipeBuilder.shaped(Registration.RING)
       .pattern("##").pattern("##")
-      .define('#', MetalShapeIngredient.nugget(MetalPredicate.METALMIND))
+      .define('#', MetalShapeIngredient.nugget(MetalPredicate.and(MetalPredicate.METALMIND, MetalPredicate.HAS_NUGGET)))
       .metal()
       .cookingRate(1)
       .experience(0.5f)
       .save(output, location("ring/metal"));
+    // if you lack nuggets, make 2 ring from 1 ingot
+    // that comes out to 4/8 of an ingot per ring, which is just a little more than 4/9 they normally cost
+    ShapelessForgeRecipeBuilder.shapeless(Registration.RING, 2)
+      .requires(MetalShapeIngredient.ingot(MetalPredicate.and(MetalPredicate.METALMIND, MetalPredicate.HAS_NUGGET.inverted())))
+      .metal()
+      .cookingRate(1)
+      .experience(0.5f)
+      .save(output, location("ring/metal_from_ingot"));
     ShapedForgeRecipeBuilder.shaped(Registration.INVESTITURE_RING)
       .pattern("##").pattern("##")
       .define('#', Registration.NICROSIL.getNuggetTag())
@@ -369,8 +379,9 @@ public class RecipeProvider extends net.minecraft.data.recipes.RecipeProvider im
     // recycling - all done in the furnace and blast furnace
     String recyclingFolder = "recycling/";
     recycle(output, Registration.BRACER, MetalPredicate.METALMIND, MetalShape.INGOT,  4, 800, recyclingFolder + "bracer/metal");
-    recycle(output, Registration.RING,   MetalPredicate.METALMIND, MetalShape.NUGGET, 4, 200, recyclingFolder + "ring/metal");
     recycle(output, Registration.SPIKE,  MetalPredicate.SPIKE,     MetalShape.INGOT,  2, 400, recyclingFolder + "spike/metal");
+    // rings must have a nugget form to recycle
+    recycle(output, Registration.RING, MetalPredicate.and(MetalPredicate.METALMIND, MetalPredicate.HAS_NUGGET), MetalShape.NUGGET, 4, 200, recyclingFolder + "ring/metal");
     recycle(output, Registration.INVESTITURE_BRACER, Registration.NICROSIL.getIngotTag(),  4, 800, recyclingFolder + "bracer/nicrosil");
     recycle(output, Registration.INVESTITURE_RING,   Registration.NICROSIL.getNuggetTag(), 4, 200, recyclingFolder + "ring/nicrosil");
     recycle(output, Registration.INVESTITURE_SPIKE,  Registration.NICROSIL.getIngotTag(),  2, 400, recyclingFolder + "spike/nicrosil");
@@ -408,7 +419,7 @@ public class RecipeProvider extends net.minecraft.data.recipes.RecipeProvider im
 
 
   /** Creates a metal item recycling recipe pair for the given inputs */
-  private void recycle(RecipeOutput output, ItemLike item, MetalPredicate filter, MetalShape shape, int amount, int cookingTime, String prefix) {
+  private void recycle(RecipeOutput output, ItemLike item, IJsonPredicate<MetalPower> filter, MetalShape shape, int amount, int cookingTime, String prefix) {
     // special recipe, so no advancements
     CookingMetalRecyclingBuilder.builder(shape, amount)
       .requires(MetalItemIngredient.of(item, filter))

@@ -4,7 +4,13 @@
   "experience": 0.5,
   "ingredient": {
     "type": "metalborn:metal_item",
-    "filter": "metalborn:metalmind",
+    "filter": {
+      "type": "mantle:and",
+      "predicates": [
+        "metalborn:metalmind",
+        "metalborn:has_nugget"
+      ]
+    },
     "item": "metalborn:ring"
   },
   "result": {

@@ -10,10 +10,6 @@
         {
           "type": "mantle:tag_filled",
           "tag": "c:ingots/chromium"
-        },
-        {
-          "type": "mantle:tag_filled",
-          "tag": "c:nuggets/chromium"
         }
       ]
     }

@@ -15,21 +15,8 @@
               "tag": "c:ingots/cadmium"
             },
             {
-              "type": "mantle:tag_empty",
-              "tag": "c:nuggets/cadmium"
-            },
-            {
-              "type": "neoforge:or",
-              "values": [
-                {
-                  "type": "mantle:tag_filled",
-                  "tag": "c:ingots/silver"
-                },
-                {
-                  "type": "mantle:tag_filled",
-                  "tag": "c:nuggets/silver"
-                }
-              ]
+              "type": "mantle:tag_filled",
+              "tag": "c:ingots/silver"
             }
           ]
         }

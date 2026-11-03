@@ -1,17 +1,8 @@
 {
   "neoforge:conditions": [
     {
-      "type": "neoforge:and",
-      "values": [
-        {
-          "type": "mantle:tag_empty",
-          "tag": "c:ingots/aluminum"
-        },
-        {
-          "type": "mantle:tag_empty",
-          "tag": "c:nuggets/aluminum"
-        }
-      ]
+      "type": "mantle:tag_empty",
+      "tag": "c:ingots/aluminum"
     }
   ],
   "capacity": 6000,

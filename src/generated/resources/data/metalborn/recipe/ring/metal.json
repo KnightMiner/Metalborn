@@ -5,7 +5,13 @@
   "key": {
     "#": {
       "type": "metalborn:metal_shape",
-      "filter": "metalborn:metalmind",
+      "filter": {
+        "type": "mantle:and",
+        "predicates": [
+          "metalborn:metalmind",
+          "metalborn:has_nugget"
+        ]
+      },
       "shape": "nugget"
     }
   },

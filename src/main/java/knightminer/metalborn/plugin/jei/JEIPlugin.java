@@ -140,7 +140,9 @@ public class JEIPlugin implements IModPlugin {
     Level level = SafeClientAccess.getLevel();
     if (level != null) {
       RecipeManager manager = level.getRecipeManager();
-      registration.addRecipes(ForgeRecipeCategory.TYPE, MultiNamedRecipe.getNamedRecipes(level.registryAccess(), manager, Registration.FORGE_RECIPE.get(), ForgeRecipe.class));
+      registration.addRecipes(ForgeRecipeCategory.TYPE, MultiNamedRecipe.streamNamedRecipes(level.registryAccess(), manager, Registration.FORGE_RECIPE.get(), ForgeRecipe.class)
+        // skip recipes with no result - likely means we have a metal recipe with a filter matching no metals
+        .filter(holder -> !holder.recipe().getResult().isEmpty()).toList());
       registration.addRecipes(RecipeTypes.SMELTING, getRecycleRecipes(manager, RecipeType.SMELTING, SmeltingRecipe::new));
       registration.addRecipes(RecipeTypes.BLASTING, getRecycleRecipes(manager, RecipeType.BLASTING, BlastingRecipe::new));
     }

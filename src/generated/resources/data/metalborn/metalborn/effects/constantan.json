@@ -15,21 +15,8 @@
               "tag": "c:ingots/brass"
             },
             {
-              "type": "mantle:tag_empty",
-              "tag": "c:nuggets/brass"
-            },
-            {
-              "type": "neoforge:or",
-              "values": [
-                {
-                  "type": "mantle:tag_filled",
-                  "tag": "c:ingots/constantan"
-                },
-                {
-                  "type": "mantle:tag_filled",
-                  "tag": "c:nuggets/constantan"
-                }
-              ]
+              "type": "mantle:tag_filled",
+              "tag": "c:ingots/constantan"
             }
           ]
         }

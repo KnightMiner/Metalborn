@@ -10,10 +10,6 @@
         {
           "type": "mantle:tag_filled",
           "tag": "c:ingots/electrum"
-        },
-        {
-          "type": "mantle:tag_filled",
-          "tag": "c:nuggets/electrum"
         }
       ]
     }

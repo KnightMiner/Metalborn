@@ -2,6 +2,7 @@ package knightminer.metalborn.json.predicate;
 
 import knightminer.metalborn.metal.MetalId;
 import knightminer.metalborn.metal.MetalPower;
+import net.minecraft.core.registries.BuiltInRegistries;
 import slimeknights.mantle.data.loadable.field.LoadableField;
 import slimeknights.mantle.data.loadable.record.RecordLoadable;
 import slimeknights.mantle.data.loadable.record.SingletonLoader;
@@ -37,6 +38,8 @@ public interface MetalPredicate extends IJsonPredicate<MetalPower> {
   MetalPredicate METALMIND = simple(metal -> !metal.feruchemy().isEmpty());
   /** Matches powers that have a spike */
   MetalPredicate SPIKE = simple(metal -> metal.hemalurgyCharge() > 0 && !metal.feruchemy().isEmpty());
+  /** Matches powers that have a spike */
+  MetalPredicate HAS_NUGGET = simple(metal -> BuiltInRegistries.ITEM.getTag(metal.nugget()).filter(tag -> tag.size() > 0).isPresent());
 
   /** Creates a simple predicate with no arguments */
   static MetalPredicate simple(Predicate<MetalPower> predicate) {

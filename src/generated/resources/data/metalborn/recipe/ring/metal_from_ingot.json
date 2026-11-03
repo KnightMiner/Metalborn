@@ -1,0 +1,25 @@
+{
+  "type": "metalborn:metal_shapeless_forge",
+  "cooking_time": 100,
+  "experience": 0.5,
+  "ingredients": [
+    {
+      "type": "metalborn:metal_shape",
+      "filter": {
+        "type": "mantle:and",
+        "predicates": [
+          "metalborn:metalmind",
+          {
+            "type": "mantle:inverted",
+            "inverted_type": "metalborn:has_nugget"
+          }
+        ]
+      },
+      "shape": "ingot"
+    }
+  ],
+  "result": {
+    "count": 2,
+    "item": "metalborn:ring"
+  }
+}
