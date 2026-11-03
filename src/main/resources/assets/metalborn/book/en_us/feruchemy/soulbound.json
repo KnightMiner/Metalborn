@@ -4,7 +4,7 @@
   "item": {
     "type": "metalborn:metal_item",
     "item": "metalborn:soulbound_ring",
-    "filter": "metalmind"
+    "filter": "metalborn:metalmind"
   },
   "text": [
     { "text": "Though the power of Identity, soulbound rings will stick with you even if you are killed. It is still necessary to have access to the power to use it though, so it may not be as useful if after death your power changes." },

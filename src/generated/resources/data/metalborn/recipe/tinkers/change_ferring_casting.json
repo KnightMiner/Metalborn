@@ -10,7 +10,7 @@
     "type": "metalborn:fillable",
     "match": {
       "type": "metalborn:metal_item",
-      "filter": "spike",
+      "filter": "metalborn:spike",
       "item": "metalborn:spike"
     },
     "when": "filled"

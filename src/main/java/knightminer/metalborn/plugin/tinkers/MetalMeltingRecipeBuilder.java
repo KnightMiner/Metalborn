@@ -2,14 +2,15 @@ package knightminer.metalborn.plugin.tinkers;
 
 import com.google.gson.JsonObject;
 import knightminer.metalborn.core.Registration;
-import knightminer.metalborn.json.ingredient.IngredientWithMetal.MetalFilter;
 import knightminer.metalborn.json.ingredient.MetalItemIngredient;
+import knightminer.metalborn.metal.MetalPower;
 import net.minecraft.data.recipes.RecipeOutput;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.ItemLike;
 import net.neoforged.neoforge.common.conditions.FalseCondition;
 import slimeknights.mantle.data.loadable.Loadables;
+import slimeknights.mantle.data.predicate.IJsonPredicate;
 import slimeknights.mantle.recipe.data.AbstractRecipeBuilder;
 import slimeknights.mantle.recipe.data.mock.MockRecipe;
 import slimeknights.mantle.recipe.data.mock.MockRecipe.SimpleMockRecipe;
@@ -31,7 +32,7 @@ public class MetalMeltingRecipeBuilder extends AbstractRecipeBuilder<MetalMeltin
   }
 
   /** Creates a new builder for the given item and filter */
-  private static MetalMeltingRecipeBuilder melting(ItemLike item, MetalFilter filter, int amount) {
+  private static MetalMeltingRecipeBuilder melting(ItemLike item, IJsonPredicate<MetalPower> filter, int amount) {
     return melting(MetalItemIngredient.of(item, filter), amount);
   }
 

@@ -24,6 +24,8 @@ import knightminer.metalborn.json.ingredient.FillableIngredient;
 import knightminer.metalborn.json.ingredient.MetalItemIngredient;
 import knightminer.metalborn.json.ingredient.MetalShapeIngredient;
 import knightminer.metalborn.json.loot.ApplyDropChanceLootModifier;
+import knightminer.metalborn.json.predicate.MetalPredicate;
+import knightminer.metalborn.json.predicate.MetalSetPredicate;
 import knightminer.metalborn.json.recipe.cooking.BlastingMetalRecyclingRecipe;
 import knightminer.metalborn.json.recipe.cooking.SmeltingMetalRecyclingRecipe;
 import knightminer.metalborn.json.recipe.forge.ForgeRecipe;
@@ -280,8 +282,8 @@ public class Registration {
   public static final DeferredRecipeSerializer<BlastingMetalRecyclingRecipe> BLASTING_METAL_RECYCLING = RECIPES.registerLoadable("blasting_metal_recycling", BlastingMetalRecyclingRecipe.LOADABLE);
   // ingredient
   public static final DeferredIngredient<FillableIngredient> FILLABLE_INGREDIENT = INGREDIENTS.register("fillable", FillableIngredient.CODEC, FillableIngredient.STREAM_CODEC);
-  public static final DeferredIngredient<MetalItemIngredient> METAL_ITEM_INGREDIENT = INGREDIENTS.register("metal_item", MetalItemIngredient.CODEC, MetalItemIngredient.STREAM_CODEC);
-  public static final DeferredIngredient<MetalShapeIngredient> METAL_SHAPE_INGREDIENT = INGREDIENTS.register("metal_shape", MetalShapeIngredient.CODEC, MetalShapeIngredient.STREAM_CODEC);
+  public static final DeferredIngredient<MetalItemIngredient> METAL_ITEM_INGREDIENT = INGREDIENTS.register("metal_item", MetalItemIngredient.LOADER);
+  public static final DeferredIngredient<MetalShapeIngredient> METAL_SHAPE_INGREDIENT = INGREDIENTS.register("metal_shape", MetalShapeIngredient.LOADER);
 
   // Tinkers' compat
   /** Serializer ID for the metal basin casting recipe, added via the Tinkers' Construct plugin */
@@ -345,6 +347,12 @@ public class Registration {
       MetalEffect.REGISTRY.register(resource("update_health"), UpdateHealthEffect.LOADER);
       MetalEffect.REGISTRY.register(resource("energy"), EnergyMetalEffect.LOADER);
       MetalEffect.REGISTRY.register(resource("warmth"), WarmthMetalEffect.LOADER);
+
+      // metal predicates
+      MetalPredicate.LOADER.register(resource("natural_ferring"), MetalPredicate.NATURAL_FERRING.getLoader());
+      MetalPredicate.LOADER.register(resource("metalmind"), MetalPredicate.METALMIND.getLoader());
+      MetalPredicate.LOADER.register(resource("spike"), MetalPredicate.SPIKE.getLoader());
+      MetalPredicate.LOADER.register(resource("set"), MetalSetPredicate.LOADER);
 
     // config conditions
     } else if (key == NeoForgeRegistries.Keys.CONDITION_CODECS) {

@@ -2,7 +2,8 @@ package knightminer.metalborn.plugin.tinkers;
 
 import com.google.gson.JsonObject;
 import knightminer.metalborn.core.Registration;
-import knightminer.metalborn.json.ingredient.IngredientWithMetal.MetalFilter;
+import knightminer.metalborn.json.predicate.MetalPredicate;
+import knightminer.metalborn.metal.MetalPower;
 import net.minecraft.data.recipes.RecipeOutput;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.crafting.Ingredient;
@@ -11,6 +12,7 @@ import net.minecraft.world.level.ItemLike;
 import net.neoforged.neoforge.common.conditions.FalseCondition;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import slimeknights.mantle.data.loadable.Loadables;
+import slimeknights.mantle.data.predicate.IJsonPredicate;
 import slimeknights.mantle.recipe.data.AbstractRecipeBuilder;
 import slimeknights.mantle.recipe.data.mock.MockRecipe;
 import slimeknights.mantle.recipe.data.mock.MockRecipe.SimpleMockRecipe;
@@ -22,7 +24,7 @@ public class MetalCastingRecipeBuilder extends AbstractRecipeBuilder<MetalCastin
   private final DeferredHolder<RecipeSerializer<?>,?> serializer;
   private final ItemOutput result;
   private Ingredient cast = Ingredient.EMPTY;
-  private MetalFilter filter = MetalFilter.ANY;
+  private IJsonPredicate<MetalPower> filter = MetalPredicate.ANY;
   private int amount;
   private boolean consumed = false;
   private boolean switchSlots = false;
@@ -53,7 +55,7 @@ public class MetalCastingRecipeBuilder extends AbstractRecipeBuilder<MetalCastin
   }
 
   /** Sets the filter for this recipe */
-  public MetalCastingRecipeBuilder setFilter(MetalFilter filter) {
+  public MetalCastingRecipeBuilder setFilter(IJsonPredicate<MetalPower> filter) {
     this.filter = filter;
     return this;
   }
@@ -135,8 +137,8 @@ public class MetalCastingRecipeBuilder extends AbstractRecipeBuilder<MetalCastin
       if (cast != Ingredient.EMPTY) {
         json.add("cast", serializer.ingredient(cast));
       }
-      if (filter != MetalFilter.ANY) {
-        json.add("filter", MetalFilter.LOADABLE.serialize(filter));
+      if (filter != MetalPredicate.ANY) {
+        json.add("filter", MetalPredicate.LOADER.serialize(filter));
       }
       json.addProperty("amount", amount);
       json.add("result", serializer.item(result));

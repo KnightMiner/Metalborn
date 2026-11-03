@@ -4,7 +4,7 @@
   "item": {
     "type": "metalborn:metal_item",
     "item": "metalborn:soulbound_spike",
-    "filter": "spike"
+    "filter": "metalborn:spike"
   },
   "text": [
     { "text": "现在改变金属能力已经很安全了，但要想更持久地占有金属能力，你可以选择魂缚尖钉。它在玩家死亡时也仍会继续保留。" },

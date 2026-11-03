@@ -4,8 +4,7 @@ import com.mojang.serialization.MapCodec;
 import knightminer.metalborn.core.Registration;
 import knightminer.metalborn.item.MetalItem;
 import knightminer.metalborn.json.ingredient.FillableIngredient;
-import knightminer.metalborn.json.ingredient.IngredientWithMetal;
-import knightminer.metalborn.json.ingredient.IngredientWithMetal.MetalFilter;
+import knightminer.metalborn.json.predicate.MetalPredicate;
 import knightminer.metalborn.metal.MetalManager;
 import knightminer.metalborn.metal.MetalPower;
 import net.minecraft.core.HolderLookup;
@@ -17,15 +16,13 @@ import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.ShapedRecipePattern;
 import net.minecraft.world.level.Level;
+import slimeknights.mantle.data.predicate.IJsonPredicate;
 import slimeknights.mantle.recipe.helper.ItemOutput;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
-import java.util.Set;
-import java.util.function.Predicate;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 /** Forge recipe which sets a metal to the result */
@@ -33,7 +30,7 @@ public class MetalShapedForgeRecipe extends ShapedForgeRecipe {
   public static final MapCodec<MetalShapedForgeRecipe> CODEC = codec(MetalShapedForgeRecipe::new);
   public static final StreamCodec<RegistryFriendlyByteBuf,MetalShapedForgeRecipe> STREAM_CODEC = streamCodec(MetalShapedForgeRecipe::new);
 
-  private Predicate<MetalPower> metalFilter;
+  private IJsonPredicate<MetalPower> metalFilter;
   public MetalShapedForgeRecipe(ShapedRecipePattern pattern, ItemOutput result, float experience, int cookingTime) {
     super(pattern, result, experience, cookingTime);
   }
@@ -47,33 +44,26 @@ public class MetalShapedForgeRecipe extends ShapedForgeRecipe {
   }
 
   /** Finds the first metal ingredient in the input list */
-  static Predicate<MetalPower> getMetalFilter(List<Ingredient> ingredients) {
-    Set<MetalFilter> filters = ingredients.stream().flatMap(ingredient -> {
-      if (unwrap(ingredient).getCustomIngredient() instanceof IngredientWithMetal metal) {
+  static IJsonPredicate<MetalPower> getMetalFilter(List<Ingredient> ingredients) {
+    List<IJsonPredicate<MetalPower>> filters = ingredients.stream().flatMap(ingredient -> {
+      if (unwrap(ingredient).getCustomIngredient() instanceof MetalPredicate.IngredientWithMetal metal) {
         return Stream.of(metal.filter());
       }
       return Stream.empty();
-    }).collect(Collectors.toSet());
+    }).distinct().toList();
 
     // combine filter list into a single filter
     if (filters.isEmpty()) {
-      return MetalFilter.ANY;
+      return MetalPredicate.ANY;
     } else if (filters.size() == 1) {
-      return filters.iterator().next();
+      return filters.getFirst();
     } else {
-      return power -> {
-        for (MetalFilter filter : filters) {
-          if (filter.test(power)) {
-            return true;
-          }
-        }
-        return false;
-      };
+      return MetalPredicate.LOADER.or(filters);
     }
   }
 
   /** Finds the first metal ingredient in the input list */
-  private Predicate<MetalPower> getMetalFilter() {
+  private IJsonPredicate<MetalPower> getMetalFilter() {
     if (metalFilter == null) {
       metalFilter = getMetalFilter(getIngredients());
     }
@@ -92,7 +82,7 @@ public class MetalShapedForgeRecipe extends ShapedForgeRecipe {
   }
 
   /** Finds the metal in the given grid */
-  static MetalPower findMetal(CraftingInput input, Predicate<MetalPower> metal) {
+  static MetalPower findMetal(CraftingInput input, IJsonPredicate<MetalPower> metal) {
     // ensure same metal is in all slots
     MetalPower first = null;
     for (int i = 0; i < input.size(); i++) {
@@ -100,7 +90,7 @@ public class MetalShapedForgeRecipe extends ShapedForgeRecipe {
       if (!stack.isEmpty()) {
         // if we found a metal, work with it
         MetalPower power = getMetal(stack);
-        if (power != MetalPower.DEFAULT && metal.test(power)) {
+        if (power != MetalPower.DEFAULT && metal.matches(power)) {
           // first match is set
           if (first == null) {
             first = power;
@@ -142,7 +132,7 @@ public class MetalShapedForgeRecipe extends ShapedForgeRecipe {
     // search for metal ingredients
     for (int i = 0; i < ingredients.size(); i++) {
       Ingredient ingredient = ingredients.get(i);
-      if (unwrap(ingredient).getCustomIngredient() instanceof IngredientWithMetal) {
+      if (unwrap(ingredient).getCustomIngredient() instanceof MetalPredicate.IngredientWithMetal) {
         // if we have not yet found an ingredient, use this one for our input stacks
         if (inputExample == null) {
           indices.add(i);

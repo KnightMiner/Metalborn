@@ -1,8 +1,7 @@
 package knightminer.metalborn.json.recipe.cooking;
 
 import knightminer.metalborn.core.Registration;
-import knightminer.metalborn.json.ingredient.IngredientWithMetal;
-import knightminer.metalborn.json.ingredient.IngredientWithMetal.MetalFilter;
+import knightminer.metalborn.json.predicate.MetalPredicate;
 import knightminer.metalborn.json.recipe.MetalResult;
 import knightminer.metalborn.json.recipe.forge.MetalShapedForgeRecipe;
 import knightminer.metalborn.metal.MetalPower;
@@ -16,11 +15,10 @@ import net.minecraft.world.item.crafting.SmeltingRecipe;
 import net.minecraft.world.level.Level;
 import slimeknights.mantle.data.loadable.Loadables;
 import slimeknights.mantle.data.loadable.record.RecordLoadable;
+import slimeknights.mantle.data.predicate.IJsonPredicate;
 import slimeknights.mantle.recipe.cooking.CookingResultRecipe;
 import slimeknights.mantle.recipe.cooking.SmeltingResultRecipe;
 import slimeknights.mantle.recipe.helper.LoadableRecipeSerializer;
-
-import java.util.function.Predicate;
 
 /** Furnace recipe that allows recycling a metal item into ingots or nuggets of the right type in a furnace */
 public class SmeltingMetalRecyclingRecipe extends SmeltingRecipe implements CookingMetalRecyclingRecipe {
@@ -31,7 +29,7 @@ public class SmeltingMetalRecyclingRecipe extends SmeltingRecipe implements Cook
     SmeltingMetalRecyclingRecipe::new);
 
   private final MetalResult result;
-  private MetalFilter filter;
+  private IJsonPredicate<MetalPower> filter;
   protected SmeltingMetalRecyclingRecipe(String group, Ingredient input, MetalResult result, float experience, int cookingTime) {
     super(group, CookingBookCategory.MISC, input, result.getDisplay(), experience, cookingTime);
     this.result = result;
@@ -53,12 +51,12 @@ public class SmeltingMetalRecyclingRecipe extends SmeltingRecipe implements Cook
   }
 
   @Override
-  public Predicate<MetalPower> getFilter() {
+  public IJsonPredicate<MetalPower> getFilter() {
     if (filter == null) {
-      if (MetalShapedForgeRecipe.unwrap(ingredient).getCustomIngredient() instanceof IngredientWithMetal metal) {
+      if (MetalShapedForgeRecipe.unwrap(ingredient).getCustomIngredient() instanceof MetalPredicate.IngredientWithMetal metal) {
         filter = metal.filter();
       } else {
-        filter = MetalFilter.ANY;
+        filter = MetalPredicate.ANY;
       }
     }
     return filter;

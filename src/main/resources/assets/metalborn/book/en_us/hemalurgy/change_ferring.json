@@ -4,7 +4,7 @@
   "item": {
     "type": "metalborn:metal_item",
     "item": "metalborn:change_ferring",
-    "filter": "spike"
+    "filter": "metalborn:spike"
   },
   "text": [
     { "text": "To get more control over the metal granted, you can forge the spike with a netherite nugget instead of nicrosil to create other types of invested nuggets. Consuming this nugget changes your ferring type to the type of the spike." },

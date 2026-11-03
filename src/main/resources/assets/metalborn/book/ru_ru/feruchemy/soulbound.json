@@ -4,7 +4,7 @@
   "item": {
     "type": "metalborn:metal_item",
     "item": "metalborn:soulbound_ring",
-    "filter": "metalmind"
+    "filter": "metalborn:metalmind"
   },
   "text": [
     { "text": "Связанные кольца душ сохраняются после смерти, но для их использования нужна сила. Если ваша сила изменится после смерти, они могут быть бесполезны." },

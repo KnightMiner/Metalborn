@@ -4,7 +4,7 @@
   "item": {
     "type": "metalborn:metal_item",
     "item": "metalborn:soulbound_spike",
-    "filter": "spike"
+    "filter": "metalborn:spike"
   },
   "text": [
     { "text": "Связанные штыри душ дают постоянный доступ к силе, они остаются даже после смерти." },

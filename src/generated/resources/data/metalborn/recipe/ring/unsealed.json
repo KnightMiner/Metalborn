@@ -10,7 +10,7 @@
       "type": "metalborn:fillable",
       "match": {
         "type": "metalborn:metal_item",
-        "filter": "metalmind",
+        "filter": "metalborn:metalmind",
         "item": "metalborn:ring"
       },
       "when": "empty"
@@ -19,7 +19,7 @@
       "type": "metalborn:fillable",
       "match": {
         "type": "metalborn:metal_item",
-        "filter": "metalmind",
+        "filter": "metalborn:metalmind",
         "item": "metalborn:investiture_ring"
       },
       "when": "unsealed"

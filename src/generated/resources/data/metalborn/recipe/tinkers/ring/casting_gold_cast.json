@@ -9,6 +9,6 @@
   "cast": {
     "tag": "metalborn:casts/ring_multi_use"
   },
-  "filter": "metalmind",
+  "filter": "metalborn:metalmind",
   "result": "metalborn:ring"
 }

@@ -5,7 +5,7 @@
   "key": {
     "#": {
       "type": "metalborn:metal_shape",
-      "filter": "metalmind",
+      "filter": "metalborn:metalmind",
       "shape": "nugget"
     }
   },

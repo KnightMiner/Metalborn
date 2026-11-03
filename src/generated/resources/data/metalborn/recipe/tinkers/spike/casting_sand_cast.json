@@ -10,6 +10,6 @@
     "tag": "metalborn:casts/spike_single_use"
   },
   "cast_consumed": true,
-  "filter": "spike",
+  "filter": "metalborn:spike",
   "result": "metalborn:spike"
 }

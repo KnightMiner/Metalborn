@@ -12,7 +12,7 @@
   "pattern": [
     {
       "type": "metalborn:metal_item",
-      "filter": "metalmind",
+      "filter": "metalborn:metalmind",
       "item": "metalborn:ring"
     },
     {

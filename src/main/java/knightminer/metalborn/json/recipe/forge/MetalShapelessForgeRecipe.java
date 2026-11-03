@@ -12,23 +12,23 @@ import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.level.Level;
 import slimeknights.mantle.data.loadable.record.RecordLoadable;
+import slimeknights.mantle.data.predicate.IJsonPredicate;
 import slimeknights.mantle.recipe.helper.ItemOutput;
 
 import java.util.List;
-import java.util.function.Predicate;
 
 /** Forge recipe which sets a metal to the result */
 public class MetalShapelessForgeRecipe extends ShapelessForgeRecipe {
   /** Loadable instance to create the serializer */
   public static final RecordLoadable<MetalShapelessForgeRecipe> LOADABLE = makeLoader(MetalShapelessForgeRecipe::new);
 
-  private Predicate<MetalPower> metalFilter;
+  private IJsonPredicate<MetalPower> metalFilter;
   protected MetalShapelessForgeRecipe(NonNullList<Ingredient> ingredients, ItemOutput result, float experience, int cookingTime) {
     super(ingredients, result, experience, cookingTime);
   }
 
   /** Finds the first metal ingredient in the input list */
-  private Predicate<MetalPower> getMetalFilter() {
+  private IJsonPredicate<MetalPower> getMetalFilter() {
     if (metalFilter == null) {
       metalFilter = MetalShapedForgeRecipe.getMetalFilter(getIngredients());
     }

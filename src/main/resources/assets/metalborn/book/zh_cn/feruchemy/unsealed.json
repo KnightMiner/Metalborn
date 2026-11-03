@@ -4,7 +4,7 @@
   "item": {
     "type": "metalborn:metal_item",
     "item": "metalborn:unsealed_ring",
-    "filter": "metalmind"
+    "filter": "metalborn:metalmind"
   },
   "text": [
     { "text": "解封的戒指可以被任何人使用，包括本不具有那种金属能力的人。可同时佩戴的解封的戒指数量没有上限，因此它完全可以作为血金术的安全替代方案。" },

@@ -4,7 +4,7 @@
   "item": {
     "type": "metalborn:metal_shape",
     "shape": "nugget",
-    "filter": "natural_ferring"
+    "filter": "metalborn:natural_ferring"
   },
   "text": [
     { "text": "Рождение с металлической силой — редкость там, откуда я родом. Здесь же все ферринги обладают одной силой, которая может меняться после воскрешения. " },

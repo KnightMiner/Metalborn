@@ -6,9 +6,9 @@ import knightminer.metalborn.data.tag.MetalbornTags;
 import knightminer.metalborn.item.SatchelItem.SatchelType;
 import knightminer.metalborn.json.ingredient.FillableIngredient;
 import knightminer.metalborn.json.ingredient.FillableIngredient.FillState;
-import knightminer.metalborn.json.ingredient.IngredientWithMetal.MetalFilter;
 import knightminer.metalborn.json.ingredient.MetalItemIngredient;
 import knightminer.metalborn.json.ingredient.MetalShapeIngredient;
+import knightminer.metalborn.json.predicate.MetalPredicate;
 import knightminer.metalborn.json.recipe.cooking.CookingMetalRecyclingBuilder;
 import knightminer.metalborn.json.recipe.forge.ShapedForgeRecipeBuilder;
 import knightminer.metalborn.json.recipe.forge.ShapelessForgeRecipeBuilder;
@@ -82,13 +82,13 @@ public class RecipeProvider extends net.minecraft.data.recipes.RecipeProvider im
     // ferring nuggets
     ShapelessForgeRecipeBuilder.shapeless(Registration.RANDOM_FERRING)
       .requires(Registration.NICROSIL.getNuggetTag())
-      .requires(FillableIngredient.filled(MetalItemIngredient.of(Registration.SPIKE, MetalFilter.SPIKE)))
+      .requires(FillableIngredient.filled(MetalItemIngredient.of(Registration.SPIKE, MetalPredicate.SPIKE)))
       .cookingRate(2)
       .experience(3f)
       .save(output);
     ShapelessForgeRecipeBuilder.shapeless(Registration.CHANGE_FERRING)
       .requires(MetalbornTags.Items.NETHERITE_NUGGETS)
-      .requires(FillableIngredient.filled(MetalItemIngredient.of(Registration.SPIKE, MetalFilter.SPIKE)))
+      .requires(FillableIngredient.filled(MetalItemIngredient.of(Registration.SPIKE, MetalPredicate.SPIKE)))
       .metal()
       .cookingRate(2)
       .experience(3f)
@@ -137,7 +137,7 @@ public class RecipeProvider extends net.minecraft.data.recipes.RecipeProvider im
     // rings
     ShapedForgeRecipeBuilder.shaped(Registration.RING)
       .pattern("##").pattern("##")
-      .define('#', MetalShapeIngredient.nugget(MetalFilter.METALMIND))
+      .define('#', MetalShapeIngredient.nugget(MetalPredicate.METALMIND))
       .metal()
       .cookingRate(1)
       .experience(0.5f)
@@ -168,7 +168,7 @@ public class RecipeProvider extends net.minecraft.data.recipes.RecipeProvider im
     // bracers
     ShapedForgeRecipeBuilder.shaped(Registration.BRACER)
       .pattern("##").pattern("##")
-      .define('#', MetalShapeIngredient.ingot(MetalFilter.METALMIND))
+      .define('#', MetalShapeIngredient.ingot(MetalPredicate.METALMIND))
       .metal()
       .cookingRate(4)
       .experience(2f)
@@ -196,7 +196,7 @@ public class RecipeProvider extends net.minecraft.data.recipes.RecipeProvider im
     // spikes
     ShapedForgeRecipeBuilder.shaped(Registration.SPIKE)
       .pattern(" #").pattern("# ")
-      .define('#', MetalShapeIngredient.ingot(MetalFilter.SPIKE))
+      .define('#', MetalShapeIngredient.ingot(MetalPredicate.SPIKE))
       .metal()
       .cookingRate(4) // you get 4 spikes per fuel usage, but you really want hoppers since they are unstackable
       .experience(1f)
@@ -211,8 +211,8 @@ public class RecipeProvider extends net.minecraft.data.recipes.RecipeProvider im
     // unsealed is crafted from a full nicrosil metalmind and a matching empty metalmind
     ShapelessForgeRecipeBuilder.shapeless(Registration.UNSEALED_RING)
       .requires(MetalbornTags.Items.NETHERITE_NUGGETS)
-      .requires(FillableIngredient.of(FillState.EMPTY, MetalItemIngredient.of(Registration.RING, MetalFilter.METALMIND)))
-      .requires(FillableIngredient.of(FillState.UNSEALED, MetalItemIngredient.of(Registration.INVESTITURE_RING, MetalFilter.METALMIND)))
+      .requires(FillableIngredient.of(FillState.EMPTY, MetalItemIngredient.of(Registration.RING, MetalPredicate.METALMIND)))
+      .requires(FillableIngredient.of(FillState.UNSEALED, MetalItemIngredient.of(Registration.INVESTITURE_RING, MetalPredicate.METALMIND)))
       .metal()
       .cookingRate(4)
       .experience(0.5f)
@@ -220,7 +220,7 @@ public class RecipeProvider extends net.minecraft.data.recipes.RecipeProvider im
     // soulbound requires a full identity ring
     ShapelessForgeRecipeBuilder.shapeless(Registration.SOULBOUND_RING)
       .requires(Items.ENDER_PEARL)
-      .requires(FillableIngredient.of(FillState.EMPTY, MetalItemIngredient.of(Registration.RING, MetalFilter.METALMIND)))
+      .requires(FillableIngredient.of(FillState.EMPTY, MetalItemIngredient.of(Registration.RING, MetalPredicate.METALMIND)))
       .requires(FillableIngredient.of(FillState.FILLED, Ingredient.of(Registration.IDENTITY_RING)))
       .metal()
       .cookingRate(4)
@@ -243,8 +243,8 @@ public class RecipeProvider extends net.minecraft.data.recipes.RecipeProvider im
     // soulbound spikes require full spikes of both variants, plus some echo
     ShapelessForgeRecipeBuilder.shapeless(Registration.SOULBOUND_SPIKE)
       .requires(Items.ECHO_SHARD)
-      .requires(FillableIngredient.of(FillState.FILLED, MetalItemIngredient.of(Registration.SPIKE, MetalFilter.SPIKE)))
-      .requires(FillableIngredient.of(FillState.FILLED, MetalItemIngredient.of(Registration.INVESTITURE_SPIKE, MetalFilter.SPIKE)))
+      .requires(FillableIngredient.of(FillState.FILLED, MetalItemIngredient.of(Registration.SPIKE, MetalPredicate.SPIKE)))
+      .requires(FillableIngredient.of(FillState.FILLED, MetalItemIngredient.of(Registration.INVESTITURE_SPIKE, MetalPredicate.SPIKE)))
       .metal()
       .cookingRate(4)
       .experience(0.5f)
@@ -368,9 +368,9 @@ public class RecipeProvider extends net.minecraft.data.recipes.RecipeProvider im
 
     // recycling - all done in the furnace and blast furnace
     String recyclingFolder = "recycling/";
-    recycle(output, Registration.BRACER, MetalFilter.METALMIND, MetalShape.INGOT,  4, 800, recyclingFolder + "bracer/metal");
-    recycle(output, Registration.RING,   MetalFilter.METALMIND, MetalShape.NUGGET, 4, 200, recyclingFolder + "ring/metal");
-    recycle(output, Registration.SPIKE,  MetalFilter.SPIKE,     MetalShape.INGOT,  2, 400, recyclingFolder + "spike/metal");
+    recycle(output, Registration.BRACER, MetalPredicate.METALMIND, MetalShape.INGOT,  4, 800, recyclingFolder + "bracer/metal");
+    recycle(output, Registration.RING,   MetalPredicate.METALMIND, MetalShape.NUGGET, 4, 200, recyclingFolder + "ring/metal");
+    recycle(output, Registration.SPIKE,  MetalPredicate.SPIKE,     MetalShape.INGOT,  2, 400, recyclingFolder + "spike/metal");
     recycle(output, Registration.INVESTITURE_BRACER, Registration.NICROSIL.getIngotTag(),  4, 800, recyclingFolder + "bracer/nicrosil");
     recycle(output, Registration.INVESTITURE_RING,   Registration.NICROSIL.getNuggetTag(), 4, 200, recyclingFolder + "ring/nicrosil");
     recycle(output, Registration.INVESTITURE_SPIKE,  Registration.NICROSIL.getIngotTag(),  2, 400, recyclingFolder + "spike/nicrosil");
@@ -408,7 +408,7 @@ public class RecipeProvider extends net.minecraft.data.recipes.RecipeProvider im
 
 
   /** Creates a metal item recycling recipe pair for the given inputs */
-  private void recycle(RecipeOutput output, ItemLike item, MetalFilter filter, MetalShape shape, int amount, int cookingTime, String prefix) {
+  private void recycle(RecipeOutput output, ItemLike item, MetalPredicate filter, MetalShape shape, int amount, int cookingTime, String prefix) {
     // special recipe, so no advancements
     CookingMetalRecyclingBuilder.builder(shape, amount)
       .requires(MetalItemIngredient.of(item, filter))

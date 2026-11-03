@@ -4,7 +4,7 @@
   "item": {
     "type": "metalborn:metal_shape",
     "shape": "nugget",
-    "filter": "natural_ferring"
+    "filter": "metalborn:natural_ferring"
   },
   "text": [
     { "text": "Where I come from, being born with any metallic power is rare. It seems in this land though, everyone is born as a ferring with access to a single power. Additionally, resurrection seems to changing their ferring type." },

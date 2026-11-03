@@ -9,6 +9,6 @@
   "cast": {
     "tag": "metalborn:casts/bracer_multi_use"
   },
-  "filter": "metalmind",
+  "filter": "metalborn:metalmind",
   "result": "metalborn:bracer"
 }

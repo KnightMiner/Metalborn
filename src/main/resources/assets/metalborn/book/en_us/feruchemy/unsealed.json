@@ -4,7 +4,7 @@
   "item": {
     "type": "metalborn:metal_item",
     "item": "metalborn:unsealed_ring",
-    "filter": "metalmind"
+    "filter": "metalborn:metalmind"
   },
   "text": [
     { "text": "Unsealed rings are usable by anyone, even those who lack access to that power. Any number of unsealed metalminds may be used at once, making them a safer alternative to Hemalurgy." },

@@ -4,7 +4,7 @@
   "item": {
     "type": "metalborn:metal_shape",
     "shape": "nugget",
-    "filter": "natural_ferring"
+    "filter": "metalborn:natural_ferring"
   },
   "text": [
     { "text": "在我的家乡，生来便具有金属能力的人寥寥无几。可在这片大地上，仿佛一切生灵生来便是藏金术师，能够使用某一种金属能力。此外，每次复活似乎还会改变藏金术类型。" },

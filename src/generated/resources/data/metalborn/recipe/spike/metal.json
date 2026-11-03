@@ -5,7 +5,7 @@
   "key": {
     "#": {
       "type": "metalborn:metal_shape",
-      "filter": "spike",
+      "filter": "metalborn:spike",
       "shape": "ingot"
     }
   },

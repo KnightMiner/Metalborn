@@ -4,7 +4,7 @@
   "item": {
     "type": "metalborn:metal_item",
     "item": "metalborn:ring",
-    "filter": "metalmind"
+    "filter": "metalborn:metalmind"
   },
   "text": [
     { "text": "戒指可通过金属锻造的方式制作，是最常使用的金属意识载体。戒指储存金属能力的总量有限，通常只有5分钟左右。你最多可以佩戴8枚戒指。 尽管每一枚戒指的储存上限不高，但如果有同时储存或汲取大量金属能力的需求的话，使用戒指会更加方便。" },

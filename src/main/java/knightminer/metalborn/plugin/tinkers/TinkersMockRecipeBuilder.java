@@ -5,8 +5,8 @@ import knightminer.metalborn.core.Registration;
 import knightminer.metalborn.data.MetalIds;
 import knightminer.metalborn.data.tag.MetalbornTags;
 import knightminer.metalborn.item.MetalItem;
-import knightminer.metalborn.json.ingredient.IngredientWithMetal.MetalFilter;
 import knightminer.metalborn.json.ingredient.MetalItemIngredient;
+import knightminer.metalborn.metal.MetalPower;
 import knightminer.metalborn.util.CastItemObject;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.FluidTags;
@@ -24,6 +24,7 @@ import net.neoforged.neoforge.common.crafting.CompoundIngredient;
 import net.neoforged.neoforge.fluids.crafting.SizedFluidIngredient;
 import net.neoforged.neoforge.registries.DeferredItem;
 import org.jetbrains.annotations.Nullable;
+import slimeknights.mantle.data.predicate.IJsonPredicate;
 import slimeknights.mantle.recipe.condition.TagFilledCondition;
 import slimeknights.mantle.recipe.data.mock.MockRecipe.SimpleMockRecipe;
 import slimeknights.mantle.recipe.data.mock.MockRecipeConsumer;
@@ -54,7 +55,7 @@ public class TinkersMockRecipeBuilder {
   private static final ResourceLocation SAND_CAST_TITLE = ResourceLocation.fromNamespaceAndPath(TINKERS, "sand_cast");
 
   /** Creates all recipes for creating casts in Tinkers' Construct */
-  public static void castRecipes(MockRecipeConsumer consumer, ItemLike metalItem, List<ItemLike> otherItems, CastItemObject cast, MetalFilter filter, int cost, String folder) {
+  public static void castRecipes(MockRecipeConsumer consumer, ItemLike metalItem, List<ItemLike> otherItems, CastItemObject cast, IJsonPredicate<MetalPower> filter, int cost, String folder) {
     ResourceLocation id = cast.id();
     ResourceLocation root = id.withPrefix(folder);
     ResourceLocation casts = root.withSuffix("/cast/");

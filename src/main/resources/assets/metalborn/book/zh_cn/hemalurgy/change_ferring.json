@@ -4,7 +4,7 @@
   "item": {
     "type": "metalborn:metal_item",
     "item": "metalborn:change_ferring",
-    "filter": "spike"
+    "filter": "metalborn:spike"
   },
   "text": [
     { "text": "想要更好的掌控新得到的金属能力的话，你需要在金属锻造操作中，将要与尖钉合并的金属粒由镍铬合金粒改成下界合金粒，以此制作其他种类的注能金属粒。在吃下这颗金属粒后，尖钉对应的藏金术血脉会成为你的新藏金术血脉。" },

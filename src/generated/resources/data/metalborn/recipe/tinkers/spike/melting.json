@@ -8,7 +8,7 @@
   "amount": 180,
   "ingredient": {
     "type": "metalborn:metal_item",
-    "filter": "spike",
+    "filter": "metalborn:spike",
     "item": "metalborn:spike"
   }
 }

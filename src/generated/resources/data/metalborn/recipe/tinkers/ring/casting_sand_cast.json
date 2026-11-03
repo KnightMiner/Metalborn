@@ -10,6 +10,6 @@
     "tag": "metalborn:casts/ring_single_use"
   },
   "cast_consumed": true,
-  "filter": "metalmind",
+  "filter": "metalborn:metalmind",
   "result": "metalborn:ring"
 }

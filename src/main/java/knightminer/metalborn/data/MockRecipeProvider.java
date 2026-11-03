@@ -2,8 +2,9 @@ package knightminer.metalborn.data;
 
 import knightminer.metalborn.core.Registration;
 import knightminer.metalborn.json.ingredient.FillableIngredient;
-import knightminer.metalborn.json.ingredient.IngredientWithMetal.MetalFilter;
 import knightminer.metalborn.json.ingredient.MetalItemIngredient;
+import knightminer.metalborn.json.predicate.MetalPredicate;
+import knightminer.metalborn.metal.MetalPower;
 import knightminer.metalborn.plugin.tinkers.MetalCastingRecipeBuilder;
 import knightminer.metalborn.plugin.tinkers.MetalMeltingRecipeBuilder;
 import knightminer.metalborn.plugin.tinkers.TinkersMockRecipeBuilder;
@@ -17,6 +18,7 @@ import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.material.Fluid;
 import net.neoforged.neoforge.registries.DeferredItem;
+import slimeknights.mantle.data.predicate.IJsonPredicate;
 import slimeknights.mantle.recipe.data.mock.MockRecipeConsumer;
 import slimeknights.mantle.registration.object.IdAwareObject;
 import slimeknights.mantle.util.JsonHelper;
@@ -40,9 +42,9 @@ public class MockRecipeProvider extends slimeknights.mantle.recipe.data.mock.Moc
     int ingot = 90;
     int nugget = 10;
     // standard metal items
-    metalMeltingCasting(output, Registration.RING,   List.of(Registration.INVESTITURE_RING,   Registration.IDENTITY_RING),   Registration.RING_CAST,   MetalFilter.METALMIND, nugget * 4, tinkersFolder);
-    metalMeltingCasting(output, Registration.BRACER, List.of(Registration.INVESTITURE_BRACER, Registration.IDENTITY_BRACER), Registration.BRACER_CAST, MetalFilter.METALMIND, ingot * 4,  tinkersFolder);
-    metalMeltingCasting(output, Registration.SPIKE,  List.of(Registration.INVESTITURE_SPIKE),                                Registration.SPIKE_CAST,  MetalFilter.SPIKE,     ingot * 2,  tinkersFolder);
+    metalMeltingCasting(output, Registration.RING,   List.of(Registration.INVESTITURE_RING,   Registration.IDENTITY_RING),   Registration.RING_CAST,   MetalPredicate.METALMIND, nugget * 4, tinkersFolder);
+    metalMeltingCasting(output, Registration.BRACER, List.of(Registration.INVESTITURE_BRACER, Registration.IDENTITY_BRACER), Registration.BRACER_CAST, MetalPredicate.METALMIND, ingot * 4,  tinkersFolder);
+    metalMeltingCasting(output, Registration.SPIKE,  List.of(Registration.INVESTITURE_SPIKE),                                Registration.SPIKE_CAST,  MetalPredicate.SPIKE,     ingot * 2,  tinkersFolder);
     // special metalminds
     TagKey<Fluid> nicrosil = FluidTags.create(commonResource("molten_nicrosil"));
     int nicrosilTemperature = 1100;
@@ -56,12 +58,12 @@ public class MockRecipeProvider extends slimeknights.mantle.recipe.data.mock.Moc
     // nuggets to change ferring type
     TagKey<Fluid> netherite = FluidTags.create(commonResource("molten_netherite"));
     int netheriteTemperature = 1250;
-    TinkersMockRecipeBuilder.casting(output, Registration.RANDOM_FERRING, false, FillableIngredient.filled(MetalItemIngredient.of(Registration.SPIKE, MetalFilter.SPIKE)), nicrosil,  nugget, nicrosilTemperature,  tinkersFolder + "random_ferring_casting");
-    TinkersMockRecipeBuilder.casting(output, Registration.CHANGE_FERRING, true,  FillableIngredient.filled(MetalItemIngredient.of(Registration.SPIKE, MetalFilter.SPIKE)), netherite, nugget, netheriteTemperature, tinkersFolder + "change_ferring_casting");
+    TinkersMockRecipeBuilder.casting(output, Registration.RANDOM_FERRING, false, FillableIngredient.filled(MetalItemIngredient.of(Registration.SPIKE, MetalPredicate.SPIKE)), nicrosil,  nugget, nicrosilTemperature,  tinkersFolder + "random_ferring_casting");
+    TinkersMockRecipeBuilder.casting(output, Registration.CHANGE_FERRING, true,  FillableIngredient.filled(MetalItemIngredient.of(Registration.SPIKE, MetalPredicate.SPIKE)), netherite, nugget, netheriteTemperature, tinkersFolder + "change_ferring_casting");
   }
 
   /** Adds a recipe for casting a metal object, like a metalmind */
-  private <T extends ItemLike & IdAwareObject> void metalMeltingCasting(MockRecipeConsumer consumer, DeferredItem<?> result, List<ItemLike> otherItems, CastItemObject cast, MetalFilter filter, int amount, String folder) {
+  private <T extends ItemLike & IdAwareObject> void metalMeltingCasting(MockRecipeConsumer consumer, DeferredItem<?> result, List<ItemLike> otherItems, CastItemObject cast, IJsonPredicate<MetalPower> filter, int amount, String folder) {
     // casting
     ResourceLocation id = result.getId();
     MetalCastingRecipeBuilder.table(result)

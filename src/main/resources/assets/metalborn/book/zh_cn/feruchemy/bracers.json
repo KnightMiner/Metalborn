@@ -4,7 +4,7 @@
   "item": {
     "type": "metalborn:metal_item",
     "item": "metalborn:bracer",
-    "filter": "metalmind"
+    "filter": "metalborn:metalmind"
   },
   "text": [
     { "text": "护腕可在金属锻炉中制作，能够大量储存金属能力，上限约50分钟。 受其尺寸限制，一般人只能穿戴2个护腕，但更长的时效使它非常实惠。" },

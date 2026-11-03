@@ -4,7 +4,7 @@
   "experience": 0.5,
   "ingredient": {
     "type": "metalborn:metal_item",
-    "filter": "metalmind",
+    "filter": "metalborn:metalmind",
     "item": "metalborn:ring"
   },
   "result": {
