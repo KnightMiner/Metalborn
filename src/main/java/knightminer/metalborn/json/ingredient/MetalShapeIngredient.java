@@ -55,8 +55,7 @@ public record MetalShapeIngredient(MetalShape shape, IJsonPredicate<MetalPower> 
 
   @Override
   public boolean isSimple() {
-    // simple as we do just match a list of items, no NBT involved
-    return true;
+    return false;
   }
 
   @Override

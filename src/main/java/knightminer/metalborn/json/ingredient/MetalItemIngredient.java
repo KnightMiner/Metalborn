@@ -47,7 +47,7 @@ public record MetalItemIngredient(Item item, IJsonPredicate<MetalPower> filter) 
 
   @Override
   public boolean isSimple() {
-    return true;
+    return false;
   }
 
   @Override
