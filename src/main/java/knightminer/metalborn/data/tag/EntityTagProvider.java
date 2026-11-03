@@ -39,7 +39,7 @@ public class EntityTagProvider extends EntityTypeTagsProvider {
     tag(MetalIds.roseGold).addTag(MetalbornTags.Entities.ZOMBIES);
     tag(MetalIds.bendalloy).addTag(MetalbornTags.Entities.ZOMBIES);
     // spiritual
-    tag(MetalIds.netherite).addTag(MetalbornTags.Entities.ILLAGERS);
+    tag(MetalIds.emerald).addTag(MetalbornTags.Entities.ILLAGERS);
     tag(MetalIds.chromium).addTag(MetalbornTags.Entities.ILLAGERS);
     // compat cognitive
     tag(MetalIds.silver).add(EntityType.SILVERFISH);

@@ -126,14 +126,14 @@ public class MetalPowerProvider extends AbstractMetalPowerProvider {
       .feruchemy(AttributeMetalEffect.builder(Registration.WARMTH, Operation.ADD_MULTIPLIED_TOTAL).eachLevel(0.1f))
       .feruchemy(new TappingMetalEffect(AttributeMetalEffect.builder(Registration.HEAT_DAMAGE, Operation.ADD_VALUE).eachLevel(1)));
 
-    metal(MetalIds.netherite).name("netherite_scrap").index(15).hemalurgyCharge(10).disallowFerring().unless(MetalIds.chromium)
-      .fluid(FluidTags.create(ResourceLocation.fromNamespaceAndPath(Metalborn.TINKERS, "molten_debris"))).temperature(1175)
+    metal(MetalIds.emerald).index(15).hemalurgyCharge(10).temperature(934).unless(MetalIds.chromium)
+      .ingot(Tags.Items.GEMS_EMERALD).setGem()
       .feruchemy(AttributeMetalEffect.builder(Attributes.LUCK, Operation.ADD_VALUE).eachLevel(0.5f))
       .feruchemy(AttributeMetalEffect.builder(MantleAttributes.EQUIPMENT_DROP_CHANCE_BOOST, Operation.ADD_VALUE).eachLevel(0.01f))
       .feruchemy(new TappingMetalEffect(AttributeMetalEffect.builder(MantleAttributes.LOOTING_BOOST, Operation.ADD_VALUE).eachLevel(0.25f)))
       .feruchemy(new TappingMetalEffect(AttributeMetalEffect.builder(MantleAttributes.FORTUNE_BOOST, Operation.ADD_VALUE).eachLevel(0.25f)))
       .feruchemy(new StoringMetalEffect(AttributeMetalEffect.builder(Registration.DROP_CHANCE, Operation.ADD_MULTIPLIED_TOTAL).eachLevel(0.1f)));
-    metal(MetalIds.chromium).index(15).integration().hemalurgyCharge(10).temperature(1200).fallback(MetalIds.netherite)
+    metal(MetalIds.chromium).index(15).integration().hemalurgyCharge(10).temperature(1200).fallback(MetalIds.emerald)
       .feruchemy(AttributeMetalEffect.builder(Attributes.LUCK, Operation.ADD_VALUE).eachLevel(0.5f))
       .feruchemy(AttributeMetalEffect.builder(MantleAttributes.EQUIPMENT_DROP_CHANCE_BOOST, Operation.ADD_VALUE).eachLevel(0.01f))
       .feruchemy(new TappingMetalEffect(AttributeMetalEffect.builder(MantleAttributes.LOOTING_BOOST, Operation.ADD_VALUE).eachLevel(0.25f)))

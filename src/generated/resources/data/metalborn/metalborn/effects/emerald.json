@@ -5,7 +5,7 @@
       "tag": "c:ingots/chromium"
     }
   ],
-  "allow_ferring": false,
+  "allow_ferring": true,
   "capacity": 6000,
   "fallback": "metalborn:chromium",
   "feruchemy": [
@@ -43,10 +43,11 @@
       "storing_type": "metalborn:attribute"
     }
   ],
-  "fluid": "tconstruct:molten_debris",
   "format": "ticks",
   "hemalurgy_charge": 10,
   "index": 15,
-  "name": "netherite_scrap",
-  "temperature": 1175
+  "ingot": "c:gems/emerald",
+  "is_gem": true,
+  "name": "emerald",
+  "temperature": 934
 }

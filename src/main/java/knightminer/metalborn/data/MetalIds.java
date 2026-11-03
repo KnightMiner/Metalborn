@@ -20,6 +20,7 @@ public class MetalIds {
   public static final MetalId gold = metal("gold");
   public static final MetalId roseGold = metal("rose_gold");
   // spiritual
+  public static final MetalId emerald = metal("emerald");
   public static final MetalId nicrosil = metal("nicrosil");
   public static final MetalId netherite = metal("netherite");
 

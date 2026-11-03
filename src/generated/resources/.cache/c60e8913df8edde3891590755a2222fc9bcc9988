@@ -1,4 +1,4 @@
-// 1.21.1	2026-10-15T21:21:25.3928541	Tags for minecraft:entity_type mod id metalborn
+// 1.21.1	2026-11-03T16:36:40.1556585	Tags for minecraft:entity_type mod id metalborn
 0958a192333a95009361b706cd3836093a760177 data/c/tags/entity_type/illagers.json
 13663c3a2cec55d46fe29a2ee9e9d52f6ec600ad data/c/tags/entity_type/piglins.json
 82053daa300f581865ee639d7c5b293aa4a14e96 data/c/tags/entity_type/zombies.json
@@ -10,9 +10,9 @@ bc2e607042f35b5269cd9e4e6c13bc1350bfc15f data/metalborn/tags/entity_type/targets
 76c0522664726c09461ad4565b6fba80b4f816b2 data/metalborn/tags/entity_type/targets/constantan.json
 b875d46f3408ef8da7272f44f87047b9feff082e data/metalborn/tags/entity_type/targets/copper.json
 a3b1b11b4e4acdc60cff0a6636a1ea6abf609520 data/metalborn/tags/entity_type/targets/electrum.json
+35e0e34e22382807ad6c37329c1dea60fd5a3257 data/metalborn/tags/entity_type/targets/emerald.json
 c354a89bc3273331ebd2afb0bcaf0b6e99292dc6 data/metalborn/tags/entity_type/targets/gold.json
 aa698766e67caa09a21e02e1c5187060f51cbb48 data/metalborn/tags/entity_type/targets/iron.json
-35e0e34e22382807ad6c37329c1dea60fd5a3257 data/metalborn/tags/entity_type/targets/netherite.json
 a15d44b6e4cb2744c21fd173d65bb9858de283b1 data/metalborn/tags/entity_type/targets/nickel.json
 da9ec5f7ed64a0d225e00ee60b8e6d6408b431fb data/metalborn/tags/entity_type/targets/pewter.json
 bc2e607042f35b5269cd9e4e6c13bc1350bfc15f data/metalborn/tags/entity_type/targets/rose_gold.json

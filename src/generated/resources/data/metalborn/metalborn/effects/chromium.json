@@ -16,7 +16,7 @@
   ],
   "allow_ferring": true,
   "capacity": 6000,
-  "fallback": "metalborn:netherite",
+  "fallback": "metalborn:emerald",
   "feruchemy": [
     {
       "type": "metalborn:attribute",
