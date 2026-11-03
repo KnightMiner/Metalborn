@@ -25,7 +25,7 @@ public class ShapelessForgeRecipe extends AbstractForgeRecipe {
   private final boolean isSimple;
   protected ShapelessForgeRecipe(NonNullList<Ingredient> ingredients, ItemOutput result, float experience, int cookingTime) {
     super(result, experience, cookingTime);
-    this.ingredients = new NonNullList<>(List.copyOf(ingredients), Ingredient.EMPTY);
+    this.ingredients = ingredients;
     this.isSimple = ingredients.stream().allMatch(Ingredient::isSimple);
   }
 
