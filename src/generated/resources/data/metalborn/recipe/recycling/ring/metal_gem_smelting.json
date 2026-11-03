@@ -1,0 +1,17 @@
+{
+  "type": "metalborn:smelting_metal_recycling",
+  "cooking_time": 200,
+  "experience": 0.5,
+  "ingredient": {
+    "type": "metalborn:metal_item",
+    "filter": {
+      "type": "mantle:and",
+      "predicates": [
+        "metalborn:metalmind",
+        "metalborn:is_gem"
+      ]
+    },
+    "item": "metalborn:ring"
+  },
+  "result": "ingot"
+}

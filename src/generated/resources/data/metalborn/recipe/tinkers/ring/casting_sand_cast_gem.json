@@ -1,0 +1,21 @@
+{
+  "neoforge:conditions": [
+    {
+      "type": "neoforge:false"
+    }
+  ],
+  "type": "metalborn:metal_casting_table",
+  "amount": 100,
+  "cast": {
+    "tag": "metalborn:casts/ring_single_use"
+  },
+  "cast_consumed": true,
+  "filter": {
+    "type": "mantle:and",
+    "predicates": [
+      "metalborn:metalmind",
+      "metalborn:is_gem"
+    ]
+  },
+  "result": "metalborn:ring"
+}

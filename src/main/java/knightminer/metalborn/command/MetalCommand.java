@@ -172,7 +172,9 @@ public class MetalCommand {
       List<MutableComponent> stats = new ArrayList<>();
       stats.add(Component.translatable("command.metalborn.metal.stats", id.getName(), id(id), power.index()));
       stats.add(Component.translatable("command.metalborn.metal.stats.ingot", id(power.ingot().location())));
-      stats.add(Component.translatable("command.metalborn.metal.stats.nugget", id(power.nugget().location())));
+      if (!power.isGem()) {
+        stats.add(Component.translatable("command.metalborn.metal.stats.nugget", id(power.nugget().location())));
+      }
       if (power.temperature() > 0) {
         stats.add(Component.translatable("command.metalborn.metal.stats.fluid", id(power.fluid().location()), power.temperature()));
       }

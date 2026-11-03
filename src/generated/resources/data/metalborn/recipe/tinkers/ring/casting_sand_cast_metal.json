@@ -10,6 +10,15 @@
     "tag": "metalborn:casts/ring_single_use"
   },
   "cast_consumed": true,
-  "filter": "metalborn:metalmind",
+  "filter": {
+    "type": "mantle:and",
+    "predicates": [
+      "metalborn:metalmind",
+      {
+        "type": "mantle:inverted",
+        "inverted_type": "metalborn:is_gem"
+      }
+    ]
+  },
   "result": "metalborn:ring"
 }

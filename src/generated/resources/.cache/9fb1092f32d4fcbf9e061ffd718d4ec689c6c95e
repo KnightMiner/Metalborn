@@ -1,4 +1,4 @@
-// 1.21.1	2026-11-03T15:58:23.4613502	Recipes
+// 1.21.1	2026-11-03T16:35:59.0710458	Recipes
 75b30f35190d9eb53c356304ae554792a90a50e2 data/metalborn/advancement/recipes/cooking/metal/tin_ingot_blasting.json
 3eadf1418a77c5584a0be47c94106163d1b1dda0 data/metalborn/advancement/recipes/cooking/metal/tin_ingot_smelting.json
 6098e6e98ce88facc7cfea4fc976838f8b7caeaa data/metalborn/advancement/recipes/cooking/recycling/bracer/nicrosil_blasting.json
@@ -121,8 +121,10 @@ b0dc484b0c5a202d0046132b9dd0ec336395b3de data/metalborn/recipe/recycling/bracer/
 bbaa42df219b40e1f7a746e4527d4926de787a0f data/metalborn/recipe/recycling/ring/identity_blasting_quartz.json
 17f1396730933568aff916c196924ed923d98276 data/metalborn/recipe/recycling/ring/identity_smelting_aluminum.json
 a58881e54f4a966d36129fc1b0b9fb1e0cbad215 data/metalborn/recipe/recycling/ring/identity_smelting_quartz.json
-7dea3f74f5988cf8c5f08fa497242628b8779432 data/metalborn/recipe/recycling/ring/metal_blasting.json
-107a35b8bf7986dd63b676e4ebbd527d9bb5bd1d data/metalborn/recipe/recycling/ring/metal_smelting.json
+7333ce67c5bfd0d8f0cbfb8195e1d83a4a0f7d2f data/metalborn/recipe/recycling/ring/metal_gem_blasting.json
+8efc97d8bc403d89885b56b5b8f0e111ce9780bb data/metalborn/recipe/recycling/ring/metal_gem_smelting.json
+7dea3f74f5988cf8c5f08fa497242628b8779432 data/metalborn/recipe/recycling/ring/metal_nugget_blasting.json
+107a35b8bf7986dd63b676e4ebbd527d9bb5bd1d data/metalborn/recipe/recycling/ring/metal_nugget_smelting.json
 07b676408545a3fead8a5711eb9fe364690b9f19 data/metalborn/recipe/recycling/ring/nicrosil_blasting.json
 b7beda7fc6b22ee4becc1feb8dda936751e058ff data/metalborn/recipe/recycling/ring/nicrosil_smelting.json
 6872a136770df951c723915ce78741951d6491f3 data/metalborn/recipe/recycling/spike/metal_blasting.json
@@ -131,8 +133,9 @@ b7beda7fc6b22ee4becc1feb8dda936751e058ff data/metalborn/recipe/recycling/ring/ni
 be6113c51db02a770b83d3121e39b20074a165e3 data/metalborn/recipe/recycling/spike/nicrosil_smelting.json
 c242c16d7b692b68da8ce9f63277407aab3a716a data/metalborn/recipe/ring/identity_aluminum.json
 5688e7bbdaf69406ddc193b7cfb78597b8f6b2ee data/metalborn/recipe/ring/identity_quartz.json
-a2c23c356efd04bb292beaa97fd34e37709d98cc data/metalborn/recipe/ring/metal.json
-6c3406344e72e72e2a6af7cf4ea5009e07a9108f data/metalborn/recipe/ring/metal_from_ingot.json
+1fcdfab89ff45dc4219ead59cc65e12208383374 data/metalborn/recipe/ring/metal_from_gem.json
+e6923c93deab33461cb61dbd4b658f29f227e2d0 data/metalborn/recipe/ring/metal_from_ingot.json
+a2c23c356efd04bb292beaa97fd34e37709d98cc data/metalborn/recipe/ring/metal_from_nugget.json
 2e405611e800993b2a2c73a22ee887116fedcc23 data/metalborn/recipe/ring/nicrosil.json
 31d218e83a5911e7dd1ae871ba9b5551a8f0633c data/metalborn/recipe/ring/soulbound.json
 d455c0fe1a039688e3c1f02a72c5b8b3bbb97f00 data/metalborn/recipe/ring/soulbound_identity.json

@@ -8,7 +8,16 @@
   "amount": 180,
   "ingredient": {
     "type": "metalborn:metal_item",
-    "filter": "metalborn:spike",
+    "filter": {
+      "type": "mantle:and",
+      "predicates": [
+        "metalborn:spike",
+        {
+          "type": "mantle:inverted",
+          "inverted_type": "metalborn:is_gem"
+        }
+      ]
+    },
     "item": "metalborn:spike"
   }
 }

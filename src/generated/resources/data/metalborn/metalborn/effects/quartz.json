@@ -10,6 +10,7 @@
   "format": "ticks",
   "index": 16,
   "ingot": "c:gems/quartz",
+  "is_gem": true,
   "name": "quartz",
   "temperature": 637
 }

@@ -5,10 +5,16 @@
     }
   ],
   "type": "metalborn:metal_casting_table",
-  "amount": 40,
+  "amount": 100,
   "cast": {
     "tag": "metalborn:casts/ring_multi_use"
   },
-  "filter": "metalborn:metalmind",
+  "filter": {
+    "type": "mantle:and",
+    "predicates": [
+      "metalborn:metalmind",
+      "metalborn:is_gem"
+    ]
+  },
   "result": "metalborn:ring"
 }

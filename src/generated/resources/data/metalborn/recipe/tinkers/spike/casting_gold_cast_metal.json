@@ -9,6 +9,15 @@
   "cast": {
     "tag": "metalborn:casts/spike_multi_use"
   },
-  "filter": "metalborn:spike",
+  "filter": {
+    "type": "mantle:and",
+    "predicates": [
+      "metalborn:spike",
+      {
+        "type": "mantle:inverted",
+        "inverted_type": "metalborn:is_gem"
+      }
+    ]
+  },
   "result": "metalborn:spike"
 }

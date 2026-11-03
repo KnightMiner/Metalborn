@@ -5,10 +5,16 @@
     }
   ],
   "type": "metalborn:metal_casting_table",
-  "amount": 360,
+  "amount": 400,
   "cast": {
     "tag": "metalborn:casts/bracer_multi_use"
   },
-  "filter": "metalborn:metalmind",
+  "filter": {
+    "type": "mantle:and",
+    "predicates": [
+      "metalborn:metalmind",
+      "metalborn:is_gem"
+    ]
+  },
   "result": "metalborn:bracer"
 }

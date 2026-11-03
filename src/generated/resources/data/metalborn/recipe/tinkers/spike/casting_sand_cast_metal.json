@@ -1,0 +1,24 @@
+{
+  "neoforge:conditions": [
+    {
+      "type": "neoforge:false"
+    }
+  ],
+  "type": "metalborn:metal_casting_table",
+  "amount": 180,
+  "cast": {
+    "tag": "metalborn:casts/spike_single_use"
+  },
+  "cast_consumed": true,
+  "filter": {
+    "type": "mantle:and",
+    "predicates": [
+      "metalborn:spike",
+      {
+        "type": "mantle:inverted",
+        "inverted_type": "metalborn:is_gem"
+      }
+    ]
+  },
+  "result": "metalborn:spike"
+}

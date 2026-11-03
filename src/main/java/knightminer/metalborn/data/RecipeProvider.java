@@ -143,15 +143,22 @@ public class RecipeProvider extends net.minecraft.data.recipes.RecipeProvider im
       .metal()
       .cookingRate(1)
       .experience(0.5f)
-      .save(output, location("ring/metal"));
+      .save(output, location("ring/metal_from_nugget"));
     // if you lack nuggets, make 2 ring from 1 ingot
     // that comes out to 4/8 of an ingot per ring, which is just a little more than 4/9 they normally cost
     ShapelessForgeRecipeBuilder.shapeless(Registration.RING, 2)
-      .requires(MetalShapeIngredient.ingot(MetalPredicate.and(MetalPredicate.METALMIND, MetalPredicate.HAS_NUGGET.inverted())))
+      .requires(MetalShapeIngredient.ingot(MetalPredicate.and(MetalPredicate.METALMIND, MetalPredicate.IS_GEM.inverted(), MetalPredicate.HAS_NUGGET.inverted())))
       .metal()
       .cookingRate(1)
       .experience(0.5f)
       .save(output, location("ring/metal_from_ingot"));
+    // gems make metalminds at 1/4 rate instead of 1/8 as tinkers defines a gem as having 4 shard parts
+    ShapelessForgeRecipeBuilder.shapeless(Registration.RING)
+      .requires(MetalShapeIngredient.ingot(MetalPredicate.and(MetalPredicate.METALMIND, MetalPredicate.IS_GEM)))
+      .metal()
+      .cookingRate(1)
+      .experience(0.5f)
+      .save(output, location("ring/metal_from_gem"));
     ShapedForgeRecipeBuilder.shaped(Registration.INVESTITURE_RING)
       .pattern("##").pattern("##")
       .define('#', Registration.NICROSIL.getNuggetTag())
@@ -381,7 +388,8 @@ public class RecipeProvider extends net.minecraft.data.recipes.RecipeProvider im
     recycle(output, Registration.BRACER, MetalPredicate.METALMIND, MetalShape.INGOT,  4, 800, recyclingFolder + "bracer/metal");
     recycle(output, Registration.SPIKE,  MetalPredicate.SPIKE,     MetalShape.INGOT,  2, 400, recyclingFolder + "spike/metal");
     // rings must have a nugget form to recycle
-    recycle(output, Registration.RING, MetalPredicate.and(MetalPredicate.METALMIND, MetalPredicate.HAS_NUGGET), MetalShape.NUGGET, 4, 200, recyclingFolder + "ring/metal");
+    recycle(output, Registration.RING, MetalPredicate.and(MetalPredicate.METALMIND, MetalPredicate.HAS_NUGGET), MetalShape.NUGGET, 4, 200, recyclingFolder + "ring/metal_nugget");
+    recycle(output, Registration.RING, MetalPredicate.and(MetalPredicate.METALMIND, MetalPredicate.IS_GEM),     MetalShape.INGOT,  1, 200, recyclingFolder + "ring/metal_gem");
     recycle(output, Registration.INVESTITURE_BRACER, Registration.NICROSIL.getIngotTag(),  4, 800, recyclingFolder + "bracer/nicrosil");
     recycle(output, Registration.INVESTITURE_RING,   Registration.NICROSIL.getNuggetTag(), 4, 200, recyclingFolder + "ring/nicrosil");
     recycle(output, Registration.INVESTITURE_SPIKE,  Registration.NICROSIL.getIngotTag(),  2, 400, recyclingFolder + "spike/nicrosil");

@@ -5,11 +5,17 @@
     }
   ],
   "type": "metalborn:metal_casting_table",
-  "amount": 180,
+  "amount": 200,
   "cast": {
     "tag": "metalborn:casts/spike_single_use"
   },
   "cast_consumed": true,
-  "filter": "metalborn:spike",
+  "filter": {
+    "type": "mantle:and",
+    "predicates": [
+      "metalborn:spike",
+      "metalborn:is_gem"
+    ]
+  },
   "result": "metalborn:spike"
 }

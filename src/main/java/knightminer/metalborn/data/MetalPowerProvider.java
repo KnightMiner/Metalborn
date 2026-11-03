@@ -76,7 +76,7 @@ public class MetalPowerProvider extends AbstractMetalPowerProvider {
     // identity - fallback to quartz if aluminum is not present
     metal(IdentityMetalmindItem.ALUMINUM).integrationNoForce().index(18).temperature(425).hemalurgyCharge(0);
     metal(IdentityMetalmindItem.QUARTZ).unless("aluminum").index(16).temperature(637).hemalurgyCharge(0)
-      .ingot(Tags.Items.GEMS_QUARTZ)
+      .ingot(Tags.Items.GEMS_QUARTZ).setGem()
       .fluid(FluidTags.create(ResourceLocation.fromNamespaceAndPath(Metalborn.TINKERS, "molten_quartz")));
     // special - does not use standard metal effects but wants capacity and alike
     metal(InvestitureMetalmindItem.METAL).name("nicrosil").index(17).temperature(1100).hemalurgyCharge(0);

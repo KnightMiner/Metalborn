@@ -353,6 +353,7 @@ public class Registration {
       MetalPredicate.LOADER.register(resource("metalmind"), MetalPredicate.METALMIND.getLoader());
       MetalPredicate.LOADER.register(resource("spike"), MetalPredicate.SPIKE.getLoader());
       MetalPredicate.LOADER.register(resource("has_nugget"), MetalPredicate.HAS_NUGGET.getLoader());
+      MetalPredicate.LOADER.register(resource("is_gem"), MetalPredicate.IS_GEM.getLoader());
       MetalPredicate.LOADER.register(resource("set"), MetalSetPredicate.LOADER);
 
     // config conditions

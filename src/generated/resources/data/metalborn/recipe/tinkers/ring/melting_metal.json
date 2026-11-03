@@ -8,7 +8,16 @@
   "amount": 40,
   "ingredient": {
     "type": "metalborn:metal_item",
-    "filter": "metalborn:metalmind",
+    "filter": {
+      "type": "mantle:and",
+      "predicates": [
+        "metalborn:metalmind",
+        {
+          "type": "mantle:inverted",
+          "inverted_type": "metalborn:is_gem"
+        }
+      ]
+    },
     "item": "metalborn:ring"
   }
 }

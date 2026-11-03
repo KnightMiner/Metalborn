@@ -11,6 +11,10 @@
           "metalborn:metalmind",
           {
             "type": "mantle:inverted",
+            "inverted_type": "metalborn:is_gem"
+          },
+          {
+            "type": "mantle:inverted",
             "inverted_type": "metalborn:has_nugget"
           }
         ]

@@ -45,6 +45,7 @@ public class MetalPowerBuilder {
   private TagKey<Item> nugget;
   @Nullable
   private TagKey<Fluid> fluid;
+  private boolean isGem = false;
 
   /** Builder constructor */
   private MetalPowerBuilder(MetalId id) {
@@ -81,6 +82,12 @@ public class MetalPowerBuilder {
   /** Sets the nugget tag */
   public MetalPowerBuilder nugget(TagKey<Item> nugget) {
     this.nugget = nugget;
+    return this;
+  }
+
+  /** Sets this metal to a gem, which makes rings worth 1/4 and makes casting use gem units. */
+  public MetalPowerBuilder setGem() {
+    this.isGem = true;
     return this;
   }
 
@@ -217,7 +224,8 @@ public class MetalPowerBuilder {
   private MetalPower buildInternal() {
     return new MetalPower(
       id, index,
-      getIngot(), getNugget(), orDefault(fluid, Registries.FLUID, "molten_"), temperature,
+      getIngot(), getNugget(), isGem,
+      orDefault(fluid, Registries.FLUID, "molten_"), temperature,
       MetalId.getTargetTag(id),
       ferring, feruchemy, capacity, format,
       hemalurgyCharge);

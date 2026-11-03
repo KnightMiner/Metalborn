@@ -1,0 +1,23 @@
+{
+  "neoforge:conditions": [
+    {
+      "type": "neoforge:false"
+    }
+  ],
+  "type": "metalborn:metal_casting_table",
+  "amount": 360,
+  "cast": {
+    "tag": "metalborn:casts/bracer_multi_use"
+  },
+  "filter": {
+    "type": "mantle:and",
+    "predicates": [
+      "metalborn:metalmind",
+      {
+        "type": "mantle:inverted",
+        "inverted_type": "metalborn:is_gem"
+      }
+    ]
+  },
+  "result": "metalborn:bracer"
+}

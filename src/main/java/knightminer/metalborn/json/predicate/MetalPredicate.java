@@ -39,7 +39,9 @@ public interface MetalPredicate extends IJsonPredicate<MetalPower> {
   /** Matches powers that have a spike */
   MetalPredicate SPIKE = simple(metal -> metal.hemalurgyCharge() > 0 && !metal.feruchemy().isEmpty());
   /** Matches powers that have a spike */
-  MetalPredicate HAS_NUGGET = simple(metal -> BuiltInRegistries.ITEM.getTag(metal.nugget()).filter(tag -> tag.size() > 0).isPresent());
+  MetalPredicate HAS_NUGGET = simple(metal -> !metal.isGem() && BuiltInRegistries.ITEM.getTag(metal.nugget()).filter(tag -> tag.size() > 0).isPresent());
+  /** Matches powers defined as gems */
+  MetalPredicate IS_GEM = simple(MetalPower::isGem);
 
   /** Creates a simple predicate with no arguments */
   static MetalPredicate simple(Predicate<MetalPower> predicate) {

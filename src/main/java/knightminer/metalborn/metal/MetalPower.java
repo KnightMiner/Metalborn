@@ -11,6 +11,7 @@ import net.minecraft.world.level.material.Fluid;
 import net.neoforged.neoforge.common.Tags;
 import org.jetbrains.annotations.ApiStatus.Internal;
 import slimeknights.mantle.data.loadable.field.ContextKey;
+import slimeknights.mantle.data.loadable.primitive.BooleanLoadable;
 import slimeknights.mantle.data.loadable.primitive.EnumLoadable;
 import slimeknights.mantle.data.loadable.primitive.IntLoadable;
 import slimeknights.mantle.data.loadable.record.RecordLoadable;
@@ -26,6 +27,7 @@ import java.util.List;
  * @param nugget       Nugget tag for this metal, used in recipes.
  * @param fluid        Fluid tag for Tinkers' Construct compatibility
  * @param temperature  Temperature for Tinkers' Construct compatibility
+ * @param isGem        If true, this is a gem rather than a metal. Changes the melting/casting rates with tinkers and makes the ring cost 1/4 instead of 1/8.
  * @param target       Entity tag of targets that can provide this metal through hemalurgy.
  * @param index        Sort order for this metal.
  * @param ferring      If true, this power can be randomly granted.
@@ -36,7 +38,8 @@ import java.util.List;
  */
 public record MetalPower(
   MetalId id, int index,
-  TagKey<Item> ingot, TagKey<Item> nugget, TagKey<Fluid> fluid, int temperature,
+  TagKey<Item> ingot, TagKey<Item> nugget, boolean isGem,
+  TagKey<Fluid> fluid, int temperature,
   TagKey<EntityType<?>> target,
   boolean ferring, List<MetalEffect> feruchemy,
   int capacity, MetalFormat format,
@@ -48,6 +51,7 @@ public record MetalPower(
     IntLoadable.FROM_ZERO.requiredField("index", MetalPower::index),
     new DefaultingTagField<>("ingot", Registries.ITEM, "ingots/", MetalPower::ingot),
     new DefaultingTagField<>("nugget", Registries.ITEM, "nuggets/", MetalPower::nugget),
+    BooleanLoadable.INSTANCE.defaultField("is_gem", false, false, MetalPower::isGem),
     new DefaultingTagField<>("fluid", Registries.FLUID, "molten_", MetalPower::fluid),
     IntLoadable.FROM_ZERO.defaultField("temperature", 0, false, MetalPower::temperature),
     ContextKey.ID.mappedField((id, error) -> MetalId.getTargetTag(id)),
@@ -62,7 +66,7 @@ public record MetalPower(
   public static final MetalPower DEFAULT = new MetalPower(
     MetalId.NONE, -1,
     // random tags go, really just gives us an error state if this ends up displayed somewhere
-    Tags.Items.STORAGE_BLOCKS_LAPIS, Tags.Items.GEMS_LAPIS, Tags.Fluids.MILK, 0, MetalId.getTargetTag(MetalId.NONE),
+    Tags.Items.STORAGE_BLOCKS_LAPIS, Tags.Items.GEMS_LAPIS, false, Tags.Fluids.MILK, 0, MetalId.getTargetTag(MetalId.NONE),
     false, List.of(), 0, MetalFormat.NO_LABEL, 0);
 
   /** @apiNote Use {@link MetalPowerBuilder} */
