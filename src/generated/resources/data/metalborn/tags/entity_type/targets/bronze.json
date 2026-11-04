@@ -1,5 +1,9 @@
 {
   "values": [
-    "minecraft:enderman"
+    "minecraft:enderman",
+    {
+      "id": "#c:endermen",
+      "required": false
+    }
   ]
 }

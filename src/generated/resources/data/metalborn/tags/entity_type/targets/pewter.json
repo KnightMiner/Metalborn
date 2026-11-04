@@ -1,5 +1,9 @@
 {
   "values": [
-    "minecraft:creeper"
+    "minecraft:creeper",
+    {
+      "id": "c:creepers",
+      "required": false
+    }
   ]
 }
