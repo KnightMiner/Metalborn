@@ -254,6 +254,8 @@
   "metal_effect.metalborn.warmth.cold": "Decreases heat by %s each second",
   "metal_effect.metalborn.apply_effect": "Grants %s",
 
+  "gui.metalborn.feruchemy": "Feruchemy",
+
   "gui.metalborn.metalminds.effects": "Feruchemy Effects:",
   "gui.metalborn.metalminds.none": "No active metalminds",
   "gui.metalborn.metalminds.investiture.tap": "Can store %s",

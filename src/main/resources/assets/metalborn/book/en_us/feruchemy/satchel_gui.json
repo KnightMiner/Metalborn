@@ -3,8 +3,8 @@
   "title": "Satchel UI",
   "image": {
     "file": "metalborn:book/images/satchel.png",
-    "width": 156,
-    "height": 109
+    "width": 158,
+    "height": 101
   },
   "text": [
     { "text": "Accessing a satchel alongside the metalmind inventory." }
