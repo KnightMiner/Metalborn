@@ -138,7 +138,7 @@ public class MetalCastingRecipeBuilder extends AbstractRecipeBuilder<MetalCastin
         json.addProperty("cast_consumed", consumed);
       }
       if (switchSlots) {
-        json.addProperty("switchSlots", switchSlots);
+        json.addProperty("switch_slots", switchSlots);
       }
     }
 
