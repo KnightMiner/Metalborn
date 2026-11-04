@@ -65,15 +65,16 @@
   "metal_power.metalborn.quartz.ferring": "Истиннособойный",
   "metal_power.metalborn.quartz.target": "Игроки",
 
-  "metal_power.metalborn.netherite": "Незерит",
-  "metal_power.metalborn.netherite.stores": "Удача",
-  "metal_power.metalborn.netherite.ferring": "Спиннер",
-  "metal_power.metalborn.netherite.target": "Разбойники",
+  "metal_power.metalborn.emerald.stores": "Удача",
+  "metal_power.metalborn.emerald.ferring": "Спиннер",
+  "metal_power.metalborn.emerald.target": "Разбойники",
 
   "metal_power.metalborn.chromium": "Хром",
   "metal_power.metalborn.chromium.stores": "Удача",
   "metal_power.metalborn.chromium.ferring": "Спиннер",
   "metal_power.metalborn.chromium.target": "Разбойники",
+
+  "metal_power.metalborn.netherite": "Незерит",
 
   "metal_power.metalborn.investiture": "Никросил",
   "metal_power.metalborn.investiture.stores": "Инвеститура",
@@ -224,11 +225,7 @@
   "item.metalborn.ferring.mismatches": "Вы ничего не чувствуете от этого металла.",
 
   "attribute.name.metalborn.fall_distance_multiplier": "Дистанция падения",
-  "attribute.name.metalborn.knockback_multiplier": "Отдача",
-  "attribute.name.metalborn.mining_speed_multiplier": "Скорость добычи",
-  "attribute.name.metalborn.experience_multiplier": "Опыт",
   "attribute.name.metalborn.drop_chance": "Шанс выпадения",
-  "attribute.name.metalborn.looting_boost": "Добыча",
   "attribute.name.metalborn.determination": "Решимость",
   "attribute.name.metalborn.warmth": "Тепло",
   "attribute.name.metalborn.visibility_multiplier": "Видимость",

@@ -62,15 +62,15 @@
   "metal_power.metalborn.quartz.stores": "身份",
   "metal_power.metalborn.quartz.ferring": "真我",
   "metal_power.metalborn.quartz.target": "玩家",
-
-  "metal_power.metalborn.netherite": "下界合金",
-  "metal_power.metalborn.netherite.stores": "运气",
-  "metal_power.metalborn.netherite.ferring": "旋转",
-  "metal_power.metalborn.netherite.target": "灾厄村民",
+  "metal_power.metalborn.emerald.stores": "运气",
+  "metal_power.metalborn.emerald.ferring": "旋转",
+  "metal_power.metalborn.emerald.target": "灾厄村民",
   "metal_power.metalborn.chromium": "铬",
   "metal_power.metalborn.chromium.stores": "运气",
   "metal_power.metalborn.chromium.ferring": "旋转",
   "metal_power.metalborn.chromium.target": "灾厄村民",
+
+  "metal_power.metalborn.netherite": "下界合金",
 
   "metal_power.metalborn.investiture": "镍铬合金",
   "metal_power.metalborn.investiture.stores": "神能",
@@ -220,11 +220,7 @@
   "item.metalborn.ferring.mismatches": "你对这种金属没有感觉。",
 
   "attribute.name.metalborn.fall_distance_multiplier": "摔落高度",
-  "attribute.name.metalborn.knockback_multiplier": "击退",
-  "attribute.name.metalborn.mining_speed_multiplier": "挖掘速度",
-  "attribute.name.metalborn.experience_multiplier": "经验值",
   "attribute.name.metalborn.drop_chance": "掉落概率",
-  "attribute.name.metalborn.looting_boost": "抢夺",
   "attribute.name.metalborn.determination": "决心",
   "attribute.name.metalborn.warmth": "热量",
   "attribute.name.metalborn.visibility_multiplier": "可见度",
