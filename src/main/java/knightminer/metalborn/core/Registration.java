@@ -52,6 +52,9 @@ import knightminer.metalborn.metal.effects.specialized.WarmthMetalEffect;
 import knightminer.metalborn.metal.effects.value.EffectValue;
 import knightminer.metalborn.metal.effects.value.LinearEffectValue;
 import knightminer.metalborn.metal.effects.value.ListEffectValue;
+import knightminer.metalborn.metal.effects.value.PowerMultiplierEffectValue;
+import knightminer.metalborn.metal.effects.value.SquareRootMultiplierEffectValue;
+import knightminer.metalborn.metal.effects.value.StoringTappingEffectValue;
 import knightminer.metalborn.util.CastItemObject;
 import knightminer.metalborn.util.ItemDeferredRegisterExtension;
 import net.minecraft.core.Holder;
@@ -362,6 +365,9 @@ public class Registration {
       // effect values
       EffectValue.LOADER.register(resource("linear"), LinearEffectValue.LOADER);
       EffectValue.LOADER.register(resource("list"), ListEffectValue.LOADER);
+      EffectValue.LOADER.register(resource("power_multiplier"), PowerMultiplierEffectValue.LOADER);
+      EffectValue.LOADER.register(resource("square_root_multiplier"), SquareRootMultiplierEffectValue.LOADER);
+      EffectValue.LOADER.register(resource("storing_tapping"), StoringTappingEffectValue.LOADER);
 
     // config conditions
     } else if (key == NeoForgeRegistries.Keys.CONDITION_CODECS) {

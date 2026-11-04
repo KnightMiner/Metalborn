@@ -17,6 +17,11 @@ import knightminer.metalborn.metal.effects.specialized.ExperienceMetalEffect;
 import knightminer.metalborn.metal.effects.specialized.HealMetalEffect;
 import knightminer.metalborn.metal.effects.specialized.UpdateHealthEffect;
 import knightminer.metalborn.metal.effects.specialized.WarmthMetalEffect;
+import knightminer.metalborn.metal.effects.value.EffectValue;
+import knightminer.metalborn.metal.effects.value.LinearEffectValue;
+import knightminer.metalborn.metal.effects.value.PowerMultiplierEffectValue;
+import knightminer.metalborn.metal.effects.value.SquareRootMultiplierEffectValue;
+import knightminer.metalborn.metal.effects.value.StoringTappingEffectValue;
 import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.FluidTags;
@@ -139,6 +144,31 @@ public class MetalPowerProvider extends AbstractMetalPowerProvider {
       .feruchemy(new TappingMetalEffect(AttributeMetalEffect.builder(MantleAttributes.LOOTING_BOOST, Operation.ADD_VALUE).eachLevel(0.25f)))
       .feruchemy(new TappingMetalEffect(AttributeMetalEffect.builder(MantleAttributes.FORTUNE_BOOST, Operation.ADD_VALUE).eachLevel(0.25f)))
       .feruchemy(new StoringMetalEffect(AttributeMetalEffect.builder(Registration.DROP_CHANCE, Operation.ADD_MULTIPLIED_TOTAL).eachLevel(0.1f)));
+
+    // netherite is a special power, no natural ferrings
+    // scale goes from 25% to 200%
+    EffectValue netheriteScale = new StoringTappingEffectValue(
+      // ranges from -0% to -75%
+      new PowerMultiplierEffectValue(2, 0.2f),
+      // ranges from +0% to +100%
+      LinearEffectValue.eachLevel(0.1f)
+    );
+    // for anything not related to movement
+    // for simplicy, opted to just go linear at 5% per level, -50% to +50%
+    EffectValue netheriteEffect = LinearEffectValue.eachLevel(0.05f);
+    metal(MetalIds.netherite).name("netherite_scrap").index(20).hemalurgyCharge(20).disallowFerring()
+      .fluid(FluidTags.create(ResourceLocation.fromNamespaceAndPath(Metalborn.TINKERS, "molten_debris"))).temperature(1175)
+      .feruchemy(AttributeMetalEffect.builder(Attributes.SCALE,                    Operation.ADD_MULTIPLIED_TOTAL).build(netheriteScale))
+      // movement effects
+      .feruchemy(AttributeMetalEffect.builder(Attributes.SAFE_FALL_DISTANCE,       Operation.ADD_MULTIPLIED_TOTAL).build(netheriteScale))
+      .feruchemy(AttributeMetalEffect.builder(Attributes.STEP_HEIGHT,              Operation.ADD_MULTIPLIED_TOTAL).build(netheriteScale))
+      .feruchemy(AttributeMetalEffect.builder(Attributes.JUMP_STRENGTH,            Operation.ADD_MULTIPLIED_TOTAL).build(new SquareRootMultiplierEffectValue(netheriteScale)))
+      // other effects
+      .feruchemy(AttributeMetalEffect.builder(Attributes.MOVEMENT_SPEED,           Operation.ADD_MULTIPLIED_TOTAL).build(netheriteEffect))
+      .feruchemy(AttributeMetalEffect.builder(Attributes.ATTACK_DAMAGE,            Operation.ADD_MULTIPLIED_TOTAL).build(netheriteEffect))
+      .feruchemy(AttributeMetalEffect.builder(Attributes.BLOCK_BREAK_SPEED,        Operation.ADD_MULTIPLIED_TOTAL).build(netheriteEffect))
+      .feruchemy(AttributeMetalEffect.builder(Attributes.ENTITY_INTERACTION_RANGE, Operation.ADD_MULTIPLIED_TOTAL).build(netheriteEffect))
+      .feruchemy(AttributeMetalEffect.builder(Attributes.BLOCK_INTERACTION_RANGE,  Operation.ADD_MULTIPLIED_TOTAL).build(netheriteEffect));
   }
 
   @Override

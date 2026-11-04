@@ -1,0 +1,126 @@
+{
+  "allow_ferring": false,
+  "capacity": 6000,
+  "feruchemy": [
+    {
+      "type": "metalborn:attribute",
+      "attribute": "minecraft:generic.scale",
+      "operation": "add_multiplied_total",
+      "value": {
+        "type": "metalborn:storing_tapping",
+        "storing": {
+          "type": "metalborn:power_multiplier",
+          "base": 2.0,
+          "multiplier": 0.2
+        },
+        "tapping": {
+          "type": "metalborn:linear",
+          "multiplier": 0.1
+        }
+      }
+    },
+    {
+      "type": "metalborn:attribute",
+      "attribute": "minecraft:generic.safe_fall_distance",
+      "operation": "add_multiplied_total",
+      "value": {
+        "type": "metalborn:storing_tapping",
+        "storing": {
+          "type": "metalborn:power_multiplier",
+          "base": 2.0,
+          "multiplier": 0.2
+        },
+        "tapping": {
+          "type": "metalborn:linear",
+          "multiplier": 0.1
+        }
+      }
+    },
+    {
+      "type": "metalborn:attribute",
+      "attribute": "minecraft:generic.step_height",
+      "operation": "add_multiplied_total",
+      "value": {
+        "type": "metalborn:storing_tapping",
+        "storing": {
+          "type": "metalborn:power_multiplier",
+          "base": 2.0,
+          "multiplier": 0.2
+        },
+        "tapping": {
+          "type": "metalborn:linear",
+          "multiplier": 0.1
+        }
+      }
+    },
+    {
+      "type": "metalborn:attribute",
+      "attribute": "minecraft:generic.jump_strength",
+      "operation": "add_multiplied_total",
+      "value": {
+        "type": "metalborn:square_root_multiplier",
+        "square_root_type": "metalborn:storing_tapping",
+        "storing": {
+          "type": "metalborn:power_multiplier",
+          "base": 2.0,
+          "multiplier": 0.2
+        },
+        "tapping": {
+          "type": "metalborn:linear",
+          "multiplier": 0.1
+        }
+      }
+    },
+    {
+      "type": "metalborn:attribute",
+      "attribute": "minecraft:generic.movement_speed",
+      "operation": "add_multiplied_total",
+      "value": {
+        "type": "metalborn:linear",
+        "multiplier": 0.05
+      }
+    },
+    {
+      "type": "metalborn:attribute",
+      "attribute": "minecraft:generic.attack_damage",
+      "operation": "add_multiplied_total",
+      "value": {
+        "type": "metalborn:linear",
+        "multiplier": 0.05
+      }
+    },
+    {
+      "type": "metalborn:attribute",
+      "attribute": "minecraft:player.block_break_speed",
+      "operation": "add_multiplied_total",
+      "value": {
+        "type": "metalborn:linear",
+        "multiplier": 0.05
+      }
+    },
+    {
+      "type": "metalborn:attribute",
+      "attribute": "minecraft:player.entity_interaction_range",
+      "operation": "add_multiplied_total",
+      "value": {
+        "type": "metalborn:linear",
+        "multiplier": 0.05
+      }
+    },
+    {
+      "type": "metalborn:attribute",
+      "attribute": "minecraft:player.block_interaction_range",
+      "operation": "add_multiplied_total",
+      "value": {
+        "type": "metalborn:linear",
+        "multiplier": 0.05
+      }
+    }
+  ],
+  "fluid": "tconstruct:molten_debris",
+  "format": "ticks",
+  "hemalurgy_charge": 20,
+  "index": 20,
+  "name": "netherite_scrap",
+  "temperature": 1175
+}

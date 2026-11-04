@@ -1,0 +1,17 @@
+{
+  "storing": [
+    "-50% Scale by 5 metalminds",
+    "-75% Scale by 10 metalminds",
+    "-5% Movement Speed",
+    "-5% Attack Damage",
+    "-5% Mining Speed",
+    "-5% Interaction Range"
+  ],
+  "tapping": [
+    "+10% Scale",
+    "+5% Movement Speed",
+    "+5% Attack Damage",
+    "+5% Mining Speed",
+    "+5% Interaction Range"
+  ]
+}

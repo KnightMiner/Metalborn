@@ -41,6 +41,7 @@ public class EntityTagProvider extends EntityTypeTagsProvider {
     // spiritual
     tag(MetalIds.emerald).addTag(MetalbornTags.Entities.ILLAGERS);
     tag(MetalIds.chromium).addTag(MetalbornTags.Entities.ILLAGERS);
+    tag(MetalIds.netherite).add(EntityType.MAGMA_CUBE);
     // compat cognitive
     tag(MetalIds.silver).add(EntityType.SILVERFISH);
     tag(MetalIds.cadmium).add(EntityType.SILVERFISH);
