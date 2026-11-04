@@ -79,12 +79,12 @@ public class MetalPowerProvider extends AbstractMetalPowerProvider {
       .feruchemy(new EnergyMetalEffect(0, 4f));
 
     // identity - fallback to quartz if aluminum is not present
-    metal(IdentityMetalmindItem.ALUMINUM).integrationNoForce().index(18).temperature(425).hemalurgyCharge(0);
-    metal(IdentityMetalmindItem.QUARTZ).unless("aluminum").index(16).temperature(637).hemalurgyCharge(0)
+    metal(IdentityMetalmindItem.ALUMINUM).integrationNoForce().index(17).temperature(425).hemalurgyCharge(0);
+    metal(IdentityMetalmindItem.QUARTZ).unless("aluminum").index(17).temperature(637).hemalurgyCharge(0)
       .ingot(Tags.Items.GEMS_QUARTZ).setGem()
       .fluid(FluidTags.create(ResourceLocation.fromNamespaceAndPath(Metalborn.TINKERS, "molten_quartz")));
     // special - does not use standard metal effects but wants capacity and alike
-    metal(InvestitureMetalmindItem.METAL).name("nicrosil").index(17).temperature(1100).hemalurgyCharge(0);
+    metal(InvestitureMetalmindItem.METAL).name("nicrosil").index(16).temperature(1100).hemalurgyCharge(0);
 
     // compat
     metal(MetalIds.cadmium).index(13).integration().hemalurgyCharge(13).temperature(594).fallback(MetalIds.silver)

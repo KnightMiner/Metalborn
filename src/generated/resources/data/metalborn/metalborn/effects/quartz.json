@@ -8,7 +8,7 @@
   "capacity": 6000,
   "fluid": "tconstruct:molten_quartz",
   "format": "ticks",
-  "index": 16,
+  "index": 17,
   "ingot": "c:gems/quartz",
   "is_gem": true,
   "name": "quartz",
