@@ -5,14 +5,20 @@
     {
       "type": "metalborn:attribute",
       "attribute": "minecraft:player.entity_interaction_range",
-      "multiplier": 0.25,
-      "operation": "add_value"
+      "operation": "add_value",
+      "value": {
+        "type": "metalborn:linear",
+        "multiplier": 0.25
+      }
     },
     {
       "type": "metalborn:attribute",
       "attribute": "minecraft:player.block_interaction_range",
-      "multiplier": 0.5,
-      "operation": "add_value"
+      "operation": "add_value",
+      "value": {
+        "type": "metalborn:linear",
+        "multiplier": 0.5
+      }
     }
   ],
   "format": "ticks",

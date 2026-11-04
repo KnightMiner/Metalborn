@@ -21,35 +21,50 @@
     {
       "type": "metalborn:attribute",
       "attribute": "minecraft:generic.luck",
-      "multiplier": 0.5,
-      "operation": "add_value"
+      "operation": "add_value",
+      "value": {
+        "type": "metalborn:linear",
+        "multiplier": 0.5
+      }
     },
     {
       "type": "metalborn:attribute",
       "attribute": "mantle:equipment_drop_chance_boost",
-      "multiplier": 0.01,
-      "operation": "add_value"
+      "operation": "add_value",
+      "value": {
+        "type": "metalborn:linear",
+        "multiplier": 0.01
+      }
     },
     {
       "type": "metalborn:tapping",
       "attribute": "mantle:looting_boost",
-      "multiplier": 0.25,
       "operation": "add_value",
-      "tapping_type": "metalborn:attribute"
+      "tapping_type": "metalborn:attribute",
+      "value": {
+        "type": "metalborn:linear",
+        "multiplier": 0.25
+      }
     },
     {
       "type": "metalborn:tapping",
       "attribute": "mantle:fortune_boost",
-      "multiplier": 0.25,
       "operation": "add_value",
-      "tapping_type": "metalborn:attribute"
+      "tapping_type": "metalborn:attribute",
+      "value": {
+        "type": "metalborn:linear",
+        "multiplier": 0.25
+      }
     },
     {
       "type": "metalborn:storing",
       "attribute": "metalborn:drop_chance",
-      "multiplier": 0.1,
       "operation": "add_multiplied_total",
-      "storing_type": "metalborn:attribute"
+      "storing_type": "metalborn:attribute",
+      "value": {
+        "type": "metalborn:linear",
+        "multiplier": 0.1
+      }
     }
   ],
   "format": "ticks",

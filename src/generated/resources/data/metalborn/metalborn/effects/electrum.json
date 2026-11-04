@@ -20,8 +20,11 @@
     {
       "type": "metalborn:attribute",
       "attribute": "metalborn:determination",
-      "multiplier": 0.1,
-      "operation": "add_multiplied_total"
+      "operation": "add_multiplied_total",
+      "value": {
+        "type": "metalborn:linear",
+        "multiplier": 0.1
+      }
     }
   ],
   "format": "ticks",

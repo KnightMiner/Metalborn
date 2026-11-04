@@ -4,6 +4,8 @@ import knightminer.metalborn.Metalborn;
 import knightminer.metalborn.metal.MetalId;
 import knightminer.metalborn.metal.MetalPower;
 import knightminer.metalborn.metal.effects.MetalEffect;
+import knightminer.metalborn.metal.effects.value.EffectValue;
+import knightminer.metalborn.metal.effects.value.LinearEffectValue;
 import net.minecraft.core.Holder;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
@@ -16,23 +18,18 @@ import net.minecraft.world.item.TooltipFlag;
 import org.jetbrains.annotations.ApiStatus.Internal;
 import slimeknights.mantle.data.loadable.Loadables;
 import slimeknights.mantle.data.loadable.primitive.EnumLoadable;
-import slimeknights.mantle.data.loadable.primitive.FloatLoadable;
 import slimeknights.mantle.data.loadable.record.RecordLoadable;
 
 import java.util.List;
 
 /** Metal effect which applies an attribute to the target */
-public record AttributeMetalEffect(
-  ResourceLocation id, Holder<Attribute> attribute, Operation operation,
-  float base, float multiplier
-) implements MetalEffect {
+public record AttributeMetalEffect(ResourceLocation id, Holder<Attribute> attribute, Operation operation, EffectValue value) implements MetalEffect {
   private static final EnumLoadable<Operation> OPERATION = new EnumLoadable<>(Operation.class);
   public static RecordLoadable<AttributeMetalEffect> LOADER = RecordLoadable.create(
     new AttributeIdField<>("id", AttributeMetalEffect::id),
     Loadables.ATTRIBUTE.requiredField("attribute", AttributeMetalEffect::attribute),
     OPERATION.requiredField("operation", AttributeMetalEffect::operation),
-    FloatLoadable.ANY.defaultField("base", 0f, AttributeMetalEffect::base),
-    FloatLoadable.ANY.requiredField("multiplier", AttributeMetalEffect::multiplier),
+    EffectValue.LOADER.requiredField("value", AttributeMetalEffect::value),
     AttributeMetalEffect::new);
 
   /** @apiNote use {@link #builder(Holder, Operation)} */
@@ -60,24 +57,24 @@ public record AttributeMetalEffect(
     } else {
       instance.removeModifier(id);
       if (level != 0) {
-        instance.addTransientModifier(new AttributeModifier(id, base + multiplier * level, operation));
+        instance.addTransientModifier(new AttributeModifier(id, value.getValue(level), operation));
       }
     }
   }
 
   @Override
   public int onTap(MetalPower power, LivingEntity entity, int level) {
-    return multiplier != 0 ? level : 1;
+    return value.getEffectiveLevel(level);
   }
 
   @Override
   public int onStore(MetalPower power, LivingEntity entity, int level) {
-    return multiplier != 0 ? level : 1;
+    return -value.getEffectiveLevel(-level);
   }
 
   @Override
   public void getTooltip(MetalPower power, LivingEntity entity, int level, List<Component> tooltip) {
-    tooltip.add(attribute.value().toComponent(new AttributeModifier(id, base + level * multiplier, operation), TooltipFlag.NORMAL));
+    tooltip.add(attribute.value().toComponent(new AttributeModifier(id, value.getValue(level), operation), TooltipFlag.NORMAL));
   }
 
 
@@ -99,8 +96,13 @@ public record AttributeMetalEffect(
     }
 
     /** Builds with the given base and multiplier */
+    public AttributeMetalEffect build(EffectValue value) {
+      return new AttributeMetalEffect(id, attribute, operation, value);
+    }
+
+    /** Builds with the given base and multiplier */
     public AttributeMetalEffect build(float base, float multiplier) {
-      return new AttributeMetalEffect(id, attribute, operation, base, multiplier);
+      return build(new LinearEffectValue(base, multiplier));
     }
 
     /** Builds with the given flat level */

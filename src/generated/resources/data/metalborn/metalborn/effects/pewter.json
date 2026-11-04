@@ -5,14 +5,20 @@
     {
       "type": "metalborn:attribute",
       "attribute": "minecraft:generic.attack_damage",
-      "multiplier": 0.5,
-      "operation": "add_value"
+      "operation": "add_value",
+      "value": {
+        "type": "metalborn:linear",
+        "multiplier": 0.5
+      }
     },
     {
       "type": "metalborn:attribute",
       "attribute": "minecraft:generic.max_health",
-      "multiplier": 2.0,
-      "operation": "add_value"
+      "operation": "add_value",
+      "value": {
+        "type": "metalborn:linear",
+        "multiplier": 2.0
+      }
     },
     {
       "type": "metalborn:tapping",

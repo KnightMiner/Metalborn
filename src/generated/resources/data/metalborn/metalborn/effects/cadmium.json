@@ -21,16 +21,22 @@
     {
       "type": "metalborn:attribute",
       "attribute": "mantle:experience_multiplier",
-      "multiplier": 0.1,
-      "operation": "add_multiplied_total"
+      "operation": "add_multiplied_total",
+      "value": {
+        "type": "metalborn:linear",
+        "multiplier": 0.1
+      }
     },
     {
       "type": "metalborn:storing",
       "capped": {
         "type": "metalborn:attribute",
         "attribute": "metalborn:visibility_multiplier",
-        "multiplier": -1.0,
-        "operation": "add_multiplied_total"
+        "operation": "add_multiplied_total",
+        "value": {
+          "type": "metalborn:linear",
+          "multiplier": -1.0
+        }
       },
       "level": 4,
       "storing_type": "metalborn:capped"
@@ -40,8 +46,11 @@
       "capped": {
         "type": "metalborn:attribute",
         "attribute": "metalborn:visibility_multiplier",
-        "multiplier": -0.25,
-        "operation": "add_multiplied_total"
+        "operation": "add_multiplied_total",
+        "value": {
+          "type": "metalborn:linear",
+          "multiplier": -0.25
+        }
       },
       "level": 3,
       "tapping_type": "metalborn:capped"

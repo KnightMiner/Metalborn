@@ -49,6 +49,9 @@ import knightminer.metalborn.metal.effects.specialized.ExperienceMetalEffect;
 import knightminer.metalborn.metal.effects.specialized.HealMetalEffect;
 import knightminer.metalborn.metal.effects.specialized.UpdateHealthEffect;
 import knightminer.metalborn.metal.effects.specialized.WarmthMetalEffect;
+import knightminer.metalborn.metal.effects.value.EffectValue;
+import knightminer.metalborn.metal.effects.value.LinearEffectValue;
+import knightminer.metalborn.metal.effects.value.ListEffectValue;
 import knightminer.metalborn.util.CastItemObject;
 import knightminer.metalborn.util.ItemDeferredRegisterExtension;
 import net.minecraft.core.Holder;
@@ -355,6 +358,10 @@ public class Registration {
       MetalPredicate.LOADER.register(resource("has_nugget"), MetalPredicate.HAS_NUGGET.getLoader());
       MetalPredicate.LOADER.register(resource("is_gem"), MetalPredicate.IS_GEM.getLoader());
       MetalPredicate.LOADER.register(resource("set"), MetalSetPredicate.LOADER);
+
+      // effect values
+      EffectValue.LOADER.register(resource("linear"), LinearEffectValue.LOADER);
+      EffectValue.LOADER.register(resource("list"), ListEffectValue.LOADER);
 
     // config conditions
     } else if (key == NeoForgeRegistries.Keys.CONDITION_CODECS) {
