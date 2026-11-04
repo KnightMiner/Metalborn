@@ -37,6 +37,13 @@ public class ItemTagProvider extends ItemTagProviderExtension {
     copy(Tags.Blocks.STORAGE_BLOCKS, Tags.Items.STORAGE_BLOCKS);
     copy(Tags.Blocks.ORES, Tags.Items.ORES);
 
+    IntrinsicTagAppender<Item> appender = tag(ItemTags.DYEABLE);
+    Registration.SATCHEL.forEach((type, item) -> {
+      if (type != SatchelType.MIST) {
+        appender.add(item);
+      }
+    });
+
     // book item
     tag(ItemTags.LECTERN_BOOKS).add(Registration.METALLIC_ARTS.get());
     tag(ItemTags.BOOKSHELF_BOOKS).add(Registration.METALLIC_ARTS.get());

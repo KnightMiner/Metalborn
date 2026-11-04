@@ -1,4 +1,4 @@
-// 1.21.1	2026-11-03T15:07:36.8427629	Tags for minecraft:item mod id metalborn
+// 1.21.1	2026-11-04T04:29:07.5840765	Tags for minecraft:item mod id metalborn
 cfe280f30560bb50d930f92a659740de39f1484c data/c/tags/item/books.json
 66dd943100ec84cf0199411516d16e1ab1e350ba data/c/tags/item/books/guide.json
 5e90da2318ff449889f9f8b656692fab6fb330d0 data/c/tags/item/ingots.json
@@ -60,6 +60,7 @@ e0c0741d39a1b25b845aed61a90109fdea665c5a data/metalborn/tags/item/metalminds.jso
 c1f1ff698982ab8eb8502d65617f26259563ce74 data/metalborn/tags/item/satchel_items.json
 24ea125300773cacd43295f54f948bb99b321a01 data/metalborn/tags/item/spikes.json
 66dd943100ec84cf0199411516d16e1ab1e350ba data/minecraft/tags/item/bookshelf_books.json
+a56e76aabfca084ea420e1bd9bc6c44cb1f9cd6f data/minecraft/tags/item/dyeable.json
 66dd943100ec84cf0199411516d16e1ab1e350ba data/minecraft/tags/item/lectern_books.json
 e5112bd294f39abdbb42a699b7296ad10b513d21 data/tconstruct/tags/item/casts/gold.json
 cd7bd6c1be35fbdd18192672af2887c00e40ce2b data/tconstruct/tags/item/casts/multi_use.json
