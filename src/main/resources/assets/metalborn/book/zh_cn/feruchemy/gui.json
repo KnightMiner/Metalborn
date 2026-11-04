@@ -3,8 +3,8 @@
   "title": "藏金术·界面",
   "image": {
     "file": "metalborn:book/images/metalminds.png",
-    "width": 156,
-    "height": 82
+    "width": 158,
+    "height": 77
   },
   "text": [
     { "text": "你可以按下[M]键打开金属意识库界面，以此开启藏金术之旅。" },
