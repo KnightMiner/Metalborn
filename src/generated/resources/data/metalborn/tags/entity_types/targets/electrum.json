@@ -1,6 +1,5 @@
 {
   "values": [
-    "minecraft:guardian",
-    "minecraft:elder_guardian"
+    "#forge:guardians"
   ]
 }

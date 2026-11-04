@@ -1,5 +1,9 @@
 {
   "values": [
-    "minecraft:enderman"
+    "minecraft:enderman",
+    {
+      "id": "#forge:endermen",
+      "required": false
+    }
   ]
 }
