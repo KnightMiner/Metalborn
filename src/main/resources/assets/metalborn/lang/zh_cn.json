@@ -253,6 +253,8 @@
   "metal_effect.metalborn.warmth.cold": "每秒减少%s点热量",
   "metal_effect.metalborn.apply_effect": "获得效果：%s",
 
+  "gui.metalborn.feruchemy": "藏金术",
+
   "gui.metalborn.metalminds.effects": "藏金术效果：",
   "gui.metalborn.metalminds.none": "没有激活的金属意识库",
   "gui.metalborn.metalminds.investiture.tap": "现在可以储存“%s”",
