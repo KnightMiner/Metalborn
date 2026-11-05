@@ -55,22 +55,22 @@ public class MetalbornMenu extends BaseMenu {
     if (MetalbornData.getData(inventory.player) instanceof MetalbornCapability capability) {
       metalminds = capability.getMetalminds();
       metalmindSlots = List.of(
-        addSlot(new SmartItemHandlerSlot(metalminds, 0,  26, 57)),
-        addSlot(new SmartItemHandlerSlot(metalminds, 1, 134, 57)),
-        addSlot(new SmartItemHandlerSlot(metalminds, 2,  16,  9)),
-        addSlot(new SmartItemHandlerSlot(metalminds, 3,  36,  9)),
-        addSlot(new SmartItemHandlerSlot(metalminds, 4,  16, 33)),
-        addSlot(new SmartItemHandlerSlot(metalminds, 5,  36, 33)),
-        addSlot(new SmartItemHandlerSlot(metalminds, 6, 124,  9)),
-        addSlot(new SmartItemHandlerSlot(metalminds, 7, 144,  9)),
-        addSlot(new SmartItemHandlerSlot(metalminds, 8, 124, 33)),
-        addSlot(new SmartItemHandlerSlot(metalminds, 9, 144, 33))
+        addSlot(new SmartItemHandlerSlot(metalminds, 0,   8, 61)),
+        addSlot(new SmartItemHandlerSlot(metalminds, 1, 152, 61)),
+        addSlot(new SmartItemHandlerSlot(metalminds, 2,   8, 17)),
+        addSlot(new SmartItemHandlerSlot(metalminds, 3,  41, 17)),
+        addSlot(new SmartItemHandlerSlot(metalminds, 4,   8, 39)),
+        addSlot(new SmartItemHandlerSlot(metalminds, 5,  41, 39)),
+        addSlot(new SmartItemHandlerSlot(metalminds, 6, 119, 17)),
+        addSlot(new SmartItemHandlerSlot(metalminds, 7, 152, 17)),
+        addSlot(new SmartItemHandlerSlot(metalminds, 8, 119, 39)),
+        addSlot(new SmartItemHandlerSlot(metalminds, 9, 152, 39))
       );
       SpikeInventory spikes = capability.getSpikes();
-      addSlot(new SmartItemHandlerSlot(spikes, 0, 71, 26));
-      addSlot(new SmartItemHandlerSlot(spikes, 1, 89, 26));
-      addSlot(new SmartItemHandlerSlot(spikes, 2, 71, 44));
-      addSlot(new SmartItemHandlerSlot(spikes, 3, 89, 44));
+      addSlot(new SmartItemHandlerSlot(spikes, 0, 71, 30));
+      addSlot(new SmartItemHandlerSlot(spikes, 1, 89, 30));
+      addSlot(new SmartItemHandlerSlot(spikes, 2, 71, 48));
+      addSlot(new SmartItemHandlerSlot(spikes, 3, 89, 48));
 
       // add satchel slots if passed
       if (satchelType != null) {

@@ -68,8 +68,12 @@ public class MetalbornTags {
   }
 
   public static class Entities {
-    public static final TagKey<EntityType<?>> PIGLINS = common("piglins");
+    public static final TagKey<EntityType<?>> BLAZES = common("blazes");
+    public static final TagKey<EntityType<?>> GUARDIANS = common("guardians");
     public static final TagKey<EntityType<?>> ILLAGERS = common("illagers");
+    public static final TagKey<EntityType<?>> PIGLINS = common("piglins");
+    public static final TagKey<EntityType<?>> SILVERFISH = common("silverfish");
+    public static final TagKey<EntityType<?>> SPIDERS = common("spiders");
     public static final TagKey<EntityType<?>> ZOMBIES = common("zombies");
 
     /** Creates a common namespace tag */

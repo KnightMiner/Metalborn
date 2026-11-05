@@ -20,6 +20,8 @@ import java.util.List;
 
 /** Screen for {@link MetalbornMenu} */
 public class MetalbornScreen extends AbstractContainerScreen<MetalbornMenu> {
+  /** Component for the non-satchel title */
+  private static final Component TITLE = Metalborn.component("gui", "feruchemy");
   /** The ResourceLocation containing the chest GUI texture. */
   private static final ResourceLocation TEXTURE = Metalborn.resource("textures/gui/metalborn.png");
   // tooltips
@@ -33,29 +35,31 @@ public class MetalbornScreen extends AbstractContainerScreen<MetalbornMenu> {
   /** U index for all extra elements */
   private static final int ELEMENT_U = 176;
   /** Width of metalmind buttons */
-  private static final int BUTTON_WIDTH = 18;
+  private static final int BUTTON_WIDTH = 7;
   /** Height of metalmind buttons */
-  private static final int BUTTON_HEIGHT = 5;
-  /** V index for neutral button */
-  private static final int NEUTRAL_V = 0;
-  /** V index for hovered button */
-  private static final int HOVER_OFFSET = BUTTON_HEIGHT;
-  /** V index for storing button */
-  private static final int STORING_V = 4 * BUTTON_HEIGHT;
-  /** V index for tapping button */
-  private static final int TAPPING_V = 6 * BUTTON_HEIGHT;
+  private static final int BUTTON_HEIGHT = 18;
+  /** V location for button textures */
+  private static final int BUTTON_V = 0;
+  /** V offset for hovering a button */
+  private static final int HOVER_OFFSET = BUTTON_WIDTH;
+  /** U location for neutral buttons */
+  private static final int NEUTRAL_U = ELEMENT_U;
+  /** U index for storing button */
+  private static final int STORING_U = NEUTRAL_U + 4 * BUTTON_WIDTH;
+  /** U index for tapping button */
+  private static final int TAPPING_U = NEUTRAL_U + 6 * BUTTON_WIDTH;
 
   /** U coordinate of the read only slot background */
-  private static final int READ_ONLY_U = 193;
+  private static final int READ_ONLY_U = 176;
   /** V coordinate of the read only slot background */
-  private static final int READ_ONLY_V = 0;
+  private static final int READ_ONLY_V = 64;
   /** Size of the read only slot background */
   private static final int READ_ONLY_SIZE = 20;
 
   /** X coordinate for metalmind button */
   private static final int METALMIND_X = 47;
   /** Y coordinate for info buttons */
-  private static final int INFO_Y = 67;
+  private static final int INFO_Y = 66;
   /** V coordinate for metalmind hover */
   private static final int METALMIND_HOVER_V = 40;
   /** X coordinate for spike button */
@@ -137,7 +141,7 @@ public class MetalbornScreen extends AbstractContainerScreen<MetalbornMenu> {
     // draw player in center, watching you
     assert this.minecraft != null;
     assert this.minecraft.player != null;
-    InventoryScreen.renderEntityInInventoryFollowsAngle(graphics, leftPos + PLAYER_X, topPos + PLAYER_Y, 30, 0, 0, this.minecraft.player);
+    InventoryScreen.renderEntityInInventoryFollowsAngle(graphics, leftPos + PLAYER_X, topPos + PLAYER_Y-4, 25, 0, 0, this.minecraft.player);
 
     // highlight the satchel slot
     int highlightSlot = menu.getHighlightSlot();
@@ -149,7 +153,8 @@ public class MetalbornScreen extends AbstractContainerScreen<MetalbornMenu> {
 
   @Override
   protected void renderLabels(GuiGraphics graphics, int mouseX, int mouseY) {
-    // only want to conditionally draw the GUI title, hence no super call
+    graphics.drawString(this.font, TITLE, this.titleLabelX, 6, 0x404040, false);
+    // using the standard title field for the satchel
     if (this.titleLabelY >= 0) {
       graphics.drawString(this.font, this.title, this.titleLabelX, this.titleLabelY, 0x404040, false);
     }
@@ -164,29 +169,30 @@ public class MetalbornScreen extends AbstractContainerScreen<MetalbornMenu> {
       Usable usable = menu.canUse(slot.index);
       if (usable != Usable.NEVER) {
         // draw backgrounds, always needed
-        int startX = slot.x - 1;
-        int startY = slot.y + 17;
+        boolean right = slot.index % 2 == 0;
+        int startX = right ? slot.x + 17 : slot.x - BUTTON_WIDTH - 1;
+        int startY = slot.y - 1;
         // based on the level and hover, might render another layer
         int level = menu.getMetalmindLevel(slot.index);
 
         // select button V based on action
-        int v = NEUTRAL_V;
+        int u = NEUTRAL_U;
         if (level < 0) {
-          v = STORING_V;
+          u = STORING_U;
         } else if (level > 0) {
-          v = TAPPING_V;
+          u = TAPPING_U;
         }
 
         // if hovering, offset V index
         if (startY <= mouseY && mouseY < startY + BUTTON_HEIGHT && startX <= mouseX && mouseX < startX + BUTTON_WIDTH) {
           if (level == 0) {
-            v += HOVER_OFFSET * usable.ordinal();
+            u += HOVER_OFFSET * usable.ordinal();
           } else {
-            v += HOVER_OFFSET;
+            u += HOVER_OFFSET;
           }
         }
         // draw the button
-        graphics.blit(TEXTURE, startX, startY, ELEMENT_U, v, BUTTON_WIDTH, BUTTON_HEIGHT);
+        graphics.blit(TEXTURE, startX, startY, u, BUTTON_V, BUTTON_WIDTH, BUTTON_HEIGHT);
       }
     }
 
@@ -210,8 +216,9 @@ public class MetalbornScreen extends AbstractContainerScreen<MetalbornMenu> {
     int checkY = mouseY - topPos;
     for (Slot slot : menu.getMetalmindSlots()) {
       // check location and slot filled first, its fastest
-      int startX = slot.x - 1;
-      int startY = slot.y + 17;
+      boolean right = slot.index % 2 == 0;
+      int startX = right ? slot.x + 17 : slot.x - BUTTON_WIDTH - 1;
+      int startY = slot.y - 1;
       if (startY <= checkY && checkY < startY + BUTTON_HEIGHT && startX <= checkX && checkX < startX + BUTTON_WIDTH && slot.hasItem()) {
         Usable usable = menu.canUse(slot.index);
         if (usable != Usable.NEVER) {
@@ -271,8 +278,9 @@ public class MetalbornScreen extends AbstractContainerScreen<MetalbornMenu> {
 
       // check if we clicked any slot button
       for (Slot slot : menu.getMetalmindSlots()) {
-        int startX = slot.x - 1;
-        int startY = slot.y + 17;
+        boolean right = slot.index % 2 == 0;
+        int startX = right ? slot.x + 17 : slot.x - BUTTON_WIDTH - 1;
+        int startY = slot.y - 1;
         // check mouse inside next as its fastest, and slot having an item
         if (startY <= checkY && checkY < startY + BUTTON_HEIGHT && startX <= checkX && checkX < startX + BUTTON_WIDTH && slot.hasItem()) {
           // must be usable

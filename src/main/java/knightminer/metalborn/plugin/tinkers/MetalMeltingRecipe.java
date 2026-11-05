@@ -19,16 +19,17 @@ import slimeknights.mantle.data.loadable.record.RecordLoadable;
 import slimeknights.mantle.recipe.IMultiRecipe;
 import slimeknights.mantle.recipe.helper.FluidOutput;
 import slimeknights.mantle.recipe.helper.TagPreference;
+import slimeknights.tconstruct.library.recipe.melting.DisplayMeltingRecipe;
+import slimeknights.tconstruct.library.recipe.melting.IDisplayableMeltingRecipe;
 import slimeknights.tconstruct.library.recipe.melting.IMeltingContainer;
 import slimeknights.tconstruct.library.recipe.melting.IMeltingRecipe;
-import slimeknights.tconstruct.library.recipe.melting.MeltingRecipe;
 
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Stream;
 
 /** Recipe for melting a metal item into the proper fluid based on its NBT */
-public class MetalMeltingRecipe implements IMeltingRecipe, IMultiRecipe<MeltingRecipe> {
+public class MetalMeltingRecipe implements IMeltingRecipe, IMultiRecipe<IDisplayableMeltingRecipe> {
   public static final RecordLoadable<MetalMeltingRecipe> LOADER = RecordLoadable.create(
     ContextKey.ID.requiredField(),
     IngredientLoadable.DISALLOW_EMPTY.requiredField("ingredient", r -> r.ingredient),
@@ -90,10 +91,10 @@ public class MetalMeltingRecipe implements IMeltingRecipe, IMultiRecipe<MeltingR
 
 
   /* JEI display */
-  private List<MeltingRecipe> multiRecipes = null;
+  private List<IDisplayableMeltingRecipe> multiRecipes = null;
 
   @Override
-  public List<MeltingRecipe> getRecipes(RegistryAccess access) {
+  public List<IDisplayableMeltingRecipe> getRecipes(RegistryAccess access) {
     if (multiRecipes == null) {
       // working under the assumption we only have 1 item per metal
       multiRecipes = Arrays.stream(ingredient.getItems())
@@ -101,9 +102,12 @@ public class MetalMeltingRecipe implements IMeltingRecipe, IMultiRecipe<MeltingR
           MetalPower power = MetalManager.INSTANCE.get(MetalItem.getMetal(stack));
           int temperature = power.temperature();
           if (temperature > 0) {
-            return Stream.of(new MeltingRecipe(
-              id, "", Ingredient.of(stack), FluidOutput.fromTag(power.fluid(), amount), temperature,
-              IMeltingRecipe.calcTimeForAmount(temperature, amount), List.of(), false));
+            return Stream.of(DisplayMeltingRecipe.id(id)
+              .input(stack)
+              .output(FluidOutput.fromTag(power.fluid(), amount))
+              .temperature(temperature)
+              .time(IMeltingRecipe.calcTimeForAmount(temperature, amount))
+              .build());
           }
           return Stream.empty();
         }).toList();

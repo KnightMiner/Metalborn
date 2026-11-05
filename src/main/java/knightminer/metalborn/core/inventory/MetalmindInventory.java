@@ -161,7 +161,7 @@ public class MetalmindInventory extends MetalInventory<MetalmindStack> implement
       // if we are currently tapping or storing, stop as something changed
       // unless of course the new metalmind is the same power as the old one, thats acceptable
       // for both simplicity and to fix shift click making this.stack empty, if the replacement is empty we stop too
-      if (level != 0 && (metalmind == Metalmind.EMPTY || !this.metalmind.isSamePower(this.stack, stack))) {
+      if (level != 0 && (metalmind == Metalmind.EMPTY || !this.metalmind.isSamePower(this.stack, stack)) || !metalmind.canUse(stack, index, player, data).isValid(level)) {
         onUpdate(0, level);
         level = 0;
       }
