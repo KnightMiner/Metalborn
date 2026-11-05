@@ -1,12 +1,12 @@
 {
   "storing": [
-    "+100% Visibility to monsters",
-    "Caps at +400% Visibility from 4 metalminds",
+    "-5% Sneak Speed, up to -20%",
+    "+100% Visibility to monsters, up to +400%",
     "Causes glowing at 4 metalminds"
   ],
   "tapping": [
-    "-25% Visibility to monsters",
-    "Caps at -75% Visibility from 3 metalminds",
+    "+5% Sneak Speed, up to +20%",
+    "-25% Visibility to monsters, up to -75%",
     "Makes you invisible at 4 metalminds"
   ]
 }

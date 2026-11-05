@@ -1,11 +1,11 @@
-// 1.21.1	2026-11-03T22:54:13.8571975	Metalborn Metal Powers
+// 1.21.1	2026-11-04T20:59:11.5762773	Metalborn Metal Powers
 a94eac3a4b120b05e0d240f4b69aa729f131edef data/metalborn/metalborn/effects/aluminum.json
 474ea7587bb808decb7816a42e6938781727c58e data/metalborn/metalborn/effects/bendalloy.json
-a4cbc5be38c07ab0954517ca8a2e7644317996cf data/metalborn/metalborn/effects/brass.json
+5fb13e8f8ee6c74463170700000be2a32e691de1 data/metalborn/metalborn/effects/brass.json
 c358267683415367d410086795babbd477ac875f data/metalborn/metalborn/effects/bronze.json
-bf81432e608aa17d39b449a9f14718bb54076d9c data/metalborn/metalborn/effects/cadmium.json
+9254460585aa32b3ed587b0b78bfcef2057cd191 data/metalborn/metalborn/effects/cadmium.json
 69f1dbbdabcc60feb9140f1fb125c2c2ce06a225 data/metalborn/metalborn/effects/chromium.json
-28bfacf5b01e4085c6247f0d4a784e74bd85c353 data/metalborn/metalborn/effects/constantan.json
+c89804124c7442c6e46facf4cb4de9bd966d1ef6 data/metalborn/metalborn/effects/constantan.json
 c3e959026f0b67c8cec3a0d241ed94098610fe15 data/metalborn/metalborn/effects/copper.json
 d97c3b98350ec8965eba27b420257ca1efa66c04 data/metalborn/metalborn/effects/electrum.json
 5ffe9d82f5f489d116ee255f0d2561ed08e03e99 data/metalborn/metalborn/effects/emerald.json
@@ -17,7 +17,7 @@ c473f5b6394824f09c769595229b1efc0a2b7256 data/metalborn/metalborn/effects/nickel
 8622b2eac1b04ffc05bf98ba828435cf49bbb329 data/metalborn/metalborn/effects/pewter.json
 e7e1197b2464f683ffdd1045d48621aa0266b928 data/metalborn/metalborn/effects/quartz.json
 caae4eddd034a9b0e4a233226b6f70cb65b1f5a5 data/metalborn/metalborn/effects/rose_gold.json
-fcc41697ed5f23b9e74240b2dcc5092e2a45a65b data/metalborn/metalborn/effects/silver.json
+f16c96e4d20b5bdd476f0d24705c197999707efe data/metalborn/metalborn/effects/silver.json
 6176137ccaf083bfff0a86fd55d841ebfe954a70 data/metalborn/metalborn/effects/steel.json
 4e6de4a92b64c9aecea881a3892a88d242e29606 data/metalborn/metalborn/effects/tin.json
 b064ae41f8747f925b5860a563abe8f792f5a633 data/metalborn/metalborn/effects/zinc.json

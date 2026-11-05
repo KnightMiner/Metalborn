@@ -19,6 +19,15 @@
   "fallback": "metalborn:constantan",
   "feruchemy": [
     {
+      "type": "metalborn:attribute",
+      "attribute": "minecraft:generic.burning_time",
+      "operation": "add_multiplied_base",
+      "value": {
+        "type": "metalborn:linear",
+        "multiplier": 0.05
+      }
+    },
+    {
       "type": "metalborn:warmth",
       "ignite": false
     },

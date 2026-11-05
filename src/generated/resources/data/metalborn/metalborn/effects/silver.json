@@ -28,13 +28,17 @@
   "fallback": "metalborn:cadmium",
   "feruchemy": [
     {
-      "type": "metalborn:attribute",
-      "attribute": "mantle:experience_multiplier",
-      "operation": "add_multiplied_total",
-      "value": {
-        "type": "metalborn:linear",
-        "multiplier": 0.1
-      }
+      "type": "metalborn:capped",
+      "capped": {
+        "type": "metalborn:attribute",
+        "attribute": "minecraft:player.sneaking_speed",
+        "operation": "add_value",
+        "value": {
+          "type": "metalborn:linear",
+          "multiplier": 0.05
+        }
+      },
+      "level": 4
     },
     {
       "type": "metalborn:storing",

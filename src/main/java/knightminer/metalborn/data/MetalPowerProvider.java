@@ -88,8 +88,8 @@ public class MetalPowerProvider extends AbstractMetalPowerProvider {
 
     // compat
     metal(MetalIds.cadmium).index(13).integration().hemalurgyCharge(13).temperature(594).fallback(MetalIds.silver)
-      // always grant some experience boost, that is kinda mental speed
-      .feruchemy(AttributeMetalEffect.builder(MantleAttributes.EXPERIENCE_MULTIPLIER, Operation.ADD_MULTIPLIED_TOTAL).eachLevel(0.1f))
+      // sneak speed is capped to 4 to mirror the rest, makes it range from -20% to +20% flat
+      .feruchemy(new CappedMetalEffect(4, AttributeMetalEffect.builder(Attributes.SNEAKING_SPEED, Operation.ADD_VALUE).eachLevel(0.05f)))
       // when storing, go from 100% (default) to 200% ... 500%
       .feruchemy(new StoringMetalEffect(new CappedMetalEffect(4, AttributeMetalEffect.builder(Registration.VISIBILITY_MULTIPLIER, Operation.ADD_MULTIPLIED_TOTAL).eachLevel(-1))))
       // when tapping, go from 100% (default) to 75% ... 0%
@@ -99,8 +99,8 @@ public class MetalPowerProvider extends AbstractMetalPowerProvider {
       // when storing, apply invisibility at level 4
       .feruchemy(new OffsetMetalEffect(3, MobEffectMetalEffect.tapping(MobEffects.INVISIBILITY).alwaysStore().flat(1)));
     metal(MetalIds.silver).index(9).temperature(790).alternative(MetalIds.cadmium).hemalurgyCharge(15)
-      // always grant some experience boost, that is kinda mental speed
-      .feruchemy(AttributeMetalEffect.builder(MantleAttributes.EXPERIENCE_MULTIPLIER, Operation.ADD_MULTIPLIED_TOTAL).eachLevel(0.1f))
+      // sneak speed is capped to 4 to mirror the rest, makes it range from -20% to +20% flat
+      .feruchemy(new CappedMetalEffect(4, AttributeMetalEffect.builder(Attributes.SNEAKING_SPEED, Operation.ADD_VALUE).eachLevel(0.05f)))
       // when storing, go from 100% (default) to 200% ... 500%
       .feruchemy(new StoringMetalEffect(new CappedMetalEffect(4, AttributeMetalEffect.builder(Registration.VISIBILITY_MULTIPLIER, Operation.ADD_MULTIPLIED_TOTAL).eachLevel(-1))))
       // when tapping, go from 100% (default) to 75% ... 0%
@@ -122,11 +122,13 @@ public class MetalPowerProvider extends AbstractMetalPowerProvider {
       .feruchemy(AttributeMetalEffect.builder(Registration.RESPIRATION, Operation.ADD_VALUE).eachLevel(1));
 
     metal(MetalIds.brass).index(12).temperature(605).integration().fallback(MetalIds.constantan)
+      .feruchemy(AttributeMetalEffect.builder(Attributes.BURNING_TIME, Operation.ADD_MULTIPLIED_BASE).eachLevel(0.05f))
       .feruchemy(new WarmthMetalEffect(false))
       .feruchemy(AttributeMetalEffect.builder(Registration.WARMTH, Operation.ADD_MULTIPLIED_TOTAL).eachLevel(0.1f))
       .feruchemy(new TappingMetalEffect(AttributeMetalEffect.builder(Registration.HEAT_DAMAGE, Operation.ADD_VALUE).eachLevel(1)));
     // constantan is only present if no brass
     metal(MetalIds.constantan).index(12).temperature(920).alternative(MetalIds.brass)
+      .feruchemy(AttributeMetalEffect.builder(Attributes.BURNING_TIME, Operation.ADD_MULTIPLIED_BASE).eachLevel(0.05f))
       .feruchemy(new WarmthMetalEffect(false))
       .feruchemy(AttributeMetalEffect.builder(Registration.WARMTH, Operation.ADD_MULTIPLIED_TOTAL).eachLevel(0.1f))
       .feruchemy(new TappingMetalEffect(AttributeMetalEffect.builder(Registration.HEAT_DAMAGE, Operation.ADD_VALUE).eachLevel(1)));

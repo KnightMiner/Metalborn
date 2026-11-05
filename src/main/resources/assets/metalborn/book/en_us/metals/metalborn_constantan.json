@@ -1,11 +1,13 @@
 {
   "storing": [
+    "-10% Burning Time",
     "-10% heat damage",
     "+10% cold damage",
     "-1 fire per second",
     "If not on fire, adds 2 seconds freezing"
   ],
   "tapping": [
+    "+10% Burning Time",
     "-10% cold damage",
     "+10% heat damage",
     "-1 freeze per second",
